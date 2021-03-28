@@ -1,0 +1,620 @@
+{
+  "Import ipdb": {
+    "prefix": "ipdb_import",
+    "body": [
+      "import sys",
+      "dir = 'C:\\\\\\Users\\\\\\JoseConseco\\\\\\AppData\\\\\\Local\\\\\\Programs\\\\\\Python\\\\\\Python36\\\\\\Lib\\\\\\site-packages'",
+      "if not dir in sys.path:",
+      "\tsys.path.append(dir )",
+      "import ipdb",
+      "$0"
+    ],
+    "description": "Import ipdb into sys path"
+  },
+  "ipdb set trace": {
+    "prefix": "ipdb_trace",
+    "body": [
+      "ipdb.set_trace()",
+      "$0"
+    ],
+    "description": "ipdb_trace"
+  },
+  "pprint": {
+    "prefix": "pprint",
+    "body": [
+      "import pprint",
+      "pprint.pprint($0)"
+    ],
+    "description": "pprint snippet"
+  },
+  "time operation": {
+    "prefix": "time_oper",
+    "description": "How long it takes",
+    "body": [
+      "import time\r",
+      "start_time = time.time()\r",
+      "print(f'I took --- {time.time() - start_time} seconds ---')\r",
+      ""
+    ]
+  },
+  "pool method": {
+    "prefix": "poll",
+    "body": [
+      "@classmethod",
+      "def poll(cls, context):",
+      "\treturn context.active_object",
+      "$0"
+    ],
+    "description": "poll class method"
+  },
+  "property group": {
+    "prefix": "prop group",
+    "body": [
+      "class MyPropertyGroup(bpy.types.PropertyGroup):",
+      "\tcustom_1: bpy.props.FloatProperty(name='My Float')",
+      "\tcustom_2: bpy.props.IntProperty(name='My Int')",
+      "bpy.utils.register_class(MyPropertyGroup)",
+      "bpy.types.Object.my_prop_grp = bpy.props.PointerProperty(type=MyPropertyGroup)"
+    ],
+    "description": "property group pointer"
+  },
+  "Collection Property": {
+    "prefix": "prop coll",
+    "body": [
+      "class GroupSettings(bpy.types.PropertyGroup):",
+      "\tcurrentEmptyName: bpy.props.StringProperty()",
+      "\tcurrentEmptyWorldMatrix: bpy.props.FloatVectorProperty(size=16)",
+      "\tcurrentEmptyLoc: bpy.props.FloatVectorProperty(default=(0.0,0.0, 0.0), subtype='TRANSLATION')",
+      "bpy.types.Scene.storedGroupSettings = bpy.props.CollectionProperty(type=GroupSettings)"
+    ],
+    "description": "property collection"
+  },
+  "BoolProp": {
+    "prefix": "bool",
+    "body": [
+      "$1: bpy.props.BoolProperty(name='$1', description='', default=${2|True,False|})$0"
+    ],
+    "description": "BoolProp"
+  },
+  "StringProp": {
+    "prefix": "string",
+    "body": [
+      "$1: bpy.props.StringProperty(name='$1', description='', default=${2:''})$0"
+    ],
+    "description": "StringProp"
+  },
+  "FloatProp": {
+    "prefix": "float",
+    "description": "FloatProp",
+    "body": [
+      "$1: bpy.props.FloatProperty(name='$1', description='', default=${2: 0.0}, min=0, max=100, subtype='${3|FACTOR,PERCENTAGE|}')$0\r",
+      ""
+    ]
+  },
+  "IntegerProp": {
+    "prefix": "integer",
+    "description": "IntProperty",
+    "body": [
+      "$1: bpy.props.IntProperty(name='$1', description='', default=${2: 1}, min=0, max=100, subtype='PERCENTAGE')$0\r",
+      ""
+    ]
+  },
+  "PointerProp": {
+    "prefix": "pointer",
+    "body": [
+      "$1: bpy.props.PointerProperty(name='$1', type=bpy.types.Object)$0"
+    ],
+    "description": "PointerProp"
+  },
+  "Bmesh Editmode": {
+    "prefix": "bmesh editmode",
+    "body": [
+      "bm = bmesh.from_edit_mesh(me)",
+      "for v in bm.verts:",
+      "\tv.co.x += 1.0",
+      "bmesh.update_edit_mesh(me, True)"
+    ],
+    "description": "Bmesh Editmode"
+  },
+  "Bmesh Object mode": {
+    "prefix": "bmesh object mode",
+    "body": [
+      "bm = bmesh.new()   # create an empty BMesh",
+      "bm.from_mesh(me)   # fill it in from a Mesh",
+      "bm.to_mesh(me)",
+      "bm.free()  # free and prevent further access"
+    ],
+    "description": "bmesh object mode"
+  },
+  "Bmesh UV": {
+    "prefix": "bmesh UV",
+    "body": [
+      "uv_lay = bm.loops.layers.uv.active",
+      "for face in bm.faces:",
+      "\tfor loop in face.loops:",
+      "\t\tuv = loop[uv_lay].uv",
+      "\t\tprint(f'Loop UV: {uv[0]},{uv[1]}')",
+      "\t\tvert = loop.vert"
+    ],
+    "description": "bmesh UV"
+  },
+  "Bmesh Shape": {
+    "prefix": "bmesh shape",
+    "body": [
+      "shape_lay = bm.verts.layers.shape['Key.001']",
+      "for vert in bm.verts:",
+      "\tshape = vert[shape_lay]",
+      "\tprint(f'Vert Shape: {shape.x}, {shape.y}, {shape.z}')"
+    ],
+    "description": "bmesh shape"
+  },
+  "Bmesh VColor": {
+    "prefix": "bmesh vcolor",
+    "body": [
+      "color_layer = bm.loops.layers.color.new('color')",
+      "for face in bm.faces:",
+      "\tfor loop in face.loops:",
+      "\t\tloop[color_layer] = [1, 1, 1]"
+    ],
+    "description": "bmesh vcolor"
+  },
+  "Bmesh VGroup": {
+    "prefix": "bmesh vgroup",
+    "body": [
+      "group_index = obj.vertex_groups.active_index",
+      "# only ever one deform weight layer",
+      "dvert_lay = bm.verts.layers.deform.active",
+      "for vert in bm.verts:",
+      "\tdvert = vert[dvert_lay]",
+      "\tif group_index in dvert:",
+      "\t\tprint(f'Weight {dvert[group_index]}')",
+      "\telse:",
+      "\t\tprint('Setting Weight')",
+      "\t\tdvert[group_index] = 0.5"
+    ],
+    "description": "bmesh vgroup"
+  },
+  "EnumProperty": {
+    "prefix": "enum",
+    "description": "EnumProperty",
+    "body": [
+      "\r",
+      "$1: bpy.props.EnumProperty(name='$1', description='',\r",
+      "\titems=[\r",
+      "\t\t('${2/(.*)/${1:/upcase}/}', '$2', '$2'),\r",
+      "\t\t('${3/(.*)/${1:/upcase}/}', '$3', '$3')\r",
+      "\t], ${4: options=\\{'ENUM_FLAG'\\}, }default={'${2/(.*)/${1:/upcase}/}'})\r",
+      ""
+    ]
+  },
+  "Depsgraph referece": {
+    "prefix": "depsgraph",
+    "body": [
+      "depsgraph = context.evaluated_depsgraph_get()",
+      "obj = context.active_object",
+      "obj_eval = obj.evaluated_get(depsgraph)",
+      "me_eval = obj_eval.to_mesh()",
+      "obj_eval.to_mesh_clear()",
+      "bpy.data.meshes.new_from_object(obj_eval)",
+      "$0"
+    ],
+    "description": "depsgraph From mesh"
+  },
+  "OperDrawMethod": {
+    "prefix": "draw",
+    "body": [
+      "def draw(self, context):",
+      "\tlayout = self.layout",
+      "\trow = layout.row(align=True)",
+      "\trow.prop(self, '$0')"
+    ],
+    "description": "Draw method for operator"
+  },
+  "ReportOperator": {
+    "prefix": "report",
+    "description": "Draw report for operator",
+    "body": [
+      "self.report({'${1|INFO,WARNING,DEBUG,ERROR|}'}, f'{$0}')\r",
+      ""
+    ]
+  },
+  "ReturnOps": {
+    "prefix": "return",
+    "description": "return ops",
+    "body": [
+      "return {'${1|FINISHED,CANCELLED,RUNNING_MODAL,PASS_THROUGH|}'}\r",
+      ""
+    ]
+  },
+  "Exception": {
+    "prefix": "exception",
+    "body": [
+      "except Exception as e: print(e)"
+    ],
+    "description": "exception with print"
+  },
+  "ShiftInvoke": {
+    "prefix": "shift_clicked",
+    "body": [
+      "shift_clicked = False",
+      "def invoke(self, context, event):",
+      "\tif event.shift:",
+      "\t\tself.shift_clicked = True",
+      "\treturn self.execute(context)"
+    ],
+    "description": "Detect shift click on operator"
+  },
+  "InvokeOper": {
+    "prefix": "invoke",
+    "body": [
+      "def invoke(self, context, event):",
+      "\treturn self.execute(context)"
+    ],
+    "description": "Invoke method for operator"
+  },
+  "operator": {
+    "prefix": "operator",
+    "description": "create blender operator",
+    "body": [
+      "class OBJECT_OT_${1/((^[a-z])|_([a-z]))/${2:/upcase}${3:/upcase}/g}(bpy.types.Operator):\r",
+      "\tbl_idname = \"object.$1\" \r",
+      "\tbl_label = \"$1\"\r",
+      "\tbl_description = \"${1/([^_]*)(_)*/${1:/capitalize}${2:+ }/g}\"\r",
+      "\tbl_options = {\"REGISTER\",\"UNDO\"}\r",
+      "\r",
+      "\t@classmethod\r",
+      "\tdef poll(cls, context):\r",
+      "\t\treturn context.active_object\r",
+      "\r",
+      "\tdef execute(self, context):\r",
+      "\t\tobj = context.active_object$0\r",
+      "\t\tbpy.ops.object.delete()\r",
+      "\t\treturn {\"FINISHED\"}\r",
+      ""
+    ]
+  },
+  "panel": {
+    "prefix": "panel",
+    "body": [
+      "class VIEW3D_PT_$1(bpy.types.Panel):",
+      "\tbl_idname = '$1'",
+      "\tbl_label = '$1'",
+      "\tbl_space_type = 'VIEW_3D'",
+      "\tbl_region_type = 'UI'",
+      "\tbl_category = 'Tools'",
+      "\tbl_context = 'objectmode'",
+      "",
+      "\tdef draw(self, context):",
+      "\t\tts_params = context.scene",
+      "\t\tlayout = self.layout",
+      "\t\t$0"
+    ],
+    "description": "create blender panel"
+  },
+  "modal_operator_draw": {
+    "prefix": "operator modal draw",
+    "body": [
+      "class ${1:MyClassName}(bpy.types.Operator):",
+      "\tbl_idname = \"${2:my_operator.my_class_name}\"",
+      "\tbl_label = \"${2/([^_.]*)([_.]*)/${1:/capitalize}${2:+ }/g}\"",
+      "\tbl_description = \"${4:Description that shows in blender tooltips}\"",
+      "\tbl_options = {'REGISTER'}",
+      "",
+      "\t@classmethod",
+      "\tdef poll(cls, context):",
+      "\t\treturn True",
+      "",
+      "\tdef invoke(self, context, event):",
+      "\t\tself._handle = bpy.types.SpaceView3D.draw_handler_add(",
+      "\t\t\tself.draw_callback_px, args, \"WINDOW\", \"POST_PIXEL\")",
+      "\t\tcontext.window_manager.modal_handler_add(self)",
+      "\t\treturn {\"RUNNING_MODAL\"}",
+      "",
+      "\tdef modal(self, context, event):",
+      "\t\t",
+      "\t\tif event.type == \"LEFTMOUSE\":",
+      "\t\t\treturn self.finish()",
+      "\t\t",
+      "\t\tif event.type in {\"RIGHTMOUSE\", \"ESC\"}:",
+      "\t\t\treturn self.cancelled()",
+      "\t\t$0",
+      "\t\treturn {\"RUNNING_MODAL\"}",
+      "",
+      "\tdef finish(self):",
+      "\t\tbpy.types.SpaceView3D.draw_handler_remove(self._handle, \"WINDOW\")",
+      "\t\treturn {\"FINISHED\"}",
+      "",
+      "\tdef cancelled(self):",
+      "\t\tbpy.types.SpaceView3D.draw_handler_remove(self._handle, \"WINDOW\")",
+      "\t\treturn {\"CANCELLED\"}",
+      "",
+      "\tdef draw_callback_px(tmp, self, context):",
+      "\t\tpass",
+      ""
+    ],
+    "description": "Modal operator draw function, without any imports or added functions"
+  },
+  "pie menu": {
+    "prefix": "pie menu",
+    "body": [
+      "class HTOOL_MT_HairToolMenu(bpy.types.Menu):",
+      "\tbl_idname = \"HTOOL_MT_HairToolMenu\"",
+      "\tbl_label = \"Hair Tool Menu Panel\"",
+      "\t@classmethod",
+      "\tdef poll(cls, context):",
+      "\t\treturn context.mode == 'OBJECT'",
+      "\tdef draw(self, context):",
+      "\t\tlayout = self.layout",
+      "\t\tpie = layout.menu_pie()",
+      "\t\t# 1 - LEFT",
+      "\t\tpie.operator(\"wm.call_menu_pie\", text=\"Weigth Tools\", icon='PREFERENCES').name = WPT_MT_VerGroupSubToolsPie.bl_idname",
+      "\t\t# 2 - RIGHT",
+      "\t\tbox = pie.box()",
+      "\t\tcol = box.column(align=True)",
+      "\t\trow = col.row(align=False)",
+      "\t\trow.label(text='Set weights:')",
+      "\t\trow = col.row(align=True)",
+      "\t\tweight_set = row.operator(\"paint.weight_set_wp\", text='0')",
+      "\t\tweight_set.mix_method = \"REPLACE\"",
+      "\t\tweight_set.weight = 0.0",
+      "\t\tweight_set = row.operator(\"paint.weight_set_wp\", text='0.2')",
+      "\t\tweight_set.mix_method = \"REPLACE\"",
+      "\t\tweight_set.weight = 0.2",
+      "\t\t# 3 - BOTTOM",
+      "\t\tsplit = pie.split()",
+      "\t\tcol = split.column(align=True)",
+      "\t\trow = col.row(align=True)",
+      "\t\trow.scale_y = 1.5",
+      "\t\trow.operator(\"object.transfer_weights\", icon='PLUS')",
+      "\t\trow = col.row(align=True)",
+      "\t\trow.scale_y = 1.5",
+      "\t\trow.operator(\"paint.mirror_vg\", icon='MOD_MIRROR')",
+      "\t\trow = col.row(align=True)",
+      "\t\trow.scale_y = 1.5",
+      "\t\trow.operator(\"paint.mirror_vg_project\", icon='MOD_MIRROR')",
+      "\t\t# 4 - TOP",
+      "\t\tpie.operator(\"pose.select_active_vg_bone\", icon='CONSTRAINT_BONE')",
+      "\t\t# 5 - TOP - LEFT",
+      "\t\tpie.separator()",
+      "\t\t# 6 - TOP - RIGHT",
+      "\t\tpie.separator()",
+      "\t\t# 7 - BOTTOM - LEFT",
+      "\t\tsplit = pie.split()",
+      "\t\tcol = split.column(align=True)",
+      "\t\trow = col.row(align=True)",
+      "\t\trow.scale_y = 1.5",
+      "\t\trow.operator(\"object.copy_vg_weight\", icon='COPY_ID')",
+      "\t\trow = col.row(align=True)",
+      "\t\trow.scale_y = 1.5",
+      "\t\trow.operator(\"object.paste_vg_weight\", icon='PASTEDOWN')",
+      "\t\t# 8 - BOTTOM - RIGHT",
+      "\t\tsplit = pie.split()",
+      "\t\tcol = split.column(align=True)",
+      "\t\trow = col.row(align=True)",
+      "\t\trow.scale_y = 1.5",
+      "\t\trow.operator(\"object.define_delta\", icon='ARROW_LEFTRIGHT')",
+      "\t\trow = col.row(align=True)",
+      "\t\trow.scale_y = 1.5",
+      "\t\trow.prop(context.scene, \"wpt_enable_mirror\", text= mirror_str,  emboss=True)"
+    ],
+    "description": "create blender operator"
+  },
+  "dialog": {
+    "prefix": "props dialog",
+    "description": "props dialog invoke",
+    "body": [
+      "return context.window_manager.invoke_props_dialog(self)"
+    ]
+  },
+  "color": {
+    "prefix": "color",
+    "description": "FloatVectorProperty",
+    "body": [
+      "$1: bpy.props.FloatVectorProperty(name=\"$1\", subtype='COLOR', size=4, default=[1.0, 0.0, 0.0, 0.8], min=0.0, max=1.0)\r",
+      ""
+    ]
+  },
+  "theme": {
+    "prefix": "theme",
+    "description": "blender theme",
+    "body": [
+      "theme = bpy.context.preferences.themes['Default']\r",
+      ""
+    ]
+  },
+  "prefs": {
+    "prefix": "prefs",
+    "description": "",
+    "body": [
+      "pref = context.preferences.addons[__name__].preferences"
+    ]
+  },
+  "Addon": {
+    "prefix": "Addon",
+    "description": "",
+    "body": [
+      "\r",
+      "# ***** BEGIN GPL LICENSE BLOCK *****\r",
+      "#\r",
+      "#\r",
+      "# This program is free software; you can redistribute it and/or\r",
+      "# modify it under the terms of the GNU General Public License\r",
+      "# as published by the Free Software Foundation; either version 2\r",
+      "# of the License, or (at your option) any later version.\r",
+      "#\r",
+      "# This program is distributed in the hope that it will be useful,\r",
+      "# but WITHOUT ANY WARRANTY; without even the implied warranty of\r",
+      "# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.    See the\r",
+      "# GNU General Public License for more details.\r",
+      "#\r",
+      "# You should have received a copy of the GNU General Public License\r",
+      "# along with this program; if not, write to the Free Software Foundation,\r",
+      "# Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\r",
+      "#\r",
+      "# ***** END GPL LICENCE BLOCK *****\r",
+      "import bpy\r",
+      "bl_info = {\r",
+      "    \"name\": \"Tracks Addon\",\r",
+      "    \"author\": \"Your Name Here\",\r",
+      "    \"version\": (2, 0),\r",
+      "    \"blender\": (2, 80, 0),\r",
+      "    \"location\": \"Location\",\r",
+      "    \"description\": \"Test\",",
+      "    \"warning\": \"\",\r",
+      "    \"wiki_url\": \"\",\r",
+      "    \"category\": \"3D View\",\r",
+      "}\r",
+      "\r",
+      "\r",
+      "class TRACK_OP_TrackSetp(bpy.types.Operator):\r",
+      "    bl_idname = \"object.track_empties_setup\"\r",
+      "    bl_label = \"track empties setup\"\r",
+      "    bl_description = \"track empties setup\"\r",
+      "    bl_options = {\"REGISTER\", \"UNDO\"}\r",
+      "\r",
+      "    addon_name: bpy.props.StringProperty(name='mod name', description='', default='')\r",
+      "\r",
+      "    def invoke(self, context, event):\r",
+      "        wm = context.window_manager\r",
+      "        # wm.invoke_search_popup(self)\r",
+      "        return context.window_manager.invoke_props_dialog(self)\r",
+      "        # return {'FINISHED'}\r",
+      "\r",
+      "    def draw(self, context):\r",
+      "        layout = self.layout\r",
+      "        layout.prop_search(self, 'addon_name', context.preferences, 'addons')\r",
+      "\r",
+      "    @classmethod\r",
+      "    def poll(cls, context):\r",
+      "        return context.active_object\r",
+      "\r",
+      "    def execute(self, context):\r",
+      "        cam = bpy.data.objects['Camera']\r",
+      "        movie_clip = bpy.data.movieclips['Untitled.mp4']\r",
+      "        plane = bpy.data.objects['Plane.002']\r",
+      "\r",
+      "        arma_data = bpy.data.armatures.new(\"Arma\"+movie_clip.name)\r",
+      "        arma_obj = bpy.data.objects.new(\"Arma\"+movie_clip.name, arma_data)\r",
+      "        context.scene.collection.objects.link(arma)\r",
+      "        for track in movie_clip.tracking.tracks:\r",
+      "            empty = bpy.data.objects.new(track.name, None)\r",
+      "            context.scene.collection.objects.link(empty)\r",
+      "            constrain = empty.constraints.new('FOLLOW_TRACK')\r",
+      "            constrain.use_active_clip = False\r",
+      "            constrain.clip = movie_clip\r",
+      "            constrain.camera = cam\r",
+      "            constrain.track = track.name\r",
+      "            constrain.object = cam.name\r",
+      "            constrain.depth_object = plane\r",
+      "            track_bone = arma.edit_bones.new(prefix + track.name)",
+      "            bone_const = arma_obj.pose.bones[track_bone.name].constraints.new(\"CHILD_OF\")\r",
+      "            bone_const.target = empty\r",
+      "            bone_const.use_rotation_x = False\r",
+      "            bone_const.use_rotation_y = False\r",
+      "            bone_const.use_rotation_z = False\r",
+      "            bone_const.use_scale_x = False\r",
+      "            bone_const.use_scale_y = False\r",
+      "            bone_const.use_scale_z = False\r",
+      "\r",
+      "        return {\"FINISHED\"}\r",
+      "\r",
+      "\r",
+      "classes = (\r",
+      "    ADD_OP_SimpleOp,\r",
+      ")\r",
+      "\r",
+      "\r",
+      "def register():\r",
+      "    from bpy.utils import register_class\r",
+      "    for cls in classes:\r",
+      "        register_class(cls)\r",
+      "\r",
+      "\r",
+      "def unregister():\r",
+      "    from bpy.utils import unregister_class\r",
+      "    for cls in reversed(classes):\r",
+      "        unregister_class(cls)\r",
+      ""
+    ]
+  },
+  "boolVector": {
+    "prefix": "boolPropVector",
+    "description": "",
+    "body": [
+      "$1: bpy.props.BoolVectorProperty(name=\"$1\", description='', options={'HIDDEN'},  default=${2|True,False|}, size=$0)\r"
+    ]
+  },
+  "split": {
+    "prefix": "split",
+    "description": "",
+    "body": [
+      "split = row.split(factor=0.7, align=True)",
+      "split.operator('garment.setup_keyframes').garment_index = garment_index",
+      "split.prop(garment, 'sim_time', text='')"
+    ]
+  },
+  "try": {
+    "prefix": "try",
+    "description": "try generic",
+    "body": [
+      "try:",
+      "\t$0",
+      "except Exception as e:",
+      "\tprint(e)"
+    ]
+  },
+  "bgl draw mesh": {
+    "prefix": "bgl draw mesh",
+    "description": "",
+    "body": [
+      "@staticmethod",
+      "def draw_mesh_px(self, context):",
+      "    mesh.calc_loop_triangles()",
+      "    vertices = np.empty((len(mesh.vertices), 3), 'f')",
+      "    face_ids = np.empty((len(mesh.loop_triangles), 3), 'i')",
+      "",
+      "    mesh.vertices.foreach_get(\"co\", np.reshape(vertices, len(mesh.vertices) * 3))",
+      "    mesh.loop_triangles.foreach_get(\"vertices\", np.reshape(face_ids, len(mesh.loop_triangles) * 3))",
+      "",
+      "    bgl.glEnable(bgl.GL_BLEND)",
+      "    bgl.glDisable(bgl.GL_DEPTH_TEST)",
+      "    bgl.glEnable(bgl.GL_CULL_FACE)",
+      "    bgl.glCullFace(bgl.GL_BACK)",
+      "    batch_faces = batch_for_shader(shader_3d_uniform, 'TRIS', {\"pos\": vertices}, indices=face_ids )",
+      "    shader_3d_uniform.bind()",
+      "    shader_3d_uniform.uniform_float(\"color\", self.draw_color + (0.2,))",
+      "    batch_faces.draw(shader_3d_uniform)",
+      "",
+      "    batch_edges = batch_for_shader(shader_3d_uniform, 'LINES', {\"pos\": vertices}, indices=mehs.edge_keys)",
+      "    shader_3d_uniform.bind()",
+      "    shader_3d_uniform.uniform_float(\"color\",  self.draw_color + (1.0,))",
+      "    batch_edges.draw(shader_3d_uniform)",
+      "",
+      "    bgl.glDisable(bgl.GL_CULL_FACE)",
+      "    bgl.glDisable(bgl.GL_DEPTH_TEST)",
+      "    bgl.glDisable(bgl.GL_BLEND)"
+    ]
+  },
+  "profile stats": {
+    "prefix": "profile stats",
+    "description": "",
+    "body": [
+      "import cProfile, pstats, io",
+      "from pstats import SortKey",
+      "",
+      "pr = cProfile.Profile()",
+      "pr.enable()",
+      "#*  ... do something ...",
+      "",
+      "pr.disable()",
+      "s = io.StringIO()",
+      "sortby = SortKey.CUMULATIVE",
+      "ps = pstats.Stats(pr, stream=s).sort_stats(sortby)",
+      "ps.print_stats()",
+      "print(s.getvalue())",
+      "# with open('test.txt', 'w+') as f:",
+      "    # f.write(s.getvalue())",
+      ""
+    ]
+  }
+}
