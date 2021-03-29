@@ -136,6 +136,10 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-devicons"
   },
+  ["vim-fugitive"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-fugitive"
+  },
   ["vim-smoothie"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-smoothie"

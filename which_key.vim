@@ -20,14 +20,13 @@ autocmd  FileType which_key set laststatus=0 noshowmode noruler
   \| autocmd BufLeave <buffer> set laststatus=2 noshowmode ruler
 
 " Single mappings
-let g:which_key_map['s'] = [ ':HopChar2'                  , 'Jump char2' ]
 let g:which_key_map['S'] = [ ':Startify'                  , 'start screen' ]
 let g:which_key_map['e'] = [ ':e ~/.config/nvim/init.vim' , 'Edit init.vim' ]
 let g:which_key_map['r'] = [ ':so $MYVIMRC'               , 'Reload init.vim']
 
  " s is for vim-startify
-let g:which_key_map.w = {
-      \ 'name' : 'Window' ,
+let g:which_key_map.s = {
+      \ 'name' : 'Sessions' ,
       \ 's' : [':SSave'           , 'Sesion Save'],
       \ 'l' : [':SLoad'           , 'Sesion Load'],
       \ 'c' : [':SClose'           , 'Sesion Close'],
@@ -83,16 +82,21 @@ let g:which_key_map.z = {
  " F is for fold
 let g:which_key_map.F = {
     \ 'name': '+fold',
-    \ 'O' : [':set foldlevel=20'  , 'open all'],
-    \ 'C' : [':set foldlevel=0'   , 'close all'],
-    \ 'c' : [':foldclose'         , 'close'],
-    \ 'o' : [':foldopen'          , 'open'],
+    \ 'c' : [':zM'          , 'close all'],
+    \ 'o' : [':zo'          , 'open cur(zo)'],
+    \ 'O' : [':zO'          , 'open all cur(zO)'],
+    \ '+' : [':zm'          , 'inc+1 (zm)'],
+    \ '-' : [':zr'          , 'dec-1 (zr)'],
+    \ 't' : [':za'          , 'toggle at cur(za)'],
+    \ 'T' : [':zi'          , 'Toggle fold enable(zi)'],
+    \ '0' : [':set foldlevel=0'   , 'level0'],
     \ '1' : [':set foldlevel=1'   , 'level1'],
     \ '2' : [':set foldlevel=2'   , 'level2'],
     \ '3' : [':set foldlevel=3'   , 'level3'],
     \ '4' : [':set foldlevel=4'   , 'level4'],
     \ '5' : [':set foldlevel=5'   , 'level5'],
-    \ '6' : [':set foldlevel=6'   , 'level6']
+    \ '6' : [':set foldlevel=6'   , 'level6'],
+	\ '9' : [':set foldlevel=9'   , 'level9'],
     \ }
 
 let g:which_key_map.t = {

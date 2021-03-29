@@ -64,12 +64,16 @@ vim.api.nvim_set_keymap('n', '<C-h>', ':set hlsearch!<CR>', {noremap = true, sil
 -- select all file...  % - all lines,
 vim.api.nvim_set_keymap("n", "<C-a>", 'gg<S-v>G', {noremap = true})
 -- vim.api.nvim_set_keymap("n", "<C-a>", [[ <Cmd> %y+<CR>]], {noremap = true})
+--
+--close all Folds remap
+vim.api.nvim_set_keymap('n', 'zC',  'zM', {noremap = true, silent = true})
 
 -- Hop plug
 vim.api.nvim_set_keymap('n', 's',  ':HopChar2<Return>', {noremap = true, silent = true})
 
 -- NVimTree
 vim.api.nvim_set_keymap( "n", "<F3>", ":NvimTreeToggle<CR>", { noremap = true, silent = true } )
+
 
 -- Tab switch buffer
 --vim.api.nvim_set_keymap('n', '<TAB>', ':bnext<CR>', {noremap = true, silent = true})

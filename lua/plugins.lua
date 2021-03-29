@@ -54,9 +54,11 @@ return require("packer").startup(
         use 'nvim-telescope/telescope-media-files.nvim'
 
         -- Explorer
+		-- use 'preservim/nerdtree'
         use 'kyazdani42/nvim-tree.lua'
 
         -- git
+		use 'tpope/vim-fugitive'    -- add :Gitxx commands
         use {'lewis6991/gitsigns.nvim', requires = 'nvim-lua/plenary.nvim'}
 
         -- general

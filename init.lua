@@ -6,7 +6,7 @@ vim.cmd('colorscheme onedark')
 vim.cmd('let g:nvcode_termcolors=256')
 
 require("web-devicons")
-require("galaxyline")   -- status line
+require("nv-galaxyline")   -- status line
 require("nvimTree")
 require("telescope-nvim")
 
@@ -33,4 +33,6 @@ vim.cmd('source ~/.config/nvim/which_key.vim')
 
 vim.cmd('autocmd BufWritePre * %s/\\s\\+$//e')  --remove white spaces
 
-
+-- If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
+vim.cmd([[autocmd BufEnter \* if bufname('#') =~ 'Vim-tree_\\d\\+' && bufname('%') !~ 'Vim-tree_\\d\\+' && winnr('$') > 1 |
+    \\ let buf=bufnr() | buffer# | execute "normal! \\<C-W>w" | execute 'buffer'.buf | endif]])

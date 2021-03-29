@@ -76,24 +76,35 @@ local root_files = {
   '.git',
 }
 
-nvim_lsp.pyright.setup{
+-- nvim_lsp.pyright.setup{
+-- 	capabilities = capabilities;
+-- 	on_attach = on_attach;
+-- 	cmd = { "pyright-langserver", "--stdio" };
+-- 	filetypes = { "python" };
+-- 	root_dir = function(filename)
+-- 		return util.root_pattern(unpack(root_files))(filename) or
+-- 		util.path.dirname(filename)
+-- 	end;
+-- 	settings = {
+-- 		python = {
+-- 			analysis = {
+-- 				autoSearchPaths = true,
+-- 				useLibraryCodeForTypes = true
+-- 			}
+-- 		}
+-- 	};
+-- }
+
+
+nvim_lsp.jedi_language_server.setup{
 	capabilities = capabilities;
 	on_attach = on_attach;
-	cmd = { "pyright-langserver", "--stdio" };
-	filetypes = { "python" };
 	root_dir = function(filename)
 		return util.root_pattern(unpack(root_files))(filename) or
 		util.path.dirname(filename)
 	end;
-	settings = {
-		python = {
-			analysis = {
-				autoSearchPaths = true,
-				useLibraryCodeForTypes = true
-			}
-		}
-	};
 }
+
 
 nvim_lsp.sumneko_lua.setup {
 	cmd = {'lua-language-server', "-E", '/usr/share/lua-language-server/main.lua'};
