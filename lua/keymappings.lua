@@ -29,11 +29,9 @@ vim.api.nvim_set_keymap('v', '<', '<gv', {noremap = true})
 vim.api.nvim_set_keymap('v', '>', '>gv', {noremap = true})
 
 -- Use tab for indenting in visual mode
-vim.api.nvim_set_keymap('x', '<Tab>', '>gv|', {noremap = true})
-vim.api.nvim_set_keymap('x', '<S-Tab>', '<gv', {noremap = true})
-vim.api.nvim_set_keymap('n', '<Tab>', '>gv|', {noremap = true})
-vim.api.nvim_set_keymap('n', '<S-Tab>', '<gv', {noremap = true})
-vim.api.nvim_set_keymap('n', '>', '>>_', {noremap = true})
+-- vim.api.nvim_setmap('n', '<Tab>', '>gv|', {noremap = true})
+-- vim.api.nvim_set_keymap('n', '<S-Tab>', '<gv', {noremap = true})
+-- vim.api.nvim_set_keymap('n', '>', '>>_', {noremap = true})
 vim.api.nvim_set_keymap('n', '<', '<<_', {noremap = true})
 
 -- smart up and down

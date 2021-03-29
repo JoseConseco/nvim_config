@@ -17,6 +17,7 @@ require("vsnip")
 
 require("gitsigns")
 require("treesitter")
+require('nv-startify')
 
 require('colorizer').setup()
 require('nvim_comment').setup({comment_empty = false})
