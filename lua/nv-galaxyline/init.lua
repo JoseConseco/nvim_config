@@ -50,6 +50,24 @@ gls.left[3] = {
 }
 
 gls.left[4] = {
+    getCwd = {
+        provider = function ()
+			local dir_str = vim.fn.getcwd()
+			local slash_idx = -25
+			if string.len(dir_str) > 25 then
+				slash_idx = string.find(dir_str, '/',-20)
+				dir_str =".."..string.sub(dir_str, slash_idx, -1).."/.."-- show only last 25 digits
+			else
+				dir_str = dir_str.."/.."
+			end
+			return dir_str
+		end,
+        -- condition = buffer_not_empty,
+        highlight = {colors.fg, colors.lightbg}
+    }
+}
+
+gls.left[5] = {
     FileName = {
         provider = {"FileName", "FileSize"},
         condition = buffer_not_empty,
@@ -57,7 +75,7 @@ gls.left[4] = {
     }
 }
 
-gls.left[5] = {
+gls.left[6] = {
     teech = {
         provider = function()
             return ""
@@ -75,7 +93,7 @@ local checkwidth = function()
     return false
 end
 
-gls.left[6] = {
+gls.left[7] = {
     DiffAdd = {
         provider = "DiffAdd",
         condition = checkwidth,
@@ -84,7 +102,7 @@ gls.left[6] = {
     }
 }
 
-gls.left[7] = {
+gls.left[8] = {
     DiffModified = {
         provider = "DiffModified",
         condition = checkwidth,
@@ -93,7 +111,7 @@ gls.left[7] = {
     }
 }
 
-gls.left[8] = {
+gls.left[9] = {
     DiffRemove = {
         provider = "DiffRemove",
         condition = checkwidth,
@@ -102,7 +120,7 @@ gls.left[8] = {
     }
 }
 
-gls.left[9] = {
+gls.left[10] = {
     LeftEnd = {
         provider = function()
             return " "
@@ -113,7 +131,7 @@ gls.left[9] = {
     }
 }
 
-gls.left[10] = {
+gls.left[11] = {
     DiagnosticError = {
         provider = "DiagnosticError",
         icon = "  ",
@@ -121,7 +139,7 @@ gls.left[10] = {
     }
 }
 
-gls.left[11] = {
+gls.left[12] = {
     Space = {
         provider = function()
             return " "
@@ -130,13 +148,14 @@ gls.left[11] = {
     }
 }
 
-gls.left[12] = {
+gls.left[13] = {
     DiagnosticWarn = {
         provider = "DiagnosticWarn",
         icon = "  ",
         highlight = {colors.blue, colors.bg}
     }
 }
+
 
 gls.right[1] = {
     GitIcon = {

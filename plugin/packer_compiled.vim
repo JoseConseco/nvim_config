@@ -36,11 +36,16 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/barbar.nvim"
   },
+  ["compe-tabnine"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/compe-tabnine"
+  },
   ["galaxyline.nvim"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/galaxyline.nvim"
   },
   ["gitsigns.nvim"] = {
+    config = { "\27LJ\2\n6\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\rgitsigns\frequire\0" },
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/gitsigns.nvim"
   },
@@ -55,6 +60,10 @@ _G.packer_plugins = {
   ["lspkind-nvim"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/lspkind-nvim"
+  },
+  ["minimap.vim"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/minimap.vim"
   },
   neoformat = {
     loaded = true,
@@ -104,6 +113,10 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nvim-web-devicons"
   },
+  ["oceanic-next"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/oceanic-next"
+  },
   ["onedark.vim"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/onedark.vim"
@@ -111,10 +124,6 @@ _G.packer_plugins = {
   ["packer.nvim"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/packer.nvim"
-  },
-  playground = {
-    loaded = true,
-    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/playground"
   },
   ["plenary.nvim"] = {
     loaded = true,
@@ -162,6 +171,8 @@ _G.packer_plugins = {
   }
 }
 
+-- Config for: gitsigns.nvim
+try_loadstring("\27LJ\2\n6\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\rgitsigns\frequire\0", "config", "gitsigns.nvim")
 END
 
 catch

@@ -12,6 +12,8 @@ signs = {
     -- Default keymap options
     noremap = true,
     buffer = true,
+		['n <leader>ghp'] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
+        ['n <leader>ghr'] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
   },
   watch_index = {
     interval = 1000

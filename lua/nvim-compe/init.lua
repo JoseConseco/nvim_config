@@ -21,6 +21,8 @@ require "compe".setup {
         buffer = {kind = " "},
         calc = {kind = " "},
         vsnip = {kind = " "},
+        tabnine = {kind = " ", priority=200, max_reslts=6},
+		-- tabnine = false,
         nvim_lsp = {kind = " "},
         nvim_lua = {kind = " "},
         spell = {kind = " "},

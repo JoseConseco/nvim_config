@@ -54,7 +54,8 @@ let g:which_key_map.q = {
       \ 'name' : 'Quit' ,
       \ 'x' : [':x'           , 'Quit Save :x (wq)'],
       \ 'q' : [':qa!'         , 'Quit all (qa!)'],
-      \ 's' : [':wqa!'        , 'Quit Save all (qa!)'],
+      \ 'c' : [':q!'         , 'Close current (q!)'],
+      \ 's' : [':wqa!'        , 'Quit Save all (wqa!)'],
       \ 'r' : [':e!'          , 'Reload File(e!)']
       \ }
 
@@ -148,6 +149,7 @@ let g:which_key_map.g = {
       \ 'v' : [':GV'                               , 'view commits'],
       \ 'V' : [':GV!'                              , 'view buffer commits'],
       \ }
+	  " \ 'h' - taken by git_sign - hunk oper
       " \ 'A' : [':Git add %'                        , 'add current'],
       " \ 'S' : [':!git status'                      , 'status'],
 

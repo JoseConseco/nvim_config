@@ -40,7 +40,6 @@ vim.o.clipboard = "unnamedplus" -- Copy paste between vim and everything else
 vim.o.guifont = "Hack:h30"
 vim.o.virtualedit='all'      -- makes cursor not jump,
 
-vim.wo.foldmethod="expr"
-vim.bo.foldexpr="nvim_treesitter#foldexpr()"
-vim.o.foldexpr="nvim_treesitter#foldexpr()"
-vim.wo.foldenable=false --do notenable fold at start
+
+
+

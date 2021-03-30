@@ -10,10 +10,16 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 end
 
 vim.cmd 'autocmd BufWritePost plugins.lua PackerCompile' -- Auto compile when there are changes in plugins.lua
-
+require("packer").init({clone_timeout=100})
 return require("packer").startup(
     function(use)
         use "wbthomason/packer.nvim" -- Packer can manage itself as an optional plugin
+
+		-- Color
+		use 'joshdick/onedark.vim'
+		use 'mhartington/oceanic-next'
+		use 'norcalli/nvim-colorizer.lua'  --color highlighter
+    -- use 'sheerun/vim-polyglot' -- more coloring on top of tree-sitterg
 
         -- UI
         use "kyazdani42/nvim-web-devicons"
@@ -25,32 +31,26 @@ return require("packer").startup(
                 requires = {'kyazdani42/nvim-web-devicons', opt = true}
             }
 		use 'romgrk/barbar.nvim' --tabline plugin
+		use 'wfxr/minimap.vim' -- minimap fast
 
-		-- Color
-		use 'joshdick/onedark.vim'
-		use 'norcalli/nvim-colorizer.lua'  --color highlighter
-		-- use 'sheerun/vim-polyglot'
 
 		-- Treesitter
 		use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
 		use 'nvim-treesitter/nvim-treesitter-refactor'
-		use 'nvim-treesitter/playground'
+		-- use 'nvim-treesitter/playground'
 		use 'p00f/nvim-ts-rainbow'
 
         -- lsp
         use "neovim/nvim-lspconfig"
-		use 'hrsh7th/vim-vsnip'-- auto completion
-		-- use {'hrsh7th/vim-vsnip-integ', requires='hrsh7th/vim-vsnip', opt=true} -- compe deals with it
-		use 'onsails/lspkind-nvim'  -- icons for completion popup
-
 		use "hrsh7th/nvim-compe" --completion
+		use 'hrsh7th/vim-vsnip'-- auto completion
         use 'kosayoda/nvim-lightbulb'
+		use 'onsails/lspkind-nvim'  -- icons for completion popup
+		-- use {'codota/tabnine-vim'} -- wont work with compe
+		use {'tzachar/compe-tabnine', run='./install.sh'}
 
         -- Telescope
-        -- use 'nvim-lua/popup.nvim'
-        -- use 'nvim-lua/plenary.nvim'
-        -- use 'nvim-telescope/telescope.nvim'
-        use { 'nvim-telescope/telescope.nvim', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}} }
+        use {'nvim-telescope/telescope.nvim', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}} }
         use 'nvim-telescope/telescope-media-files.nvim'
 
         -- Explorer

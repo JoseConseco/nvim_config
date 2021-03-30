@@ -28,7 +28,12 @@ vim.api.nvim_set_keymap('v', '<A-S-Up>', ':m \'<-2<CR>gv=gv', {noremap = true, s
 vim.api.nvim_set_keymap('v', '<', '<gv', {noremap = true})
 vim.api.nvim_set_keymap('v', '>', '>gv', {noremap = true})
 
--- Use tab for indenting in visual mode
+-- jump backward
+vim.api.nvim_set_keymap('n', '<S-Tab>', '<C-o>', {noremap = true})
+-- <Tab> is same as <C-i> - jumps forward
+--
+--
+-- Use tab for indenting in visual mode -- !breaks jump forward (since ctrl+I == Tab in vim wtf)
 -- vim.api.nvim_setmap('n', '<Tab>', '>gv|', {noremap = true})
 -- vim.api.nvim_set_keymap('n', '<S-Tab>', '<gv', {noremap = true})
 -- vim.api.nvim_set_keymap('n', '>', '>>_', {noremap = true})
@@ -60,9 +65,9 @@ vim.api.nvim_set_keymap('n', '<Del>',  '"_x', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<C-h>', ':set hlsearch!<CR>', {noremap = true, silent = true})
 
 -- select all file...  % - all lines,
-vim.api.nvim_set_keymap("n", "<C-a>", 'gg<S-v>G', {noremap = true})
+-- vim.api.nvim_set_keymap("n", "<C-a>", 'gg<S-v>G', {noremap = true})
 -- vim.api.nvim_set_keymap("n", "<C-a>", [[ <Cmd> %y+<CR>]], {noremap = true})
---
+
 --close all Folds remap
 vim.api.nvim_set_keymap('n', 'zC',  'zM', {noremap = true, silent = true})
 
@@ -71,6 +76,9 @@ vim.api.nvim_set_keymap('n', 's',  ':HopChar2<Return>', {noremap = true, silent 
 
 -- NVimTree
 vim.api.nvim_set_keymap( "n", "<F3>", ":NvimTreeToggle<CR>", { noremap = true, silent = true } )
+
+-- Minimap
+vim.api.nvim_set_keymap( "n", "<F4>", ":MinimapToggle<CR>", { noremap = true, silent = true } )
 
 
 -- Tab switch buffer
