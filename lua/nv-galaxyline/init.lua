@@ -20,6 +20,7 @@ local colors = {
     nord = "#81A1C1",
     greenYel = "#EBCB8B"
 }
+local condition = require('galaxyline.condition')
 
 gls.left[1] = {
     leftRounded = {
@@ -44,7 +45,7 @@ gls.left[2] = {
 gls.left[3] = {
     FileIcon = {
         provider = "FileIcon",
-        condition = buffer_not_empty,
+        condition = condition.buffer_not_empty,
         highlight = {require("galaxyline.provider_fileinfo").get_file_icon_color, colors.lightbg}
     }
 }
@@ -62,7 +63,7 @@ gls.left[4] = {
 			end
 			return dir_str
 		end,
-        -- condition = buffer_not_empty,
+        -- condition = condition.buffer_not_empty,
         highlight = {colors.fg, colors.lightbg}
     }
 }
@@ -70,7 +71,7 @@ gls.left[4] = {
 gls.left[5] = {
     FileName = {
         provider = {"FileName", "FileSize"},
-        condition = buffer_not_empty,
+        condition = condition.buffer_not_empty,
         highlight = {colors.fg, colors.lightbg}
     }
 }

@@ -52,6 +52,7 @@ return require("packer").startup(
         -- Telescope
         use {'nvim-telescope/telescope.nvim', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}} }
         use 'nvim-telescope/telescope-media-files.nvim'
+		use 'junegunn/fzf.vim'
 
         -- Explorer
 		-- use 'preservim/nerdtree'

@@ -21,12 +21,12 @@ require "compe".setup {
         buffer = {kind = " "},
         calc = {kind = " "},
         vsnip = {kind = " "},
-        tabnine = {kind = " ", priority=200, max_reslts=6},
-		-- tabnine = false,
+        -- tabnine = {kind = " ", priority=200, max_reslts=6},
+		tabnine = true,
         nvim_lsp = {kind = " "},
         nvim_lua = {kind = " "},
         spell = {kind = " "},
-        tags = true,
+        tags = false,
         -- snippets_nvim = true,
         -- treesitter = true
     }
