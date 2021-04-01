@@ -56,9 +56,9 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/hop.nvim"
   },
-  indentLine = {
+  ["indent-blankline.nvim"] = {
     loaded = true,
-    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/indentLine"
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/indent-blankline.nvim"
   },
   ["lspkind-nvim"] = {
     loaded = true,
@@ -71,6 +71,14 @@ _G.packer_plugins = {
   neoformat = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/neoformat"
+  },
+  nerdtree = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nerdtree"
+  },
+  ["nerdtree-git-plugin"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nerdtree-git-plugin"
   },
   ["nvim-autopairs"] = {
     loaded = true,
@@ -95,10 +103,6 @@ _G.packer_plugins = {
   ["nvim-lspconfig"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nvim-lspconfig"
-  },
-  ["nvim-tree.lua"] = {
-    loaded = true,
-    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nvim-tree.lua"
   },
   ["nvim-treesitter"] = {
     loaded = true,

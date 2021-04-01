@@ -21,76 +21,84 @@ autocmd  FileType which_key set laststatus=0 noshowmode noruler
 
 " Single mappings
 let g:which_key_map['S'] = [ ':Startify'                  , 'start screen' ]
-let g:which_key_map['e'] = [ ':e ~/.config/nvim/init.vim' , 'Edit init.vim' ]
-let g:which_key_map['r'] = [ ':so $MYVIMRC'               , 'Reload init.vim']
+let g:which_key_map['r'] = [ ':luafile $MYVIMRC'          , 'Reload VIMRC' ]
+let g:which_key_map['c'] = [ ':cd %:p:h'                  , 'cd %' ]
 
  " s is for vim-startify
 let g:which_key_map.s = {
       \ 'name' : 'Sessions' ,
       \ 's' : [':SSave'           , 'Sesion Save'],
       \ 'l' : [':SLoad'           , 'Sesion Load'],
-      \ 'c' : [':SClose'           , 'Sesion Close'],
-      \ 'd' : [':SDelete'           , 'Sesion Delete'],
+      \ 'c' : [':SClose'          , 'Sesion Close'],
+      \ 'd' : [':SDelete'         , 'Sesion Delete'],
       \ }
 
 " n is for Quit
 let g:which_key_map.w = {
       \ 'name' : 'Window' ,
-      \ 'h' : ['<C-W>s'           , 'split below'],
-      \ 'v' : ['<C-W>v'           , 'split right'],
-      \ 'q' : ['<C-W>q'           , 'close window'],
+      \ 'h' : ['<C-W>s'           , 'Split below'],
+      \ 'v' : ['<C-W>v'           , 'Split right'],
+      \ 'q' : ['<C-W>q'           , 'Quit window'],
       \ }
 
 " n is for Quit
-let g:which_key_map.v = {
+let g:which_key_map.e = {
       \ 'name' : 'VimTree' ,
-      \ 't' : [':NvimTreeToggle'           , 'Toggle'],
-      \ 'f' : [':NvimTreeFindFile'    , 'Find'],
-      \ 'r' : [':NvimTreeRefresh'    , 'Refresh'],
+      \ 't' : [':NERDTreeToggle'     , 'Toggle NvimTree'],
+      \ 'f' : [':NERDTreeFindFile'   , 'Find NvimTree'],
+      \ 'r' : [':NERDTreeRefresh'    , 'Refresh NvimTree'],
       \ }
 
+function DisableUIElements()
+	NERDTreeClose
+	MinimapClose
+endfunction
 " q is for Quit
 let g:which_key_map.q = {
       \ 'name' : 'Quit' ,
-      \ 'x' : [':x'           , 'Quit Save :x (wq)'],
-      \ 'q' : [':qa!'         , 'Quit all (qa!)'],
-      \ 'c' : [':q!'         , 'Close current (q!)'],
-      \ 's' : [':wqa!'        , 'Quit Save all (wqa!)'],
-      \ 'r' : [':e!'          , 'Reload File(e!)']
+      \ 'x' : [':call DisableUIElements() | x'                , 'Quit Save :x (wq)'],
+      \ 'q' : [':call DisableUIElements() | confirm qa'       , 'Quit all (qa!)'],
+      \ 'c' : [':confirm q!'                                  , 'Close current (q!)'],
+      \ 's' : [':call DisableUIElements() |  wqa!'            , 'Quit Save all (wqa!)'],
+      \ 'r' : [':confirm e!'          , 'Reload File(e!)']
       \ }
 
+" T for tabs
+let g:which_key_map.b = {
+      \ 'name' : 'Tabs/Buffer' ,
+      \ 'n' : [':BufferNext'           ,'Next'],
+      \ 'p' : [':BufferPrevious'       ,'Previous'],
+	  \ 'c' : [':BufferClose'          ,'Close']
+      \ }
 
 " s is for search
 let g:which_key_map.z = {
       \ 'name' : '+FZF' ,
       \ '/' : [':History/'     , 'history'],
       \ ';' : [':Commands'     , 'commands'],
-      \ 'a' : [':Ag'           , 'text Ag'],
-      \ 'b' : [':BLines'       , 'current buffer'],
-      \ 'B' : [':Buffers'      , 'open buffers'],
-      \ 'f' : [':Files'        , 'files'],
+      \ 'tf' : [':Ag'           , 'text in files (Ag)'],
+      \ 't' : [':BLines'       , 'text in buffer'],
+      \ 'F' : [':Files'        , 'files global'],
+      \ 'f' : [':Files %:p:h'  , 'files pwd'],
       \ 'h' : [':History'      , 'file history'],
       \ 'H' : [':History:'     , 'command history'],
-      \ 'l' : [':Lines'        , 'lines'] ,
+      \ 'l' : [':Lines'        , 'lines in file'] ,
       \ 'm' : [':Marks'        , 'marks'] ,
       \ 'M' : [':Maps'         , 'normal maps'] ,
       \ 'p' : [':Helptags'     , 'help tags'] ,
-      \ 'T' : [':BTags'        , 'buffer tags'],
-      \ 'w' : [':Windows'      , 'search windows'],
+      \ 'bt': [':BTags'        , 'buffer tags'],
       \ 'y' : [':Filetypes'    , 'file types'],
       \ }
 
  " F is for fold
 let g:which_key_map.F = {
     \ 'name': '+fold',
-    \ 'c' : [':zM'          , 'close all'],
-    \ 'o' : [':zo'          , 'open cur(zo)'],
-    \ 'O' : [':zO'          , 'open all cur(zO)'],
+    \ 'C' : [':zM'          , 'Close all(zM)'],
+    \ 'O' : [':zR'          , 'Open all(zR)'],
     \ '+' : [':zm'          , 'inc+1 (zm)'],
     \ '-' : [':zr'          , 'dec-1 (zr)'],
-    \ 't' : [':za'          , 'toggle at cur(za)'],
+    \ 't' : [':za'          , 'Toggle at cur(za)'],
     \ 'T' : [':zi'          , 'Toggle fold enable(zi)'],
-    \ '0' : [':set foldlevel=0'   , 'level0'],
     \ '1' : [':set foldlevel=1'   , 'level1'],
     \ '2' : [':set foldlevel=2'   , 'level2'],
     \ '3' : [':set foldlevel=3'   , 'level3'],
@@ -99,6 +107,8 @@ let g:which_key_map.F = {
     \ '6' : [':set foldlevel=6'   , 'level6'],
 	\ '9' : [':set foldlevel=9'   , 'level9'],
     \ }
+    " \ 'o' : [':zo'          , 'open cur(zo)'],
+    " \ 'O' : [':zO'          , 'open all cur(zO)'],
 
 let g:which_key_map.t = {
       \ 'name' : '+Telescope' ,
@@ -124,7 +134,6 @@ let g:which_key_map.t = {
       \ 'S' : [':Telescope grep_string'                 , 'grep_string'],
       \ 't' : [':Telescope live_grep'                   , 'text'],
       \ 'y' : [':Telescope symbols'                     , 'symbols'],
-      \ 'r' : [':Telescope registers'                   , 'registers'],
       \ 'R' : [':Telescope reloader'                    , 'reloader'],
       \ 'w' : [':Telescope file_browser'                , 'buf_fuz_find'],
       \ 'u' : [':Telescope colorscheme'                 , 'colorschemes'],
@@ -140,12 +149,11 @@ let g:which_key_map.g = {
       \ 'd' : [':Git diff'                         , 'diff'],
       \ 'D' : [':Gdiffsplit'                       , 'diff split'],
       \ 'g' : [':GGrep'                            , 'git grep'],
-      \ 'G' : [':Gstatus'                          , 'status'],
+      \ 's' : [':Gstatus'                          , 'status'],
       \ 'l' : [':Git log'                          , 'log'],
       \ 'p' : [':Git push'                         , 'push'],
       \ 'P' : [':Git pull'                         , 'pull'],
       \ 'r' : [':GRemove'                          , 'remove'],
-      \ 't' : [':GitGutterSignsToggle'             , 'toggle signs'],
       \ 'v' : [':GV'                               , 'view commits'],
       \ 'V' : [':GV!'                              , 'view buffer commits'],
       \ }
@@ -158,10 +166,10 @@ let g:which_key_map.g = {
 " P is for vim-plug
 let g:which_key_map.p = {
       \ 'name' : '+plug' ,
-      \ 'i' : [':PlugInstall'              , 'install'],
-      \ 'u' : [':PlugUpdate'               , 'update'],
-      \ 'c' : [':PlugClean'                , 'clean'],
-      \ 's' : [':source ~/.config/nvim/init.vim', 'source vimrc'],
+      \ 'i' : [':PackerInstall'              , 'PackerInstall'],
+      \ 's' : [':PackerSync'               , 'PackerSync'],
+      \ 'S' : [':PackerStatus'               , 'PackerStatus'],
+      \ 'c' : [':PackerClean'                , 'PackerClean'],
       \ }
 
 " Register which key map

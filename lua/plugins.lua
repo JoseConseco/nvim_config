@@ -41,13 +41,13 @@ return require("packer").startup(
 		use 'p00f/nvim-ts-rainbow'
 
         -- lsp
-        use "neovim/nvim-lspconfig"
 		use "hrsh7th/nvim-compe" --completion
+        use "neovim/nvim-lspconfig"
 		use 'hrsh7th/vim-vsnip'-- auto completion
         use 'kosayoda/nvim-lightbulb'
 		use 'onsails/lspkind-nvim'  -- icons for completion popup
 		-- use {'codota/tabnine-vim'} -- wont work with compe
-		use {'tzachar/compe-tabnine', run='./install.sh'}
+		use {'tzachar/compe-tabnine', run='./install.sh', requires = 'hrsh7th/nvim-compe'}
 
         -- Telescope
         use {'nvim-telescope/telescope.nvim', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}} }
@@ -55,8 +55,9 @@ return require("packer").startup(
 		use 'junegunn/fzf.vim'
 
         -- Explorer
-		-- use 'preservim/nerdtree'
-        use 'kyazdani42/nvim-tree.lua'
+		use 'preservim/nerdtree'
+		use {'Xuyuanp/nerdtree-git-plugin', requires ='preservim/nerdtree'}
+        -- use 'kyazdani42/nvim-tree.lua'
 
         -- git
 		use 'tpope/vim-fugitive'    -- add :Gitxx commands
@@ -64,7 +65,8 @@ return require("packer").startup(
 
         -- general
         use 'liuchengxu/vim-which-key'
-        use 'Yggdroot/indentLine' --  displaying thin vertical lines at each indentation level
+        -- use 'Yggdroot/indentLine' --  displaying thin vertical lines at each indentation level
+		use {'lukas-reineke/indent-blankline.nvim', branch = 'lua'} -- add indents on blank lines
         use "sbdchd/neoformat"
         -- use "alvan/vim-closetag"
         -- use 'airblade/vim-rooter' -- change root dir :Rooter

@@ -10,7 +10,7 @@ vim.cmd('colorscheme OceanicNext')
 require("web-devicons")
 require("nv-galaxyline")   -- status line
 require('nv-startify')
-require("nvimTree")
+-- require("nvimTree")
 require("telescope-nvim")
 
 -- lsp
@@ -36,11 +36,15 @@ vim.cmd('autocmd Filetype markdown :IndentLinesDisable')
 -- Which Key (Hope to replace with Lua plugin someday)
 vim.cmd('source ~/.config/nvim/which_key.vim')
 
- --remove white spaces on save
-vim.cmd('autocmd BufWritePre * %s/\\s\\+$//e')
+ --remove white spaces on save and restore cursor pos - using mark '.'
+vim.cmd('autocmd BufWritePre * let save_pos = getpos(".") | %s/\\s\\+$//e | call setpos(".", save_pos)')
 
+-- prevent expanding comment strings on <Ret>
 vim.cmd('autocmd FileType * set formatoptions-=r')
 
+--close NTree on quit..does not work on session it seems
+-- vim.cmd('autocmd VimLeave * NERDTreeClose')
+
 -- If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
-vim.cmd([[autocmd BufEnter \* if bufname('#') =~ 'Vim-tree_\\d\\+' && bufname('%') !~ 'Vim-tree_\\d\\+' && winnr('$') > 1 |
-    \\ let buf=bufnr() | buffer# | execute "normal! \\<C-W>w" | execute 'buffer'.buf | endif]])
+vim.cmd('autocmd BufEnter * if bufname(\'#\') =~ \'NERD_tree_\\d\\+\' && bufname(\'%\') !~ \'NERD_tree_\\d\\+\' && winnr(\'$\') > 1 | let buf=bufnr() | buffer# | execute "normal! \\<C-W>w" | execute \'buffer\'.buf | endif')
+

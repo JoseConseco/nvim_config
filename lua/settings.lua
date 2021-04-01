@@ -12,7 +12,7 @@ vim.o.splitbelow = true -- Horizontal splits will automatically be below
 vim.o.termguicolors = true -- set term giu colors most terminals support this
 vim.o.splitright = true -- Vertical splits will automatically be to the right
 vim.o.t_Co = "256" -- Support 257 colors
-vim.o.scrolloff = 8 -- Makes indenting smart
+vim.o.scrolloff = 6 -- Makes indenting smart
 -- vim.o.conceallevel = 0 -- So that I can see `` in markdown files
 
 

@@ -1,7 +1,7 @@
 -- vim.cmd [[packadd nvim-lspconfig]]
 -- vim.cmd [[packadd nvim-compe]]
 
-vim.o.completeopt = "menuone,noselect"
+vim.o.completeopt = "menuone"
 
 require "compe".setup {
     enabled = true,
@@ -20,9 +20,8 @@ require "compe".setup {
 		path = {kind = " "},
         buffer = {kind = " "},
         calc = {kind = " "},
-        vsnip = {kind = " "},
-        -- tabnine = {kind = " ", priority=200, max_reslts=6},
-		tabnine = true,
+        vsnip = {kind = " "},
+        tabnine = {kind = " ", priority=200, max_reslts=6},
         nvim_lsp = {kind = " "},
         nvim_lua = {kind = " "},
         spell = {kind = " "},
