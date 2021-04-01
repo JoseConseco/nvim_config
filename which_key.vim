@@ -45,7 +45,8 @@ let g:which_key_map.w = {
 let g:which_key_map.e = {
       \ 'name' : 'VimTree' ,
       \ 't' : [':NERDTreeToggle'     , 'Toggle NvimTree'],
-      \ 'f' : [':NERDTreeFindFile'   , 'Find NvimTree'],
+      \ 'f' : [':NERDTreeFind'       , 'Find NvimTree'],
+      \ 'c' : [':NERDTreeCWD'       , 'CWD'],
       \ 'r' : [':NERDTreeRefresh'    , 'Refresh NvimTree'],
       \ }
 
@@ -94,10 +95,11 @@ let g:which_key_map.z = {
 let g:which_key_map.F = {
     \ 'name': '+fold',
     \ 'C' : [':zM'          , 'Close all(zM)'],
-    \ 'O' : [':zR'          , 'Open all(zR)'],
+    \ 'O' : [':zR'          , 'Open all cursor(zR)'],
     \ '+' : [':zm'          , 'inc+1 (zm)'],
     \ '-' : [':zr'          , 'dec-1 (zr)'],
     \ 't' : [':za'          , 'Toggle at cur(za)'],
+    \ 't' : [':zA'          , 'Toggle at cur rec(zA)'],
     \ 'T' : [':zi'          , 'Toggle fold enable(zi)'],
     \ '1' : [':set foldlevel=1'   , 'level1'],
     \ '2' : [':set foldlevel=2'   , 'level2'],

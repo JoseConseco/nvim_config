@@ -53,28 +53,30 @@ gls.left[3] = {
 gls.left[4] = {
     getCwd = {
         provider = function ()
-			local dir_str = vim.fn.getcwd()
+			local work_dir = vim.fn.getcwd()
+            local full_dir = vim.fn.expand('%:p') -- full file path
 			local slash_idx = -25
-			if string.len(dir_str) > 25 then
-				slash_idx = string.find(dir_str, '/',-20)
-				dir_str =".."..string.sub(dir_str, slash_idx, -1).."/.."-- show only last 25 digits
+			local file_dir = string.sub(full_dir, #work_dir+1)
+			if string.len(work_dir) > 25 then
+				slash_idx = string.find(work_dir, '/',-20)
+				work_dir =".."..string.sub(work_dir, slash_idx, -1)-- show only last 25 digits
 			else
-				dir_str = dir_str.."/.."
+				work_dir = work_dir.."/"
 			end
-			return dir_str
+			return work_dir..file_dir
 		end,
-        -- condition = condition.buffer_not_empty,
-        highlight = {colors.fg, colors.lightbg}
-    }
-}
-
-gls.left[5] = {
-    FileName = {
-        provider = {"FileName", "FileSize"},
         condition = condition.buffer_not_empty,
         highlight = {colors.fg, colors.lightbg}
     }
 }
+
+-- gls.left[5] = {
+--     FileName = {
+--         provider = {"FileName", "FileSize"},
+--         condition = condition.buffer_not_empty,
+--         highlight = {colors.fg, colors.lightbg}
+--     }
+-- }
 
 gls.left[6] = {
     teech = {
