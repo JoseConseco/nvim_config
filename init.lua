@@ -20,18 +20,19 @@ require("nv-vsnip")
 
 require("treesitter")
 require("nv-gitsigns")
-require("nv-minimap")
+require("nv-minimap") -- F3 vscode like minimap
+require("nv-indentline") -- vertical line on indent
+require("nv-vimspector") --debug
+require("nv-easyalign")  -- gaip=    align paragraph around = sign
 
 require('colorizer').setup()
 require('nvim_comment').setup({comment_empty = false})
-require('nvim-autopairs').setup()
 
--- fix json nod drawing " due to indentLine plug
-vim.cmd('autocmd Filetype json :IndentLinesDisable')
-vim.cmd('autocmd Filetype markdown :IndentLinesDisable')
+
+-- ~/.local/lib/python3.9/site-package - debugpy is here (pip show debugpy)
+-- require('dap-python').setup('/usr/bin/python')
 
 -- vim.cmd [[autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()]]
-
 
 -- Which Key (Hope to replace with Lua plugin someday)
 vim.cmd('source ~/.config/nvim/which_key.vim')
@@ -42,6 +43,11 @@ vim.cmd('autocmd BufWritePre * let save_pos = getpos(".") | %s/\\s\\+$//e | call
 -- prevent expanding comment strings on <Ret>
 vim.cmd('autocmd FileType * set formatoptions-=r')
 
+-- absolute <-> relative auto switch
+vim.cmd([[
+autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+]])
 --close NTree on quit..does not work on session it seems
 -- vim.cmd('autocmd VimLeave * NERDTreeClose')
 

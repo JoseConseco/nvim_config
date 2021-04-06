@@ -32,6 +32,10 @@ local function try_loadstring(s, component, name)
 end
 
 _G.packer_plugins = {
+  ["auto-pairs"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/auto-pairs"
+  },
   ["barbar.nvim"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/barbar.nvim"
@@ -79,10 +83,6 @@ _G.packer_plugins = {
   ["nerdtree-git-plugin"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nerdtree-git-plugin"
-  },
-  ["nvim-autopairs"] = {
-    loaded = true,
-    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nvim-autopairs"
   },
   ["nvim-colorizer.lua"] = {
     loaded = true,
@@ -148,13 +148,33 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/telescope.nvim"
   },
+  undotree = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/undotree"
+  },
+  ["vim-case-change"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-case-change"
+  },
   ["vim-devicons"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-devicons"
   },
+  ["vim-easy-align"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-easy-align"
+  },
   ["vim-fugitive"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-fugitive"
+  },
+  ["vim-localhistory"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-localhistory"
+  },
+  ["vim-peekaboo"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-peekaboo"
   },
   ["vim-smoothie"] = {
     loaded = true,
@@ -168,6 +188,10 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-surround"
   },
+  ["vim-visual-multi"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-visual-multi"
+  },
   ["vim-vsnip"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-vsnip"
@@ -175,6 +199,10 @@ _G.packer_plugins = {
   ["vim-which-key"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-which-key"
+  },
+  vimspector = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vimspector"
   }
 }
 

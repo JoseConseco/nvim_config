@@ -5,16 +5,16 @@ vim.o.completeopt = "menuone"
 
 require "compe".setup {
     enabled = true,
-    autocomplete = true,
+    autocomplete = true,  --Open the popup menu automatically
     debug = false,
-    min_length = 1,
+    min_length = 0,  --Minimal characters length to trigger completion.
     preselect = "enable",
     throttle_time = 80,
     source_timeout = 200,
-    incomplete_delay = 400,
+    incomplete_delay = 300,    --Delay for LSP's isIncomplete.
     max_abbr_width = 300,
-    max_kind_width = 300,
-    max_menu_width = 300,
+    max_kind_width = 400,
+    max_menu_width = 400,
     documentation = true,
     source = {
 		path = {kind = " "},

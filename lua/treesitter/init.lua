@@ -6,6 +6,11 @@ ts_config.setup {
         "css",
         "bash",
         "python",
+		"json",
+		"c",
+		"cpp",
+		"regex",
+		"javascript",
         "lua"
     },
     highlight = {
@@ -23,6 +28,10 @@ ts_config.setup {
     rainbow = {enable = true},
 }
 
+-- vim.treesitter.query.set_query('python', 'folds', "(function_definition (block) @fold)")
+-- print(require("nvim-treesitter").query.get_query('python', 'folds'))
+
+-- require("nvim-treesitter").queries.python.
 vim.wo.foldmethod="expr"
-vim.o.foldexpr="nvim_treesitter#foldexpr()"
+vim.wo.foldexpr="nvim_treesitter#foldexpr()"    -- o will give errors...
 vim.wo.foldenable=false --do notenable fold at start

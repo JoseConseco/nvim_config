@@ -55,21 +55,40 @@ gls.left[4] = {
         provider = function ()
 			local work_dir = vim.fn.getcwd()
             local full_dir = vim.fn.expand('%:p') -- full file path
-			local slash_idx = -25
+			local slash_idx = -20
 			local file_dir = string.sub(full_dir, #work_dir+1)
-			if string.len(work_dir) > 25 then
-				slash_idx = string.find(work_dir, '/',-20)
-				work_dir =".."..string.sub(work_dir, slash_idx, -1)-- show only last 25 digits
+			if string.len(work_dir) > 20 then
+				slash_idx = string.find(work_dir, '/',-15)
+				if slash_idx then
+					work_dir =".."..string.sub(work_dir, slash_idx, -1)-- show only last 25 digits
+				else
+					work_dir =".."..string.sub(work_dir, -15, -1)-- show only last 25 digits
+				end
 			else
 				work_dir = work_dir.."/"
 			end
 			return work_dir..file_dir
+
 		end,
         condition = condition.buffer_not_empty,
         highlight = {colors.fg, colors.lightbg}
     }
 }
-
+gls.left[5] = {
+    bread_crumbs = {
+        provider = function ()
+			local bread = require('nvim-treesitter').statusline({
+				indicator_size = 80,
+				type_patterns = {'class','function', 'method'},
+				transform_fn = function(line) return line:gsub('^.*%s(.*)[%(|%[|%{].*$','%1') end,
+				separator = ' > '
+			})
+			return  bread and ':'..bread or ''
+		end,
+        condition = condition.buffer_not_empty,
+        highlight = {colors.green, colors.lightbg}
+    }
+}
 -- gls.left[5] = {
 --     FileName = {
 --         provider = {"FileName", "FileSize"},
@@ -90,7 +109,7 @@ gls.left[6] = {
 
 local checkwidth = function()
     local squeeze_width = vim.fn.winwidth(0) / 2
-    if squeeze_width > 40 then
+    if squeeze_width > 20 then
         return true
     end
     return false

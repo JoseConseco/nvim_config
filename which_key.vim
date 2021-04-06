@@ -8,11 +8,12 @@ vnoremap <silent> <leader> :silent <c-u> :silent WhichKeyVisual '<Space>'<CR>
 " Create map to add keys to
 let g:which_key_map =  {}
 " Define a separator
-let g:which_key_sep = '-'
+let g:which_key_sep = '>'
 set timeoutlen=500
 
+
 " Not a fan of floating windows for this
-let g:which_key_use_floating_win = 0
+let g:which_key_use_floating_win = 1
 
 " Hide status line
 autocmd! FileType which_key
@@ -42,12 +43,12 @@ let g:which_key_map.w = {
       \ }
 
 " n is for Quit
-let g:which_key_map.e = {
-      \ 'name' : 'VimTree' ,
-      \ 't' : [':NERDTreeToggle'     , 'Toggle NvimTree'],
-      \ 'f' : [':NERDTreeFind'       , 'Find NvimTree'],
-      \ 'c' : [':NERDTreeCWD'       , 'CWD'],
-      \ 'r' : [':NERDTreeRefresh'    , 'Refresh NvimTree'],
+let g:which_key_map.N = {
+      \ 'name' : 'NerdTree' ,
+      \ 't' : [':NERDTreeToggle',  'Toggle'],
+      \ 'f' : [':NERDTreeFind',    'Find'],
+      \ 'c' : [':NERDTreeCWD',     'CWD'],
+      \ 'r' : [':NERDTreeRefresh', 'Refresh'],
       \ }
 
 function DisableUIElements()
@@ -91,15 +92,31 @@ let g:which_key_map.z = {
       \ 'y' : [':Filetypes'    , 'file types'],
       \ }
 
+ " Fold All toggle
+" -- vim.api.nvim_set_keymap( "n", "<F1>",  vim.cmd([[&foldlevel:'zM'?'zR' ]]), { expr = true, noremap = true, silent = true } )
+" vim.api.nvim_set_keymap( "n", "<S-F1>",  'v:lua.conditional_fold()',  { expr = true, noremap = true, silent = true } )
+
+lua << EOF
+function _G.conditional_fold()
+	if vim.wo.foldlevel > 0 then
+		vim.cmd(':normal zM')
+	else
+		vim.cmd(':normal zR')
+	end
+end
+EOF
+
  " F is for fold
-let g:which_key_map.F = {
+let g:which_key_map.f = {
     \ 'name': '+fold',
-    \ 'C' : [':zM'          , 'Close all(zM)'],
-    \ 'O' : [':zR'          , 'Open all cursor(zR)'],
+    \ 'f' : [':call v:lua.conditional_fold()'         , 'Toggle FoldLevel'],
+    \ 'C' : [':zM'         , 'Close all(zM)'],
+	\ 'O' : [':zR'         , 'Open all (zR)'],
+    \ 'oc' : [':zO'         , 'Open all cursor(zM)'],
     \ '+' : [':zm'          , 'inc+1 (zm)'],
     \ '-' : [':zr'          , 'dec-1 (zr)'],
-    \ 't' : [':za'          , 'Toggle at cur(za)'],
-    \ 't' : [':zA'          , 'Toggle at cur rec(zA)'],
+    \ 'tc' : [':za'          , 'Toggle at cur(za)'],
+    \ 'trc' : [':zA'         , 'Toggle at cur rec(zA)'],
     \ 'T' : [':zi'          , 'Toggle fold enable(zi)'],
     \ '1' : [':set foldlevel=1'   , 'level1'],
     \ '2' : [':set foldlevel=2'   , 'level2'],
@@ -118,11 +135,11 @@ let g:which_key_map.t = {
       \ ';' : [':Telescope commands'                    , 'commands'],
       \ 'a' : [':Telescope lsp_code_actions'            , 'code_actions'],
       \ 'A' : [':Telescope builtin'                     , 'all'],
-      \ 'b' : [':Telescope buffers'                     , 'buffers'],
+      \ 'b' : [':Telescope buffers'                     , 'buffer name'],
       \ 'f' : [':Telescope find_files'                  , 'files'],
       \ 'F' : [':Telescope git_files'                   , 'git_files'],
-      \ 'g' : [':Telescope tags'                        , 'tags'],
-      \ 'G' : [':Telescope current_buffer_tags'         , 'buffer_tags'],
+      \ 'tg' : [':Telescope tags'                        , 'tags'],
+      \ 'bt' : [':Telescope current_buffer_tags'         , 'buffer_tags'],
       \ 'h' : [':Telescope command_history'             , 'history'],
       \ 'H' : [':Telescope help_tags'                   , 'help_tags'],
       \ 'k' : [':Telescope keymaps'                     , 'keymaps'],
@@ -133,13 +150,13 @@ let g:which_key_map.t = {
       \ 'p' : [':Telescope fd'                          , 'fd'],
       \ 'P' : [':Telescope spell_suggest'               , 'spell_suggest'],
       \ 's' : [':Telescope git_status'                  , 'git_status'],
-      \ 'S' : [':Telescope grep_string'                 , 'grep_string'],
-      \ 't' : [':Telescope live_grep'                   , 'text'],
+      \ 'G' : [':Telescope grep_string'                 , 'Grep selection'],
+      \ 'g' : [':Telescope live_grep'                   , 'Grep pwd'],
+	  \ 'z' : [':Telescope current_buffer_fuzzy_find'   , 'Buffer fuzzy'],
       \ 'y' : [':Telescope symbols'                     , 'symbols'],
       \ 'R' : [':Telescope reloader'                    , 'reloader'],
       \ 'w' : [':Telescope file_browser'                , 'buf_fuz_find'],
       \ 'u' : [':Telescope colorscheme'                 , 'colorschemes'],
-      \ 'z' : [':Telescope current_buffer_fuzzy_find'   , 'buf_fuz_find'],
       \ }
 
 
@@ -163,15 +180,45 @@ let g:which_key_map.g = {
       " \ 'A' : [':Git add %'                        , 'add current'],
       " \ 'S' : [':!git status'                      , 'status'],
 
+" vimspector
+			" \ 's' : [ '<Plug>VimspectorStepOver'                    , '(F8)Step Over'],
+			" \ 'q' : [ '<Plug>VimspectorStepOut'                     , '<F9>Step Out '],
+			" \ 'si' : [ '<Plug>VimspectorStepInto'                   , '(F7)Step Into'],
+			" \ 'p' : [ '<Plug>VimspectorPause'                       , '(F6)Pause debugee.'],
+			" \ 'l' : [ ':call vimspector#Launch()<CR>'               , '(L)anuch config']
+let g:which_key_map.d = {
+            \ 'name' : '+Debugger',
+			\ 'd' : [ '<Plug>VimspectorContinue',                     'Continue/Start debugging'],
+			\ 'x' : [ '<Plug>VimspectorStop',                         'Stop debugging'] ,
+			\ 'b' : [ '<Plug>VimspectorToggleBreakpoint',             'Toggle line breakpoint on the current line'],
+            \ 'bc' : [ '<Plug>VimspectorToggleConditionalBreakpoint', 'Toggle conditional line breakpoint on the current line'],
+            \ 'bf' : [ '<Plug>VimspectorAddFunctionBreakpoint',       'Add a function breakpoint for the expression under cursor'],
+			\ 'rc' : [ '<Plug>VimspectorRunToCursor',                 'Run to Cursor'],
+            \ 'R' : [ '<Plug>VimspectorRestart',                      'Restart debugging with the same configuration'],
+			\ 'K' : [ '<Plug>VimspectorBalloonEval',                  'Evel popup'],
+			\ 'c' : [ ':VimspectorReset',                             'Close vimspector interface'],
+            \}
+
+" -- dap
+ " s is for vim-startify
+" let g:which_key_map.d = {
+"       \ 'name' : 'Debug' ,
+"       \ 'c' : [ ":lua.require'dap'.continue()<CR>", 'Continue'],
+"       \ 'n' : [ ":lua.require'dap'.step_over()", 'Step'],
+"       \ 's' : [ ":lua.require'dap'.scopes()", 'Scopes'],
+"       \ 'b' : [ ":lua.require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))", 'Breakpoint toggle'],
+"       \ 'r' : [ ":lua.require'dap'.repl.open()", 'REPL'],
+"       \ }
+
 
 
 " P is for vim-plug
 let g:which_key_map.p = {
-      \ 'name' : '+plug' ,
-      \ 'i' : [':PackerInstall'              , 'PackerInstall'],
-      \ 's' : [':PackerSync'               , 'PackerSync'],
-      \ 'S' : [':PackerStatus'               , 'PackerStatus'],
-      \ 'c' : [':PackerClean'                , 'PackerClean'],
+      \ 'name' : '+plug',
+      \ 'i' : [':PackerInstall', 'PackerInstall'],
+      \ 's' : [':PackerSync',    'PackerSync'],
+      \ 'S' : [':PackerStatus',  'PackerStatus'],
+      \ 'c' : [':PackerClean',   'PackerClean'],
       \ }
 
 " Register which key map

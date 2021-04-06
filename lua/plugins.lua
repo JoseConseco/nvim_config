@@ -33,6 +33,11 @@ return require("packer").startup(
 		use 'romgrk/barbar.nvim' --tabline plugin
 		use 'wfxr/minimap.vim' -- minimap fast
 
+		-- Debugging
+		-- use 'mfussenegger/nvim-dap'
+		-- use {'mfussenegger/nvim-dap-python', requires='mfussenegger/nvim-dap'}
+		use 'puremourning/vimspector'
+
 
 		-- Treesitter
 		use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
@@ -70,7 +75,7 @@ return require("packer").startup(
         use "sbdchd/neoformat"
         -- use "alvan/vim-closetag"
         -- use 'airblade/vim-rooter' -- change root dir :Rooter
-        use "windwp/nvim-autopairs"
+        use 'jiangmiao/auto-pairs'
 
 		use 'terrortylor/nvim-comment' -- in lua
 
@@ -80,5 +85,11 @@ return require("packer").startup(
         use "phaazon/hop.nvim"
         -- use 'blackcauldron7/surround.nvim' --hotkye s taken, plus unstable?
 		use 'tpope/vim-surround'
+		use 'mg979/vim-localhistory' -- local history LHLoad, LHWrite
+		use 'icatalina/vim-case-change'
+		use 'mbbill/undotree'   -- undo history  :UndotreeToggle to toggle the undo-tree panel.
+		use 'junegunn/vim-easy-align'  -- def:  ga  - then thing, and around what symbol :  eg  ga
+		use 'mg979/vim-visual-multi'  --multi cursor support like vscode...
+		use 'junegunn/vim-peekaboo' -- show content of registers when using " or @
     end
 )
