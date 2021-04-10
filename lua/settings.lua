@@ -20,6 +20,8 @@ vim.o.splitright = true -- Vertical splits will automatically be to the right
 vim.o.t_Co = "256" -- Support 257 colors
 vim.o.scrolloff = 6 -- Makes indenting smart
 -- vim.o.conceallevel = 0 -- So that I can see `` in markdown files
+-- vim.g.tex_conceal = ''--'dmgs' --a - disables ligatures
+-- vim.g.cole = 0
 
 
 vim.bo.expandtab = true -- Converts tabs to spaces
@@ -44,9 +46,12 @@ vim.wo.signcolumn = "yes" -- Always show the signcolumn, otherwise it would shif
 vim.o.updatetime = 300 -- Faster completion
 vim.o.timeoutlen = 100 -- By default timeoutlen is 1000 ms
 vim.o.clipboard = "unnamedplus" -- Copy paste between vim and everything else
-vim.o.guifont = "Hack:h30"
+-- vim.o.guifont = "NotoSansMono Nerd Font:16"
+vim.o.guifont = "FiraCode Nerd Font:h15"
 vim.o.virtualedit='all'      -- makes cursor not jump,
+vim.o.termguicolors = true --reads hex gui color
 
+vim.g.paste = true --? format pasted str - does it work?
 
-
-
+vim.g.neovide_refresh_rate = 60
+vim.g.neovide_transparency=0.95

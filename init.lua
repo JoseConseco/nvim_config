@@ -12,6 +12,7 @@ require("nv-galaxyline")   -- status line
 require('nv-startify')
 -- require("nvimTree")
 require("telescope-nvim")
+require'telescope'.load_extension('sessions')
 
 -- lsp
 require("lsp")
@@ -27,8 +28,9 @@ require("nv-easyalign")  -- gaip=    align paragraph around = sign
 
 require('colorizer').setup()
 require('nvim_comment').setup({comment_empty = false})
-
-
+require('numb').setup() --thing that previews go to line..
+require'bufferline'.setup{}
+require('nv-bufferline')
 -- ~/.local/lib/python3.9/site-package - debugpy is here (pip show debugpy)
 -- require('dap-python').setup('/usr/bin/python')
 
@@ -52,5 +54,5 @@ autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
 -- vim.cmd('autocmd VimLeave * NERDTreeClose')
 
 -- If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
-vim.cmd('autocmd BufEnter * if bufname(\'#\') =~ \'NERD_tree_\\d\\+\' && bufname(\'%\') !~ \'NERD_tree_\\d\\+\' && winnr(\'$\') > 1 | let buf=bufnr() | buffer# | execute "normal! \\<C-W>w" | execute \'buffer\'.buf | endif')
+-- vim.cmd('autocmd BufEnter * if bufname(\'#\') =~ \'NERD_tree_\\d\\+\' && bufname(\'%\') !~ \'NERD_tree_\\d\\+\' && winnr(\'$\') > 1 | let buf=bufnr() | buffer# | execute "normal! \\<C-W>w" | execute \'buffer\'.buf | endif')
 

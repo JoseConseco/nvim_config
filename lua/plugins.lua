@@ -30,11 +30,12 @@ return require("packer").startup(
                 -- some optional icons
                 requires = {'kyazdani42/nvim-web-devicons', opt = true}
             }
-		use 'romgrk/barbar.nvim' --tabline plugin
+		-- use 'romgrk/barbar.nvim' --tabline plugin --uses tabs
+		use {'akinsho/nvim-bufferline.lua', requires = 'kyazdani42/nvim-web-devicons'} --uses buffers
 		use 'wfxr/minimap.vim' -- minimap fast
 
 		-- Debugging
-		-- use 'mfussenegger/nvim-dap'
+		-- use 'mfussenegger/nvim-dap'  --too simple
 		-- use {'mfussenegger/nvim-dap-python', requires='mfussenegger/nvim-dap'}
 		use 'puremourning/vimspector'
 
@@ -70,26 +71,36 @@ return require("packer").startup(
 
         -- general
         use 'liuchengxu/vim-which-key'
-        -- use 'Yggdroot/indentLine' --  displaying thin vertical lines at each indentation level
-		use {'lukas-reineke/indent-blankline.nvim', branch = 'lua'} -- add indents on blank lines
+        use 'Yggdroot/indentLine' --  displaying thin vertical lines at each indentation level
+		-- use {'lukas-reineke/indent-blankline.nvim', branch = 'lua', disable = true} -- add indents on blank lines
         use "sbdchd/neoformat"
         -- use "alvan/vim-closetag"
         -- use 'airblade/vim-rooter' -- change root dir :Rooter
         use 'jiangmiao/auto-pairs'
-
 		use 'terrortylor/nvim-comment' -- in lua
 
 
-        use 'psliwka/vim-smoothie'
+
+		--find and replace ?
+        use 'kevinhwang91/nvim-bqf' --better quickfix  (with preview and complicated mapping)
+		use 'brooth/far.vim' --use: Far(r) from to **/*.py   > then :Fardo
+		use 'dyng/ctrlsf.vim' --Run :CtrlSF [pattern]
+		use {'windwp/nvim-spectre', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}} }
+
+        use 'psliwka/vim-smoothie' --smooth PGUP/DOWN
         use "mhinz/vim-startify"
         use "phaazon/hop.nvim"
         -- use 'blackcauldron7/surround.nvim' --hotkye s taken, plus unstable?
 		use 'tpope/vim-surround'
+		use 'andymass/vim-matchup' -- increase power of %
 		use 'mg979/vim-localhistory' -- local history LHLoad, LHWrite
 		use 'icatalina/vim-case-change'
 		use 'mbbill/undotree'   -- undo history  :UndotreeToggle to toggle the undo-tree panel.
 		use 'junegunn/vim-easy-align'  -- def:  ga  - then thing, and around what symbol :  eg  ga
 		use 'mg979/vim-visual-multi'  --multi cursor support like vscode...
 		use 'junegunn/vim-peekaboo' -- show content of registers when using " or @
+		use 'nacro90/numb.nvim' -- preview line whe using goto :xyz
+		use "rafcamlet/nvim-luapad" -- :Luapad - open interactive scratch bufer with realtime eval
+		use 'metakirby5/codi.vim' -- repls for all other langs ...
     end
 )

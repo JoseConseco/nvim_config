@@ -24,6 +24,7 @@ autocmd  FileType which_key set laststatus=0 noshowmode noruler
 let g:which_key_map['S'] = [ ':Startify'                  , 'start screen' ]
 let g:which_key_map['r'] = [ ':luafile $MYVIMRC'          , 'Reload VIMRC' ]
 let g:which_key_map['c'] = [ ':cd %:p:h'                  , 'cd %' ]
+let g:which_key_map[' '] = [ ':HopChar2'          , 'HOP 2Char' ]
 
  " s is for vim-startify
 let g:which_key_map.s = {
@@ -40,6 +41,7 @@ let g:which_key_map.w = {
       \ 'h' : ['<C-W>s'           , 'Split below'],
       \ 'v' : ['<C-W>v'           , 'Split right'],
       \ 'q' : ['<C-W>q'           , 'Quit window'],
+      \ 'o' : ['<C-W>o'           , 'Close All but current'],
       \ }
 
 " n is for Quit
@@ -65,13 +67,16 @@ let g:which_key_map.q = {
       \ 'r' : [':confirm e!'          , 'Reload File(e!)']
       \ }
 
-" T for tabs
+" b for buffers  - for nvim-bufferline<Plug>
 let g:which_key_map.b = {
-      \ 'name' : 'Tabs/Buffer' ,
-      \ 'n' : [':BufferNext'           ,'Next'],
-      \ 'p' : [':BufferPrevious'       ,'Previous'],
-	  \ 'c' : [':BufferClose'          ,'Close']
-      \ }
+			\ 'name' : 'Tabs/Buffer' ,
+			\ ']' : [':BufferLineCycleNext', 'Next'],
+			\ '[' : [':BufferLineCyclePrev', 'Previous'],
+			\ 'c' : [':bd',                  'Close'],
+			\ 'n' : [':enew',                'New'],
+			\ 'p' : [':BufferLinePick',      'Pick (gb)']
+			\ }
+
 
 " s is for search
 let g:which_key_map.z = {
@@ -167,7 +172,7 @@ let g:which_key_map.g = {
       \ 'c' : [':Git commit'                       , 'commit'],
       \ 'd' : [':Git diff'                         , 'diff'],
       \ 'D' : [':Gdiffsplit'                       , 'diff split'],
-      \ 'g' : [':GGrep'                            , 'git grep'],
+      \ 'g' : [':Ggrep'                            , 'git grep'],
       \ 's' : [':Gstatus'                          , 'status'],
       \ 'l' : [':Git log'                          , 'log'],
       \ 'p' : [':Git push'                         , 'push'],
@@ -210,7 +215,14 @@ let g:which_key_map.d = {
 "       \ 'r' : [ ":lua.require'dap'.repl.open()", 'REPL'],
 "       \ }
 
-
+let g:which_key_map.R = {
+      \ 'name' : '+Find_Replace Far' ,
+      \ 'f' : [':Farr --source=vimgrep',                    'file'],
+      \ 'p' : [':Farr --source=rgnvim',                     'project'],
+      \ 'c' : ['<Plug>CtrlSFPrompt -R {regex} -G *.py',     'CtrlSF'],
+      \ 'w' : ['<Plug>CtrlSFCCwordPath',                    'CtrlSF Word'],
+      \ 's' : [":lua.require('spectre').open_visual()<CR>", 'Spectre'],
+      \ }
 
 " P is for vim-plug
 let g:which_key_map.p = {
@@ -219,6 +231,13 @@ let g:which_key_map.p = {
       \ 's' : [':PackerSync',    'PackerSync'],
       \ 'S' : [':PackerStatus',  'PackerStatus'],
       \ 'c' : [':PackerClean',   'PackerClean'],
+      \ }
+let g:which_key_map.o = {
+      \ 'name' : '+Repl',
+      \ 'l' : [':Luapad', 'Luapad Repl On'],
+      \ 'L' : [":lua.require('luapad').detach()", 'Luapad Repl Off'],
+      \ 'c' : [':Codi', 'Codi Start'],
+      \ 'C' : [':Codi!', 'Codi Stop'],
       \ }
 
 " Register which key map

@@ -22,26 +22,6 @@ local colors = {
 }
 local condition = require('galaxyline.condition')
 
-gls.left[1] = {
-    leftRounded = {
-        provider = function()
-            return ""
-        end,
-        highlight = {colors.nord, colors.bg}
-    }
-}
-
-gls.left[2] = {
-    ViMode = {
-        provider = function()
-            return "   "
-        end,
-        highlight = {colors.bg, colors.nord},
-        separator = " ",
-        separator_highlight = {colors.lightbg, colors.lightbg}
-    }
-}
-
 gls.left[3] = {
     FileIcon = {
         provider = "FileIcon",
@@ -53,22 +33,26 @@ gls.left[3] = {
 gls.left[4] = {
     getCwd = {
         provider = function ()
-			local work_dir = vim.fn.getcwd()
-            local full_dir = vim.fn.expand('%:p') -- full file path
-			local slash_idx = -20
-			local file_dir = string.sub(full_dir, #work_dir+1)
-			if string.len(work_dir) > 20 then
-				slash_idx = string.find(work_dir, '/',-15)
-				if slash_idx then
-					work_dir =".."..string.sub(work_dir, slash_idx, -1)-- show only last 25 digits
+            -- local full_dir = vim.fn.expand('%:p') -- full file path
+			local project_dir = vim.fn.getcwd()
+			local home_dir = os.getenv("HOME")
+			local rel_file_dir = vim.fn.expand("%") -- #str - length
+
+			project_dir = project_dir:gsub(home_dir, '~')
+			-- project_dir = vim.fn.expand("%:p:h")
+			-- project_dir = project_dir:gsub('(%w)[%w|%s|_]*','%1.')..'> '
+			if #project_dir > 15 then
+				local cut_idx = #project_dir - project_dir:reverse():find('/') + 1
+				if cut_idx then
+					project_dir ="."..project_dir:sub(cut_idx, -1)..'//'  -- show only last 25 digits
 				else
-					work_dir =".."..string.sub(work_dir, -15, -1)-- show only last 25 digits
+					project_dir ="."..project_dir:sub(-10, -1)..'//'
 				end
 			else
-				work_dir = work_dir.."/"
+				project_dir = project_dir..'//'
 			end
-			return work_dir..file_dir
 
+			return project_dir..rel_file_dir
 		end,
         condition = condition.buffer_not_empty,
         highlight = {colors.fg, colors.lightbg}
@@ -81,9 +65,9 @@ gls.left[5] = {
 				indicator_size = 80,
 				type_patterns = {'class','function', 'method'},
 				transform_fn = function(line) return line:gsub('^.*%s(.*)[%(|%[|%{].*$','%1') end,
-				separator = ' > '
+				separator = ' ▶ '
 			})
-			return  bread and ':'..bread or ''
+			return  (bread and bread~='') and '  ▶ '..bread or ''
 		end,
         condition = condition.buffer_not_empty,
         highlight = {colors.green, colors.lightbg}
@@ -107,18 +91,15 @@ gls.left[6] = {
     }
 }
 
-local checkwidth = function()
-    local squeeze_width = vim.fn.winwidth(0) / 2
-    if squeeze_width > 20 then
-        return true
-    end
-    return false
-end
+-- local checkwidth = function()
+--     local squeeze_width = vim.fn.winwidth(0) / 2
+--     return squeeze_width > 20 and true or false
+-- end
 
 gls.left[7] = {
     DiffAdd = {
         provider = "DiffAdd",
-        condition = checkwidth,
+        -- condition = checkwidth,
         icon = "   ",
         highlight = {colors.greenYel, colors.line_bg}
     }
@@ -127,7 +108,7 @@ gls.left[7] = {
 gls.left[8] = {
     DiffModified = {
         provider = "DiffModified",
-        condition = checkwidth,
+        -- condition = checkwidth,
         icon = " ",
         highlight = {colors.orange, colors.line_bg}
     }
@@ -136,7 +117,7 @@ gls.left[8] = {
 gls.left[9] = {
     DiffRemove = {
         provider = "DiffRemove",
-        condition = checkwidth,
+        -- condition = checkwidth,
         icon = " ",
         highlight = {colors.red, colors.line_bg}
     }
@@ -178,26 +159,36 @@ gls.left[13] = {
     }
 }
 
-
 gls.right[1] = {
-    GitIcon = {
-        provider = function()
-            return "   "
-        end,
-        condition = require("galaxyline.provider_vcs").check_git_workspace,
-        highlight = {colors.green, colors.line_bg}
-    }
+	ShowLspClient = {
+		provider = "GetLspClient",
+		-- icon = "  ",
+		condition = condition.buffer_not_empty,
+		icon = 'LSP:',
+		highlight = {colors.green, colors.bg}
+	}
 }
 
+
 gls.right[2] = {
-    GitBranch = {
-        provider = "GitBranch",
-        condition = require("galaxyline.provider_vcs").check_git_workspace,
+    GitIcon = {
+        provider = function()
+            return "       "
+        end,
+        condition = condition.check_git_workspace,
         highlight = {colors.green, colors.line_bg}
     }
 }
 
 gls.right[3] = {
+    GitBranch = {
+        provider = "GitBranch",
+        condition = condition.check_git_workspace,
+        highlight = {colors.green, colors.line_bg}
+    }
+}
+
+gls.right[4] = {
     right_LeftRounded = {
         provider = function()
             return ""
@@ -208,7 +199,7 @@ gls.right[3] = {
     }
 }
 
-gls.right[4] = {
+gls.right[5] = {
     SiMode = {
         provider = function()
             local alias = {
@@ -226,7 +217,7 @@ gls.right[4] = {
         highlight = {colors.bg, colors.red}
     }
 }
-gls.right[5] = {
+gls.right[6] = {
     PerCent = {
         provider = "LinePercent",
         separator = " ",
@@ -236,7 +227,7 @@ gls.right[5] = {
 }
 
 
-gls.right[6] = {
+gls.right[7] = {
     rightRounded = {
         provider = function()
             return ""

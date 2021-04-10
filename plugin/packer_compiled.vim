@@ -36,13 +36,17 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/auto-pairs"
   },
-  ["barbar.nvim"] = {
-    loaded = true,
-    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/barbar.nvim"
-  },
   ["compe-tabnine"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/compe-tabnine"
+  },
+  ["ctrlsf.vim"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/ctrlsf.vim"
+  },
+  ["far.vim"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/far.vim"
   },
   ["fzf.vim"] = {
     loaded = true,
@@ -60,9 +64,9 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/hop.nvim"
   },
-  ["indent-blankline.nvim"] = {
+  indentLine = {
     loaded = true,
-    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/indent-blankline.nvim"
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/indentLine"
   },
   ["lspkind-nvim"] = {
     loaded = true,
@@ -84,6 +88,18 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nerdtree-git-plugin"
   },
+  ["numb.nvim"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/numb.nvim"
+  },
+  ["nvim-bqf"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nvim-bqf"
+  },
+  ["nvim-bufferline.lua"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nvim-bufferline.lua"
+  },
   ["nvim-colorizer.lua"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nvim-colorizer.lua"
@@ -103,6 +119,10 @@ _G.packer_plugins = {
   ["nvim-lspconfig"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nvim-lspconfig"
+  },
+  ["nvim-spectre"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nvim-spectre"
   },
   ["nvim-treesitter"] = {
     loaded = true,
@@ -171,6 +191,10 @@ _G.packer_plugins = {
   ["vim-localhistory"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-localhistory"
+  },
+  ["vim-matchup"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-matchup"
   },
   ["vim-peekaboo"] = {
     loaded = true,

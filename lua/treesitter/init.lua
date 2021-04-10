@@ -4,13 +4,17 @@ ts_config.setup {
     ensure_installed = {
         "html",
         "css",
+		"javascript",
         "bash",
         "python",
 		"json",
+		"jsonc",
 		"c",
 		"cpp",
+		"c_sharp",
 		"regex",
-		"javascript",
+		"yaml",
+		"java",
         "lua"
     },
     highlight = {
