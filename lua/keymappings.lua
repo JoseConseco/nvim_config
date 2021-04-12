@@ -98,8 +98,7 @@ vim.api.nvim_set_keymap('n', 'S',  '"_S', {noremap = true, silent = true})
 
 -- paste without overriding register
 vim.api.nvim_set_keymap('v', 'p',  '"_dp', {noremap = true, silent = true})
-
-
+vim.api.nvim_set_keymap('v', 'P',  '"_dP', {noremap = true, silent = true})
 
 
 -- no highlight
@@ -108,7 +107,7 @@ vim.api.nvim_set_keymap('n', '<C-h>', ':set hlsearch!<CR>', {noremap = true, sil
 -- auto magic search
 vim.api.nvim_set_keymap('n', '/', '/\\v', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('v', '/', '/\\v', {noremap = true})
-vim.api.nvim_set_keymap('c', '%s/', '%smagic/', {noremap = true})
+vim.api.nvim_set_keymap('c', 's/', '%smagic/', {noremap = true})
 vim.api.nvim_set_keymap('n', ':g/', ':g/\\v', {noremap = true})
 
 -- scene.cursor
@@ -138,8 +137,15 @@ vim.api.nvim_set_keymap( "n", "<F2>",  ':Telescope find_files<CR>',  {noremap = 
 -- Minimap
 vim.api.nvim_set_keymap( "n", "<F3>", ":MinimapToggle<CR>", { noremap = true, silent = true } )
 
+
+-- THIS WILL MAKE NERDTREE always use CWD
+-- cant use vim.fn.getCwd() for some reason...!!
+local function term_decode(str) return vim.api.nvim_replace_termcodes(str, true, true, true) end
+function _G.ntree_toggle(cw)
+	return  ':NERDTreeToggle '..cw..term_decode('<CR>')
+end
+vim.api.nvim_set_keymap( "n", "<F4>", "v:lua.ntree_toggle(getcwd())", { noremap = true, silent = true, expr = true,} )
 -- NVimTree
-vim.api.nvim_set_keymap( "n", "<F4>", ":NERDTreeMirror<CR>:NERDTreeToggle<CR>", { noremap = true, silent = true } )
 
 
 --MM click to toggle folds under cursor(zA)

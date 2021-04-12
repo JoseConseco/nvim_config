@@ -32,9 +32,9 @@ local function try_loadstring(s, component, name)
 end
 
 _G.packer_plugins = {
-  ["auto-pairs"] = {
+  ["codi.vim"] = {
     loaded = true,
-    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/auto-pairs"
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/codi.vim"
   },
   ["compe-tabnine"] = {
     loaded = true,
@@ -67,6 +67,14 @@ _G.packer_plugins = {
   indentLine = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/indentLine"
+  },
+  ["lens.vim"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/lens.vim"
+  },
+  ["lexima.vim"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/lexima.vim"
   },
   ["lspkind-nvim"] = {
     loaded = true,
@@ -120,6 +128,10 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nvim-lspconfig"
   },
+  ["nvim-luapad"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nvim-luapad"
+  },
   ["nvim-spectre"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nvim-spectre"
@@ -139,6 +151,10 @@ _G.packer_plugins = {
   ["nvim-web-devicons"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nvim-web-devicons"
+  },
+  ["nvim-whichkey-setup.lua"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nvim-whichkey-setup.lua"
   },
   ["oceanic-next"] = {
     loaded = true,

@@ -38,6 +38,7 @@ require('nv-bufferline')
 
 -- Which Key (Hope to replace with Lua plugin someday)
 vim.cmd('source ~/.config/nvim/which_key.vim')
+-- require('nv-which-key')
 
  --remove white spaces on save and restore cursor pos - using mark '.'
 vim.cmd('autocmd BufWritePre * let save_pos = getpos(".") | %s/\\s\\+$//e | call setpos(".", save_pos)')
@@ -55,4 +56,4 @@ autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
 
 -- If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
 -- vim.cmd('autocmd BufEnter * if bufname(\'#\') =~ \'NERD_tree_\\d\\+\' && bufname(\'%\') !~ \'NERD_tree_\\d\\+\' && winnr(\'$\') > 1 | let buf=bufnr() | buffer# | execute "normal! \\<C-W>w" | execute \'buffer\'.buf | endif')
-
+-- vim.cmd('Startify')
