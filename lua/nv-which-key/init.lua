@@ -51,14 +51,6 @@ which_key_map.w = {
 	o = {'<C-W>o<CR>', 'Close All but current'},
 }
 
--- n is for Quit
-which_key_map.N = {
-	name = 'NerdTree' ,
-	t = {':NERDTreeToggle<CR>',  'Toggle'},
-	f = {':NERDTreeFind<CR>',    'Find'},
-	c = {':NERDTreeCWD<CR>',     'CWD'},
-	r = {':NERDTreeRefresh<CR>', 'Refresh'},
-}
 
 
 -- q is for Quit
@@ -194,8 +186,8 @@ which_key_map.g = {
 	p = {':!git push<CR>', 'push'},
 	P = {':Git pull<CR>', 'pull'},
 	r = {':GRemove<CR>', 'remove'},
-	v = {':GV<CR>', 'view commits'},
-	V = {':GV!<CR>', 'view buffer commits'},
+	v = {':GV', 'view commits'},
+	V = {':GV!', 'view buffer commits'},
 }
 --  h - taken by git_sign - hunk oper
 --  A = {':Git add %<CR>', 'add current'},

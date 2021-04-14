@@ -32,6 +32,10 @@ local function try_loadstring(s, component, name)
 end
 
 _G.packer_plugins = {
+  ["clever-f.vim"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/clever-f.vim"
+  },
   ["codi.vim"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/codi.vim"
@@ -47,6 +51,14 @@ _G.packer_plugins = {
   ["far.vim"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/far.vim"
+  },
+  ["fern-git-status.vim"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/fern-git-status.vim"
+  },
+  ["fern.vim"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/fern.vim"
   },
   ["fzf.vim"] = {
     loaded = true,
@@ -87,14 +99,6 @@ _G.packer_plugins = {
   neoformat = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/neoformat"
-  },
-  nerdtree = {
-    loaded = true,
-    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nerdtree"
-  },
-  ["nerdtree-git-plugin"] = {
-    loaded = true,
-    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nerdtree-git-plugin"
   },
   ["numb.nvim"] = {
     loaded = true,
@@ -180,6 +184,10 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/tabular"
   },
+  ["targets.vim"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/targets.vim"
+  },
   ["telescope-media-files.nvim"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/telescope-media-files.nvim"
@@ -211,6 +219,10 @@ _G.packer_plugins = {
   ["vim-grepper"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-grepper"
+  },
+  ["vim-lion"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-lion"
   },
   ["vim-localhistory"] = {
     loaded = true,
@@ -247,6 +259,10 @@ _G.packer_plugins = {
   ["vim-which-key"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-which-key"
+  },
+  ["vim-wordmotion"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-wordmotion"
   },
   ["vim-yankstack"] = {
     loaded = true,

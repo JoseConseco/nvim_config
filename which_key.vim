@@ -30,6 +30,7 @@ let g:which_key_map['<'] = [ ':Telescope buffers',    'Swith buffer' ]
 let g:which_key_map["%'"] = [ ':<C-o><CR>',           'Swith to last buffer' ] "<plug>bufftabs
 let g:which_key_map['r'] = [ ':luafile $MYVIMRC',     'Reload VIMRC' ]
 let g:which_key_map[' '] = [ ':HopChar1',             'HOP 2Char' ]
+let g:which_key_map['e'] = [ ':Fern . -reveal=%',             'File Browser' ]
 
 
 " b for buffers  - for nvim-bufferline<Plug>
@@ -113,7 +114,6 @@ let g:which_key_map.f = {
 			\ 'd' : [ ':call delete(expand("%")) | bdelete!', 'Delete!'],
 			\ 'y' : [ ":call YankPath()",                'Yank file location'],
 			\ 'o' : [ ':!xdg-open %:p:h',                     'Open containing folder'],
-			\ 'f' : [':NERDTreeFind',                         'Find in NERDTree'],
 			\ 'C' : [':cd %:p:h',                             'cd %'],
 			\ 'W' : [':call CmdInput("LHWrite ")',             'Local History Write'],
 			\ 'L' : [':LHLoad',                               'Local History Load'],
@@ -174,8 +174,8 @@ EOF
 let g:which_key_map.o = {
     \ 'name': '+Open',
 		\ '/' : ['q/',                              'Search History (q/)'],
-		\ 'n' : [':NERDTreeToggle',                 'NERDTree(F4)'],
-		\ 'e' : [':Ex',                            'Open Explorer(Ex)'] ,
+		\ '.' : [':Fern . -reveal=%',               'File Browse (Fern)'],
+		\ 'E' : [':Ex',                             'Open Explorer(Ex)'] ,
 		\ 'h' : ['q:',                              'Commands History (q:)'],
 		\ 'q' : [':copen',												 	'Quickfix (copen)'],
 		\ 'l' : [':lopen',												 	'Loclist (lopen)'],
@@ -277,7 +277,7 @@ let g:which_key_map.w = {
 
 
 function DisableUIElements()
-	NERDTreeClose
+	execute("FernDo close")
 	MinimapClose
 endfunction
 

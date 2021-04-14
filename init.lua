@@ -36,6 +36,9 @@ require('nv-bufferline')
 
 -- vim.cmd [[autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()]]
 
+-- fern file explorer config
+vim.cmd('source ~/.config/nvim/nv_fern.vim')
+
 -- Which Key (Hope to replace with Lua plugin someday)
 vim.cmd('source ~/.config/nvim/which_key.vim')
 -- require('nv-which-key')
@@ -46,14 +49,14 @@ vim.cmd('autocmd BufWritePre * let save_pos = getpos(".") | %s/\\s\\+$//e | call
 -- prevent expanding comment strings on <Ret>
 vim.cmd('autocmd FileType * set formatoptions-=r')
 
+
 -- absolute <-> relative auto switch
 vim.cmd([[
 autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
 autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
 ]])
+
 --close NTree on quit..does not work on session it seems
 -- vim.cmd('autocmd VimLeave * NERDTreeClose')
 
--- If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
--- vim.cmd('autocmd BufEnter * if bufname(\'#\') =~ \'NERD_tree_\\d\\+\' && bufname(\'%\') !~ \'NERD_tree_\\d\\+\' && winnr(\'$\') > 1 | let buf=bufnr() | buffer# | execute "normal! \\<C-W>w" | execute \'buffer\'.buf | endif')
--- vim.cmd('Startify')
+

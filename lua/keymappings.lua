@@ -138,14 +138,8 @@ vim.api.nvim_set_keymap( "n", "<F2>",  ':Telescope find_files<CR>',  {noremap = 
 vim.api.nvim_set_keymap( "n", "<F3>", ":MinimapToggle<CR>", { noremap = true, silent = true } )
 
 
--- THIS WILL MAKE NERDTREE always use CWD
--- cant use vim.fn.getCwd() for some reason...!!
-local function term_decode(str) return vim.api.nvim_replace_termcodes(str, true, true, true) end
-function _G.ntree_toggle(cw)
-	return  ':NERDTreeToggle '..cw..term_decode('<CR>')
-end
-vim.api.nvim_set_keymap( "n", "<F4>", "v:lua.ntree_toggle(getcwd())", { noremap = true, silent = true, expr = true,} )
--- NVimTree
+-- NTree replacement
+vim.api.nvim_set_keymap( "n", "<F4>", ":Fern . -drawer -reveal=% -toggle -width=35<CR>", { noremap = true, silent = true} )
 
 
 --MM click to toggle folds under cursor(zA)
