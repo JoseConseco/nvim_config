@@ -176,6 +176,10 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/popup.nvim"
   },
+  tabular = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/tabular"
+  },
   ["telescope-media-files.nvim"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/telescope-media-files.nvim"
@@ -203,6 +207,10 @@ _G.packer_plugins = {
   ["vim-fugitive"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-fugitive"
+  },
+  ["vim-grepper"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-grepper"
   },
   ["vim-localhistory"] = {
     loaded = true,
@@ -239,6 +247,10 @@ _G.packer_plugins = {
   ["vim-which-key"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-which-key"
+  },
+  ["vim-yankstack"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-yankstack"
   },
   vimspector = {
     loaded = true,

@@ -13,7 +13,7 @@ let g:which_key_use_floating_win = 1
 " s:fname()- wontwork for hoteys
 function CmdInput(cmd)
 	let name = input("Name: ")
-	exec a:cmd." ".name
+	exec a:cmd . name
 endfunction
 
 " Hide status line
@@ -47,6 +47,7 @@ let g:which_key_map.b = {
 
 let g:which_key_map.c = {
     \ 'name': '+code',
+	\ 't' : [':call CmdInput("Tab /")',            'Tabularize (align)'],
 	\ 'f': {
 		\ 'name': 'fold',
 		\ 'M' : [':zM',   'Close all(zM)'],
@@ -101,17 +102,20 @@ let g:which_key_map.d = {
 			" \ 'l' : [ ':call vimspector#Launch()<CR>'               , '(L)anuch config']
 
 
+function! YankPath()
+	let @+=expand('%:p')
+endfunction
 " file
 let g:which_key_map.f = {
 			\ 'name' : '+File',
 			\ 's' : [ ':update',                              'Save'],
-			\ 'S' : [ ':call CmdInput("w")',                  'Save as'],
+			\ 'S' : [ ':call CmdInput("w ")',                  'Save as'],
 			\ 'd' : [ ':call delete(expand("%")) | bdelete!', 'Delete!'],
-			\ 'y' : [ 'let @+=expand("%:p")',                 'Yank file location'],
-			\ 'o' : [ ':!xdg-open %:p:h',                      'Open containing folder'],
+			\ 'y' : [ ":call YankPath()",                'Yank file location'],
+			\ 'o' : [ ':!xdg-open %:p:h',                     'Open containing folder'],
 			\ 'f' : [':NERDTreeFind',                         'Find in NERDTree'],
 			\ 'C' : [':cd %:p:h',                             'cd %'],
-			\ 'W' : [':call CmdInput("LHWrite")',             'Local History Write'],
+			\ 'W' : [':call CmdInput("LHWrite ")',             'Local History Write'],
 			\ 'L' : [':LHLoad',                               'Local History Load'],
 			\ 'B' : [':LHBrowse',                             'Local History Browse'],
 			\ 'D' : [':LHDelete',                             'Local History Delete'],
@@ -173,9 +177,10 @@ let g:which_key_map.o = {
 		\ 'n' : [':NERDTreeToggle',                 'NERDTree(F4)'],
 		\ 'e' : [':Ex',                            'Open Explorer(Ex)'] ,
 		\ 'h' : ['q:',                              'Commands History (q:)'],
-		\ 'q' : [':copen',												 	'Quickfix'],
-		\ 'l' : [':Luapad',                         'Luapad Repl On'],
-		\ 'L' : [":lua.require('luapad').detach()", 'Luapad Repl Off'],
+		\ 'q' : [':copen',												 	'Quickfix (copen)'],
+		\ 'l' : [':lopen',												 	'Loclist (lopen)'],
+		\ 'u' : [':Luapad',                         'Luapad Repl On'],
+		\ 'U' : [":lua.require('luapad').detach()", 'Luapad Repl Off'],
 		\ 'c' : [':Codi',                           'Codi Start (multi lang REPL)'],
 		\ 'C' : [':Codi!',                          'Codi Stop'],
     \ }
@@ -194,9 +199,10 @@ let g:which_key_map.o = {
 let g:which_key_map.R = {
       \ 'name' : '+Find_Replace Far' ,
       \ 'f' : [':Farr',                    'File Farr (t)'],
+      \ 'g' : [':Grepper',                    'Grepper'],
       \ 'c' : ['<Plug>CtrlSFPrompt -R {regex} -G *.py',     'CtrlSF'],
       \ 'w' : ['<Plug>CtrlSFCCwordPath',                    'CtrlSF Word'],
-      \ 'e' : [":lua.require('spectre').open_visual()<CR>", 'Spectre'],
+      \ 's' : ["v:lua.require('spectre').open_visual()", 'Spectre'],
       \ }
 
 " from startify
@@ -255,7 +261,6 @@ let g:which_key_map.T = {
 "       \ 's' : [':PackerSync',    'PackerSync'],
 "       \ 'S' : [':PackerStatus',  'PackerStatus'],
 "       \ 'c' : [':PackerClean',   'PackerClean'],
-      \ }
 
 " n is for Quit
 let g:which_key_map.w = {
@@ -266,7 +271,7 @@ let g:which_key_map.w = {
       \ 'h' : ['<C-w>s'           , 'Split below(s)'],
       \ 'v' : ['<C-w>v'           , 'Split right(v)'],
       \ 'q' : ['<C-w>q'           , 'Quit window(q)'],
-			\ 'O' : [':only'           , 'Close All other splits(o)'],
+      \ 'O' : [':only'           , 'Close All other splits(o)'],
       \ 'o' : ['<C-w>o'           , 'Close All but current(o)'],
       \ }
 

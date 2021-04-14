@@ -86,9 +86,11 @@ return require("packer").startup(
 		use 'kevinhwang91/nvim-bqf' --better quickfix  (with preview and complicated mapping)
 		use 'brooth/far.vim' --use: Far(r) from to **/*.py   > then :Fardo
 		use 'dyng/ctrlsf.vim' --Run :CtrlSF [pattern]
+		use 'mhinz/vim-grepper' -- Grepper
 		-- use 'pelodelfuego/vim-swoop' -- like helm-swoop from emacs. Works Only on open Buffers...
 		use {'windwp/nvim-spectre', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}} }
 
+		use 'maxbrunsfeld/vim-yankstack' --works in normal and visual mode..<M-p> and <M-S-p>
 
 		use 'psliwka/vim-smoothie' --smooth PGUP/DOWN
 		use "mhinz/vim-startify"
@@ -100,6 +102,7 @@ return require("packer").startup(
 		use 'icatalina/vim-case-change'
 		use 'mbbill/undotree'   -- undo history  :UndotreeToggle to toggle the undo-tree panel.
 		use 'junegunn/vim-easy-align'  -- def:  ga  - then thing, and around what symbol :  eg  ga
+		use 'godlygeek/tabular'
 		use 'mg979/vim-visual-multi'  --multi cursor support like vscode...
 		use 'junegunn/vim-peekaboo' -- show content of registers when using " or @
 		use 'nacro90/numb.nvim' -- preview line whe using goto :xyz
