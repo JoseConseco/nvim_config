@@ -84,10 +84,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/lens.vim"
   },
-  ["lexima.vim"] = {
-    loaded = true,
-    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/lexima.vim"
-  },
   ["lspkind-nvim"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/lspkind-nvim"
@@ -103,6 +99,10 @@ _G.packer_plugins = {
   ["numb.nvim"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/numb.nvim"
+  },
+  ["nvim-autopairs"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nvim-autopairs"
   },
   ["nvim-bqf"] = {
     loaded = true,
@@ -180,6 +180,10 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/popup.nvim"
   },
+  ["registers.nvim"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/registers.nvim"
+  },
   tabular = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/tabular"
@@ -231,10 +235,6 @@ _G.packer_plugins = {
   ["vim-matchup"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-matchup"
-  },
-  ["vim-peekaboo"] = {
-    loaded = true,
-    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-peekaboo"
   },
   ["vim-smoothie"] = {
     loaded = true,

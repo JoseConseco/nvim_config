@@ -18,6 +18,8 @@ return require("packer").startup(
 		-- themes
 		use 'joshdick/onedark.vim'
 		use 'mhartington/oceanic-next'
+		use 'sainnhe/edge'
+		use 'Luxed/ayu-vim' -- dark and lack orange
 
 
 		-- UI
@@ -32,9 +34,11 @@ return require("packer").startup(
 		use 'psliwka/vim-smoothie' --smooth PGUP/DOWN
 		use 'wfxr/minimap.vim' -- minimap fast
 		use "mhinz/vim-startify"
-		use 'junegunn/vim-peekaboo' -- show content of registers when using " or @
+		-- use 'junegunn/vim-peekaboo' -- show content of registers when using " or @
+		use "tversteeg/registers.nvim"  -- show content of registers when using "
 		use 'nacro90/numb.nvim' -- preview line whe using goto :xyz
 		use 'Yggdroot/indentLine' --  displaying thin vertical lines at each indentation level
+		use 'Xuyuanp/scrollbar.nvim' -- side scrollbar
 
 
 		-- Debugging
@@ -101,7 +105,7 @@ return require("packer").startup(
 		--aligning
 		use 'junegunn/vim-easy-align'  -- def:  ga  - then thing, and around what symbol :  eg  ga
 		use 'godlygeek/tabular'
-		use 'tommcdo/vim-lion' -- eg: gaip,
+		use 'tommcdo/vim-lion' -- eg: glip,
 
 
 		--code/format
@@ -112,20 +116,27 @@ return require("packer").startup(
 		use 'andymass/vim-matchup' -- increase power of %
 		-- use {'lukas-reineke/indent-blankline.nvim', branch = 'lua', disable = true} -- add indents on blank lines
 		use "sbdchd/neoformat"
-		use 'cohama/lexima.vim' --another brackets closer...
-			-- use "alvan/vim-closetag"
-			-- use 'jiangmiao/auto-pairs'  -- annoying
+		use 'windwp/nvim-autopairs' -- lua + wont close () next to char finally good and simple +++
 
 		use 'terrortylor/nvim-comment' -- in lua     o
 		use 'icatalina/vim-case-change'  -- rotate strign case - modded by me
 		use 'mg979/vim-visual-multi'  --multi cursor support like vscode...
+
+		--spell check
+		-- use 'kamykn/spelunker.vim'  -- zl - correct, or Zc, Zf
 
 
 		-- navigation
 		use "phaazon/hop.nvim"
 		use 'rhysd/clever-f.vim' -- f,t,F,T, repeat fff.. to search next occurance of x
 
-
+		-- ternimal in popup
+		use {
+			"numtostr/FTerm.nvim",
+			config = function()
+				require("FTerm").setup()
+			end
+}
 	  --repls
 		use "rafcamlet/nvim-luapad" -- :Luapad - open interactive scratch bufer with realtime eval
 		use 'metakirby5/codi.vim' -- repls for all other langs ...

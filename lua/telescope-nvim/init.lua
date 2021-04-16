@@ -9,18 +9,18 @@ require("telescope").setup {
             "--column",
             "--smart-case"
         },
-        prompt_position = "bottom",
+        prompt_position = "top",
         prompt_prefix = " ",
         selection_caret = " ",
         entry_prefix = "  ",
         initial_mode = "insert",
         selection_strategy = "reset",
-        sorting_strategy = "descending",
+        sorting_strategy = "ascending",
         layout_strategy = "horizontal",
         layout_defaults = {
             horizontal = {
                 mirror = false,
-                preview_width = 0.5
+                preview_width = 0.65
             },
             vertical = {
                 mirror = false

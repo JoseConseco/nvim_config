@@ -1,9 +1,9 @@
 " noremap <silent> <Leader>d :Fern . -drawer -width=35 -toggle<CR><C-w>=
 " noremap <silent> <Leader>f :Fern . -drawer -reveal=% -width=35<CR><C-w>=
 " noremap <silent> <Leader>. :Fern %:h -drawer -width=35<CR><C-w>=
-
-
-function! FernInit() abort
+" g:fern#disable_default_mappings=1
+" a - key taken for Fern action
+function! s:init_fern() abort
 	nmap <buffer><expr>
 				\ <Plug>(fern-my-open-expand-collapse)
 				\ fern#smart#leaf(
@@ -14,8 +14,8 @@ function! FernInit() abort
 	nmap <buffer> <CR> <Plug>(fern-my-open-expand-collapse)
 	nmap <buffer> <2-LeftMouse> <Plug>(fern-my-open-expand-collapse)
 	nmap <buffer> t <Plug>(fern-action-mark:toggle)j
-	nmap <buffer> a <Plug>(fern-action-new-file)
-	nmap <buffer> n <Plug>(fern-action-new-dir)
+	nmap <buffer> n <Plug>(fern-action-new-file)
+	nmap <buffer> N <Plug>(fern-action-new-dir)
 	nmap <buffer> x <Plug>(fern-action-remove)
 	nmap <buffer> m <Plug>(fern-action-move)
 	nmap <buffer> r <Plug>(fern-action-rename)
@@ -28,6 +28,6 @@ function! FernInit() abort
 endfunction
 
 augroup FernEvents
-	autocmd!
-	autocmd FileType fern call FernInit()
+	autocmd! *
+	autocmd FileType fern call s:init_fern()
 augroup END

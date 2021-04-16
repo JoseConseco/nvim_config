@@ -2,8 +2,6 @@
 -- vim.bo -- Get or set buffer-scoped |local-options|
 -- vim.wo -- Get or set window-scoped local options (:set)
 
-
-
 vim.cmd('set iskeyword+=-') -- treat dash separated words as a word text object"
 --vim.cmd('set shortmess+=c') -- Don't pass messages to |ins-completion-menu|.
 vim.o.hidden = true -- Required to keep multiple buffers open multiple buffers
@@ -50,9 +48,8 @@ vim.o.clipboard = "unnamedplus" -- Copy paste between vim and everything else
 -- vim.o.guifont = "NotoSansMono Nerd Font:16"
 vim.o.guifont = "FiraCode Nerd Font:h15"
 vim.o.virtualedit='all'      -- makes cursor not jump,
-vim.o.termguicolors = true --reads hex gui color
 
 vim.g.paste = true --? format pasted str - does it work?
 
 vim.g.neovide_refresh_rate = 60
-vim.g.neovide_transparency=0.95
+vim.g.neovide_transparency=1.0

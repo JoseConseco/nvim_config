@@ -26,31 +26,33 @@ let g:which_key_map =  {}
 let g:which_key_map['S'] = [ ':Startify',             'Startify' ]
 let g:which_key_map['/'] = [ ':Ag',                   'Search Project' ] "<plug>fzf
 let g:which_key_map['.'] = [ ':Telescope find_files', 'Find File' ]
+let g:which_key_map[':'] = [ ':Telescope commands',   'Commands' ]
 let g:which_key_map['<'] = [ ':Telescope buffers',    'Swith buffer' ]
-let g:which_key_map["%'"] = [ ':<C-o><CR>',           'Swith to last buffer' ] "<plug>bufftabs
+let g:which_key_map["%"] = [ ':<C-o><CR>',           'Swith to last buffer' ] "<plug>bufftabs
 let g:which_key_map['r'] = [ ':luafile $MYVIMRC',     'Reload VIMRC' ]
 let g:which_key_map[' '] = [ ':HopChar1',             'HOP 2Char' ]
 let g:which_key_map['e'] = [ ':Fern . -reveal=%',             'File Browser' ]
 
-
 " b for buffers  - for nvim-bufferline<Plug>
 let g:which_key_map.b = {
-			\ 'name' : 'Buffers' ,
-			\ 'n' : [':enew',                'New'],
-			\ ']' : [':BufferLineCycleNext', 'Next'],
-			\ '[' : [':BufferLineCyclePrev', 'Previous'],
-			\ 'c' : [':bd',                  'Close'],
-			\ 'o' : [':bufdo bd',            'Close all but current'],
-			\ 'p' : [':BufferLinePick',      'Pick (gb)'],
-      \ 'r' : [':confirm e!',          'Reload File(e!)'],
-			\ 's' : [':Telescope buffers',  'Swith by name'],
+			\ 'name' : '+Buffers' ,
+			\ '/' : [':Telescope current_buffer_fuzzy_find', 'search content Tele'],
+			\ 'f' : [':BLines',                              'Search lines fzf'],
+			\ 'n' : [':enew',                                'New'],
+			\ ']' : [':BufferLineCycleNext',                 'Next'],
+			\ '[' : [':BufferLineCyclePrev',                 'Previous'],
+			\ 'c' : [':confirm bd',                          'Close'],
+			\ 'o' : [':bufdo bd',                            'Close all but current'],
+			\ 'p' : [':BufferLinePick',                      'Pick (gb)'],
+			\ 'r' : [':confirm e!',                          'Reload File(e!)'],
 			\ }
 
 let g:which_key_map.c = {
-    \ 'name': '+code',
+    \ 'name': '+Code',
 	\ 't' : [':call CmdInput("Tab /")',            'Tabularize (align)'],
+	\ 's' : [':Telescope spell_suggest',            'Spell Suggest'],
 	\ 'f': {
-		\ 'name': 'fold',
+		\ 'name': '+folding',
 		\ 'M' : [':zM',   'Close all(zM)'],
 		\ 'R': [':zR',    'Open all (zR)'],
 		\ '+' : [':zm',   'inc+1 (zm)'],
@@ -79,6 +81,16 @@ let g:which_key_map.c = {
 			 \ 'l' : ['v:lua.vim.lsp.diagnostic.show_line_diagnostics()' , 'Line'] ,
 			 \ '[' : ['v:lua.vim.lsp.diagnostic.goto_prev()'    , 'Prev'] ,
 			 \ ']' : ['v:lua.vim.lsp.diagnostic.goto_next()'    , 'Next'] ,
+			 \ },
+		\ 'T' : {
+			 \ 'name': '+Telescope',
+ 			 \ 'r' : [':Telescope lsp_references',           'References'],
+ 			 \ 'd' : [':Telescope lsp_definitions',          'Definitions'],
+ 			 \ 'a' : [':Telescope lsp_code_actions',         'Code Actions'],
+ 			 \ 'A' : [':Telescope lsp_range_code_actions',   'Range Code Actions'],
+ 			 \ 's' : [':Telescope lsp_document_symbols',     'Document Symbols'],
+ 			 \ 'S' : [':Telescope lsp_workspace_symbols',    'Workspace Symbols'],
+ 			 \ 'D' : [':Telescope lsp_document_diagnostics', 'Document Diagnostics'],
 			 \ },
 		\ },
 \ }
@@ -115,24 +127,19 @@ let g:which_key_map.f = {
 			\ 'y' : [ ":call YankPath()",                'Yank file location'],
 			\ 'o' : [ ':!xdg-open %:p:h',                     'Open containing folder'],
 			\ 'C' : [':cd %:p:h',                             'cd %'],
-			\ 'W' : [':call CmdInput("LHWrite ")',             'Local History Write'],
-			\ 'L' : [':LHLoad',                               'Local History Load'],
-			\ 'B' : [':LHBrowse',                             'Local History Browse'],
-			\ 'D' : [':LHDelete',                             'Local History Delete'],
-			\ 'I' : [':LHDiff',                               'Local History Diff'],
 			\}
-" \ 'c' : [':NERDTreeCWD',                          'NTree CWD'],
+
 
 " g is for git
 let g:which_key_map.g = {
-      \ 'name' : '+git' ,
+      \ 'name' : '+GIT' ,
       \ 'a' : [':Git add .'                        , 'add all'],
       \ 'c' : [':Git commit'                       , 'commit'],
       \ 'd' : [':Git diff'                         , 'diff'],
       \ 'D' : [':Gdiffsplit'                       , 'diff split'],
       \ 'g' : [':Ggrep'                            , 'git grep'],
       \ 's' : [':Gstatus'                          , 'status'],
-      \ 'l' : [':Git log'                          , 'log'],
+      \ 'l' : [':Gclog'                          , 'log file revisions'],
       \ 'p' : [':!git push'                   , 'push'],
       \ 'P' : [':Git pull'                         , 'pull'],
       \ 'r' : [':GRemove'                          , 'remove'],
@@ -142,6 +149,18 @@ let g:which_key_map.g = {
 	  " \ 'h' - taken by git_sign - hunk oper
       " \ 'A' : [':Git add %'                        , 'add current'],
       " \ 'S' : [':!git status'                      , 'status'],
+
+
+ let g:which_key_map.h = {
+      \ 'name' : '+History' ,
+			\ 'U' : [':UndotreeToggle',            'Undo Tree'] ,
+			\ 'W' : [':call CmdInput("LHWrite ")', 'Local History Write'],
+			\ 'L' : [':LHLoad',                    'Local History Load'],
+			\ 'B' : [':LHBrowse',                  'Local History Browse'],
+			\ 'D' : [':LHDelete',                  'Local History Delete'],
+			\ 'I' : [':LHDiff',                    'Local History Diff'],
+      \ 'h' : [':Gclog',                     'File rev history (fugitive)'],
+      \ }
 
 
 
@@ -176,13 +195,15 @@ let g:which_key_map.o = {
 		\ '/' : ['q/',                              'Search History (q/)'],
 		\ '.' : [':Fern . -reveal=%',               'File Browse (Fern)'],
 		\ 'E' : [':Ex',                             'Open Explorer(Ex)'] ,
+		\ 'U' : [':UndotreeToggle',                 'Undo Tree'] ,
 		\ 'h' : ['q:',                              'Commands History (q:)'],
-		\ 'q' : [':copen',												 	'Quickfix (copen)'],
-		\ 'l' : [':lopen',												 	'Loclist (lopen)'],
-		\ 'u' : [':Luapad',                         'Luapad Repl On'],
-		\ 'U' : [":lua.require('luapad').detach()", 'Luapad Repl Off'],
+		\ 'q' : [':copen',                          'Quickfix (copen)'],
+		\ 'o' : [':lopen',                          'Loclist (lopen)'],
+		\ 'l' : [':Luapad',                         'Luapad Repl On'],
+		\ 'L' : [":lua.require('luapad').detach()", 'Luapad Repl Off'],
 		\ 'c' : [':Codi',                           'Codi Start (multi lang REPL)'],
 		\ 'C' : [':Codi!',                          'Codi Stop'],
+		\ 'T' : ["v:lua.require('FTerm').toggle()",  'FTerm'],
     \ }
 
 
@@ -197,40 +218,40 @@ let g:which_key_map.o = {
 "       \ }
 
 let g:which_key_map.R = {
-      \ 'name' : '+Find_Replace Far' ,
-      \ 'f' : [':Farr',                    'File Farr (t)'],
-      \ 'g' : [':Grepper',                    'Grepper'],
+      \ 'name' : '+Replace' ,
+      \ 'f' : [':Farr',                                     'File Farr'],
+      \ 'g' : [':Grepper',                                  'Grepper'],
       \ 'c' : ['<Plug>CtrlSFPrompt -R {regex} -G *.py',     'CtrlSF'],
       \ 'w' : ['<Plug>CtrlSFCCwordPath',                    'CtrlSF Word'],
-      \ 's' : ["v:lua.require('spectre').open_visual()", 'Spectre'],
+      \ 's' : ["v:lua.require('spectre').open_visual()",    'Spectre'],
       \ }
 
-" from startify
+
 let g:which_key_map.p = {
-      \ 'name' : 'Project',
-      \ 's' : [':SSave'           , 'Sesion Save'],
-      \ 'l' : [':SLoad'           , 'Sesion Load'],
-      \ 'c' : [':SClose'          , 'Sesion Close'],
-      \ 'd' : [':SDelete'         , 'Sesion Delete'],
-			\ 'g' : [':Telescope live_grep' , 'Grep pwd (Tele)'],
-      \ '/' : [':Ag'           , 'Ag pwd (FZF)'],
+      \ 'name' : '+Project',
+      \ 's' : [':SSave'                  , 'Sesion Save']  ,
+      \ 'l' : [':SLoad'                  , 'Sesion Load']  ,
+      \ 'c' : [':SClose'                 , 'Sesion Close'] ,
+      \ 'd' : [':SDelete'                , 'Sesion Delete'],
+	  \ 'f' : [':Telescope live_grep'    , 'Find']     ,
+	  \ 'z' : [":lua require'telescope.builtin'.grep_string{ shorten_path = true, word_match = '-w', only_sort_text = true, search = '' }"    , 'Find fuzzy'],
+      \ '*' : [':Telescope grep_string'  , 'Find Word']    ,
       \ }
 
 let g:which_key_map.t = {
-			\ 'name' : 'Toggle' ,
-			\ 'w' : [':v:lua.conditional_width()', 'Auto width'],
-			\ 'f' : [':call v:lua.conditional_fold()',  'Folds'],
-			\ 'h' : [':set hlsearch!',  'Search highlight'],
+			\ 'name' : '+toggle' ,
+			\ 'w' : [':v:lua.conditional_width()',       'Auto width'],
+			\ 'f' : [':call v:lua.conditional_fold()',   'Folds'],
+			\ 'h' : [':set hlsearch!',                   'Search highlight'],
+			\ 's' : [':setlocal spell! spelllang=en_us', 'Spell checking'],
+			\ 't' : ["v:lua.require('FTerm').toggle()",  'FTerm'],
 			\ }
 
 
 let g:which_key_map.T = {
       \ 'name' : '+Telescope' ,
       \ '.' : [':Telescope filetypes'                   , 'filetypes'],
-      \ ';' : [':Telescope commands'                    , 'commands'],
-      \ 'a' : [':Telescope lsp_code_actions'            , 'code_actions'],
       \ 'A' : [':Telescope builtin'                     , 'all'],
-      \ 'b' : [':Telescope buffers'                     , 'buffer name'],
       \ 'f' : [':Telescope find_files'                  , 'files'],
       \ 'F' : [':Telescope git_files'                   , 'git_files'],
       \ 'tg' : [':Telescope tags'                        , 'tags'],
@@ -245,7 +266,7 @@ let g:which_key_map.T = {
       \ 'p' : [':Telescope fd'                          , 'fd'],
       \ 'P' : [':Telescope spell_suggest'               , 'spell_suggest'],
       \ 's' : [':Telescope git_status'                  , 'git_status'],
-      \ 'G' : [':Telescope grep_string'                 , 'Grep selection'],
+      \ 'G' : [':Telescope grep_string'                 , 'Find Word pwd'],
       \ 'g' : [':Telescope live_grep'                   , 'Grep pwd'],
 	  \ 'z' : [':Telescope current_buffer_fuzzy_find'     , 'Buffer content search fuzzy'],
       \ 'y' : [':Telescope symbols'                     , 'symbols'],
@@ -264,7 +285,7 @@ let g:which_key_map.T = {
 
 " n is for Quit
 let g:which_key_map.w = {
-      \ 'name' : 'Window' ,
+      \ 'name' : '+Window' ,
       \ '=' : ['<C-w>='           , 'Equalize(=)'],
       \ '>' : ['<C-w>>'           , 'Increase(>)'],
       \ '<' : ['<C-w><'           , 'Decrease(<)'],
@@ -282,31 +303,19 @@ function DisableUIElements()
 endfunction
 
 let g:which_key_map.q = {
-      \ 'name' : 'Quit',
+      \ 'name' : '+Quit',
       \ 'q' : [':call DisableUIElements() | confirm qa',        'Quit safe (qa)'],
       \ 'f' : [':q!',                                           'Force Quit (q!)'],
       \ 's' : [':call DisableUIElements() | bufdo update | q!', 'Quit Save all (wqa!)'],
       \ }
 
 
-" s is for search
-let g:which_key_map.z = {
-      \ 'name' : '+FZF' ,
-      \ ';' : [':Commands'     , 'commands'],
-      \ '/' : [':Ag'           , 'text in files (Ag)'],
-      \ 't' : [':BLines'       , 'text in buffer'],
-      \ 'F' : [':Files'        , 'files global'],
-      \ 'f' : [':Files %:p:h'  , 'files pwd'],
-      \ 'h' : [':History'      , 'file history'],
-      \ 'H' : [':History:'     , 'command history'],
-      \ 'l' : [':Lines'        , 'lines in file'] ,
-      \ 'm' : [':Marks'        , 'marks'] ,
-      \ 'M' : [':Maps'         , 'normal maps'] ,
-      \ 'p' : [':Helptags'     , 'help tags'] ,
-      \ 'bt': [':BTags'        , 'buffer tags'],
-      \ 'y' : [':Filetypes'    , 'file types'],
-      \ }
-
 " Register which key map
 call which_key#register('<Space>', "g:which_key_map")
 
+
+augroup your_config_scrollbar_nvim
+	autocmd!
+	autocmd BufEnter,CursorMoved,VimResized,FocusGained * silent! lua require('scrollbar').show()
+	autocmd BufLeave,FocusLost,QuitPre  * silent! lua require('scrollbar').clear()
+augroup end

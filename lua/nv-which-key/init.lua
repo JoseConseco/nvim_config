@@ -75,24 +75,7 @@ which_key_map.b = {
 }
 
 
--- s is for search
-which_key_map.z = {
-	name = '+FZF',
-	['/'] = {':History/<CR>', 'history'},
-	[';'] = {':Commands<CR>', 'commands'},
-	tf = {':Ag<CR>', 'text in files (Ag)'},
-	t = {':BLines<CR>', 'text in buffer'},
-	F = {':Files<CR>', 'files global'},
-	f = {':Files %:p:h<CR>', 'files pwd'},
-	h = {':History<CR>', 'file history'},
-	H = {':History:<CR>', 'command history'},
-	l = {':Lines<CR>', 'lines in file'} ,
-	m = {':Marks<CR>', 'marks'} ,
-	M = {':Maps<CR>', 'normal maps'} ,
-	p = {':Helptags<CR>', 'help tags'} ,
-	bt= {':BTags<CR>', 'buffer tags'},
-	y = {':Filocalypes<CR>', 'file types'},
-}
+
 
 -- Fold All toggle
 -- -- vim.api.nvim_set_keymap( "n", "<F1>",  vim.cmd([[&foldlevel:'zM?zR' ]]), { expr = true, noremap = true, silent = true } )

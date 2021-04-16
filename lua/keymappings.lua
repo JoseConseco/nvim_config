@@ -12,7 +12,9 @@
 vim.api.nvim_set_keymap('i', 'jk', '<ESC>', {noremap = true, silent = true})
 
 --  Start new line- break <Ret> in comd window...
-vim.api.nvim_set_keymap('n','<Enter>', 'o<Esc>', {noremap = true})
+-- vim.api.nvim_set_keymap('n','<Enter>', 'o<Esc>', {noremap = true})
+vim.api.nvim_set_keymap('n','<M-o>', 'o<Esc>', {noremap = true})
+vim.api.nvim_set_keymap('n','<M-O>', 'O<Esc>', {noremap = true})
 
 -- You can't stop me
 vim.api.nvim_set_keymap('c', 'w!!', 'w !sudo tee %', {})
