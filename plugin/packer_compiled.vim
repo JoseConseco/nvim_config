@@ -32,6 +32,15 @@ local function try_loadstring(s, component, name)
 end
 
 _G.packer_plugins = {
+  ["FTerm.nvim"] = {
+    config = { "\27LJ\2\n3\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\nFTerm\frequire\0" },
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/FTerm.nvim"
+  },
+  ["ayu-vim"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/ayu-vim"
+  },
   ["clever-f.vim"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/clever-f.vim"
@@ -47,6 +56,10 @@ _G.packer_plugins = {
   ["ctrlsf.vim"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/ctrlsf.vim"
+  },
+  edge = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/edge"
   },
   ["far.vim"] = {
     loaded = true,
@@ -184,6 +197,10 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/registers.nvim"
   },
+  ["scrollbar.nvim"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/scrollbar.nvim"
+  },
   tabular = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/tabular"
@@ -274,6 +291,8 @@ _G.packer_plugins = {
   }
 }
 
+-- Config for: FTerm.nvim
+try_loadstring("\27LJ\2\n3\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\nFTerm\frequire\0", "config", "FTerm.nvim")
 END
 
 catch

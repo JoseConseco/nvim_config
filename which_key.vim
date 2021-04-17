@@ -304,7 +304,7 @@ endfunction
 
 let g:which_key_map.q = {
       \ 'name' : '+Quit',
-      \ 'q' : [':call DisableUIElements() | confirm qa',        'Quit safe (qa)'],
+      \ 'q' : [':call DisableUIElements() | confirm qa',        'Quit Confirm (qa)'],
       \ 'f' : [':q!',                                           'Force Quit (q!)'],
       \ 's' : [':call DisableUIElements() | bufdo update | q!', 'Quit Save all (wqa!)'],
       \ }
@@ -313,9 +313,3 @@ let g:which_key_map.q = {
 " Register which key map
 call which_key#register('<Space>', "g:which_key_map")
 
-
-augroup your_config_scrollbar_nvim
-	autocmd!
-	autocmd BufEnter,CursorMoved,VimResized,FocusGained * silent! lua require('scrollbar').show()
-	autocmd BufLeave,FocusLost,QuitPre  * silent! lua require('scrollbar').clear()
-augroup end

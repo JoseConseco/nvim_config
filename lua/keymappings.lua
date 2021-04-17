@@ -47,8 +47,8 @@ vim.api.nvim_set_keymap('v', '<', '<gv', {noremap = true})
 vim.api.nvim_set_keymap('v', '>', '>gv', {noremap = true})
 
 -- jump backward
-vim.api.nvim_set_keymap('n', '<S-Tab>', '<C-o>', {noremap = true})
--- <Tab> is same as <C-i> - jumps forward
+-- vim.api.nvim_set_keymap('n', '<S-Tab>', '<C-o>', {noremap = true})
+-- <Tab> is same as <C-i> - jumps forward -breaks auto comp
 --
 --
 -- Use tab for indenting in visual mode -- !breaks jump forward (since ctrl+I == Tab in vim wtf)

@@ -17,8 +17,8 @@ require'telescope'.load_extension('sessions')
 
 -- lsp
 require("lsp")
-require("nvim-compe")
 require("nv-vsnip")
+require("nvim-compe")
 
 require("treesitter")
 require("nv-gitsigns")
