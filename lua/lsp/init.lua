@@ -13,7 +13,7 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
   buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
   buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  -- buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
   -- buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
   -- buf_set_keymap('n', '<space>la', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
   -- buf_set_keymap('n', '<space>lr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
@@ -77,34 +77,107 @@ local root_files = {
   '.git',
 }
 
--- nvim_lsp.pyright.setup{
--- 	capabilities = capabilities;
--- 	on_attach = on_attach;
--- 	cmd = { "pyright-langserver", "--stdio" };
--- 	filetypes = { "python" };
--- 	root_dir = function(filename)
--- 		return util.root_pattern(unpack(root_files))(filename) or
--- 		util.path.dirname(filename)
--- 	end;
--- 	settings = {
--- 		python = {
--- 			analysis = {
--- 				autoSearchPaths = true,
--- 				useLibraryCodeForTypes = true
--- 			}
--- 		}
--- 	};
--- }
-
-
-nvim_lsp.jedi_language_server.setup{
+nvim_lsp.pyright.setup{
 	capabilities = capabilities;
 	on_attach = on_attach;
+	cmd = { "pyright-langserver", "--stdio" };
+	filetypes = { "python" };
 	root_dir = function(filename)
 		return util.root_pattern(unpack(root_files))(filename) or
 		util.path.dirname(filename)
 	end;
+	settings = {
+		pyright = {
+			disableOrganizeImports = false,
+		},
+		python = {
+			analysis = {
+				autoSearchPaths = true,
+				useLibraryCodeForTypes = true,
+				typeCheckingMode = 'off',  --  ["off", "basic", "strict"]:
+				diagnosticMode = 'workspace', -- ["openFilesOnly", "workspace"]
+				diagnosticSeverityOverrides = {  -- "error," "warning," "information," "true," "false," or "none"
+					reportDuplicateImport = 'warning',
+					reportImportCycles = 'warning',
+					reportMissingImports = 'error',
+					reportMissingModuleSource = 'error',
+				}
+			}
+		}
+	};
 }
+
+-- flake is great for showing eg. from where thing was imported... short messages
+-- F405 - shows from where thing was imported
+-- require('lspconfig').diagnosticls.setup {
+--   filetypes = { "python" },
+--   init_options = {
+--     filetypes = {
+--       python = {"flake8"},
+--     },
+--     linters = {
+--       flake8 = {
+--         debounce = 100,
+--         sourceName = "flake8",
+--         command = "flake8",
+--         args = {
+--           "--extend-ignore=E",
+--           "--format",
+--           "%(row)d:%(col)d:%(code)s:%(code)s: %(text)s",
+--           "%file",
+--         },
+--         formatPattern = {
+--           "^(\\d+):(\\d+):(\\w+):(\\w).+: (.*)$",
+--           {
+--               line = 1,
+--               column = 2,
+--               message = {"[", 3, "] ", 5},
+--               security = 4
+--           }
+--         },
+--         securities = {
+--           E = "error",
+--           W = "warning",
+--           F = "info",
+--           B = "hint",
+--         },
+--       },
+--     },
+--   }
+-- }
+
+--uses jedi, flake and others
+-- nvim_lsp.pyls.setup{
+-- 	capabilities = capabilities;
+-- 	on_attach = on_attach;
+--   settings = {
+--     pyls = {
+--       plugins = {
+--         -- flake8 = {enabled = true},
+--         pyflakes = {enabled = true},
+--         pycodestyle = {enabled = false},     -- linter for style checking
+--         pydocstyle = {enabled = false},
+--         YAPF = {enabled = true},         --code foramtting preffered over autopep8
+--         -- ['pyls-black'] = {enabled = true},         --code foramtting preffered over autopep8
+--       }
+--     }
+--   }
+-- }
+-- nvim_lsp.jedi_language_server.setup{
+-- 	capabilities = capabilities;
+-- 	on_attach = on_attach;
+--   init_options = {
+--     diagnostics = {
+--       enable = true,
+--     },
+--     completion = {
+--       disableSnippets = true,
+--     },
+--     jediSettings = {
+--       autoImportModules = {'numpy', 'pandas'},
+--     },
+--   },
+-- }
 
 
 nvim_lsp.sumneko_lua.setup {

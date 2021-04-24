@@ -43,13 +43,13 @@ vim.o.backup = false -- This is recommended by coc
 vim.o.writebackup = false -- This is recommended by coc
 vim.wo.signcolumn = "yes" -- Always show the signcolumn, otherwise it would shift the text each time
 vim.o.updatetime = 300 -- Faster completion
-vim.o.timeoutlen = 100 -- By default timeoutlen is 1000 ms
+vim.o.timeoutlen = 500 -- By default timeoutlen is 1000 ms
 vim.o.clipboard = "unnamedplus" -- Copy paste between vim and everything else
 -- vim.o.guifont = "NotoSansMono Nerd Font:16"
-vim.o.guifont = "FiraCode Nerd Font:h15"
+vim.o.guifont = "FiraCode Nerd Font:h14"
 vim.o.virtualedit='all'      -- makes cursor not jump,
 
-vim.g.paste = true --? format pasted str - does it work?
+-- vim.g.paste = true --? format pasted str - does it work? seems broken right now..
 
 vim.g.neovide_refresh_rate = 60
 vim.g.neovide_transparency=1.0

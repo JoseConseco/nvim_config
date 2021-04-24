@@ -67,8 +67,8 @@ vim.api.nvim_set_keymap('v', '<C-s>', ':uw<CR>', {noremap = true})
 vim.api.nvim_set_keymap('c', '<C-s>', ':uw<CR>', {noremap = true})
 vim.api.nvim_set_keymap('i', '<C-s>', '<Esc>:up<CR>', {noremap = true})
 
-
-
+-- disable ctrl+z == suspend
+vim.api.nvim_set_keymap('n', '<C-z>', 'u', {noremap = true})
 
 -- 'normal' Backspace
 vim.api.nvim_set_keymap('n', '<BS>', '"_X', {noremap = true, silent = true})
@@ -101,6 +101,9 @@ vim.api.nvim_set_keymap('n', 'S',  '"_S', {noremap = true, silent = true})
 -- paste without overriding register
 vim.api.nvim_set_keymap('v', 'p',  '"_dp', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('v', 'P',  '"_dP', {noremap = true, silent = true})
+
+-- yank till end of line
+vim.api.nvim_set_keymap('n', 'Y',  'v$y', {noremap = true, silent = true})
 
 
 -- no highlight
@@ -137,7 +140,7 @@ vim.api.nvim_set_keymap( "n", "<F1>",  ":lua require'telescope'.extensions.sessi
 vim.api.nvim_set_keymap( "n", "<F2>",  ':Telescope find_files<CR>',  {noremap = true, silent = true } )
 
 -- Minimap
-vim.api.nvim_set_keymap( "n", "<F3>", ":MinimapToggle<CR>", { noremap = true, silent = true } )
+-- vim.api.nvim_set_keymap( "n", "<F3>", ":MinimapToggle<CR>", { noremap = true, silent = true } )
 
 
 -- NTree replacement

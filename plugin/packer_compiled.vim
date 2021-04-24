@@ -12,6 +12,41 @@ packadd packer.nvim
 try
 
 lua << END
+  local time
+  local profile_info
+  local should_profile = false
+  if should_profile then
+    local hrtime = vim.loop.hrtime
+    profile_info = {}
+    time = function(chunk, start)
+      if start then
+        profile_info[chunk] = hrtime()
+      else
+        profile_info[chunk] = (hrtime() - profile_info[chunk]) / 1e6
+      end
+    end
+  else
+    time = function(chunk, start) end
+  end
+  
+local function save_profiles(threshold)
+  local sorted_times = {}
+  for chunk_name, time_taken in pairs(profile_info) do
+    sorted_times[#sorted_times + 1] = {chunk_name, time_taken}
+  end
+  table.sort(sorted_times, function(a, b) return a[2] > b[2] end)
+  local results = {}
+  for i, elem in ipairs(sorted_times) do
+    if not threshold or threshold and elem[2] > threshold then
+      results[i] = elem[1] .. ' took ' .. elem[2] .. 'ms'
+    end
+  end
+
+  _G._packer = _G._packer or {}
+  _G._packer.profile_output = results
+end
+
+time("Luarocks path setup", true)
 local package_path_str = "/home/bartosz/.cache/nvim/packer_hererocks/2.1.0-beta3/share/lua/5.1/?.lua;/home/bartosz/.cache/nvim/packer_hererocks/2.1.0-beta3/share/lua/5.1/?/init.lua;/home/bartosz/.cache/nvim/packer_hererocks/2.1.0-beta3/lib/luarocks/rocks-5.1/?.lua;/home/bartosz/.cache/nvim/packer_hererocks/2.1.0-beta3/lib/luarocks/rocks-5.1/?/init.lua"
 local install_cpath_pattern = "/home/bartosz/.cache/nvim/packer_hererocks/2.1.0-beta3/lib/lua/5.1/?.so"
 if not string.find(package.path, package_path_str, 1, true) then
@@ -22,6 +57,8 @@ if not string.find(package.cpath, install_cpath_pattern, 1, true) then
   package.cpath = package.cpath .. ';' .. install_cpath_pattern
 end
 
+time("Luarocks path setup", false)
+time("try_loadstring definition", true)
 local function try_loadstring(s, component, name)
   local success, result = pcall(loadstring(s))
   if not success then
@@ -31,6 +68,8 @@ local function try_loadstring(s, component, name)
   return result
 end
 
+time("try_loadstring definition", false)
+time("Defining packer_plugins", true)
 _G.packer_plugins = {
   ["FTerm.nvim"] = {
     config = { "\27LJ\2\n3\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\nFTerm\frequire\0" },
@@ -38,12 +77,9 @@ _G.packer_plugins = {
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/FTerm.nvim"
   },
   ["ayu-vim"] = {
+    config = { "\27LJ\2\n.\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\19themes.ayu-vim\frequire\0" },
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/ayu-vim"
-  },
-  ["clever-f.vim"] = {
-    loaded = true,
-    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/clever-f.vim"
   },
   ["codi.vim"] = {
     loaded = true,
@@ -58,6 +94,7 @@ _G.packer_plugins = {
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/ctrlsf.vim"
   },
   edge = {
+    config = { "\27LJ\2\n+\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\16themes.edge\frequire\0" },
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/edge"
   },
@@ -69,6 +106,10 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/fern-git-status.vim"
   },
+  ["fern-renderer-nerdfont.vim"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/fern-renderer-nerdfont.vim"
+  },
   ["fern.vim"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/fern.vim"
@@ -78,10 +119,12 @@ _G.packer_plugins = {
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/fzf.vim"
   },
   ["galaxyline.nvim"] = {
+    config = { "\27LJ\2\n-\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\18nv-galaxyline\frequire\0" },
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/galaxyline.nvim"
   },
   ["gitsigns.nvim"] = {
+    config = { "\27LJ\2\n+\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\16nv-gitsigns\frequire\0" },
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/gitsigns.nvim"
   },
@@ -97,23 +140,30 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/lens.vim"
   },
+  ["lsp-trouble.nvim"] = {
+    config = { "\27LJ\2\n9\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\nsetup\ftrouble\frequire\0" },
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/lsp-trouble.nvim"
+  },
   ["lspkind-nvim"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/lspkind-nvim"
-  },
-  ["minimap.vim"] = {
-    loaded = true,
-    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/minimap.vim"
   },
   neoformat = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/neoformat"
   },
+  ["nerdfont.vim"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nerdfont.vim"
+  },
   ["numb.nvim"] = {
+    config = { "\27LJ\2\n2\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\tnumb\frequire\0" },
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/numb.nvim"
   },
   ["nvim-autopairs"] = {
+    config = { "\27LJ\2\n,\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\17nv-autopairs\frequire\0" },
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nvim-autopairs"
   },
@@ -122,26 +172,32 @@ _G.packer_plugins = {
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nvim-bqf"
   },
   ["nvim-bufferline.lua"] = {
+    config = { "\27LJ\2\nR\0\0\3\0\4\0\t6\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\0016\0\0\0'\2\3\0B\0\2\1K\0\1\0\18nv-bufferline\nsetup\15bufferline\frequire\0" },
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nvim-bufferline.lua"
   },
   ["nvim-colorizer.lua"] = {
+    config = { "\27LJ\2\n7\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\14colorizer\frequire\0" },
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nvim-colorizer.lua"
   },
   ["nvim-comment"] = {
+    config = { "\27LJ\2\nP\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\1\18comment_empty\1\nsetup\17nvim_comment\frequire\0" },
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nvim-comment"
   },
   ["nvim-compe"] = {
+    config = { "\27LJ\2\n*\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\15nvim-compe\frequire\0" },
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nvim-compe"
   },
   ["nvim-lightbulb"] = {
+    config = { "\27LJ\2\n,\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\17nv-lightbulb\frequire\0" },
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nvim-lightbulb"
   },
   ["nvim-lspconfig"] = {
+    config = { "\27LJ\2\n#\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\blsp\frequire\0" },
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nvim-lspconfig"
   },
@@ -154,16 +210,13 @@ _G.packer_plugins = {
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nvim-spectre"
   },
   ["nvim-treesitter"] = {
+    config = { "\27LJ\2\n*\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\15treesitter\frequire\0" },
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nvim-treesitter"
   },
   ["nvim-treesitter-refactor"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nvim-treesitter-refactor"
-  },
-  ["nvim-ts-rainbow"] = {
-    loaded = true,
-    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nvim-ts-rainbow"
   },
   ["nvim-web-devicons"] = {
     loaded = true,
@@ -197,10 +250,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/registers.nvim"
   },
-  ["scrollbar.nvim"] = {
-    loaded = true,
-    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/scrollbar.nvim"
-  },
   tabular = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/tabular"
@@ -214,8 +263,13 @@ _G.packer_plugins = {
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/telescope-media-files.nvim"
   },
   ["telescope.nvim"] = {
+    config = { "\27LJ\2\n.\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\19telescope-nvim\frequire\0" },
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/telescope.nvim"
+  },
+  ["tokyonight.nvim"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/tokyonight.nvim"
   },
   undotree = {
     loaded = true,
@@ -226,10 +280,12 @@ _G.packer_plugins = {
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-case-change"
   },
   ["vim-devicons"] = {
+    config = { "\27LJ\2\n,\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\17web-devicons\frequire\0" },
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-devicons"
   },
   ["vim-easy-align"] = {
+    config = { "\27LJ\2\n,\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\17nv-easyalign\frequire\0" },
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-easy-align"
   },
@@ -257,7 +313,13 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-smoothie"
   },
+  ["vim-sneak"] = {
+    config = { "\27LJ\2\nF\0\0\3\0\3\0\0056\0\0\0009\0\1\0'\2\2\0B\0\2\1K\0\1\0'source ~/.config/nvim/nv-sneak.vim\bcmd\bvim\0" },
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-sneak"
+  },
   ["vim-startify"] = {
+    config = { "\27LJ\2\n+\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\16nv-startify\frequire\0" },
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-startify"
   },
@@ -270,29 +332,116 @@ _G.packer_plugins = {
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-visual-multi"
   },
   ["vim-vsnip"] = {
+    config = { "\27LJ\2\n(\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\rnv-vsnip\frequire\0" },
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-vsnip"
+  },
+  ["vim-vsnip-integ"] = {
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-vsnip-integ"
   },
   ["vim-which-key"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-which-key"
   },
-  ["vim-wordmotion"] = {
-    loaded = true,
-    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-wordmotion"
-  },
-  ["vim-yankstack"] = {
-    loaded = true,
-    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vim-yankstack"
-  },
   vimspector = {
+    config = { "\27LJ\2\n-\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\18nv-vimspector\frequire\0" },
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/vimspector"
   }
 }
 
+time("Defining packer_plugins", false)
+-- Config for: nvim-colorizer.lua
+time("Config for nvim-colorizer.lua", true)
+try_loadstring("\27LJ\2\n7\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\14colorizer\frequire\0", "config", "nvim-colorizer.lua")
+time("Config for nvim-colorizer.lua", false)
+-- Config for: nvim-compe
+time("Config for nvim-compe", true)
+try_loadstring("\27LJ\2\n*\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\15nvim-compe\frequire\0", "config", "nvim-compe")
+time("Config for nvim-compe", false)
+-- Config for: nvim-lspconfig
+time("Config for nvim-lspconfig", true)
+try_loadstring("\27LJ\2\n#\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\blsp\frequire\0", "config", "nvim-lspconfig")
+time("Config for nvim-lspconfig", false)
+-- Config for: vim-startify
+time("Config for vim-startify", true)
+try_loadstring("\27LJ\2\n+\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\16nv-startify\frequire\0", "config", "vim-startify")
+time("Config for vim-startify", false)
+-- Config for: vimspector
+time("Config for vimspector", true)
+try_loadstring("\27LJ\2\n-\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\18nv-vimspector\frequire\0", "config", "vimspector")
+time("Config for vimspector", false)
+-- Config for: ayu-vim
+time("Config for ayu-vim", true)
+try_loadstring("\27LJ\2\n.\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\19themes.ayu-vim\frequire\0", "config", "ayu-vim")
+time("Config for ayu-vim", false)
+-- Config for: nvim-lightbulb
+time("Config for nvim-lightbulb", true)
+try_loadstring("\27LJ\2\n,\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\17nv-lightbulb\frequire\0", "config", "nvim-lightbulb")
+time("Config for nvim-lightbulb", false)
+-- Config for: nvim-comment
+time("Config for nvim-comment", true)
+try_loadstring("\27LJ\2\nP\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\1\18comment_empty\1\nsetup\17nvim_comment\frequire\0", "config", "nvim-comment")
+time("Config for nvim-comment", false)
+-- Config for: numb.nvim
+time("Config for numb.nvim", true)
+try_loadstring("\27LJ\2\n2\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\tnumb\frequire\0", "config", "numb.nvim")
+time("Config for numb.nvim", false)
 -- Config for: FTerm.nvim
+time("Config for FTerm.nvim", true)
 try_loadstring("\27LJ\2\n3\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\nFTerm\frequire\0", "config", "FTerm.nvim")
+time("Config for FTerm.nvim", false)
+-- Config for: gitsigns.nvim
+time("Config for gitsigns.nvim", true)
+try_loadstring("\27LJ\2\n+\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\16nv-gitsigns\frequire\0", "config", "gitsigns.nvim")
+time("Config for gitsigns.nvim", false)
+-- Config for: nvim-treesitter
+time("Config for nvim-treesitter", true)
+try_loadstring("\27LJ\2\n*\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\15treesitter\frequire\0", "config", "nvim-treesitter")
+time("Config for nvim-treesitter", false)
+-- Config for: nvim-bufferline.lua
+time("Config for nvim-bufferline.lua", true)
+try_loadstring("\27LJ\2\nR\0\0\3\0\4\0\t6\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\0016\0\0\0'\2\3\0B\0\2\1K\0\1\0\18nv-bufferline\nsetup\15bufferline\frequire\0", "config", "nvim-bufferline.lua")
+time("Config for nvim-bufferline.lua", false)
+-- Config for: telescope.nvim
+time("Config for telescope.nvim", true)
+try_loadstring("\27LJ\2\n.\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\19telescope-nvim\frequire\0", "config", "telescope.nvim")
+time("Config for telescope.nvim", false)
+-- Config for: edge
+time("Config for edge", true)
+try_loadstring("\27LJ\2\n+\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\16themes.edge\frequire\0", "config", "edge")
+time("Config for edge", false)
+-- Config for: vim-devicons
+time("Config for vim-devicons", true)
+try_loadstring("\27LJ\2\n,\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\17web-devicons\frequire\0", "config", "vim-devicons")
+time("Config for vim-devicons", false)
+-- Config for: vim-vsnip
+time("Config for vim-vsnip", true)
+try_loadstring("\27LJ\2\n(\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\rnv-vsnip\frequire\0", "config", "vim-vsnip")
+time("Config for vim-vsnip", false)
+-- Config for: lsp-trouble.nvim
+time("Config for lsp-trouble.nvim", true)
+try_loadstring("\27LJ\2\n9\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\nsetup\ftrouble\frequire\0", "config", "lsp-trouble.nvim")
+time("Config for lsp-trouble.nvim", false)
+-- Config for: galaxyline.nvim
+time("Config for galaxyline.nvim", true)
+try_loadstring("\27LJ\2\n-\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\18nv-galaxyline\frequire\0", "config", "galaxyline.nvim")
+time("Config for galaxyline.nvim", false)
+-- Config for: nvim-autopairs
+time("Config for nvim-autopairs", true)
+try_loadstring("\27LJ\2\n,\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\17nv-autopairs\frequire\0", "config", "nvim-autopairs")
+time("Config for nvim-autopairs", false)
+-- Config for: vim-easy-align
+time("Config for vim-easy-align", true)
+try_loadstring("\27LJ\2\n,\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\17nv-easyalign\frequire\0", "config", "vim-easy-align")
+time("Config for vim-easy-align", false)
+-- Config for: vim-sneak
+time("Config for vim-sneak", true)
+try_loadstring("\27LJ\2\nF\0\0\3\0\3\0\0056\0\0\0009\0\1\0'\2\2\0B\0\2\1K\0\1\0'source ~/.config/nvim/nv-sneak.vim\bcmd\bvim\0", "config", "vim-sneak")
+time("Config for vim-sneak", false)
+if should_profile then save_profiles() end
+
 END
 
 catch

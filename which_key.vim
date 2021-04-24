@@ -7,7 +7,6 @@ vnoremap <silent> <leader> :silent <c-u> :silent WhichKeyVisual '<Space>'<CR>
 
 " Create map to add keys to
 let g:which_key_sep = '>'
-set timeoutlen=500
 let g:which_key_use_floating_win = 1
 
 " s:fname()- wontwork for hoteys
@@ -27,32 +26,56 @@ let g:which_key_map['S'] = [ ':Startify',             'Startify' ]
 let g:which_key_map['/'] = [ ':Ag',                   'Search Project' ] "<plug>fzf
 let g:which_key_map['.'] = [ ':Telescope find_files', 'Find File' ]
 let g:which_key_map[':'] = [ ':Telescope commands',   'Commands' ]
-let g:which_key_map['<'] = [ ':Telescope buffers',    'Swith buffer' ]
+let g:which_key_map['<'] = [ ':Telescope buffers',    'Swith Buffer' ]
 let g:which_key_map["%"] = [ ':<C-o><CR>',           'Swith to last buffer' ] "<plug>bufftabs
 let g:which_key_map['r'] = [ ':luafile $MYVIMRC',     'Reload VIMRC' ]
-let g:which_key_map[' '] = [ ':HopChar1',             'HOP 2Char' ]
-let g:which_key_map['e'] = [ ':Fern . -reveal=%',             'File Browser' ]
+let g:which_key_map[' '] = [ ':HopChar2',             'HOP 2Char' ]
+let g:which_key_map['e'] = [ ':Fern . -reveal=%',       'File Browser' ]
+let g:which_key_map['p'] = [ 'viwP',                   'Paste over word' ]
+let g:which_key_map['1\-9'] = [ ':echo ""',             'Buffer' ]
+let g:which_key_map.1 = 'which_key_ignore'
+let g:which_key_map.2 = 'which_key_ignore'
+let g:which_key_map.3 = 'which_key_ignore'
+let g:which_key_map.4 = 'which_key_ignore'
+let g:which_key_map.5 = 'which_key_ignore'
+let g:which_key_map.6 = 'which_key_ignore'
+let g:which_key_map.6 = 'which_key_ignore'
+let g:which_key_map.7 = 'which_key_ignore'
+let g:which_key_map.8 = 'which_key_ignore'
+let g:which_key_map.9 = 'which_key_ignore'
 
 " b for buffers  - for nvim-bufferline<Plug>
+" \ 's' : [':BLines',                              'Search lines fzf'],
 let g:which_key_map.b = {
 			\ 'name' : '+Buffers' ,
-			\ '/' : [':Telescope current_buffer_fuzzy_find', 'search content Tele'],
-			\ 'f' : [':BLines',                              'Search lines fzf'],
+			\ '/' : [':Telescope current_buffer_fuzzy_find', 'Search content Tele'],
+			\ '?' : [':lua require"telescope".extensions.buffer_search.buffer_search{}',  'Search current nonfzf'],
 			\ 'n' : [':enew',                                'New'],
 			\ ']' : [':BufferLineCycleNext',                 'Next'],
 			\ '[' : [':BufferLineCyclePrev',                 'Previous'],
 			\ 'c' : [':confirm bd',                          'Close'],
-			\ 'o' : [':bufdo bd',                            'Close all but current'],
+			\ 'o' : [':%bd|e#|bd#',                            'Close all but current'],
 			\ 'p' : [':BufferLinePick',                      'Pick (gb)'],
-			\ 'r' : [':confirm e!',                          'Reload File(e!)'],
+			\ 'r' : [':confirm e',                           'Reload File(e!)'],
+			\ 'f' : [':Telescope buffers',                  'Find buffer' ] ,
 			\ }
 
+" \ 'c': {
+" 	\ 'name': '+Changes',
+" 	\ 't' : [':TCV',   'Toggle line changes'],
+" 	\ 'D' : [':DC',    'Disable line changes'],
+" 	\ 'E' : [':EC',    'Enable line changes'],
+" 	\ 's' : [':CT',    'Style mode'],
+" 	\ 'd' : [':CD',    'Local Changes Diff'],
+" 	\ 'f' : [':CF',    'Fold non-changed lines'],
+" 	\},
 let g:which_key_map.c = {
     \ 'name': '+Code',
+	\ '.' : [':Telescope filetypes'                   , 'filetypes'],
 	\ 't' : [':call CmdInput("Tab /")',            'Tabularize (align)'],
 	\ 's' : [':Telescope spell_suggest',            'Spell Suggest'],
 	\ 'f': {
-		\ 'name': '+folding',
+		\ 'name': '+Folding',
 		\ 'M' : [':zM',   'Close all(zM)'],
 		\ 'R': [':zR',    'Open all (zR)'],
 		\ '+' : [':zm',   'inc+1 (zm)'],
@@ -64,7 +87,7 @@ let g:which_key_map.c = {
 		\ 'O' : [':zO',   'open all cur(zO)'],
 		\},
 	\ 'l': {
-		\ 'name' : '+lsp',
+		\ 'name' : '+LSP',
 		\ 'D' : ['v:lua.vim.lsp.buf.declaration()',    'Declaration (gD)'],
 		\ 'd' : ['v:lua.vim.lsp.buf.definition()',     'Definition (gd)'],
 		\ 'K' : ['v:lua.vim.lsp.buf.hover()',          'Hover (K)'],
@@ -122,10 +145,13 @@ endfunction
 let g:which_key_map.f = {
 			\ 'name' : '+File',
 			\ 's' : [ ':update',                              'Save'],
-			\ 'S' : [ ':call CmdInput("w ")',                  'Save as'],
+			\ 'S' : [ ':call CmdInput("w ")',                 'Save as'],
 			\ 'd' : [ ':call delete(expand("%")) | bdelete!', 'Delete!'],
-			\ 'y' : [ ":call YankPath()",                'Yank file location'],
-			\ 'o' : [ ':!xdg-open %:p:h',                     'Open containing folder'],
+			\ 'r' : [':confirm e',                            'Reload File(e!)'],
+			\ 'f' : [':Telescope file_browser',               'File Browser'],
+			\ 'y' : [ ":call YankPath()",                     'Yank file location'],
+			\ 'o' : [ ':!xdg-open "%:p:h"',                     'Open containing folder'],
+			\ 't' : [ ':!termite -d "%:p:h"',                   'Open at terminal'],
 			\ 'C' : [':cd %:p:h',                             'cd %'],
 			\}
 
@@ -153,13 +179,14 @@ let g:which_key_map.g = {
 
  let g:which_key_map.h = {
       \ 'name' : '+History' ,
-			\ 'U' : [':UndotreeToggle',            'Undo Tree'] ,
-			\ 'W' : [':call CmdInput("LHWrite ")', 'Local History Write'],
-			\ 'L' : [':LHLoad',                    'Local History Load'],
-			\ 'B' : [':LHBrowse',                  'Local History Browse'],
-			\ 'D' : [':LHDelete',                  'Local History Delete'],
-			\ 'I' : [':LHDiff',                    'Local History Diff'],
-      \ 'h' : [':Gclog',                     'File rev history (fugitive)'],
+			\ 'u' : [':UndotreeToggle',            'Undo Tree'] ,
+			\ 'w' : [':call CmdInput("LHWrite ")', 'Local History Write'],
+			\ 'l' : [':LHLoad',                    'Local History Load'],
+			\ 'b' : [':LHBrowse',                  'Local History Browse'],
+			\ 'x' : [':LHDelete',                  'Local History Delete'],
+			\ 'd' : [':LHDiff',                    'Local History Diff'],
+			\ 'D' : [':DiffSaved',                 'Diff with saved'],
+			\ 'h' : [':Gclog',                     'File rev history (fugitive)'],
       \ }
 
 
@@ -199,6 +226,7 @@ let g:which_key_map.o = {
 		\ 'h' : ['q:',                              'Commands History (q:)'],
 		\ 'q' : [':copen',                          'Quickfix (copen)'],
 		\ 'o' : [':lopen',                          'Loclist (lopen)'],
+		\ 'O' : [':SymbolsOutline',                 'Outliner (lsp)'],
 		\ 'l' : [':Luapad',                         'Luapad Repl On'],
 		\ 'L' : [":lua.require('luapad').detach()", 'Luapad Repl Off'],
 		\ 'c' : [':Codi',                           'Codi Start (multi lang REPL)'],
@@ -227,20 +255,21 @@ let g:which_key_map.R = {
       \ }
 
 
-let g:which_key_map.p = {
+let g:which_key_map.P = {
       \ 'name' : '+Project',
       \ 's' : [':SSave'                  , 'Sesion Save']  ,
       \ 'l' : [':SLoad'                  , 'Sesion Load']  ,
       \ 'c' : [':SClose'                 , 'Sesion Close'] ,
       \ 'd' : [':SDelete'                , 'Sesion Delete'],
-	  \ 'f' : [':Telescope live_grep'    , 'Find']     ,
-	  \ 'z' : [":lua require'telescope.builtin'.grep_string{ shorten_path = true, word_match = '-w', only_sort_text = true, search = '' }"    , 'Find fuzzy'],
+			\ 'f' : [':Telescope live_grep'    , 'Find']     ,
+			\ 'z' : [":lua require'telescope.builtin'.grep_string{ shorten_path = true, word_match = '-w', only_sort_text = true, search = '' }"    , 'Find fuzzy'],
       \ '*' : [':Telescope grep_string'  , 'Find Word']    ,
       \ }
 
 let g:which_key_map.t = {
 			\ 'name' : '+toggle' ,
 			\ 'w' : [':v:lua.conditional_width()',       'Auto width'],
+			\ 'l' : [':LspTroubleToggle',                'Lsp Trouble Toggle'],
 			\ 'f' : [':call v:lua.conditional_fold()',   'Folds'],
 			\ 'h' : [':set hlsearch!',                   'Search highlight'],
 			\ 's' : [':setlocal spell! spelllang=en_us', 'Spell checking'],
@@ -250,12 +279,11 @@ let g:which_key_map.t = {
 
 let g:which_key_map.T = {
       \ 'name' : '+Telescope' ,
-      \ '.' : [':Telescope filetypes'                   , 'filetypes'],
       \ 'A' : [':Telescope builtin'                     , 'all'],
       \ 'f' : [':Telescope find_files'                  , 'files'],
       \ 'F' : [':Telescope git_files'                   , 'git_files'],
-      \ 'tg' : [':Telescope tags'                        , 'tags'],
-      \ 'bt' : [':Telescope current_buffer_tags'         , 'buffer_tags'],
+      \ 'T' : [':Telescope tags'                        , 'tags'],
+      \ 't' : [':Telescope current_buffer_tags'         , 'buffer_tags'],
       \ 'h' : [':Telescope command_history'             , 'history'],
       \ 'H' : [':Telescope help_tags'                   , 'help_tags'],
       \ 'k' : [':Telescope keymaps'                     , 'keymaps'],
@@ -267,8 +295,6 @@ let g:which_key_map.T = {
       \ 'P' : [':Telescope spell_suggest'               , 'spell_suggest'],
       \ 's' : [':Telescope git_status'                  , 'git_status'],
       \ 'G' : [':Telescope grep_string'                 , 'Find Word pwd'],
-      \ 'g' : [':Telescope live_grep'                   , 'Grep pwd'],
-	  \ 'z' : [':Telescope current_buffer_fuzzy_find'     , 'Buffer content search fuzzy'],
       \ 'y' : [':Telescope symbols'                     , 'symbols'],
       \ 'R' : [':Telescope reloader'                    , 'reloader'],
       \ 'w' : [':Telescope file_browser'                , 'File Browser Fuzzy'],
@@ -299,7 +325,7 @@ let g:which_key_map.w = {
 
 function DisableUIElements()
 	execute("FernDo close")
-	MinimapClose
+	" MinimapClose
 endfunction
 
 let g:which_key_map.q = {
@@ -313,3 +339,11 @@ let g:which_key_map.q = {
 " Register which key map
 call which_key#register('<Space>', "g:which_key_map")
 
+function! s:DiffWithSaved()
+	let filetype=&ft
+	diffthis
+	vnew | r # | normal! 1Gdd
+	diffthis
+	exe "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . filetype
+endfunction
+com! DiffSaved call s:DiffWithSaved()
