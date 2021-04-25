@@ -32,7 +32,7 @@ ts_config.setup {
 	rainbow = {enable = false},
 	refactor = {
 	    highlight_definitions = { enable = true }, --from treesitter-refactor
-			highlight_current_scope = { enable = true },
+			highlight_current_scope = { enable = false },
 	  },
 }
 

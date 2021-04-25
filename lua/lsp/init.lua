@@ -3,50 +3,50 @@
 
 local nvim_lsp = require('lspconfig')
 local on_attach = function(client, bufnr)
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+	local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+	local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
-  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+	buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-  -- Mappings.
-  local opts = { noremap=true, silent=true }
-  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  -- buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  -- buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  -- buf_set_keymap('n', '<space>la', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  -- buf_set_keymap('n', '<space>lr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  -- buf_set_keymap('n', '<space>ll', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  -- buf_set_keymap('n', '<space>ld', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  -- buf_set_keymap('n', '<space>lrn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  -- buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', 'gr', ':Telescope lsp_references<CR>', opts)
-  -- buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-  -- buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  -- buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-  -- buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+	-- Mappings.
+	local opts = { noremap=true, silent=true }
+	buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+	buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+	buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+	-- buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+	-- buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+	-- buf_set_keymap('n', '<space>la', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+	-- buf_set_keymap('n', '<space>lr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+	-- buf_set_keymap('n', '<space>ll', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+	-- buf_set_keymap('n', '<space>ld', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+	-- buf_set_keymap('n', '<space>lrn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+	-- buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+	buf_set_keymap('n', 'gr', ':Telescope lsp_references<CR>', opts)
+	-- buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+	-- buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+	-- buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+	-- buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
 
-  -- Set some keybinds conditional on server capabilities
-  if client.resolved_capabilities.document_formatting then
-    buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-  elseif client.resolved_capabilities.document_range_formatting then
-    buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
-  end
+	-- Set some keybinds conditional on server capabilities
+	if client.resolved_capabilities.document_formatting then
+		buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+	elseif client.resolved_capabilities.document_range_formatting then
+		buf_set_keymap("n", "<space>F", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
+	end
 
-  -- Set autocommands conditional on server_capabilities
-  if client.resolved_capabilities.document_highlight then
-    vim.api.nvim_exec([[
-      hi LspReferenceRead cterm=bold ctermbg=red guibg=#405060
-      hi LspReferenceText cterm=bold ctermbg=red guibg=#405060
-      hi LspReferenceWrite cterm=bold ctermbg=red guibg=#405060
-      augroup lsp_document_highlight
-        autocmd! * <buffer>
-        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-      augroup END
-    ]], false)
-  end
+	-- Set autocommands conditional on server_capabilities
+	if client.resolved_capabilities.document_highlight then
+		vim.api.nvim_exec([[
+		hi LspReferenceRead cterm=bold ctermbg=red guibg=#405060
+		hi LspReferenceText cterm=bold ctermbg=red guibg=#405060
+		hi LspReferenceWrite cterm=bold ctermbg=red guibg=#405060
+		augroup lsp_document_highlight
+		autocmd! * <buffer>
+		autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+		autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+		augroup END
+			]], false)
+	end
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -57,24 +57,24 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true;
 -- local servers = { "pyright", "sumneko_lua"}
 -- for _, lsp in ipairs(servers) do
 --   nvim_lsp[lsp].setup {
--- 	  capabilities = capabilities;
--- 	  on_attach = on_attach;
+--		capabilities = capabilities;
+--		on_attach = on_attach;
 --       -- init_options = {
--- 	  --     onlyAnalyzeProjectsWithOpenFiles = true,
--- 	  --     suggestFromUnimportedLibraries = false,
--- 	  --     closingLabels = true,
--- 	  -- };
+--		--     onlyAnalyzeProjectsWithOpenFiles = true,
+--		--     suggestFromUnimportedLibraries = false,
+--		--     closingLabels = true,
+--		-- };
 --   }
 -- end
 -- set the path to the sumneko installation; if you previously installed via the now deprecated :LspInstall, use
 --
 local util = require 'lspconfig/util'
 local root_files = {
-  'setup.py',
-  'pyproject.toml',
-  'setup.cfg',
-  'requirements.txt',
-  '.git',
+	'setup.py',
+	'pyproject.toml',
+	'setup.cfg',
+	'requirements.txt',
+	'.git',
 }
 
 nvim_lsp.pyright.setup{
@@ -84,7 +84,7 @@ nvim_lsp.pyright.setup{
 	filetypes = { "python" };
 	root_dir = function(filename)
 		return util.root_pattern(unpack(root_files))(filename) or
-		util.path.dirname(filename)
+			util.path.dirname(filename)
 	end;
 	settings = {
 		pyright = {
@@ -148,8 +148,8 @@ nvim_lsp.pyright.setup{
 
 --uses jedi, flake and others
 -- nvim_lsp.pyls.setup{
--- 	capabilities = capabilities;
--- 	on_attach = on_attach;
+--	capabilities = capabilities;
+--	on_attach = on_attach;
 --   settings = {
 --     pyls = {
 --       plugins = {
@@ -164,8 +164,8 @@ nvim_lsp.pyright.setup{
 --   }
 -- }
 -- nvim_lsp.jedi_language_server.setup{
--- 	capabilities = capabilities;
--- 	on_attach = on_attach;
+--	capabilities = capabilities;
+--	on_attach = on_attach;
 --   init_options = {
 --     diagnostics = {
 --       enable = true,

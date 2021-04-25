@@ -50,14 +50,15 @@ let g:which_key_map.b = {
 			\ 'name' : '+Buffers' ,
 			\ '/' : [':Telescope current_buffer_fuzzy_find', 'Search content Tele'],
 			\ '?' : [':lua require"telescope".extensions.buffer_search.buffer_search{}',  'Search current nonfzf'],
+			\ '<' : [':Telescope buffers',                  'Find buffer' ] ,
 			\ 'n' : [':enew',                                'New'],
 			\ ']' : [':BufferLineCycleNext',                 'Next'],
 			\ '[' : [':BufferLineCyclePrev',                 'Previous'],
 			\ 'c' : [':confirm bd',                          'Close'],
-			\ 'o' : [':%bd|e#|bd#',                            'Close all but current'],
+			\ 'o' : [':%bd|e#|bd#',                          'Close all but current'],
 			\ 'p' : [':BufferLinePick',                      'Pick (gb)'],
 			\ 'r' : [':confirm e',                           'Reload File(e!)'],
-			\ 'f' : [':Telescope buffers',                  'Find buffer' ] ,
+			\ 'f' : [':Autoformat',                          'Autoformat lines'],
 			\ }
 
 " \ 'c': {
@@ -71,13 +72,13 @@ let g:which_key_map.b = {
 " 	\},
 let g:which_key_map.c = {
     \ 'name': '+Code',
-	\ '.' : [':Telescope filetypes'                   , 'filetypes'],
-	\ 't' : [':call CmdInput("Tab /")',            'Tabularize (align)'],
-	\ 's' : [':Telescope spell_suggest',            'Spell Suggest'],
-	\ 'f': {
+	\ '.' : [':Telescope filetypes',     'filetypes'],
+	\ 't' : [':call CmdInput("Tab /")',  'Tabularize (align)'],
+	\ 's' : [':Telescope spell_suggest', 'Spell Suggest'],
+	\ 'F': {
 		\ 'name': '+Folding',
 		\ 'M' : [':zM',   'Close all(zM)'],
-		\ 'R': [':zR',    'Open all (zR)'],
+		\ 'R':  [':zR',   'Open all (zR)'],
 		\ '+' : [':zm',   'inc+1 (zm)'],
 		\ '-' : [':zr',   'dec-1 (zr)'],
 		\ 'a' : [':za',   'Toggle at cur(za)'],
@@ -99,6 +100,15 @@ let g:which_key_map.c = {
 		\ 'A' : ['v:lua.vim.lsp.buf.add_workspace_folder()',     'Add Workspace Folder'] ,
 		\ 'R' : ['v:lua.vim.lsp.buf.remove_workspace_folder()',     'Remove Workspace Folder'] ,
 		\ 'L' : [':lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', 'List Workspace Folders'] ,
+		\ 'S' : {
+			 \ 'name': '+LSPSaga',
+			 \ 'f' : [':Lspsaga lsp_finder' , 'Lsp Finder'] ,
+			 \ 'a' : [':Lspsaga code_action' , 'Code Action'] ,
+			 \ 'K' : [':Lspsaga hover_doc' , 'Hover Doc'] ,
+			 \ 's' : [':Lspsaga signature_help' , 'Signature Help'] ,
+			 \ 'r' : [':Lspsaga rename' , 'Rename'] ,
+			 \ 'p' : [':Lspsaga preview_definition' , 'Preview Definition'] ,
+			 \ },
 		\ 'g' : {
 			 \ 'name': '+diagnostics',
 			 \ 'l' : ['v:lua.vim.lsp.diagnostic.show_line_diagnostics()' , 'Line'] ,

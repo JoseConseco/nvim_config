@@ -19,6 +19,6 @@ vim.api.nvim_exec([[
 augroup your_config_scrollbar_nvim
 	autocmd!
 	autocmd CursorMoved,VimResized,FocusGained * silent! lua require('scrollbar').show()
-	autocmd FocusLost,QuitPre  * silent! lua require('scrollbar').clear()
+	autocmd FocusLost,QuitPre,VimLeavePre,ExitPre  * silent! lua require('scrollbar').clear()
 augroup end
 ]], false)

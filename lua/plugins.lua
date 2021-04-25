@@ -87,8 +87,8 @@ return require("packer").startup(
 		use {'nacro90/numb.nvim',
 			config=function() require('numb').setup() end } -- preview line whe using goto :xyz
 		use 'Yggdroot/indentLine' --  displaying thin vertical lines at each indentation level
-		-- use {'Xuyuanp/scrollbar.nvim', -- side scrollbar  -fucks up session load often :/
-		-- 	config=function() require("nv-scrollbar")  end } -- preview line whe using goto :xyz
+		use {'Xuyuanp/scrollbar.nvim', -- side scrollbar  -fucks up session load often :/
+			config=function() require("nv-scrollbar")  end } -- preview line whe using goto :xyz
 
 
 		-- Debugging
@@ -121,12 +121,13 @@ return require("packer").startup(
 		-- use {'codota/tabnine-vim'} -- wont work with compe
 		use {'tzachar/compe-tabnine', run='./install.sh',
 			requires = 'hrsh7th/nvim-compe'}
-		use { "folke/lsp-trouble.nvim",
+		use { "folke/lsp-trouble.nvim", -- shows nice icons in lsp warnings...
 			  requires = "kyazdani42/nvim-web-devicons",
-			  config = function() require("trouble").setup { } end}
+			  config = function() require("nv-lsptrouble") end,}
     use {'simrat39/symbols-outline.nvim', -- :SymbolsOutline
 			config = function() require('symbols-outline').setup({highlight_hovered_item = false}) end}
-
+    use {'glepnir/lspsaga.nvim', --cool popup goto def hoover etc
+			  config = function() require("nv-lspsaga") end,}
 		-- Telescope
 		use {'nvim-telescope/telescope.nvim',
 				requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}},
@@ -189,12 +190,13 @@ return require("packer").startup(
 		use 'wellle/targets.vim' -- eg ci,  ci_ etc
 		use 'andymass/vim-matchup' -- increase power of %
 		-- use {'lukas-reineke/indent-blankline.nvim', branch = 'lua', disable = true} -- add indents on blank lines
-		use {"sbdchd/neoformat",  --till faster
-    			disable=false,}
-		use {'windwp/nvim-autopairs',
+		use {"sbdchd/neoformat",  --verly slow with lsp or treesitter
+    			disable=true,}
+		use {'Chiel92/vim-autoformat',
+				config=function() require('nv-autoformat') end }
+		use {'windwp/nvim-autopairs',  -- lua + wont close () next to char finally good and simple +++
 			-- comit='b8272f539017ffb6de6a05247e7c333b3721279b',
-			config=function() require('nv-autopairs') end
-		} -- lua + wont close () next to char finally good and simple +++
+			config=function() require('nv-autopairs') end }
 
 		use {'terrortylor/nvim-comment',
 			config=function() require('nvim_comment').setup({comment_empty = false})  end} -- in lua     o
