@@ -5,7 +5,7 @@ require('settings')
 require('keymappings')
 
 -- set themes props before loading actuall theme ?
-vim.cmd('colorscheme tokyonight')  -- onedark, OceanicNext, edge
+vim.cmd('colorscheme edge')  -- onedark, OceanicNext, edge
 
 require'telescope'.load_extension('sessions')
 

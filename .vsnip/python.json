@@ -259,7 +259,7 @@
       "class OBJECT_OT_${1/((^[a-z])|_([a-z]))/${2:/upcase}${3:/upcase}/g}(bpy.types.Operator):\r",
       "\tbl_idname = \"object.$1\" \r",
       "\tbl_label = \"$1\"\r",
-      "\tbl_description = \"${1/([^_]*)(_)*/${1:/capitalize}${2:+ }/g}\"\r",
+      "\tbl_description = \"$1\"\r",
       "\tbl_options = {\"REGISTER\",\"UNDO\"}\r",
       "\r",
       "\t@classmethod\r",
@@ -296,7 +296,7 @@
     "body": [
       "class ${1:MyClassName}(bpy.types.Operator):",
       "\tbl_idname = \"${2:my_operator.my_class_name}\"",
-      "\tbl_label = \"${2/([^_.]*)([_.]*)/${1:/capitalize}${2:+ }/g}\"",
+      "\tbl_label = \"$2\"",
       "\tbl_description = \"${4:Description that shows in blender tooltips}\"",
       "\tbl_options = {'REGISTER'}",
       "",

@@ -5,8 +5,8 @@
 local install_path = vim.fn.stdpath('data') ..  '/site/pack/packer/start/packer.nvim'
 
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-    vim.api.nvim_command('!git clone https://github.com/wbthomason/packer.nvim ' .. install_path)
-    vim.api.nvim_command 'packadd packer.nvim'
+	vim.api.nvim_command('!git clone https://github.com/wbthomason/packer.nvim ' .. install_path)
+	vim.api.nvim_command 'packadd packer.nvim'
 end
 
 vim.cmd 'autocmd BufWritePost plugins.lua PackerCompile' -- Auto compile when there are changes in plugins.lua
@@ -54,7 +54,10 @@ return require("packer").startup(
 
 		-- themes
 		use 'joshdick/onedark.vim'
-		use 'folke/tokyonight.nvim'
+		use {'folke/tokyonight.nvim',
+			config=function()  require('themes.tokyonight')  end} -- lua + wont close () next to char finally good and simple +++
+		use {'marko-cerovac/material.nvim',
+			config=function()  vim.g.material_style = "darker"  end} -- lua + wont close () next to char finally good and simple +++
 		use 'mhartington/oceanic-next'
 		use {'sainnhe/edge',
 			config=function()  require('themes.edge')  end} -- lua + wont close () next to char finally good and simple +++
@@ -74,7 +77,7 @@ return require("packer").startup(
 		use {'akinsho/nvim-bufferline.lua',
 			requires = 'kyazdani42/nvim-web-devicons',
 			config = function() require'bufferline'.setup(); require('nv-bufferline') end
-			} --uses buffers
+		} --uses buffers
 		use 'psliwka/vim-smoothie' --smooth PGUP/DOWN
 		use {'wfxr/minimap.vim', -- minimap fast
 			disable=true,
@@ -87,8 +90,10 @@ return require("packer").startup(
 		use {'nacro90/numb.nvim',
 			config=function() require('numb').setup() end } -- preview line whe using goto :xyz
 		use 'Yggdroot/indentLine' --  displaying thin vertical lines at each indentation level
-		use {'Xuyuanp/scrollbar.nvim', -- side scrollbar  -fucks up session load often :/
-			config=function() require("nv-scrollbar")  end } -- preview line whe using goto :xyz
+		-- use {'Xuyuanp/scrollbar.nvim', -- side scrollbar  -fucks up session load often :/
+		--	config=function() require("nv-scrollbar")  end } -- preview line whe using goto :xyz
+		use {'dstein64/nvim-scrollview',
+				config=function()  vim.api.nvim_exec('highlight link ScrollView Normal', false); vim.g.scrollview_character = '▎'  end}
 
 
 		-- Debugging
@@ -115,23 +120,25 @@ return require("packer").startup(
 			config=function() require("nv-vsnip")  end} -- lua + wont close () next to char finally good and simple +++
 		use {'hrsh7th/vim-vsnip-integ',-- auto completion
 			requires='hrsh7th/vim-vsnip'} -- lua + wont close () next to char finally good and simple +++
-		use {'kosayoda/nvim-lightbulb',
+		use {'kosayoda/nvim-lightbulb', -- replaced by lspsaga
+			disable=true,
 			config=function() require("nv-lightbulb")  end} -- lua + wont close () next to char finally good and simple +++
 		use 'onsails/lspkind-nvim'  -- icons for completion popup
 		-- use {'codota/tabnine-vim'} -- wont work with compe
 		use {'tzachar/compe-tabnine', run='./install.sh',
 			requires = 'hrsh7th/nvim-compe'}
 		use { "folke/lsp-trouble.nvim", -- shows nice icons in lsp warnings...
-			  requires = "kyazdani42/nvim-web-devicons",
-			  config = function() require("nv-lsptrouble") end,}
-    use {'simrat39/symbols-outline.nvim', -- :SymbolsOutline
+			requires = "kyazdani42/nvim-web-devicons",
+			config = function() require("nv-lsptrouble") end,}
+		use {'simrat39/symbols-outline.nvim', -- :SymbolsOutline
 			config = function() require('symbols-outline').setup({highlight_hovered_item = false}) end}
-    use {'glepnir/lspsaga.nvim', --cool popup goto def hoover etc
-			  config = function() require("nv-lspsaga") end,}
+		use {'glepnir/lspsaga.nvim', --cool popup goto def hoover etc - but still wipp
+			disable = false,
+			config = function() require("nv-lspsaga") end,}
 		-- Telescope
 		use {'nvim-telescope/telescope.nvim',
-				requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}},
-				config=function() require("telescope-nvim") end} -- lua + wont lose () next to char finally good and simple +++
+			requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}},
+			config=function() require("telescope-nvim") end} -- lua + wont lose () next to char finally good and simple +++
 		use 'nvim-telescope/telescope-media-files.nvim'
 		use 'junegunn/fzf.vim'
 
@@ -156,8 +163,8 @@ return require("packer").startup(
 			config=vim.cmd('source ~/.config/nvim/which_key.vim') }
 		use { 'AckslD/nvim-whichkey-setup.lua',
 			requires = {'liuchengxu/vim-which-key'} }
-    -- use {'ludovicchabant/vim-gutentags', -- lsp better..
-    --      config=function() require("nv-gutentags")  end}
+		-- use {'ludovicchabant/vim-gutentags', -- lsp better..
+		--      config=function() require("nv-gutentags")  end}
 		--find and replace ?
 		use 'kevinhwang91/nvim-bqf' --better quickfix  (with preview and complicated mapping)
 		use 'brooth/far.vim' --use: Far(r) from to **/*.py   > then :Fardo
@@ -168,12 +175,12 @@ return require("packer").startup(
 			requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}} }
 
 
-    --undo redo
+		--undo redo
 		-- use 'maxbrunsfeld/vim-yankstack' --works in normal and visual mode..<M-p> and <M-S-p>
 		use 'mbbill/undotree'   -- undo history  :UndotreeToggle to toggle the undo-tree panel.
 		use 'mg979/vim-localhistory' -- local history LHLoad, LHWrite
---     use {'chrisbra/changesPlugin', -- show local changes - EC, TC
--- 			config = function() vim.cmd('source ~/.config/nvim/nv-changes.vim') end}
+		--     use {'chrisbra/changesPlugin', -- show local changes - EC, TC
+		--			config = function() vim.cmd('source ~/.config/nvim/nv-changes.vim') end}
 
 
 		--aligning
@@ -186,14 +193,14 @@ return require("packer").startup(
 		--code/format
 		-- use 'chaoren/vim-wordmotion' -- adds eg support for different snake case as individual words
 		use 'tpope/vim-surround' -- eg cs'" -> changes ' to "
-			-- use 'blackcauldron7/surround.nvim' --hotkye s taken, plus unstable?
+		-- use 'blackcauldron7/surround.nvim' --hotkye s taken, plus unstable?
 		use 'wellle/targets.vim' -- eg ci,  ci_ etc
 		use 'andymass/vim-matchup' -- increase power of %
 		-- use {'lukas-reineke/indent-blankline.nvim', branch = 'lua', disable = true} -- add indents on blank lines
 		use {"sbdchd/neoformat",  --verly slow with lsp or treesitter
-    			disable=true,}
+			disable=true,}
 		use {'Chiel92/vim-autoformat',
-				config=function() require('nv-autoformat') end }
+			config=function() require('nv-autoformat') end }
 		use {'windwp/nvim-autopairs',  -- lua + wont close () next to char finally good and simple +++
 			-- comit='b8272f539017ffb6de6a05247e7c333b3721279b',
 			config=function() require('nv-autopairs') end }
@@ -204,24 +211,23 @@ return require("packer").startup(
 		use 'mg979/vim-visual-multi'  --multi cursor support like vscode...
 
 		--spell check
-		-- use 'kamykn/spelunker.vim'  -- zl - correct, or Zc, Zf
+		use {'kamykn/spelunker.vim',  -- zl - correct, or Zc, Zf
+			config=function() require('nv-spelunker') end} -- in lua     o
 
 		-- navigation
 		use "phaazon/hop.nvim"
 		-- use 'rhysd/clever-f.vim' -- f,t,F,T, repeat fff.. to search next occurance of x - wont work with macros!
 		use {'justinmk/vim-sneak',
-         config = function() vim.cmd('source ~/.config/nvim/nv-sneak.vim') end}
+			config = function() vim.cmd('source ~/.config/nvim/nv-sneak.vim') end}
 		-- ternimal in popup
-		use {
-			"numtostr/FTerm.nvim",
-			config = function() require("FTerm").setup() end
-}
-	  --repls
+		use { "numtostr/FTerm.nvim", -- flaot term
+			config = function() require("FTerm").setup() end }
+		--repls
 		use "rafcamlet/nvim-luapad" -- :Luapad - open interactive scratch bufer with realtime eval
 		use 'metakirby5/codi.vim' -- repls for all other langs ...
 		use 'camspiers/lens.vim' --auto win size
 
 
-    end
+	end
 )
-		--vim.cmd('packloadall!') -- fixes plugs not seeing config, and load order mess. Or else we need to: so $MYVIMRC
+--vim.cmd('packloadall!') -- fixes plugs not seeing config, and load order mess. Or else we need to: so $MYVIMRC

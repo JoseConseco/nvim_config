@@ -1,4 +1,4 @@
-vim.g.ayucolor="dark" --mirage, dark
+vim.g.ayucolor="mirage" --mirage, dark
 vim.g.ayu_italic_comment = 1 -- def 0
 vim.g.ayu_sign_contrast = 1 -- defaults to 0. If set to 1, SignColumn and FoldColumn will have a higher contrast instead of using the Normal background
 

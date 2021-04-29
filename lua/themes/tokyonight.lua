@@ -1,5 +1,5 @@
 -- Example config in Lua
-vim.g.tokyonight_style = "night"  -- night (darker) or storm
+vim.g.tokyonight_style = "storm"  -- night (darker) or storm
 vim.g.tokyonight_italic_comments = false
 vim.g.tokyonight_dark_sidebar = true  -- darken eg Fern, NerdTree etc
 vim.g.tokyonight_sidebars = { "qf", "vista_kind", "terminal", "packer", "fern" }

@@ -15,7 +15,7 @@
 		cancel = "<esc>", -- cancel the preview and get back to your last window / buffer / cursor
 		open_folds = "zR", -- open all folds
 		previous = "k", -- preview item
-		next = "j" -- next item
+		next = "j", -- next item
 	},
 	indent_lines = true, -- add an indent guide below the fold icons
 	auto_open = false, -- automatically open the list when you have diagnostics

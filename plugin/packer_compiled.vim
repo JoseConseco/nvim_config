@@ -154,6 +154,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/lspsaga.nvim"
   },
+  ["material.nvim"] = {
+    config = { "\27LJ\2\n7\0\0\2\0\4\0\0056\0\0\0009\0\1\0'\1\3\0=\1\2\0K\0\1\0\vdarker\19material_style\6g\bvim\0" },
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/material.nvim"
+  },
   ["nerdfont.vim"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nerdfont.vim"
@@ -192,11 +197,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nvim-compe"
   },
-  ["nvim-lightbulb"] = {
-    config = { "\27LJ\2\n,\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\17nv-lightbulb\frequire\0" },
-    loaded = true,
-    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nvim-lightbulb"
-  },
   ["nvim-lspconfig"] = {
     config = { "\27LJ\2\n#\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\blsp\frequire\0" },
     loaded = true,
@@ -205,6 +205,11 @@ _G.packer_plugins = {
   ["nvim-luapad"] = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nvim-luapad"
+  },
+  ["nvim-scrollview"] = {
+    config = { "\27LJ\2\nÅ\1\0\0\4\0\a\0\v6\0\0\0009\0\1\0009\0\2\0'\2\3\0+\3\1\0B\0\3\0016\0\0\0009\0\4\0'\1\6\0=\1\5\0K\0\1\0\b‚ñé\25scrollview_character\6g%highlight link ScrollView Normal\14nvim_exec\bapi\bvim\0" },
+    loaded = true,
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/nvim-scrollview"
   },
   ["nvim-spectre"] = {
     loaded = true,
@@ -251,10 +256,10 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/registers.nvim"
   },
-  ["scrollbar.nvim"] = {
-    config = { "\27LJ\2\n,\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\17nv-scrollbar\frequire\0" },
+  ["spelunker.vim"] = {
+    config = { "\27LJ\2\n,\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\17nv-spelunker\frequire\0" },
     loaded = true,
-    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/scrollbar.nvim"
+    path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/spelunker.vim"
   },
   ["symbols-outline.nvim"] = {
     config = { "\27LJ\2\n\\\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\1\27highlight_hovered_item\1\nsetup\20symbols-outline\frequire\0" },
@@ -279,6 +284,7 @@ _G.packer_plugins = {
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/telescope.nvim"
   },
   ["tokyonight.nvim"] = {
+    config = { "\27LJ\2\n1\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\22themes.tokyonight\frequire\0" },
     loaded = true,
     path = "/home/bartosz/.local/share/nvim/site/pack/packer/start/tokyonight.nvim"
   },
@@ -368,110 +374,118 @@ _G.packer_plugins = {
 }
 
 time("Defining packer_plugins", false)
--- Config for: nvim-compe
-time("Config for nvim-compe", true)
-try_loadstring("\27LJ\2\n*\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\15nvim-compe\frequire\0", "config", "nvim-compe")
-time("Config for nvim-compe", false)
--- Config for: galaxyline.nvim
-time("Config for galaxyline.nvim", true)
-try_loadstring("\27LJ\2\n-\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\18nv-galaxyline\frequire\0", "config", "galaxyline.nvim")
-time("Config for galaxyline.nvim", false)
--- Config for: nvim-lspconfig
-time("Config for nvim-lspconfig", true)
-try_loadstring("\27LJ\2\n#\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\blsp\frequire\0", "config", "nvim-lspconfig")
-time("Config for nvim-lspconfig", false)
+-- Config for: spelunker.vim
+time("Config for spelunker.vim", true)
+try_loadstring("\27LJ\2\n,\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\17nv-spelunker\frequire\0", "config", "spelunker.vim")
+time("Config for spelunker.vim", false)
 -- Config for: numb.nvim
 time("Config for numb.nvim", true)
 try_loadstring("\27LJ\2\n2\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\tnumb\frequire\0", "config", "numb.nvim")
 time("Config for numb.nvim", false)
--- Config for: symbols-outline.nvim
-time("Config for symbols-outline.nvim", true)
-try_loadstring("\27LJ\2\n\\\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\1\27highlight_hovered_item\1\nsetup\20symbols-outline\frequire\0", "config", "symbols-outline.nvim")
-time("Config for symbols-outline.nvim", false)
--- Config for: edge
-time("Config for edge", true)
-try_loadstring("\27LJ\2\n+\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\16themes.edge\frequire\0", "config", "edge")
-time("Config for edge", false)
--- Config for: vim-autoformat
-time("Config for vim-autoformat", true)
-try_loadstring("\27LJ\2\n-\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\18nv-autoformat\frequire\0", "config", "vim-autoformat")
-time("Config for vim-autoformat", false)
--- Config for: vim-sneak
-time("Config for vim-sneak", true)
-try_loadstring("\27LJ\2\nF\0\0\3\0\3\0\0056\0\0\0009\0\1\0'\2\2\0B\0\2\1K\0\1\0'source ~/.config/nvim/nv-sneak.vim\bcmd\bvim\0", "config", "vim-sneak")
-time("Config for vim-sneak", false)
--- Config for: telescope.nvim
-time("Config for telescope.nvim", true)
-try_loadstring("\27LJ\2\n.\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\19telescope-nvim\frequire\0", "config", "telescope.nvim")
-time("Config for telescope.nvim", false)
--- Config for: scrollbar.nvim
-time("Config for scrollbar.nvim", true)
-try_loadstring("\27LJ\2\n,\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\17nv-scrollbar\frequire\0", "config", "scrollbar.nvim")
-time("Config for scrollbar.nvim", false)
--- Config for: nvim-comment
-time("Config for nvim-comment", true)
-try_loadstring("\27LJ\2\nP\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\1\18comment_empty\1\nsetup\17nvim_comment\frequire\0", "config", "nvim-comment")
-time("Config for nvim-comment", false)
--- Config for: vim-easy-align
-time("Config for vim-easy-align", true)
-try_loadstring("\27LJ\2\n,\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\17nv-easyalign\frequire\0", "config", "vim-easy-align")
-time("Config for vim-easy-align", false)
--- Config for: vimspector
-time("Config for vimspector", true)
-try_loadstring("\27LJ\2\n-\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\18nv-vimspector\frequire\0", "config", "vimspector")
-time("Config for vimspector", false)
--- Config for: ayu-vim
-time("Config for ayu-vim", true)
-try_loadstring("\27LJ\2\n.\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\19themes.ayu-vim\frequire\0", "config", "ayu-vim")
-time("Config for ayu-vim", false)
 -- Config for: nvim-bufferline.lua
 time("Config for nvim-bufferline.lua", true)
 try_loadstring("\27LJ\2\nR\0\0\3\0\4\0\t6\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\0016\0\0\0'\2\3\0B\0\2\1K\0\1\0\18nv-bufferline\nsetup\15bufferline\frequire\0", "config", "nvim-bufferline.lua")
 time("Config for nvim-bufferline.lua", false)
+-- Config for: vim-sneak
+time("Config for vim-sneak", true)
+try_loadstring("\27LJ\2\nF\0\0\3\0\3\0\0056\0\0\0009\0\1\0'\2\2\0B\0\2\1K\0\1\0'source ~/.config/nvim/nv-sneak.vim\bcmd\bvim\0", "config", "vim-sneak")
+time("Config for vim-sneak", false)
+-- Config for: symbols-outline.nvim
+time("Config for symbols-outline.nvim", true)
+try_loadstring("\27LJ\2\n\\\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\1\27highlight_hovered_item\1\nsetup\20symbols-outline\frequire\0", "config", "symbols-outline.nvim")
+time("Config for symbols-outline.nvim", false)
+-- Config for: nvim-comment
+time("Config for nvim-comment", true)
+try_loadstring("\27LJ\2\nP\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\1\18comment_empty\1\nsetup\17nvim_comment\frequire\0", "config", "nvim-comment")
+time("Config for nvim-comment", false)
 -- Config for: nvim-treesitter
 time("Config for nvim-treesitter", true)
 try_loadstring("\27LJ\2\n*\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\15treesitter\frequire\0", "config", "nvim-treesitter")
 time("Config for nvim-treesitter", false)
--- Config for: FTerm.nvim
-time("Config for FTerm.nvim", true)
-try_loadstring("\27LJ\2\n3\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\nFTerm\frequire\0", "config", "FTerm.nvim")
-time("Config for FTerm.nvim", false)
--- Config for: lsp-trouble.nvim
-time("Config for lsp-trouble.nvim", true)
-try_loadstring("\27LJ\2\n-\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\18nv-lsptrouble\frequire\0", "config", "lsp-trouble.nvim")
-time("Config for lsp-trouble.nvim", false)
--- Config for: gitsigns.nvim
-time("Config for gitsigns.nvim", true)
-try_loadstring("\27LJ\2\n+\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\16nv-gitsigns\frequire\0", "config", "gitsigns.nvim")
-time("Config for gitsigns.nvim", false)
--- Config for: vim-devicons
-time("Config for vim-devicons", true)
-try_loadstring("\27LJ\2\n,\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\17web-devicons\frequire\0", "config", "vim-devicons")
-time("Config for vim-devicons", false)
--- Config for: vim-vsnip
-time("Config for vim-vsnip", true)
-try_loadstring("\27LJ\2\n(\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\rnv-vsnip\frequire\0", "config", "vim-vsnip")
-time("Config for vim-vsnip", false)
--- Config for: vim-startify
-time("Config for vim-startify", true)
-try_loadstring("\27LJ\2\n+\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\16nv-startify\frequire\0", "config", "vim-startify")
-time("Config for vim-startify", false)
--- Config for: lspsaga.nvim
-time("Config for lspsaga.nvim", true)
-try_loadstring("\27LJ\2\n*\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\15nv-lspsaga\frequire\0", "config", "lspsaga.nvim")
-time("Config for lspsaga.nvim", false)
--- Config for: nvim-lightbulb
-time("Config for nvim-lightbulb", true)
-try_loadstring("\27LJ\2\n,\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\17nv-lightbulb\frequire\0", "config", "nvim-lightbulb")
-time("Config for nvim-lightbulb", false)
--- Config for: nvim-autopairs
-time("Config for nvim-autopairs", true)
-try_loadstring("\27LJ\2\n,\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\17nv-autopairs\frequire\0", "config", "nvim-autopairs")
-time("Config for nvim-autopairs", false)
+-- Config for: galaxyline.nvim
+time("Config for galaxyline.nvim", true)
+try_loadstring("\27LJ\2\n-\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\18nv-galaxyline\frequire\0", "config", "galaxyline.nvim")
+time("Config for galaxyline.nvim", false)
 -- Config for: nvim-colorizer.lua
 time("Config for nvim-colorizer.lua", true)
 try_loadstring("\27LJ\2\n7\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\14colorizer\frequire\0", "config", "nvim-colorizer.lua")
 time("Config for nvim-colorizer.lua", false)
+-- Config for: telescope.nvim
+time("Config for telescope.nvim", true)
+try_loadstring("\27LJ\2\n.\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\19telescope-nvim\frequire\0", "config", "telescope.nvim")
+time("Config for telescope.nvim", false)
+-- Config for: tokyonight.nvim
+time("Config for tokyonight.nvim", true)
+try_loadstring("\27LJ\2\n1\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\22themes.tokyonight\frequire\0", "config", "tokyonight.nvim")
+time("Config for tokyonight.nvim", false)
+-- Config for: nvim-lspconfig
+time("Config for nvim-lspconfig", true)
+try_loadstring("\27LJ\2\n#\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\blsp\frequire\0", "config", "nvim-lspconfig")
+time("Config for nvim-lspconfig", false)
+-- Config for: vim-autoformat
+time("Config for vim-autoformat", true)
+try_loadstring("\27LJ\2\n-\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\18nv-autoformat\frequire\0", "config", "vim-autoformat")
+time("Config for vim-autoformat", false)
+-- Config for: vimspector
+time("Config for vimspector", true)
+try_loadstring("\27LJ\2\n-\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\18nv-vimspector\frequire\0", "config", "vimspector")
+time("Config for vimspector", false)
+-- Config for: vim-easy-align
+time("Config for vim-easy-align", true)
+try_loadstring("\27LJ\2\n,\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\17nv-easyalign\frequire\0", "config", "vim-easy-align")
+time("Config for vim-easy-align", false)
+-- Config for: vim-vsnip
+time("Config for vim-vsnip", true)
+try_loadstring("\27LJ\2\n(\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\rnv-vsnip\frequire\0", "config", "vim-vsnip")
+time("Config for vim-vsnip", false)
+-- Config for: vim-devicons
+time("Config for vim-devicons", true)
+try_loadstring("\27LJ\2\n,\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\17web-devicons\frequire\0", "config", "vim-devicons")
+time("Config for vim-devicons", false)
+-- Config for: edge
+time("Config for edge", true)
+try_loadstring("\27LJ\2\n+\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\16themes.edge\frequire\0", "config", "edge")
+time("Config for edge", false)
+-- Config for: lsp-trouble.nvim
+time("Config for lsp-trouble.nvim", true)
+try_loadstring("\27LJ\2\n-\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\18nv-lsptrouble\frequire\0", "config", "lsp-trouble.nvim")
+time("Config for lsp-trouble.nvim", false)
+-- Config for: nvim-autopairs
+time("Config for nvim-autopairs", true)
+try_loadstring("\27LJ\2\n,\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\17nv-autopairs\frequire\0", "config", "nvim-autopairs")
+time("Config for nvim-autopairs", false)
+-- Config for: ayu-vim
+time("Config for ayu-vim", true)
+try_loadstring("\27LJ\2\n.\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\19themes.ayu-vim\frequire\0", "config", "ayu-vim")
+time("Config for ayu-vim", false)
+-- Config for: vim-startify
+time("Config for vim-startify", true)
+try_loadstring("\27LJ\2\n+\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\16nv-startify\frequire\0", "config", "vim-startify")
+time("Config for vim-startify", false)
+-- Config for: FTerm.nvim
+time("Config for FTerm.nvim", true)
+try_loadstring("\27LJ\2\n3\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\nFTerm\frequire\0", "config", "FTerm.nvim")
+time("Config for FTerm.nvim", false)
+-- Config for: lspsaga.nvim
+time("Config for lspsaga.nvim", true)
+try_loadstring("\27LJ\2\n*\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\15nv-lspsaga\frequire\0", "config", "lspsaga.nvim")
+time("Config for lspsaga.nvim", false)
+-- Config for: material.nvim
+time("Config for material.nvim", true)
+try_loadstring("\27LJ\2\n7\0\0\2\0\4\0\0056\0\0\0009\0\1\0'\1\3\0=\1\2\0K\0\1\0\vdarker\19material_style\6g\bvim\0", "config", "material.nvim")
+time("Config for material.nvim", false)
+-- Config for: nvim-scrollview
+time("Config for nvim-scrollview", true)
+try_loadstring("\27LJ\2\nÅ\1\0\0\4\0\a\0\v6\0\0\0009\0\1\0009\0\2\0'\2\3\0+\3\1\0B\0\3\0016\0\0\0009\0\4\0'\1\6\0=\1\5\0K\0\1\0\b‚ñé\25scrollview_character\6g%highlight link ScrollView Normal\14nvim_exec\bapi\bvim\0", "config", "nvim-scrollview")
+time("Config for nvim-scrollview", false)
+-- Config for: nvim-compe
+time("Config for nvim-compe", true)
+try_loadstring("\27LJ\2\n*\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\15nvim-compe\frequire\0", "config", "nvim-compe")
+time("Config for nvim-compe", false)
+-- Config for: gitsigns.nvim
+time("Config for gitsigns.nvim", true)
+try_loadstring("\27LJ\2\n+\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\16nv-gitsigns\frequire\0", "config", "gitsigns.nvim")
+time("Config for gitsigns.nvim", false)
 if should_profile then save_profiles() end
 
 END

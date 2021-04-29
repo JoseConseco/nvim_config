@@ -34,11 +34,14 @@ gls.left[4] = {
     getCwd = {
         provider = function ()
             -- local full_dir = vim.fn.expand('%:p') -- full file path
+			-- http://vimdoc.sourceforge.net/htmldoc/cmdline.html#filename-modifiers
 			local project_dir = vim.fn.getcwd()
-			local home_dir = os.getenv("HOME")
-			local rel_file_dir = vim.fn.expand("%") -- #str - length -- relative path to pdir (or absolute smtim)
+			-- local project_dir = vim.fn.expand("%:p:~") - abs file path with ~/ format
+			-- local home_dir = os.getenv("HOME")
+			-- local abs_file_path = vim.fn.expand("%:p") -- #str - length -- relative path to pdir (or absolute smtim)
+			local rel_file_dir = vim.fn.expand("%:p:~:.") -- #str - length -- relative path to pdir (or absolute smtim)
 
-			project_dir = project_dir:gsub(home_dir, '~')
+			-- project_dir = project_dir:gsub(home_dir, '~')
 			-- project_dir = vim.fn.expand("%:p:h")
 			-- project_dir = project_dir:gsub('(%w)[%w|%s|_]*','%1.')..'> '
 			if #project_dir > 15 then
