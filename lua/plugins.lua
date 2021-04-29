@@ -159,10 +159,12 @@ return require("packer").startup(
 
 
 		-- general
-		use {'liuchengxu/vim-which-key',
-			config=vim.cmd('source ~/.config/nvim/which_key.vim') }
-		use { 'AckslD/nvim-whichkey-setup.lua',
-			requires = {'liuchengxu/vim-which-key'} }
+		-- use {'liuchengxu/vim-which-key',
+		-- 	config=vim.cmd('source ~/.config/nvim/which_key.vim') }
+		-- use { 'AckslD/nvim-whichkey-setup.lua',
+		-- 	requires = {'liuchengxu/vim-which-key'} }
+		use { "folke/which-key.nvim",
+		  config = function() require("nv-which-key") end }
 		-- use {'ludovicchabant/vim-gutentags', -- lsp better..
 		--      config=function() require("nv-gutentags")  end}
 		--find and replace ?
