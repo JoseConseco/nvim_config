@@ -1,11 +1,11 @@
 -- load plugins
-require("plugins")
+require('plugins')
 -- vim.cmd('packloadall!') -- fixes plugs not seeing config, and load order mess. Or else we need to: so $MYVIMRC  but fucks up packer.sync...
 require('settings')
 require('keymappings')
 
 -- set themes props before loading actuall theme ?
-vim.cmd('colorscheme edge')  -- onedark, OceanicNext, edge
+vim.cmd('colorscheme tokyonight')  -- onedark, OceanicNext, edge
 
 require'telescope'.load_extension('sessions')
 
@@ -26,6 +26,10 @@ vim.cmd([[
 autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
 autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
 ]])
+
+-- vim.api.nvim_exec([[
+-- autocmd User VimspectorUICreated autocmd CursorHold *.py  :execute "normal \<Plug>VimspectorBalloonEval"
+-- ]],false)
 
 --close NTree on quit..does not work on session it seems
 -- vim.cmd('autocmd VimLeave * NERDTreeClose')

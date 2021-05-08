@@ -20,12 +20,13 @@ require "compe".setup {
 				path = {kind = " "},
         buffer = {kind = " "},
         calc = {kind = " "},
-        vsnip = {kind = " "},
-        tabnine = {kind = " ", priority=9999, max_reslts=4},
+        vsnip = {kind = " ", priority=1555},
+        tabnine = {kind = " ", priority=1000, max_reslts=4},
         nvim_lsp = {kind = " "},
         nvim_lua = {kind = " "},
         spell = {kind = " "},
         tags = false,
+				omni = true,
         -- snippets_nvim = true,
         -- treesitter = true
     }

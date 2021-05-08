@@ -86,7 +86,7 @@ return require("packer").startup(
 		use {"mhinz/vim-startify",
 			config=function() require('nv-startify') end} -- lua + wont close () next to char finally good and simple +++
 		-- use 'junegunn/vim-peekaboo' -- show content of registers when using " or @
-		use "tversteeg/registers.nvim"  -- show content of registers when using "
+		-- use "tversteeg/registers.nvim"  -- show content of registers when using " - replaced by new lua which_key
 		use {'nacro90/numb.nvim',
 			config=function() require('numb').setup() end } -- preview line whe using goto :xyz
 		use 'Yggdroot/indentLine' --  displaying thin vertical lines at each indentation level
@@ -155,6 +155,7 @@ return require("packer").startup(
 		use 'tpope/vim-fugitive'    -- add :Gitxx commands
 		use {'lewis6991/gitsigns.nvim',
 			requires = 'nvim-lua/plenary.nvim',
+			branch = 'foldsigns',
 			config=function() require("nv-gitsigns")  end} -- lua + wont close () next to char finally good and simple +++
 
 

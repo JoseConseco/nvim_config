@@ -113,7 +113,7 @@ vim.api.nvim_set_keymap('n', '<C-h>', ':set hlsearch!<CR>', {noremap = true, sil
 vim.api.nvim_set_keymap('n', '/', '/\\v', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('v', '/', '/\\v', {noremap = true})
 vim.api.nvim_set_keymap('c', 's/', 's/\\v', {noremap = true})
-vim.api.nvim_set_keymap('n', ':g/', ':g/\\v', {noremap = true})
+vim.api.nvim_set_keymap('n', 'g/', ':g/\\v', {noremap = true})
 
 -- scene.cursor
 vim.api.nvim_set_keymap('v', '*', "y/\\V<C-R>=escape(@\",'/\')<CR><CR>", {noremap = true})

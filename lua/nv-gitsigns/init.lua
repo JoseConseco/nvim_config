@@ -1,12 +1,21 @@
 require('gitsigns').setup {
+vim.cmd([[:highlight CustomSignsAdd guifg=#a4cf69]]),
+vim.cmd([[:highlight CustomSignsChange guifg=#63c1e6]]),
+vim.cmd([[:highlight CustomSignsDelete guifg=#d74f56]]),
+
 signs = {
-    add          = {hl = 'GitSignsAdd'   , text = '▍', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'}, --before fold
-    change       = {hl = 'GitSignsChange', text = '▍', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
-    delete       = {hl = 'GitSignsDelete', text = '▍', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
-    topdelete    = {hl = 'GitSignsDelete', text = '▍', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
-    changedelete = {hl = 'GitSignsChange', text = '▍', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
-		fold         = {enable = true, hl = 'GitSignsFold'  , text = '┋', numhl='GitSignsFoldNr'  , linehl='GitSignsFoldLn' },
-  },       -- narrower ▎
+    add          = {hl = 'CustomSignsAdd'   , text = '▍', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'}, --before fold
+    change       = {hl = 'CustomSignsChange', text = '▍', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+    delete       = {hl = 'CustomSignsDelete', text = '▍', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+    topdelete    = {hl = 'CustomSignsDelete', text = '▍', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+    changedelete = {hl = 'CustomSignsChange', text = '▍', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+    -- add          = {hl = 'GitSignsAdd'   , text = '▍', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'}, --before fold
+    -- change       = {hl = 'GitSignsChange', text = '▍', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+    -- delete       = {hl = 'GitSignsDelete', text = '▍', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+    -- topdelete    = {hl = 'GitSignsDelete', text = '▍', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+    -- changedelete = {hl = 'GitSignsChange', text = '▍', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+		fold         = {enable = true, hl = 'GitSignsFold'  , text = '▋', numhl='GitSignsFoldNr'  , linehl='GitSignsFoldLn' },
+  },       -- narrower ▎  , ┋, ［
   numhl = false,
   linehl = false,
   keymaps = {
