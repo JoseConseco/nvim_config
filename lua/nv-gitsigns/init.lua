@@ -1,8 +1,7 @@
+vim.cmd([[:highlight CustomSignsAdd guifg=#a4cf69]])
+vim.cmd([[:highlight CustomSignsChange guifg=#63c1e6]])
+vim.cmd([[:highlight CustomSignsDelete guifg=#d74f56]])
 require('gitsigns').setup {
-vim.cmd([[:highlight CustomSignsAdd guifg=#a4cf69]]),
-vim.cmd([[:highlight CustomSignsChange guifg=#63c1e6]]),
-vim.cmd([[:highlight CustomSignsDelete guifg=#d74f56]]),
-
 signs = {
     add          = {hl = 'CustomSignsAdd'   , text = '▍', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'}, --before fold
     change       = {hl = 'CustomSignsChange', text = '▍', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},

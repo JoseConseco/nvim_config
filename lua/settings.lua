@@ -8,6 +8,7 @@ vim.o.hidden = true -- Required to keep multiple buffers open multiple buffers
 vim.wo.wrap = false -- Display long lines as just one line
 vim.cmd('set whichwrap+=<,>,[,],h,l') -- move to next line with theses keys
 vim.cmd('set noswapfile') -- move to next line with theses keys
+-- vim.cmd("set diffopt+=iwhite") --avoid comparing whitespaces  - but breaks diff obtain?
 vim.o.pumheight = 10 -- Makes popup menu smaller
 vim.o.fileencoding = "utf-8" -- The encoding written to file
 vim.o.cmdheight = 1 -- More space for displaying messages

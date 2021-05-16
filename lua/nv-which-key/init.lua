@@ -4,6 +4,10 @@ require("which-key").setup({
 	plugins = {
 		marks = true, -- shows a list of your marks on ' and `
 		registers = true, -- shows your registers on " in NORMAL or <C-r> in INSERT mode
+		spelling = {
+      enabled = true, -- enabling this will show WhichKey when pressing z= to select spelling suggestions
+      suggestions = 10, -- how many suggestions should be shown in the list?
+    },
 		-- the presets plugin, adds help for a bunch of default keybindings in Neovim
 		-- No actual key bindings are created
 		presets = {
@@ -54,7 +58,7 @@ wk.register({
 	['<leader>r'] = { ':luafile $MYVIMRC<CR>',     'Reload VIMRC' },
 	['<leader> '] = { ':HopChar2<CR>',             'HOP 2Char' },
 	['<leader>e'] = { ':Fern . -reveal=%<CR>',       'File Browser' },
-	['<leader>p'] = { 'viw"_dP<CR>',                   'Paste over word' }, -- -d => without override
+	['<leader>p'] = { 'viw"_dP',                   'Paste over word' }, -- -d => without override
 	['<leader>1'] = 'which_key_ignore',
 	['<leader>2'] = 'which_key_ignore',
 	['<leader>3'] = 'which_key_ignore',
@@ -69,7 +73,17 @@ wk.register({
 -- wk.register('which_key_ignore'
 -- wk.register('which_key_ignore'
 
-
+function _G.compare_to_clipboard()
+	local ftype = vim.api.nvim_eval("&filetype")
+	vim.cmd("vsplit")
+	vim.cmd("enew")
+	vim.cmd("normal! P")
+	vim.cmd("setlocal buftype=nowrite")
+	vim.cmd("set filetype="..ftype)
+	vim.cmd("diffthis")
+	vim.cmd([[execute "normal! \<C-w>h"]])
+	vim.cmd("diffthis")
+end
 -- b for buffers  - for nvim-bufferline<Plug>
 -- ['s'] = {':BLines',                              'Search lines fzf'},
 wk.register({
@@ -122,30 +136,40 @@ wk.register({
 	['<leader>cfO'] = {'zO<CR>',   'open all cur(zO)'},
 })
 
+wk.register({
+	['<leader>D'] = { name = '+Diff' },
+	['<leader>Dc'] = {':call v:lua.compare_to_clipboard()<CR>', 'Compare to clipboard'},   -- fixes error on buffer close
+	['<leader>D['] =  { '[c<CR>',                         'Prev change [c'},
+	['<leader>D]'] =  { ']c<CR>',                         'Next change ]c'},
+	['<leader>Do'] =  { ':diffget<CR>',                         'Obtain(do)'},
+	['<leader>Dp'] =  { ':diffput<CR>',                         'Put(dp)'},
+	['<leader>Dt'] =  { ':diffthis',                            'Diff This'},
+	['<leader>Du'] =  { ':diffupdate',                          'Update changes'},
+	['<leader>Dw'] =  { ':windo diffthis<cr>',                  'Diff visible windows'}, --broken from scrollbar
+})
+
 
 wk.register({
-	['<leader>d'] = { name = '+Debugger' },
-	['<leader>dd'] =  { ':execute "normal \\<Plug>VimspectorContinue"<CR>',                         'Continue/Start debugging'},
-	['<leader>dx'] =  { ':execute "normal \\<Plug>VimspectorStop"<CR>',                             'Stop debugging'} ,
-	['<leader>db'] =  { ':execute "normal \\<Plug>VimspectorToggleBreakpoint"<CR>',                 'Toggle line breakpoint on the current line'},
-	['<leader>dbc'] = { ':execute "normal \\<Plug>VimspectorToggleConditionalBreakpoint"<CR>',      'Toggle conditional line breakpoint on the current line'},
-	['<leader>dbf'] = { ':execute "normal \\<Plug>VimspectorAddFunctionBreakpoint"<CR>',            'Add a function breakpoint for the expression under cursor'},
-	['<leader>drc'] = { ':execute "normal \\<Plug>VimspectorRunToCursor"<CR>',                      'Run to Cursor'},
-	['<leader>dR'] =  { ':execute "normal \\<Plug>VimspectorRestart"<CR>',                          'Restart debugging with the same configuration'},
-	['<leader>dK'] =  { ':execute "normal \\<Plug>VimspectorBalloonEval"<CR>',                      'Eval popup'},
-	['<leader>dw'] =  { ':call vimspector#AddWatch(expand("<cexpr>"))<CR>',                         'Watch *'},
-	['<leader>dc'] =  { ':VimspectorReset<CR>',                                                     'Close vimspector interface'},
+	['<leader>d']   = { name = '+Debugger' },
+	['<leader>dd']  = { ":lua require'dap'.continue()<CR>",                                             'Continue/Start debugging'} ,
+	['<leader>dx']  = { ":lua require'dap'.disconnect()<CR>",                                             'Disconnect'} ,
+	['<leader>dX']  = { ":lua require'dap'.stop()<CR>",                                                  'Stop'} ,
+	['<leader>dU']  = { ":lua require'dap'.up()<CR>",                                                   'Stack Up'} ,
+	['<leader>dD']  = { ":lua require'dap'.down()<CR>",                                                 'Stack Down'} ,
+	['<leader>da']  = { ":lua require'dap'.attach('0.0.0.0',5678)<CR>",                     'Attach (localhost, 5678)'} ,
+	['<leader>dl']  = { ":lua require'dap'.run_last()<CR>",                                             'Run Last'},
+	['<leader>du']  = { ":lua require('dapui').setup()<CR>",                                         'Start UI'} ,
+	['<leader>db']  = { ":lua require'dap'.toggle_breakpoint()<CR>",                                    'Toggle breakpoint'},
+	['<leader>dbc'] = { ":lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>", 'Conditional breakpoint'},
+	['<leader>dk']  = { ":lua require'dap.ui.variables'.hover()<CR>",                        'Eval popup'},
+	['<leader>dK']  = { ":lua require('dapui').eval()<CR>",                                             'Eval window'},
+	['<leader>dn']  = { ":lua require'dap'.step_over()<CR>",                                            'Step Over'},
+	['<leader>dr']  = { ":lua require'dap'.repl.toggle()<CR>",                                            'Repl Toggle'},
 })
--- ['s'] = { '<Plug>VimspectorStepOver'                    , '(F8)Step Over'},
--- ['q'] = { '<Plug>VimspectorStepOut'                     , '<F9>Step Out '},
--- \ 'si' = { '<Plug>VimspectorStepInto'                   , '(F7)Step Into'},
--- ['p'] = { '<Plug>VimspectorPause'                       , '(F6)Pause debugee.'},
--- ['l'] = { ':call vimspector#Launch()<CR>'               , '(L)anuch config'}
 
-
--- function YankPath()
---	let @+=expand('%=p')
--- end
+function _G.yankpath()
+	vim.cmd([[let @+=expand('%:p')]])
+end
 -- file
 wk.register({
 	['<leader>f'] = { name = '+File' },
@@ -154,7 +178,7 @@ wk.register({
 	['<leader>fd'] = { ':call delete(expand("%")) | bdelete!<CR>', 'Delete!'},
 	['<leader>fr'] = {':confirm e<CR>',                            'Reload File(e!)'},
 	['<leader>ff'] = {':Telescope file_browser<CR>',               'File Browser (fuzzy)'},
-	['<leader>fy'] = { ":call YankPath()",                     'Yank file location<CR>'},
+	['<leader>fy'] = { ":call v:lua.yankpath()<CR>",                     'Yank file location<CR>'},
 	['<leader>fo'] = { ':!xdg-open "%:p:h"<CR>',                     'Open containing folder'},
 	['<leader>ft'] = { ':!termite -d "%:p:h"<CR>',                   'Open at terminal'},
 	['<leader>fC'] = {':cd %:p:h<CR>',                             'cd %'},
@@ -340,7 +364,7 @@ wk.register({
 	['<leader>w'] = { name = '+Window' },
 	['<leader>w='] = {'<C-w>=<CR>',              'Equalize(=)'},
 	['<leader>w>'] = {':vertical resize +5<CR>', 'Increase(>)'},
-	['<leader>w<'] = {':vertical resize -5<CR>', 'Decrease(<)'},
+	['<leader>w<lt>'] = {':vertical resize -5<CR>', 'Decrease(<)'},
 	['<leader>wh'] = {'<C-w>s<CR>',              'Split below(s)'},
 	['<leader>wv'] = {'<C-w>v<CR>',              'Split right(v)'},
 	['<leader>wq'] = {'<C-w>q<CR>',              'Quit window(q)'},
