@@ -5,9 +5,9 @@ require("which-key").setup({
 		marks = true, -- shows a list of your marks on ' and `
 		registers = true, -- shows your registers on " in NORMAL or <C-r> in INSERT mode
 		spelling = {
-      enabled = true, -- enabling this will show WhichKey when pressing z= to select spelling suggestions
-      suggestions = 10, -- how many suggestions should be shown in the list?
-    },
+			enabled = true, -- enabling this will show WhichKey when pressing z= to select spelling suggestions
+			suggestions = 10, -- how many suggestions should be shown in the list?
+		},
 		-- the presets plugin, adds help for a bunch of default keybindings in Neovim
 		-- No actual key bindings are created
 		presets = {
@@ -53,11 +53,10 @@ wk.register({
 	['<leader>/'] = { ':Ag<CR>',                   'Search Project' },  --<plug>fzf,
 	['<leader>.'] = { ':Telescope find_files<CR>', 'Find File' },
 	['<leader>:'] = { ':Telescope commands<CR>',   'Commands' },
-	['<leader><lt>'] = { ':Telescope buffers<CR>',    'Switch Buffer' },
-	["<leader>%"] = { ':<C-o><CR>',           'Switch to last buffer<CR>' }, --<plug>bufftabs,
+	['<leader><lt>'] = { ':Telescope buffers<CR>', 'Switch Buffer' },
 	['<leader>r'] = { ':luafile $MYVIMRC<CR>',     'Reload VIMRC' },
 	['<leader> '] = { ':HopChar2<CR>',             'HOP 2Char' },
-	['<leader>e'] = { ':Fern . -reveal=%<CR>',       'File Browser' },
+	['<leader>e'] = { ':Fern . -reveal=%<CR>',     'File Browser' },
 	['<leader>p'] = { 'viw"_dP',                   'Paste over word' }, -- -d => without override
 	['<leader>1'] = 'which_key_ignore',
 	['<leader>2'] = 'which_key_ignore',
@@ -69,7 +68,13 @@ wk.register({
 	['<leader>8'] = 'which_key_ignore',
 	['<leader>9'] = 'which_key_ignore',
 })
-
+-- wk.register({
+-- 	['<leader>'] = {
+-- 		['1-9'] = {
+-- 			name = "Jump to Buffer"
+-- 		}
+-- 	}
+-- })
 -- wk.register('which_key_ignore'
 -- wk.register('which_key_ignore'
 
@@ -117,11 +122,11 @@ wk.register({
 	['<leader>cF'] = {':Autoformat<CR>',                          'Autoformat lines'},
 
 	['<leader>cs']= { name = '+Spell'},
-	['<leader>cst'] = {':Telescope spell_suggest<CR>',         'Suggest tele'},
+	['<leader>csT'] = {':Telescope spell_suggest<CR>',         'Suggest tele'},
 	['<leader>csS'] = {':setlocal spell! spelllang=en_us<CR>', 'VIM spellchecking'},
-	['<leader>csf'] = {'ZT<CR>',                              'Spelunker ON/OFF (ZT)'},
-	['<leader>css'] = {'Zl<CR>',                              'Spelunker Suggest (Zl)'},
-	['<leader>csa'] = {'Zw<CR>',                              'Add selected word'},
+	['<leader>cst'] = {':normal ZT<CR>',                              'Toggle Spelunker(ZT)'},
+	['<leader>css'] = {':normal Zl<CR>',                              'Suggest (Zl)'},
+	['<leader>csa'] = {':normal Zw<CR>',                              'Add selected word'},
 
 	['<leader>cf']= { name = '+Folds'},
 	['<leader>cff'] = {':call v:lua.conditional_fold()<CR>',   'Toggle all ON/OFF'},
@@ -157,9 +162,11 @@ wk.register({
 	['<leader>dU']  = { ":lua require'dap'.up()<CR>",                                                   'Stack Up'} ,
 	['<leader>dD']  = { ":lua require'dap'.down()<CR>",                                                 'Stack Down'} ,
 	['<leader>da']  = { ":lua require'dap'.attach('0.0.0.0',5678)<CR>",                     'Attach (localhost, 5678)'} ,
-	['<leader>dl']  = { ":lua require'dap'.run_last()<CR>",                                             'Run Last'},
+	['<leader>dl']  = { ":lua require'dap'.run_last()<CR>",                                             'Re-run Last'},
 	['<leader>du']  = { ":lua require('dapui').setup()<CR>",                                         'Start UI'} ,
 	['<leader>db']  = { ":lua require'dap'.toggle_breakpoint()<CR>",                                    'Toggle breakpoint'},
+	-- ['<leader>dc']  = { ":lua require'dap'.goto_()<CR>",                                    'Run to Cursor'},
+	['<leader>dc']  = { ":lua require('dapui').close()<CR>",                                    'Close UI'},
 	['<leader>dbc'] = { ":lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>", 'Conditional breakpoint'},
 	['<leader>dk']  = { ":lua require'dap.ui.variables'.hover()<CR>",                        'Eval popup'},
 	['<leader>dK']  = { ":lua require('dapui').eval()<CR>",                                             'Eval window'},
@@ -304,25 +311,38 @@ wk.register({
 })
 
 
+-- function _G.replace_word()
+--	local name = vim.fn.input('To: ')
+--	vim.cmd(":.,$s/\\<"..vim.fn.expand('<cword>').."\\>/"..name.."/gc|1,''-&&") -- substitute and ask each time
+-- end
 wk.register({
 	['<leader>R'] = { name = '+Replace' },
-	['<leader>Rf'] = {':Farr<CR>',                                     'File Farr'},
-	['<leader>Rg'] = {':Grepper<CR>',                                  'Grepper'},
-	['<leader>Rc'] = {'<Plug>CtrlSFPrompt -R {regex} -G *.py<CR>',     'CtrlSF'},
-	['<leader>Rw'] = {'<Plug>CtrlSFCCwordPath<CR>',                    'CtrlSF Word'},
-	['<leader>Rs'] = {":lua require('spectre').open()<CR>",    'Spectre'},
+	['<leader>Rp'] = { name = '+Project' },
+	['<leader>Rpf'] = {':Farr<CR>',                                 'File Farr'},
+	['<leader>Rpe'] = {'<plug>(operator-esearch-prefill)<CR>',      'Esearch'},   -- seems to be maintained
+	['<leader>Rpc'] = {'<Plug>CtrlSFPrompt -R {regex} -G *.py<CR>', 'CtrlSF'},
+	['<leader>Rpw'] = {'<Plug>CtrlSFCCwordPath<CR>',                'CtrlSF Word'},
+	['<leader>Rps'] = {":lua require('spectre').open()<CR>",        'Spectre'},
+	-- ['<leader>R*'] = {":let @/=expand('<cword>')<cr>cgn",        'Replace word with yank'},
+	['<leader>R*'] = {":.,$s/\\<<C-r><C-w>\\>/<C-r>+/gc|1,''-&&<CR>",  'Replace word with yank', mode='n'},       -- \<word\>  -adds whitespace  word limit (sub only whole words)
+	['<leader>R/'] = {function() local name = vim.fn.input('To: '); vim.cmd(":.,$s/\\<"..vim.fn.expand('<cword>').."\\>/"..name.."/gc|1,''-&&") end,                'Replace word with input'},       -- write to reg z (@a) then use it for replacign * word
+})
+wk.register({  -- second one for visual mode
+	['<leader>R'] = { name = '+Replace' },
+	['<leader>R*'] = {"\"ay:.,$s/<C-r>a/<C-r>+/gc|1,''-&&<CR>",					 'Replace word with yank', mode='v'},    -- \<word\>  -adds whitespace  word limit (sub only whole words)
 })
 
 
 wk.register({
 	['<leader>P'] = { name = '+Project' },
+	['<leader>P*'] = {':Telescope grep_string<CR>'  , 'Find Word'}    ,
+	['<leader>P/'] = {':Grepper-cword<CR>',               'Grepper'},
 	['<leader>Ps'] = {':SSave<CR>'                  , 'Sesion Save'}  ,
 	['<leader>Pl'] = {':SLoad<CR>'                  , 'Sesion Load'}  ,
 	['<leader>Pc'] = {':SClose<CR>'                 , 'Sesion Close'} ,
 	['<leader>Pd'] = {':SDelete<CR>'                , 'Sesion Delete'},
 	['<leader>Pf'] = {':Telescope live_grep<CR>'    , 'Find (live grep)'}     ,
 	['<leader>Pz'] = {":lua require'telescope.builtin'.grep_string{shorten_path = true, word_match = '-w', only_sort_text = true, search = '' }<CR>", 'Find fuzzy'},
-	['<leader>P*'] = {':Telescope grep_string<CR>'  , 'Find Word'}    ,
 })
 
 

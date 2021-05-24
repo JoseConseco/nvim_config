@@ -563,6 +563,15 @@
       "\tprint(e)"
     ]
   },
+  "bvht": {
+    "prefix": "bvht",
+    "description": "bvh tree",
+    "body": [
+        "from mathutils.bvhtree import BVHTree",
+        "snap_target_bvht = BVHTree.FromObject(snapTarget, context.evaluated_depsgraph_get())",
+        "loc, normal, f_index, distance = snap_target_bvht.raycast(origin = prev_pt.co, direction = dir)"
+    ]
+  },
   "bgl draw mesh": {
     "prefix": "bgl draw mesh",
     "description": "",

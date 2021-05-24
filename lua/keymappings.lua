@@ -70,6 +70,8 @@ vim.api.nvim_set_keymap('i', '<C-s>', '<Esc>:up<CR>', {noremap = true})
 -- disable ctrl+z == suspend
 vim.api.nvim_set_keymap('n', '<C-z>', 'u', {noremap = true})
 
+
+vim.cmd([[call yankstack#setup()]]) --or else yank stack wont work with Y
 -- 'normal' Backspace
 vim.api.nvim_set_keymap('n', '<BS>', '"_X', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('v', '<BS>', '"_x', {noremap = true})
@@ -115,8 +117,13 @@ vim.api.nvim_set_keymap('v', '/', '/\\v', {noremap = true})
 vim.api.nvim_set_keymap('c', 's/', 's/\\v', {noremap = true})
 vim.api.nvim_set_keymap('n', 'g/', ':g/\\v', {noremap = true})
 
--- scene.cursor
+-- search for selection whithout jump
 vim.api.nvim_set_keymap('v', '*', "y/\\V<C-R>=escape(@\",'/\')<CR><CR>", {noremap = true})
+vim.api.nvim_set_keymap('n', '*', ":keepjumps normal! mi*`i<CR>", {noremap = true})   -- wont affect jump list
+
+-- substitute word under cursor with yanked text (+ register )
+-- vim.api.nvim_set_keymap('v', '*s', "\"ay:%s/<C-r>a/<C-r>+/gc<CR>", {noremap = true}) -- \<word\>  -adds whitespace  word limit (sub only whole words)
+-- vim.api.nvim_set_keymap('n', '*s', ":%s/\\<<C-r><C-w>\\>/<C-r>+/gc<CR>", {noremap = true})
 
 -- select all file...  % - all lines,
 -- vim.api.nvim_set_keymap("n", "<C-a>", 'gg<S-v>G', {noremap = true})

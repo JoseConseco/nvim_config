@@ -94,14 +94,17 @@ return require("packer").startup(
 	--	config=function() require("nv-scrollbar")  end } -- preview line whe using goto :xyz
 	use {'dstein64/nvim-scrollview',
 		config=function()  vim.api.nvim_exec('highlight link ScrollView Normal', false); vim.g.scrollview_character = '▎'  end}
+	use {'machakann/vim-highlightedyank',
+		config=function() vim.g.highlightedyank_highlight_duration = 100 end}
 
 
 	-- Debugging
+	use {'mfussenegger/nvim-dap', --too simple
+		config=function() require('nv-dap') end } -- preview line whe using goto :xyz
 	use {'mfussenegger/nvim-dap-python',
 		config=function() require('dap-python').setup('/usr/bin/python') end}
-	use {'mfussenegger/nvim-dap', requires='mfussenegger/nvim-dap-python', --too simple
-		config=function() require('nv-dap') end } -- preview line whe using goto :xyz
-	use {'theHamsta/nvim-dap-virtual-text', requires='mfussenegger/nvim-dap'}
+	use {'theHamsta/nvim-dap-virtual-text', requires='mfussenegger/nvim-dap',
+		config=function() vim.cmd([[:highlight NvimDapVirtualText guifg=#7296a9]]) end}
 	use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"},
 		config = function() require("dapui").setup() end}
 	-- use {'puremourning/vimspector',
@@ -113,7 +116,7 @@ return require("packer").startup(
 		config=function() require("treesitter")  end} -- lua + wont close () next to char finally good and simple +++
 	use 'nvim-treesitter/nvim-treesitter-refactor'
 	-- use 'nvim-treesitter/playground'
-	use {'p00f/nvim-ts-rainbow', disable=true, } -- slow?
+	use {'p00f/nvim-ts-rainbow', disable=false, } -- slow?
 
 
 	-- lsp
@@ -182,13 +185,14 @@ return require("packer").startup(
 	use 'brooth/far.vim' --use: Far(r) from to **/*.py   > then :Fardo
 	use 'dyng/ctrlsf.vim' --Run :CtrlSF [pattern]
 	use 'mhinz/vim-grepper' -- Grepper
+	use 'eugen0329/vim-esearch' -- Grepper
 	-- use 'pelodelfuego/vim-swoop' -- like helm-swoop from emacs. Works Only on open Buffers...it seeems
 	use {'windwp/nvim-spectre',
 		requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}} }
 
 
 	--undo redo
-	-- use 'maxbrunsfeld/vim-yankstack' --works in normal and visual mode..<M-p> and <M-S-p>
+	use 'maxbrunsfeld/vim-yankstack' --works in normal and visual mode..<M-p> and <M-S-p>
 	use 'mbbill/undotree'   -- undo history  :UndotreeToggle to toggle the undo-tree panel.
 	use 'mg979/vim-localhistory' -- local history LHLoad, LHWrite
 	--     use {'chrisbra/changesPlugin', -- show local changes - EC, TC
