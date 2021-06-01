@@ -23,7 +23,6 @@ vim.o.scrolloff = 6 -- Makes indenting smart
 -- vim.g.tex_conceal = ''--'dmgs' --a - disables ligatures
 -- vim.g.cole = 0
 
-
 vim.bo.expandtab = true -- Converts tabs to spaces
 vim.o.tabstop=4 -- width of <Tab> - if no tabExpand
 vim.o.softtabstop=4 -- backspace will delete 4 spaces

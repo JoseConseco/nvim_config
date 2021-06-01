@@ -79,6 +79,9 @@ return require("packer").startup(
 		config = function() require'bufferline'.setup(); require('nv-bufferline') end
 	} --uses buffers
 	use 'psliwka/vim-smoothie' --smooth PGUP/DOWN
+	-- use {'karb94/neoscroll.nvim',
+	-- 		config=function() require('neoscroll').setup() end} -- lua + wont close () next to char finally good and simple +++
+
 	use {'wfxr/minimap.vim', -- minimap fast
 		disable=true,
 		config=function() require("nv-minimap") end} -- lua + wont close () next to char finally good and simple +++
@@ -89,7 +92,8 @@ return require("packer").startup(
 	-- use "tversteeg/registers.nvim"  -- show content of registers when using " - replaced by new lua which_key
 	use {'nacro90/numb.nvim',
 		config=function() require('numb').setup() end } -- preview line whe using goto :xyz
-	use 'Yggdroot/indentLine' --  displaying thin vertical lines at each indentation level
+	use {'lukas-reineke/indent-blankline.nvim', branch='lua' , --  displaying thin vertical lines at each indentation level
+		config=function() require('nv-indentline') end } -- preview line whe using goto :xyz
 	-- use {'Xuyuanp/scrollbar.nvim', -- side scrollbar  -fucks up session load often :/
 	--	config=function() require("nv-scrollbar")  end } -- preview line whe using goto :xyz
 	use {'dstein64/nvim-scrollview',
@@ -99,7 +103,7 @@ return require("packer").startup(
 
 
 	-- Debugging
-	use {'mfussenegger/nvim-dap', --too simple
+	use {'mfussenegger/nvim-dap', branch='disconnect', --too simple
 		config=function() require('nv-dap') end } -- preview line whe using goto :xyz
 	use {'mfussenegger/nvim-dap-python',
 		config=function() require('dap-python').setup('/usr/bin/python') end}
@@ -115,6 +119,7 @@ return require("packer").startup(
 	use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate',
 		config=function() require("treesitter")  end} -- lua + wont close () next to char finally good and simple +++
 	use 'nvim-treesitter/nvim-treesitter-refactor'
+	use 'nvim-treesitter/nvim-treesitter-textobjects'
 	-- use 'nvim-treesitter/playground'
 	use {'p00f/nvim-ts-rainbow', disable=false, } -- slow?
 

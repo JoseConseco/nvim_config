@@ -90,9 +90,9 @@ vim.api.nvim_set_keymap('n', '<Del>',  '"_x', {noremap = true, silent = true})
 
 -- change without overriding register
 vim.api.nvim_set_keymap('v', 'c',  '"_c', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('n', 'c',  '"_c', {noremap = true, silent = true})
+-- vim.api.nvim_set_keymap('n', 'c',  '"_c', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('v', 'C',  '"_C', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('n', 'C',  '"_C', {noremap = true, silent = true})
+-- vim.api.nvim_set_keymap('n', 'C',  '"_C', {noremap = true, silent = true})
 
 -- substitute without overriding register
 vim.api.nvim_set_keymap('v', 's',  '"_s', {noremap = true, silent = true})

@@ -53,7 +53,7 @@ wk.register({
 	['<leader>/'] = { ':Ag<CR>',                   'Search Project' },  --<plug>fzf,
 	['<leader>.'] = { ':Telescope find_files<CR>', 'Find File' },
 	['<leader>:'] = { ':Telescope commands<CR>',   'Commands' },
-	['<leader><lt>'] = { ':Telescope buffers<CR>', 'Switch Buffer' },
+	['<leader><lt>'] = { ":lua require'telescope.builtin'.buffers{show_all_buffers=true}<CR>", 'Switch Buffer' },
 	['<leader>r'] = { ':luafile $MYVIMRC<CR>',     'Reload VIMRC' },
 	['<leader> '] = { ':HopChar2<CR>',             'HOP 2Char' },
 	['<leader>e'] = { ':Fern . -reveal=%<CR>',     'File Browser' },
@@ -93,17 +93,17 @@ end
 -- ['s'] = {':BLines',                              'Search lines fzf'},
 wk.register({
 	['<leader>b'] = { name = '+Buffers' },
-	['<leader>b/'] = {':Telescope current_buffer_fuzzy_find<CR>', 'Search content Tele'},
-	['<leader>b?'] = {':lua require"telescope".extensions.buffer_search.buffer_search{}<CR>',  'Search current nonfzf'},
-	['<leader>b<'] = {':Telescope buffers<CR>',                  'Find buffer' } ,
-	['<leader>bn'] = {':enew<CR>',                                'New'},
-	['<leader>b]'] = {':BufferLineCycleNext<CR>',                 'Next'},
-	['<leader>b['] = {':BufferLineCyclePrev<CR>',                 'Previous'},
-	['<leader>bc'] = {':ScrollViewDisable | confirm bd | silent! ScrollViewEnable<CR>',      'Close'},   -- fixes error on buffer close
-	['<leader>bo'] = {':%bd|e#|bd#<CR>',                          'Close all but current'},
-	['<leader>bp'] = {':BufferLinePick<CR>',                      'Pick (gb)'},
-	['<leader>br'] = {':confirm e<CR>',                           'Reload File(e!)'},
-	['<leader>bf'] = {':Autoformat<CR>',                          'Autoformat lines'},
+	['<leader>b/'] = {':Telescope current_buffer_fuzzy_find<CR>',                             'Search content Tele'},
+	['<leader>b?'] = {':lua require"telescope".extensions.buffer_search.buffer_search{}<CR>', 'Search current nonfzf'},
+	['<leader>b<'] = {":lua require'telescope.builtin'.buffers{show_all_buffers=true}<CR>", 'Find buffer' } ,
+	['<leader>bn'] = {':enew<CR>',                                                            'New'},
+	['<leader>b]'] = {':BufferLineCycleNext<CR>',                                             'Next'},
+	['<leader>b['] = {':BufferLineCyclePrev<CR>',                                             'Previous'},
+	['<leader>bc'] = {':ScrollViewDisable | confirm bd | silent! ScrollViewEnable<CR>',       'Close'},   -- fixes error on buffer close
+	['<leader>bo'] = {':%bd|e#|bd#<CR>',                                                      'Close all but current'},
+	['<leader>bp'] = {':BufferLinePick<CR>',                                                  'Pick (gb)'},
+	['<leader>br'] = {':confirm e<CR>',                                                       'Reload File(e!)'},
+	['<leader>bf'] = {':Autoformat<CR>',                                                      'Autoformat lines'},
 })
 
 -- ['c']= {
@@ -117,35 +117,35 @@ wk.register({
 --		},
 wk.register({
 	['<leader>c'] = { name = '+Code' },
-	['<leader>c.'] = {':Telescope filetypes<CR>',     'filetypes'},
-	['<leader>ct'] = {':call CmdInput("Tab /")<CR>',  'Tabularize (align)'},
-	['<leader>cF'] = {':Autoformat<CR>',                          'Autoformat lines'},
+	['<leader>c.'] = {':Telescope filetypes<CR>',    'filetypes'},
+	['<leader>ct'] = {':call CmdInput("Tab /")<CR>', 'Tabularize (align)'},
+	['<leader>cF'] = {':Autoformat<CR>',             'Autoformat lines'},
 
 	['<leader>cs']= { name = '+Spell'},
 	['<leader>csT'] = {':Telescope spell_suggest<CR>',         'Suggest tele'},
 	['<leader>csS'] = {':setlocal spell! spelllang=en_us<CR>', 'VIM spellchecking'},
-	['<leader>cst'] = {':normal ZT<CR>',                              'Toggle Spelunker(ZT)'},
-	['<leader>css'] = {':normal Zl<CR>',                              'Suggest (Zl)'},
-	['<leader>csa'] = {':normal Zw<CR>',                              'Add selected word'},
+	['<leader>cst'] = {':normal ZT<CR>',                       'Toggle Spelunker(ZT)'},
+	['<leader>css'] = {':normal Zl<CR>',                       'Suggest (Zl)'},
+	['<leader>csa'] = {':normal Zw<CR>',                       'Add selected word'},
 
 	['<leader>cf']= { name = '+Folds'},
-	['<leader>cff'] = {':call v:lua.conditional_fold()<CR>',   'Toggle all ON/OFF'},
-	['<leader>cfM'] = {'zM<CR>',   'Close all(zM)'},
-	['<leader>cfR'] = {'zR<CR>',   'Open all (zR)'},
-	['<leader>cf+'] = {'zm<CR>',   'inc+1 (zm)'},
-	['<leader>cf-'] = {'zr<CR>',   'dec-1 (zr)'},
-	['<leader>cfa'] = {'za<CR>',   'Toggle at cur(za)'},
-	['<leader>cfA'] = {'zA<CR>',   'Toggle at cur rec(zA)'},
-	['<leader>cfT'] = {'zi<CR>',   'Toggle fold enable(zi)'},
-	['<leader>cfo'] = {'zo<CR>',   'open cur(zo)'},
-	['<leader>cfO'] = {'zO<CR>',   'open all cur(zO)'},
+	['<leader>cff'] = {':call v:lua.conditional_fold()<CR>', 'Toggle all ON/OFF'},
+	['<leader>cfM'] = {'zM<CR>',                             'Close all(zM)'},
+	['<leader>cfR'] = {'zR<CR>',                             'Open all (zR)'},
+	['<leader>cf+'] = {'zm<CR>',                             'inc+1 (zm)'},
+	['<leader>cf-'] = {'zr<CR>',                             'dec-1 (zr)'},
+	['<leader>cfa'] = {'za<CR>',                             'Toggle at cur(za)'},
+	['<leader>cfA'] = {'zA<CR>',                             'Toggle at cur rec(zA)'},
+	['<leader>cfT'] = {'zi<CR>',                             'Toggle fold enable(zi)'},
+	['<leader>cfo'] = {'zo<CR>',                             'open cur(zo)'},
+	['<leader>cfO'] = {'zO<CR>',                             'open all cur(zO)'},
 })
 
 wk.register({
 	['<leader>D'] = { name = '+Diff' },
 	['<leader>Dc'] = {':call v:lua.compare_to_clipboard()<CR>', 'Compare to clipboard'},   -- fixes error on buffer close
-	['<leader>D['] =  { '[c<CR>',                         'Prev change [c'},
-	['<leader>D]'] =  { ']c<CR>',                         'Next change ]c'},
+	['<leader>D['] =  { '[c<CR>',                               'Prev change [c'},
+	['<leader>D]'] =  { ']c<CR>',                               'Next change ]c'},
 	['<leader>Do'] =  { ':diffget<CR>',                         'Obtain(do)'},
 	['<leader>Dp'] =  { ':diffput<CR>',                         'Put(dp)'},
 	['<leader>Dt'] =  { ':diffthis',                            'Diff This'},
@@ -157,21 +157,21 @@ wk.register({
 wk.register({
 	['<leader>d']   = { name = '+Debugger' },
 	['<leader>dd']  = { ":lua require'dap'.continue()<CR>",                                             'Continue/Start debugging'} ,
-	['<leader>dx']  = { ":lua require'dap'.disconnect()<CR>",                                             'Disconnect'} ,
-	['<leader>dX']  = { ":lua require'dap'.stop()<CR>",                                                  'Stop'} ,
+	['<leader>dx']  = { ":lua require'dap'.disconnect({ terminateDebuggee = false })<CR>",              'Disconnect'} ,
+	['<leader>dX']  = { ":lua require'dap'.stop()<CR>",                                                 'Stop'} ,
 	['<leader>dU']  = { ":lua require'dap'.up()<CR>",                                                   'Stack Up'} ,
 	['<leader>dD']  = { ":lua require'dap'.down()<CR>",                                                 'Stack Down'} ,
-	['<leader>da']  = { ":lua require'dap'.attach('0.0.0.0',5678)<CR>",                     'Attach (localhost, 5678)'} ,
+	['<leader>da']  = { ":lua require'dap'.attach('0.0.0.0', 5678)<CR>",                                'Attach (localhost, 5678)'} ,
 	['<leader>dl']  = { ":lua require'dap'.run_last()<CR>",                                             'Re-run Last'},
-	['<leader>du']  = { ":lua require('dapui').setup()<CR>",                                         'Start UI'} ,
+	['<leader>du']  = { ":lua require('dapui').setup()<CR>",                                            'Start UI'} ,
 	['<leader>db']  = { ":lua require'dap'.toggle_breakpoint()<CR>",                                    'Toggle breakpoint'},
-	-- ['<leader>dc']  = { ":lua require'dap'.goto_()<CR>",                                    'Run to Cursor'},
-	['<leader>dc']  = { ":lua require('dapui').close()<CR>",                                    'Close UI'},
+	-- ['<leader>dc']  = { ":lua require'dap'.goto_()<CR>",                                             'Run to Cursor'},
+	['<leader>dc']  = { ":lua require('dapui').close()<CR>",                                            'Close UI'},
 	['<leader>dbc'] = { ":lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>", 'Conditional breakpoint'},
-	['<leader>dk']  = { ":lua require'dap.ui.variables'.hover()<CR>",                        'Eval popup'},
+	['<leader>dk']  = { ":lua require'dap.ui.variables'.hover()<CR>",                                   'Eval popup'},
 	['<leader>dK']  = { ":lua require('dapui').eval()<CR>",                                             'Eval window'},
 	['<leader>dn']  = { ":lua require'dap'.step_over()<CR>",                                            'Step Over'},
-	['<leader>dr']  = { ":lua require'dap'.repl.toggle()<CR>",                                            'Repl Toggle'},
+	['<leader>dr']  = { ":lua require'dap'.repl.toggle()<CR>",                                          'Repl Toggle'},
 })
 
 function _G.yankpath()
@@ -185,9 +185,9 @@ wk.register({
 	['<leader>fd'] = { ':call delete(expand("%")) | bdelete!<CR>', 'Delete!'},
 	['<leader>fr'] = {':confirm e<CR>',                            'Reload File(e!)'},
 	['<leader>ff'] = {':Telescope file_browser<CR>',               'File Browser (fuzzy)'},
-	['<leader>fy'] = { ":call v:lua.yankpath()<CR>",                     'Yank file location<CR>'},
-	['<leader>fo'] = { ':!xdg-open "%:p:h"<CR>',                     'Open containing folder'},
-	['<leader>ft'] = { ':!termite -d "%:p:h"<CR>',                   'Open at terminal'},
+	['<leader>fy'] = { ":call v:lua.yankpath()<CR>",               'Yank file location<CR>'},
+	['<leader>fo'] = { ':!xdg-open "%:p:h"<CR>',                   'Open containing folder'},
+	['<leader>ft'] = { ':!termite -d "%:p:h"<CR>',                 'Open at terminal'},
 	['<leader>fC'] = {':cd %:p:h<CR>',                             'cd %'},
 })
 
@@ -289,25 +289,25 @@ function _G.conditional_width()
 	end
 end
 -- below is required or else which key wont work !!
-vim.api.nvim_set_keymap( "n", "<Leader>ww",  'v=lua.conditional_width()',  {expr = true, noremap = true, silent = true } )
+-- vim.api.nvim_set_keymap( "n", "<Leader>ww",  'v=lua.conditional_width()',  {expr = true, noremap = true, silent = true } )
 
 
 wk.register({
 	['<leader>o'] = { name = '+Open' },
-	['<leader>o/'] = {'q/',                              'Search History (q/)'},
-	['<leader>o.'] = {':Fern . -reveal=%<CR>',               'File Browse (Fern)'},
-	['<leader>of'] = {':Telescope file_browser<CR>',         'File Browser (fuzzy)'},
-	['<leader>oE'] = {':Ex<CR>',                             'Open Explorer(Ex)'} ,
-	['<leader>oU'] = {':UndotreeToggle<CR>',                 'Undo Tree'} ,
-	['<leader>oh'] = {'q:',                              'Commands History (q:)'},
-	['<leader>oq'] = {':copen<CR>',                          'Quickfix (copen)'},
-	['<leader>oo'] = {':lopen<CR>',                          'Loclist (lopen)'},
-	['<leader>oO'] = {':SymbolsOutline<CR>',                 'Outliner (lsp)'},
-	['<leader>ol'] = {':Luapad<CR>',                         'Luapad Repl On'},
-	['<leader>oL'] = {":lua.require('luapad').detach()<CR>", 'Luapad Repl Off'},
-	['<leader>oc'] = {':Codi<CR>',                           'Codi Start (multi lang REPL)'},
-	['<leader>oC'] = {':Codi!<CR>',                          'Codi Stop'},
-	['<leader>oT'] = {'<CMD>lua require("FTerm").toggle()<CR>',  'FTerm'},
+	['<leader>o/'] = {'q/',                                     'Search History (q/)'},
+	['<leader>o.'] = {':Fern . -reveal=%<CR>',                  'File Browse (Fern)'},
+	['<leader>of'] = {':Telescope file_browser<CR>',            'File Browser (fuzzy)'},
+	['<leader>oE'] = {':Ex<CR>',                                'Open Explorer(Ex)'} ,
+	['<leader>oU'] = {':UndotreeToggle<CR>',                    'Undo Tree'} ,
+	['<leader>oh'] = {'q:',                                     'Commands History (q:)'},
+	['<leader>oq'] = {':copen<CR>',                             'Quickfix (copen)'},
+	['<leader>oo'] = {':lopen<CR>',                             'Loclist (lopen)'},
+	['<leader>oO'] = {':SymbolsOutline<CR>',                    'Outliner (lsp)'},
+	['<leader>ol'] = {':Luapad<CR>',                            'Luapad Repl On'},
+	['<leader>oL'] = {":lua.require('luapad').detach()<CR>",    'Luapad Repl Off'},
+	['<leader>oc'] = {':Codi<CR>',                              'Codi Start (multi lang REPL)'},
+	['<leader>oC'] = {':Codi!<CR>',                             'Codi Stop'},
+	['<leader>oT'] = {'<CMD>lua require("FTerm").toggle()<CR>', 'FTerm'},
 })
 
 
@@ -325,7 +325,7 @@ wk.register({
 	['<leader>Rps'] = {":lua require('spectre').open()<CR>",        'Spectre'},
 	-- ['<leader>R*'] = {":let @/=expand('<cword>')<cr>cgn",        'Replace word with yank'},
 	['<leader>R*'] = {":.,$s/\\<<C-r><C-w>\\>/<C-r>+/gc|1,''-&&<CR>",  'Replace word with yank', mode='n'},       -- \<word\>  -adds whitespace  word limit (sub only whole words)
-	['<leader>R/'] = {function() local name = vim.fn.input('To: '); vim.cmd(":.,$s/\\<"..vim.fn.expand('<cword>').."\\>/"..name.."/gc|1,''-&&") end,                'Replace word with input'},       -- write to reg z (@a) then use it for replacign * word
+	['<leader>R/'] = {function() local name = vim.fn.input('To: ', vim.fn.expand('<cword>')); vim.cmd(":.,$s/\\<"..vim.fn.expand('<cword>').."\\>/"..name.."/gc|1,''-&&") end,                'Replace word with input'},       -- write to reg z (@a) then use it for replacign * word
 })
 wk.register({  -- second one for visual mode
 	['<leader>R'] = { name = '+Replace' },
@@ -335,13 +335,13 @@ wk.register({  -- second one for visual mode
 
 wk.register({
 	['<leader>P'] = { name = '+Project' },
-	['<leader>P*'] = {':Telescope grep_string<CR>'  , 'Find Word'}    ,
-	['<leader>P/'] = {':Grepper-cword<CR>',               'Grepper'},
-	['<leader>Ps'] = {':SSave<CR>'                  , 'Sesion Save'}  ,
-	['<leader>Pl'] = {':SLoad<CR>'                  , 'Sesion Load'}  ,
-	['<leader>Pc'] = {':SClose<CR>'                 , 'Sesion Close'} ,
-	['<leader>Pd'] = {':SDelete<CR>'                , 'Sesion Delete'},
-	['<leader>Pf'] = {':Telescope live_grep<CR>'    , 'Find (live grep)'}     ,
+	['<leader>P*'] = {':Telescope grep_string<CR>',                                     'Find Word'}    ,
+	['<leader>P/'] = {':Grepper-cword<CR>',                                             'Word to clist (Grepper)'},
+	['<leader>Ps'] = {':SSave<CR>',                                                     'Sesion Save'}  ,
+	['<leader>Pl'] = {':SLoad<CR>',                                                     'Sesion Load'}  ,
+	['<leader>Pc'] = {':SClose<CR>',                                                    'Sesion Close'} ,
+	['<leader>Pd'] = {':SDelete<CR>',                                                   'Sesion Delete'},
+	['<leader>Pf'] = {':Telescope live_grep<CR>',                                       'Find (live grep)'}     ,
 	['<leader>Pz'] = {":lua require'telescope.builtin'.grep_string{shorten_path = true, word_match = '-w', only_sort_text = true, search = '' }<CR>", 'Find fuzzy'},
 })
 
@@ -373,7 +373,7 @@ wk.register({
 
 wk.register({
 	['<leader>u'] = { name = '+UI' },
-	['<leader>uw'] = {':v:lua.conditional_width()<CR>',       'Auto width'},
+	['<leader>uw'] = {':call v:lua.conditional_width()<CR>',       'Auto width'},
 	['<leader>uc'] = {':Telescope colorscheme<CR>'          , 'Colorscheme'},
 	['<leader>uh'] = {':set hlsearch!<CR>',                   'Search highlight'},
 })
@@ -382,21 +382,22 @@ wk.register({
 -- n is for Quit
 wk.register({
 	['<leader>w'] = { name = '+Window' },
-	['<leader>w='] = {'<C-w>=<CR>',              'Equalize(=)'},
-	['<leader>w>'] = {':vertical resize +5<CR>', 'Increase(>)'},
+	['<leader>w='] = {'<C-w>=<CR>',                 'Equalize(=)'},
+	['<leader>w>'] = {':vertical resize +5<CR>',    'Increase(>)'},
 	['<leader>w<lt>'] = {':vertical resize -5<CR>', 'Decrease(<)'},
-	['<leader>wh'] = {'<C-w>s<CR>',              'Split below(s)'},
-	['<leader>wv'] = {'<C-w>v<CR>',              'Split right(v)'},
-	['<leader>wq'] = {'<C-w>q<CR>',              'Quit window(q)'},
-	['<leader>wO'] = {':only<CR>',               'Close All other splits(o)'},
-	['<leader>wo'] = {'<C-w>o<CR>',              'Close All but current(o)'},
+	['<leader>wh'] = {'<C-w>s<CR>',                 'Split below(s)'},
+	['<leader>wv'] = {'<C-w>v<CR>',                 'Split right(v)'},
+	['<leader>wq'] = {'<C-w>q<CR>',                 'Quit window(q)'},
+	['<leader>wO'] = {':only<CR>',                  'Close All other splits(o)'},
+	['<leader>wo'] = {'<C-w>o<CR>',                 'Close All but current(o)'},
+	['<leader>ww'] = {':call v:lua.conditional_width()<CR>',  'Auto width'},
 })
 
 
 wk.register({
 	['<leader>q'] = { name = '+Quit' },
 	['<leader>qq'] = {':FernDo close<CR> | :confirm qa<CR>',        'Quit Confirm (qa)'},
-	['<leader>qf'] = {':q!<CR>',                                           'Force Quit (q!)'},
+	['<leader>qf'] = {':q!<CR>',                                    'Force Quit (q!)'},
 	['<leader>qs'] = {':FernDo close<CR> | :bufdo update | q!<CR>', 'Quit Save all (wqa!)'},
 })
 
