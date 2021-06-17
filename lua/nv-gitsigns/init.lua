@@ -1,3 +1,10 @@
+vim.api.nvim_exec([[
+augroup MyColors
+	autocmd!
+	autocmd ColorScheme * highlight CustomSignsAdd guifg=#a4cf69 | highlight CustomSignsChange guifg=#63c1e6 | highlight CustomSignsDelete guifg=#d74f56
+augroup END
+]], false)
+
 vim.cmd([[:highlight CustomSignsAdd guifg=#a4cf69]])
 vim.cmd([[:highlight CustomSignsChange guifg=#63c1e6]])
 vim.cmd([[:highlight CustomSignsDelete guifg=#d74f56]])

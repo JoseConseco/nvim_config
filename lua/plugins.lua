@@ -14,7 +14,6 @@ require("packer").init({
 	git = {
 		clone_timeout=100,
 	},
-	opt_default=false, -- def -false; if true: default to using opt (as opposed to start) plugins
 })
 
 -- use {
@@ -53,16 +52,19 @@ return require("packer").startup(
 	use "wbthomason/packer.nvim" -- Packer can manage itself as an optional plugin
 
 	-- themes
-	use 'joshdick/onedark.vim'
+	-- use 'joshdick/onedark.vim'
+	use 'ful1e5/onedark.nvim'
 	use {'folke/tokyonight.nvim',
-		config=function()  require('themes.tokyonight')  end} -- lua + wont close () next to char finally good and simple +++
-	use {'marko-cerovac/material.nvim',
-		config=function()  vim.g.material_style = "darker"; vim.g.material_variable_color="#7f62c3"  end} -- lua + wont close () next to char finally good and simple +++
+		setup=function()  require('themes.tokyonight');    end,
+		config=function() vim.cmd('colorscheme tokyonight'); vim.cmd([[highlight LineNr guifg=#5081c0 | highlight CursorLineNR guifg=#FFba00 ]])
+ end} -- lua + wont close () next to char finally good and simple +++
+	-- use {'marko-cerovac/material.nvim',
+	-- 	setup=function()  vim.g.material_style = "darker"; vim.g.material_variable_color="#7f62c3"  end} -- lua + wont close () next to char finally good and simple +++
 	use 'mhartington/oceanic-next'
 	use {'sainnhe/edge',
-		config=function()  require('themes.edge')  end} -- lua + wont close () next to char finally good and simple +++
-	use {'Luxed/ayu-vim', -- dark and lack orange
-		config=function() require('themes.ayu-vim') end} -- lua + wont close () next to char finally good and simple +++
+		setup=function()  require('themes.edge')  end} -- lua + wont close () next to char finally good and simple +++
+	use {'Luxed/ayu-vim',-- dark and lack orange
+		setup=function() require('themes.ayu-vim') end} -- lua + wont close () next to char finally good and simple +++
 
 
 	-- UI
@@ -92,8 +94,9 @@ return require("packer").startup(
 	-- use "tversteeg/registers.nvim"  -- show content of registers when using " - replaced by new lua which_key
 	use {'nacro90/numb.nvim',
 		config=function() require('numb').setup() end } -- preview line whe using goto :xyz
-	use {'lukas-reineke/indent-blankline.nvim', branch='lua' , --  displaying thin vertical lines at each indentation level
-		config=function() require('nv-indentline') end } -- preview line whe using goto :xyz
+	use {'lukas-reineke/indent-blankline.nvim', branch='lua' , after='tokyonight.nvim',--  displaying thin vertical lines at each indentation level
+		setup=function() require('nv-indentline') end,
+		config=function() vim.cmd([[highlight! link IndentBlanklineContextChar Comment]])  end} -- preview line whe using goto :xyz
 	-- use {'Xuyuanp/scrollbar.nvim', -- side scrollbar  -fucks up session load often :/
 	--	config=function() require("nv-scrollbar")  end } -- preview line whe using goto :xyz
 	use {'dstein64/nvim-scrollview',
@@ -103,7 +106,7 @@ return require("packer").startup(
 
 
 	-- Debugging
-	use {'mfussenegger/nvim-dap', branch='disconnect', --too simple
+	use {'mfussenegger/nvim-dap', --too simple
 		config=function() require('nv-dap') end } -- preview line whe using goto :xyz
 	use {'mfussenegger/nvim-dap-python',
 		config=function() require('dap-python').setup('/usr/bin/python') end}
@@ -119,6 +122,9 @@ return require("packer").startup(
 	use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate',
 		config=function() require("treesitter")  end} -- lua + wont close () next to char finally good and simple +++
 	use 'nvim-treesitter/nvim-treesitter-refactor'
+	use {'romgrk/nvim-treesitter-context', disable=false,-- cool but gives orror on compe-popup - https://github.com/romgrk/nvim-treesitter-context/issues/49
+		config=function() require('nv-treesittercontext')   end} -- fixes plug  }
+-- vim.cmd([[:highlight TreesitterContext guibg=#a4cf69]])
 	use 'nvim-treesitter/nvim-treesitter-textobjects'
 	-- use 'nvim-treesitter/playground'
 	use {'p00f/nvim-ts-rainbow', disable=false, } -- slow?
@@ -148,6 +154,8 @@ return require("packer").startup(
 	use {'glepnir/lspsaga.nvim', --cool popup goto def hoover etc - but still wipp
 		disable = true,
 		config = function() require("nv-lspsaga") end,}
+	-- use {'ray-x/lsp_signature.nvim', - somehow does not work randomly
+	-- 	config = function() require('lsp_signature').on_attach() end}
 	-- Telescope
 	use {'nvim-telescope/telescope.nvim',
 		requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}},
@@ -197,7 +205,10 @@ return require("packer").startup(
 
 
 	--undo redo
-	use 'maxbrunsfeld/vim-yankstack' --works in normal and visual mode..<M-p> and <M-S-p>
+	-- use 'maxbrunsfeld/vim-yankstack' --works in normal and visual mode..<M-p> and <M-S-p> but takes  mappings for keys
+	use {'svermeulen/vim-yoink', -- does not take mappings since it reads events
+		config=function() require('nv-yoink') end}
+
 	use 'mbbill/undotree'   -- undo history  :UndotreeToggle to toggle the undo-tree panel.
 	use 'mg979/vim-localhistory' -- local history LHLoad, LHWrite
 	--     use {'chrisbra/changesPlugin', -- show local changes - EC, TC
@@ -238,7 +249,7 @@ return require("packer").startup(
 		-- navigation
 		use "phaazon/hop.nvim"
 		-- use 'rhysd/clever-f.vim' -- f,t,F,T, repeat fff.. to search next occurance of x - wont work with macros!
-		use {'justinmk/vim-sneak',
+		use {'justinmk/vim-sneak', disable = false,
 		config = function() vim.cmd('source ~/.config/nvim/nv-sneak.vim') end}
 		-- ternimal in popup
 		use { "numtostr/FTerm.nvim", -- flaot term

@@ -6,7 +6,7 @@ vim.g.indent_blankline_use_treesitter = true
 vim.g.indent_blankline_show_trailing_blankline_indent = false
 vim.g.indent_blankline_show_current_context = true
 -- vim.cmd([[highlight IndentBlanklineContextChar guifg=#706070 gui=nocombine]])
-vim.cmd([[highlight! link IndentBlanklineContextChar Comment]])
+-- vim.cmd([[highlight! link IndentBlanklineContextChar Comment]])
 -- vim.g.indent_blankline_context_patterns = {
 --     'class', 'return', 'function', 'method', '^if', '^while', 'jsx_element', '^for', '^object', '^table', 'block',
 --     'arguments', 'if_statement', 'else_clause', 'jsx_element',  'try_statement',

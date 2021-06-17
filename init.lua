@@ -1,11 +1,12 @@
 -- load plugins
+
 require('plugins')
 -- vim.cmd('packloadall!') -- fixes plugs not seeing config, and load order mess. Or else we need to: so $MYVIMRC  but fucks up packer.sync...
 require('settings')
 require('keymappings')
 
 -- set themes props before loading actuall theme ?
-vim.cmd('colorscheme tokyonight')  -- onedark, OceanicNext, edge
+-- vim.cmd('colorscheme tokyonight')  -- onedark, OceanicNext, edge
 
 require'telescope'.load_extension('sessions')
 
@@ -18,15 +19,21 @@ require'telescope'.load_extension('sessions')
 vim.cmd('autocmd BufWritePre * let save_pos = getpos(".") | %s/\\s\\+$//e | call setpos(".", save_pos)')
 
 -- prevent expanding comment strings on <Ret>
-vim.cmd('autocmd FileType * set formatoptions-=r')
+-- vim.cmd('autocmd FileType * set formatoptions-=r')
 
 
 -- absolute <-> relative auto switch
-vim.cmd([[
-autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
-autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
-]])
-
+-- vim.cmd([[
+-- autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+-- autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+-- ]])
+-- line numbers
+-- vim.api.nvim_exec([[
+-- augroup MyColors
+-- 	autocmd!
+-- 	autocmd ColorScheme * highlight LineNr guifg=#5081c0   | highlight CursorLineNR guifg=#FFba00
+-- augroup END
+-- ]], false)
 -- vim.api.nvim_exec([[
 -- autocmd User VimspectorUICreated autocmd CursorHold *.py  :execute "normal \<Plug>VimspectorBalloonEval"
 -- ]],false)

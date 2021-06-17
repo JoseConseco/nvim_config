@@ -13,8 +13,10 @@ vim.api.nvim_set_keymap('i', 'jk', '<ESC>', {noremap = true, silent = true})
 
 --  Start new line- break <Ret> in comd window...
 -- vim.api.nvim_set_keymap('n','<Enter>', 'o<Esc>', {noremap = true})
-vim.api.nvim_set_keymap('n','<M-o>', 'o<Esc>', {noremap = true})
-vim.api.nvim_set_keymap('n','<M-O>', 'O<Esc>', {noremap = true})
+vim.api.nvim_set_keymap('n','<M-o>', ':let save_pos = getpos(".") | normal o<Esc> | :call setpos(".", save_pos)<CR>', {noremap = true})
+vim.api.nvim_set_keymap('n','<M-O>', ':let save_pos = getpos(".") | normal O<Esc> | :call setpos(".", [save_pos[0], save_pos[1]+1, save_pos[2], save_pos[3]])<CR>', {noremap = true})
+vim.api.nvim_set_keymap('v','<M-o>', '<ESC> | :let save_pos = getpos(".") | normal o<Esc> | :call setpos(".", save_pos)<CR> | gv', {noremap = true})
+vim.api.nvim_set_keymap('v','<M-O>', '<ESC> | :let save_pos = getpos(".") | normal O<Esc> | :call setpos(".", [save_pos[0], save_pos[1]+1, save_pos[2], save_pos[3]])<CR | gv>', {noremap = true})
 
 -- You can't stop me
 vim.api.nvim_set_keymap('c', 'w!!', 'w !sudo tee %', {})
@@ -22,29 +24,29 @@ vim.api.nvim_set_keymap('c', 'w!!', 'w !sudo tee %', {})
 -- Alt+Shift+Up/Down to move lines up and down
 vim.api.nvim_set_keymap('n', '<A-S-Down>', ':m .+1<CR>==', { noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<A-S-Up>', ':m .-2<CR>==',   { noremap = true, silent = true})
-vim.api.nvim_set_keymap('n', '<A-S-j>', ':m .+1<CR>==',    { noremap = true, silent = true})
-vim.api.nvim_set_keymap('n', '<A-S-k>', ':m .-2<CR>==',    { noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<A-j>', ':m .+1<CR>==',    { noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<A-k>', ':m .-2<CR>==',    { noremap = true, silent = true})
 
 vim.api.nvim_set_keymap('i', '<A-S-Down>', '<Esc>:m .+1<CR>==gi', { noremap = true, silent = true})
 vim.api.nvim_set_keymap('i', '<A-S-Up>', '<Esc>:m .-2<CR>==gi',   { noremap = true, silent = true})
-vim.api.nvim_set_keymap('i', '<A-S-j>', '<Esc>:m .+1<CR>==gi',    { noremap = true, silent = true})
-vim.api.nvim_set_keymap('i', '<A-S-k>', '<Esc>:m .-2<CR>==gi',    { noremap = true, silent = true})
+vim.api.nvim_set_keymap('i', '<A-j>', '<Esc>:m .+1<CR>==gi',    { noremap = true, silent = true})
+vim.api.nvim_set_keymap('i', '<A-k>', '<Esc>:m .-2<CR>==gi',    { noremap = true, silent = true})
 
 vim.api.nvim_set_keymap('v', '<A-S-Down>', ':m \'>+1<CR>gv=gv', { noremap = true, silent = true})
 vim.api.nvim_set_keymap('v', '<A-S-Up>', ':m \'<-2<CR>gv=gv',   { noremap = true, silent = true})
-vim.api.nvim_set_keymap('v', '<A-S-j>', ':m \'>+1<CR>gv=gv',    { noremap = true, silent = true})
-vim.api.nvim_set_keymap('v', '<A-S-k>', ':m \'<-2<CR>gv=gv',    { noremap = true, silent = true})
+vim.api.nvim_set_keymap('v', '<A-j>', ':m \'>+1<CR>gv=gv',    { noremap = true, silent = true})
+vim.api.nvim_set_keymap('v', '<A-k>', ':m \'<-2<CR>gv=gv',    { noremap = true, silent = true})
 
 
 -- Alt + j/k to duplicate up and down (alt does not work with Arrows !)
-vim.api.nvim_set_keymap('n', '<A-j>',  ":.copy.<Return>", {noremap = true, silent = true})
-vim.api.nvim_set_keymap('n', '<A-k>',    ":.copy.-1<Return>", {noremap = true, silent = true})
-vim.api.nvim_set_keymap('v', '<A-j>',  ":'<,'>copy'<-1<Return>gv", {noremap = true, silent = true})
-vim.api.nvim_set_keymap('v', '<A-k>',    ":'<,'>copy'><Return>gv", {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<S-A-j>',  ":.copy.<Return>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<S-A-k>',    ":.copy.-1<Return>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap('v', '<S-A-j>',  ":'<,'>copy'<-1<Return>gv", {noremap = true, silent = true})
+vim.api.nvim_set_keymap('v', '<S-A-k>',    ":'<,'>copy'><Return>gv", {noremap = true, silent = true})
 
 -- select block after indenting
-vim.api.nvim_set_keymap('v', '<', '<gv', {noremap = true})
-vim.api.nvim_set_keymap('v', '>', '>gv', {noremap = true})
+vim.api.nvim_set_keymap('v', '<', '<gv', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('v', '>', '>gv', {noremap = true, silent = true})
 
 -- jump backward
 -- vim.api.nvim_set_keymap('n', '<S-Tab>', '<C-o>', {noremap = true})
@@ -71,7 +73,7 @@ vim.api.nvim_set_keymap('i', '<C-s>', '<Esc>:up<CR>', {noremap = true})
 vim.api.nvim_set_keymap('n', '<C-z>', 'u', {noremap = true})
 
 
-vim.cmd([[call yankstack#setup()]]) --or else yank stack wont work with Y
+-- vim.cmd([[call yankstack#setup()]]) --or else yank stack wont work with Y
 -- 'normal' Backspace
 vim.api.nvim_set_keymap('n', '<BS>', '"_X', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('v', '<BS>', '"_x', {noremap = true})
@@ -89,9 +91,9 @@ vim.api.nvim_set_keymap('v', '<Del>',  '"_d', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<Del>',  '"_x', {noremap = true, silent = true})
 
 -- change without overriding register
-vim.api.nvim_set_keymap('v', 'c',  '"_c', {noremap = true, silent = true})
+-- vim.api.nvim_set_keymap('v', 'c',  '"_c', {noremap = true, silent = true})
 -- vim.api.nvim_set_keymap('n', 'c',  '"_c', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('v', 'C',  '"_C', {noremap = true, silent = true})
+-- vim.api.nvim_set_keymap('v', 'C',  '"_C', {noremap = true, silent = true})
 -- vim.api.nvim_set_keymap('n', 'C',  '"_C', {noremap = true, silent = true})
 
 -- substitute without overriding register
@@ -119,7 +121,7 @@ vim.api.nvim_set_keymap('n', 'g/', ':g/\\v', {noremap = true})
 
 -- search for selection whithout jump
 vim.api.nvim_set_keymap('v', '*', "y/\\V<C-R>=escape(@\",'/\')<CR><CR>", {noremap = true})
-vim.api.nvim_set_keymap('n', '*', ":keepjumps normal! mi*`i<CR>", {noremap = true})   -- wont affect jump list
+-- vim.api.nvim_set_keymap('n', '*', ":keepjumps normal! mi*`i<CR>", {noremap = true})   -- wont affect jump list
 
 -- substitute word under cursor with yanked text (+ register )
 -- vim.api.nvim_set_keymap('v', '*s', "\"ay:%s/<C-r>a/<C-r>+/gc<CR>", {noremap = true}) -- \<word\>  -adds whitespace  word limit (sub only whole words)

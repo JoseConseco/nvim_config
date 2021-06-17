@@ -37,10 +37,11 @@ local wk = require("which-key")
 -- vim.g.which_key_use_floating_win = 1
 
 -- s=fname()- wont_work for hoteys
--- function CmdInput(cmd)
---	let name = input('Name= ')
---	exec a=cmd . name
--- end
+-- function _G.conditional_width()
+function _G.CmdInput(cmd)
+	local name = vim.fn.input('Name= ')
+	vim.cmd(cmd..name)
+end
 
 -- Hide status line
 -- autocmd! FileType which_key
@@ -53,9 +54,9 @@ wk.register({
 	['<leader>/'] = { ':Ag<CR>',                   'Search Project' },  --<plug>fzf,
 	['<leader>.'] = { ':Telescope find_files<CR>', 'Find File' },
 	['<leader>:'] = { ':Telescope commands<CR>',   'Commands' },
-	['<leader><lt>'] = { ":lua require'telescope.builtin'.buffers{show_all_buffers=true}<CR>", 'Switch Buffer' },
+	['<leader><lt>'] = {':Telescope buffers<CR>', 'Switch Buffer' },
 	['<leader>r'] = { ':luafile $MYVIMRC<CR>',     'Reload VIMRC' },
-	['<leader> '] = { ':HopChar2<CR>',             'HOP 2Char' },
+	['<leader> '] = { ':HopWord<CR>',             'HOP 2Char' },
 	['<leader>e'] = { ':Fern . -reveal=%<CR>',     'File Browser' },
 	['<leader>p'] = { 'viw"_dP',                   'Paste over word' }, -- -d => without override
 	['<leader>1'] = 'which_key_ignore',
@@ -95,7 +96,7 @@ wk.register({
 	['<leader>b'] = { name = '+Buffers' },
 	['<leader>b/'] = {':Telescope current_buffer_fuzzy_find<CR>',                             'Search content Tele'},
 	['<leader>b?'] = {':lua require"telescope".extensions.buffer_search.buffer_search{}<CR>', 'Search current nonfzf'},
-	['<leader>b<'] = {":lua require'telescope.builtin'.buffers{show_all_buffers=true}<CR>", 'Find buffer' } ,
+	['<leader>b<'] = {":Telescope buffers<CR>", 'Find buffer' } ,
 	['<leader>bn'] = {':enew<CR>',                                                            'New'},
 	['<leader>b]'] = {':BufferLineCycleNext<CR>',                                             'Next'},
 	['<leader>b['] = {':BufferLineCyclePrev<CR>',                                             'Previous'},
@@ -118,8 +119,9 @@ wk.register({
 wk.register({
 	['<leader>c'] = { name = '+Code' },
 	['<leader>c.'] = {':Telescope filetypes<CR>',    'filetypes'},
-	['<leader>ct'] = {':call CmdInput("Tab /")<CR>', 'Tabularize (align)'},
+	['<leader>ct'] = {':call v:lua.CmdInput("Tab /")<CR>', 'Tabularize (align)'},
 	['<leader>cF'] = {':Autoformat<CR>',             'Autoformat lines'},
+	['<leader>cc'] = {':TSContextToggle<CR>',             'Context toggle'}, --from treesitter-context plug
 
 	['<leader>cs']= { name = '+Spell'},
 	['<leader>csT'] = {':Telescope spell_suggest<CR>',         'Suggest tele'},
@@ -166,11 +168,12 @@ wk.register({
 	['<leader>du']  = { ":lua require('dapui').setup()<CR>",                                            'Start UI'} ,
 	['<leader>db']  = { ":lua require'dap'.toggle_breakpoint()<CR>",                                    'Toggle breakpoint'},
 	-- ['<leader>dc']  = { ":lua require'dap'.goto_()<CR>",                                             'Run to Cursor'},
-	['<leader>dc']  = { ":lua require('dapui').close()<CR>",                                            'Close UI'},
+	['<leader>dC']  = { ":lua require('dapui').close()<CR>",                                            'Close UI'},
 	['<leader>dbc'] = { ":lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>", 'Conditional breakpoint'},
 	['<leader>dk']  = { ":lua require'dap.ui.variables'.hover()<CR>",                                   'Eval popup'},
 	['<leader>dK']  = { ":lua require('dapui').eval()<CR>",                                             'Eval window'},
 	['<leader>dn']  = { ":lua require'dap'.step_over()<CR>",                                            'Step Over'},
+	['<leader>dc']  = { ":lua require'dap'.run_to_cursor()<CR>",                                        'Run to Cursor'},
 	['<leader>dr']  = { ":lua require'dap'.repl.toggle()<CR>",                                          'Repl Toggle'},
 })
 
@@ -181,7 +184,7 @@ end
 wk.register({
 	['<leader>f'] = { name = '+File' },
 	['<leader>fs'] = { ':update<CR>',                              'Save'},
-	['<leader>fS'] = { ':call CmdInput("w ")<CR>',                 'Save as'},
+	['<leader>fS'] = { ':call v:lua.CmdInput("w ")<CR>',                 'Save as'},
 	['<leader>fd'] = { ':call delete(expand("%")) | bdelete!<CR>', 'Delete!'},
 	['<leader>fr'] = {':confirm e<CR>',                            'Reload File(e!)'},
 	['<leader>ff'] = {':Telescope file_browser<CR>',               'File Browser (fuzzy)'},
@@ -218,7 +221,7 @@ wk.register({
 wk.register({
 	['<leader>h'] = { name = '+History' },
 	['<leader>hu'] = {':UndotreeToggle<CR>',            'Undo Tree'} ,
-	['<leader>hw'] = {':call CmdInput("LHWrite ")<CR>', 'Local History Write'},
+	['<leader>hw'] = {':call v:lua.CmdInput("LHWrite ")<CR>', 'Local History Write'},
 	['<leader>hl'] = {':LHLoad<CR>',                    'Local History Load'},
 	['<leader>hb'] = {':LHBrowse<CR>',                  'Local History Browse'},
 	['<leader>hx'] = {':LHDelete<CR>',                  'Local History Delete'},
@@ -274,18 +277,18 @@ wk.register({
 
 function _G.conditional_fold()
 	if vim.wo.foldlevel > 0 then
-		vim.cmd('=normal zM')
+		vim.cmd(';normal zM')
 	else
-		vim.cmd('=normal zR')
+		vim.cmd(';normal zR')
 	end
 end
 
 function _G.conditional_width()
 	local wwidth = vim.api.nvim_eval('&winwidth')
 	if wwidth > 10 then
-		vim.cmd('=set winwidth=1') -- disable
+		vim.cmd(':set winwidth=1') -- disable
 	else
-		vim.cmd('=set winwidth=92')
+		vim.cmd(':set winwidth=92')
 	end
 end
 -- below is required or else which key wont work !!
@@ -379,24 +382,26 @@ wk.register({
 })
 
 
--- n is for Quit
+-- n is for Window
 wk.register({
 	['<leader>w'] = { name = '+Window' },
 	['<leader>w='] = {'<C-w>=<CR>',                 'Equalize(=)'},
-	['<leader>w>'] = {':vertical resize +5<CR>',    'Increase(>)'},
-	['<leader>w<lt>'] = {':vertical resize -5<CR>', 'Decrease(<)'},
+	['<leader>w>'] = {':vertical resize +25<CR>',    'Increase(>)'},
+	['<leader>w<lt>'] = {':vertical resize -25<CR>', 'Decrease(<)'},
 	['<leader>wh'] = {'<C-w>s<CR>',                 'Split below(s)'},
 	['<leader>wv'] = {'<C-w>v<CR>',                 'Split right(v)'},
 	['<leader>wq'] = {'<C-w>q<CR>',                 'Quit window(q)'},
 	['<leader>wO'] = {':only<CR>',                  'Close All other splits(o)'},
 	['<leader>wo'] = {'<C-w>o<CR>',                 'Close All but current(o)'},
-	['<leader>ww'] = {':call v:lua.conditional_width()<CR>',  'Auto width'},
+	['<leader>ww'] = {':call v:lua.CmdInput(":set winwidth=")<CR>',  'Set width'},
+	['<leader>wm'] = {':call v:lua.CmdInput(":set winminwidth=")<CR>',  'Set min width'},
+	-- ['<leader>ww'] = {':call v:lua.conditional_width()<CR>',  'Auto width'},
 })
 
-
+-- TSContextDisable - if srom treesitter-context
 wk.register({
 	['<leader>q'] = { name = '+Quit' },
-	['<leader>qq'] = {':FernDo close<CR> | :confirm qa<CR>',        'Quit Confirm (qa)'},
+	['<leader>qq'] = {':FernDo close<CR>| :TSContextDisable<cr> | :confirm qa<CR>',        'Quit Confirm (qa)'},
 	['<leader>qf'] = {':q!<CR>',                                    'Force Quit (q!)'},
 	['<leader>qs'] = {':FernDo close<CR> | :bufdo update | q!<CR>', 'Quit Save all (wqa!)'},
 })

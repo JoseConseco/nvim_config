@@ -22,6 +22,40 @@ local colors = {
 }
 local condition = require('galaxyline.condition')
 
+gls.left[1] = {
+    ViMode = {
+        provider = function()
+            local alias = {
+                n = " NORMAL ",
+                i = " INSERT ",
+                c = " COMMAND ",
+                V = " VISUAL ",
+                [""] = " VISUAL ",
+                v = " VISUAL ",
+                R = " REPLACE "
+            }
+						local mode_color = {
+													n = colors.darkblue,
+													i = colors.red,
+													v=colors.nord,
+													[''] = colors.nord,
+													V=colors.nord,
+                          c = colors.magenta,no = colors.red,s = colors.magenta,
+                          S=colors.magenta,[''] = colors.magenta,
+                          ic = colors.yellow,R = colors.violet,Rv = colors.violet,
+                          cv = colors.red,ce=colors.red, r = colors.cyan,
+                          rm = colors.cyan, ['r?'] = colors.cyan,
+                          ['!']  = colors.red,t = colors.red}
+						vim.api.nvim_command('hi GalaxyViMode guibg='..mode_color[vim.fn.mode()])
+            return alias[vim.fn.mode()]
+        end,
+				icon = " ",
+        separator = " ",
+        separator_highlight = {colors.lightbg, colors.lightbg},
+        highlight = {colors.bg, colors.fg, 'bold'}
+    }
+}
+
 gls.left[3] = {
     FileIcon = {
         provider = "FileIcon",
@@ -191,50 +225,15 @@ gls.right[3] = {
     }
 }
 
-gls.right[4] = {
-    right_LeftRounded = {
-        provider = function()
-            return ""
-        end,
-        separator = " ",
-        separator_highlight = {colors.bg, colors.bg},
-        highlight = {colors.red, colors.bg}
-    }
-}
+
 
 gls.right[5] = {
-    SiMode = {
-        provider = function()
-            local alias = {
-                n = "NORMAL",
-                i = "INSERT",
-                c = "COMMAND",
-                V = "VISUAL",
-                [""] = "VISUAL",
-                v = "VISUAL",
-                R = "REPLACE"
-            }
-            return alias[vim.fn.mode()]
-        end,
-        separator = " ",
-        highlight = {colors.bg, colors.red}
-    }
-}
-gls.right[6] = {
     PerCent = {
         provider = "LinePercent",
         separator = " ",
-        separator_highlight = {colors.red, colors.red},
-        highlight = {colors.bg, colors.fg}
+        separator_highlight = {colors.line_bg, colors.line_bg},
+        highlight = {colors.bg, colors.darkblue, 'bold'}
     }
 }
 
 
-gls.right[7] = {
-    rightRounded = {
-        provider = function()
-            return ""
-        end,
-        highlight = {colors.fg, colors.bg}
-    }
-}

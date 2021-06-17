@@ -17,7 +17,7 @@ vim.o.linespace = 14 -- spacing between lines
 vim.o.splitbelow = true -- Horizontal splits will automatically be below
 vim.o.termguicolors = true -- set term giu colors most terminals support this
 vim.o.splitright = true -- Vertical splits will automatically be to the right
-vim.o.t_Co = "256" -- Support 257 colors
+-- vim.o.t_Co = "256" -- Support 257 colors - broken after nvim udpate
 vim.o.scrolloff = 6 -- Makes indenting smart
 -- vim.o.conceallevel = 0 -- So that I can see `` in markdown files
 -- vim.g.tex_conceal = ''--'dmgs' --a - disables ligatures
@@ -35,7 +35,7 @@ vim.o.ignorecase = true    -- ignore case of searched term
 vim.o.smartcase = true   -- disable ignorecase if typed in command has Upper case letter
 
 vim.wo.number = true -- set numbered lines
-vim.wo.relativenumber = true -- set numbered lines
+-- vim.wo.relativenumber = true -- set numbered lines
 vim.wo.cursorline = true -- Enable highlighting of the current line
 vim.o.showtabline = 2 -- Always show tabs
 vim.o.linebreak = true  -- do not break words.
@@ -45,11 +45,14 @@ vim.wo.signcolumn = "yes" -- Always show the signcolumn, otherwise it would shif
 vim.o.updatetime = 300 -- Faster completion
 vim.o.timeoutlen = 500 -- By default timeoutlen is 1000 ms
 vim.o.clipboard = "unnamedplus" -- Copy paste between vim and everything else
--- vim.o.guifont = "NotoSansMono Nerd Font:16"
-vim.o.guifont = "FiraCode Nerd Font:h14"
 vim.o.virtualedit='all'      -- makes cursor not jump,
+
+vim.o.winwidth=80
+vim.o.winminwidth=40
 
 -- vim.g.paste = true --? format pasted str - does it work? seems broken right now..
 
+-- vim.o.guifont = "NotoSansMono Nerd Font:16"
+vim.o.guifont = "NotoSansMono Nerd Font Medium:h12" -- "FiraCode Nerd Font:h14"
 vim.g.neovide_refresh_rate = 60
 vim.g.neovide_transparency=1.0

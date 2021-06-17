@@ -8,8 +8,8 @@ require("todo-comments").setup({
 	},
 	keywords = {
 		-- TODO = { icon = " ", color = "info", alt = {"TODO", "WIP"} },
-		WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX" } },
-		HACK = { icon = " ", color = "warning", alt = {"CHECK"}},
-		NOTE = { icon = " ", color = "hint", alt = { "INFO", "WIP" } },
+		WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX", "W" } },
+		HACK = { icon = " ", color = "warning", alt = {"CHECK", "FIX", "F"}},
+		NOTE = { icon = " ", color = "hint", alt = { "INFO", "WIP", "N" } },
 		}
 })
