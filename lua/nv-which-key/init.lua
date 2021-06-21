@@ -310,7 +310,7 @@ wk.register({
 	['<leader>oL'] = {":lua.require('luapad').detach()<CR>",    'Luapad Repl Off'},
 	['<leader>oc'] = {':Codi<CR>',                              'Codi Start (multi lang REPL)'},
 	['<leader>oC'] = {':Codi!<CR>',                             'Codi Stop'},
-	['<leader>oT'] = {'<CMD>lua require("FTerm").toggle()<CR>', 'FTerm'},
+	['<leader>oT'] = {':ToggleTerm<CR>', 'Term'},
 })
 
 

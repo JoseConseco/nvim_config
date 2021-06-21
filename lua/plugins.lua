@@ -73,7 +73,7 @@ return require("packer").startup(
 	use "kyazdani42/nvim-web-devicons"
 	use {"ryanoasis/vim-devicons",
 		config=function() require("web-devicons") end} -- lua + wont close () next to char finally good and simple +++
-	use {'glepnir/galaxyline.nvim', --status line and bufferline
+	use {'glepnir/galaxyline.nvim', disable=false, --status line and bufferline
 		requires = {'kyazdani42/nvim-web-devicons'},
 		config=function() require("nv-galaxyline") end} -- lua + wont close () next to char finally good and simple +++
 	use {'akinsho/nvim-bufferline.lua',
@@ -84,8 +84,7 @@ return require("packer").startup(
 	-- use {'karb94/neoscroll.nvim',
 	-- 		config=function() require('neoscroll').setup() end} -- lua + wont close () next to char finally good and simple +++
 
-	use {'wfxr/minimap.vim', -- minimap fast
-		disable=true,
+	use {'wfxr/minimap.vim', disable=true,-- minimap fast  but annoying - messes up windows
 		config=function() require("nv-minimap") end} -- lua + wont close () next to char finally good and simple +++
 
 	use {"mhinz/vim-startify",
@@ -94,12 +93,12 @@ return require("packer").startup(
 	-- use "tversteeg/registers.nvim"  -- show content of registers when using " - replaced by new lua which_key
 	use {'nacro90/numb.nvim',
 		config=function() require('numb').setup() end } -- preview line whe using goto :xyz
-	use {'lukas-reineke/indent-blankline.nvim', branch='lua' , after='tokyonight.nvim',--  displaying thin vertical lines at each indentation level
+	use {'lukas-reineke/indent-blankline.nvim', branch='lua' , after='tokyonight.nvim', disable=false,--  displaying thin vertical lines at each indentation level
 		setup=function() require('nv-indentline') end,
 		config=function() vim.cmd([[highlight! link IndentBlanklineContextChar Comment]])  end} -- preview line whe using goto :xyz
 	-- use {'Xuyuanp/scrollbar.nvim', -- side scrollbar  -fucks up session load often :/
 	--	config=function() require("nv-scrollbar")  end } -- preview line whe using goto :xyz
-	use {'dstein64/nvim-scrollview',
+	use {'dstein64/nvim-scrollview', disable=false,
 		config=function()  vim.api.nvim_exec('highlight link ScrollView Normal', false); vim.g.scrollview_character = '▎'  end}
 	use {'machakann/vim-highlightedyank',
 		config=function() vim.g.highlightedyank_highlight_duration = 100 end}
@@ -149,7 +148,9 @@ return require("packer").startup(
 	use { "folke/lsp-trouble.nvim", -- shows nice icons in lsp warnings...
 		requires = "kyazdani42/nvim-web-devicons",
 		config = function() require("nv-lsptrouble") end,}
-	use {'simrat39/symbols-outline.nvim', -- :SymbolsOutline
+	use {'stevearc/aerial.nvim', -- basically better outliner with objects type filter
+		config = function() require("nv-aerial") end,}
+	use {'simrat39/symbols-outline.nvim', disable=true, -- :SymbolsOutline  no way to filter to class and methods only..
 		config = function() require('symbols-outline').setup({highlight_hovered_item = false}) end}
 	use {'glepnir/lspsaga.nvim', --cool popup goto def hoover etc - but still wipp
 		disable = true,
@@ -217,47 +218,48 @@ return require("packer").startup(
 
 	--aligning
 	use {'junegunn/vim-easy-align',  -- def:  ga  - then thing, and around what symbol :  eg  ga
-	config=function() require("nv-easyalign") end} -- lua + wont close () next to char finally good and simple +++
-		use 'godlygeek/tabular'
-		use 'tommcdo/vim-lion' -- eg: glip,
+		config=function() require("nv-easyalign") end} -- lua + wont close () next to char finally good and simple +++
+	use 'godlygeek/tabular'
+	use 'tommcdo/vim-lion' -- eg: glip,
 
 
-		--code/format
-		-- use 'chaoren/vim-wordmotion' -- adds eg support for different snake case as individual words
-		use 'tpope/vim-surround' -- eg cs'" -> changes ' to "
-		-- use 'blackcauldron7/surround.nvim' --hotkye s taken, plus unstable?
-		use 'wellle/targets.vim' -- eg ci,  ci_ etc
-		use 'andymass/vim-matchup' -- increase power of %
-		-- use {'lukas-reineke/indent-blankline.nvim', branch = 'lua', disable = true} -- add indents on blank lines
-		use {"sbdchd/neoformat",  --verly slow with lsp or treesitter
-		disable=true,}
-		use {'Chiel92/vim-autoformat',
+	--code/format
+	-- use 'chaoren/vim-wordmotion' -- adds eg support for different snake case as individual words
+	-- use 'tpope/vim-surround' -- eg cs'" -> changes ' to "
+	-- use 'blackcauldron7/surround.nvim' --hotkye s taken, plus unstable?
+	use 'wellle/targets.vim' -- eg ci,  ci_ etc
+	use 'andymass/vim-matchup' -- increase power of %
+	-- use {'lukas-reineke/indent-blankline.nvim', branch = 'lua', disable = true} -- add indents on blank lines
+	use {"sbdchd/neoformat", disable=true,} --verly slow with lsp or treesitter
+
+	use {'Chiel92/vim-autoformat',
 		config=function() require('nv-autoformat') end }
-		use {'windwp/nvim-autopairs',  -- lua + wont close () next to char finally good and simple +++
-		-- comit='b8272f539017ffb6de6a05247e7c333b3721279b',
-			config=function() require('nv-autopairs') end }
+	use {'windwp/nvim-autopairs',  -- lua + wont close () next to char finally good and simple +++
+	-- comit='b8272f539017ffb6de6a05247e7c333b3721279b',
+		config=function() require('nv-autopairs') end }
 
-		use {'terrortylor/nvim-comment',
+	use {'terrortylor/nvim-comment',
 		config=function() require('nvim_comment').setup({comment_empty = false})  end} -- in lua     o
-		use 'icatalina/vim-case-change'  -- rotate strign case - modded by me
-		use 'mg979/vim-visual-multi'  --multi cursor support like vscode...
+	use 'icatalina/vim-case-change'  -- rotate strign case - modded by me
+	use 'mg979/vim-visual-multi'  --multi cursor support like vscode...
 
-		--spell check
-		use {'kamykn/spelunker.vim',  -- zl - correct, or Zc, Zf
+	--spell check
+	use {'kamykn/spelunker.vim', disable = true, -- zl - correct, or Zc, Zf
 		config=function() require('nv-spelunker') end} -- in lua     o
 
-		-- navigation
-		use "phaazon/hop.nvim"
-		-- use 'rhysd/clever-f.vim' -- f,t,F,T, repeat fff.. to search next occurance of x - wont work with macros!
-		use {'justinmk/vim-sneak', disable = false,
+	-- navigation
+	use {"phaazon/hop.nvim",
+		config = function() vim.api.nvim_set_keymap('o', 'c',  ":HopChar1<cr>", {noremap = true}) end}
+	-- use 'rhysd/clever-f.vim' -- f,t,F,T, repeat fff.. to search next occurance of x - wont work with macros!
+	use {'justinmk/vim-sneak', disable = true, -- replaced with hop oper motion
 		config = function() vim.cmd('source ~/.config/nvim/nv-sneak.vim') end}
-		-- ternimal in popup
-		use { "numtostr/FTerm.nvim", -- flaot term
-		config = function() require("FTerm").setup() end }
-		--repls
-		use "rafcamlet/nvim-luapad" -- :Luapad - open interactive scratch bufer with realtime eval
-		use 'metakirby5/codi.vim' -- repls for all other langs ...
-		use 'camspiers/lens.vim' --auto win size
+	-- ternimal in popup
+	use {"akinsho/nvim-toggleterm.lua",
+		config = function() require("toggleterm").setup{} end}
+	--repls
+	use "rafcamlet/nvim-luapad" -- :Luapad - open interactive scratch bufer with realtime eval
+	use 'metakirby5/codi.vim' -- repls for all other langs ...
+	use 'camspiers/lens.vim' --auto win size
 
 
 end

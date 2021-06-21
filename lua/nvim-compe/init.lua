@@ -26,7 +26,7 @@ require "compe".setup {
         nvim_lua = {kind = " "},
         spell = {kind = " "},
         tags = false,
-				omni = true,
+				omni = false,
         -- snippets_nvim = true,
         -- treesitter = true
     }
