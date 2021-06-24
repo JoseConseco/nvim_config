@@ -30,14 +30,14 @@ vim.g.aerial = {
   highlight_on_jump = 300,
 
   -- Fold code when folding the tree. Only works when manage_folds is enabled
-  link_tree_to_folds = true,
+  link_tree_to_folds = false,
 
   -- Fold the tree when folding code. Only works when manage_folds is enabled
   link_folds_to_tree = false,
 
   -- Use symbol tree for folding. Set to true or false to enable/disable
   -- 'auto' will manage folds if your previous foldmethod was 'manual'
-  manage_folds = 'auto',
+  manage_folds = false,
 
   -- The maximum width of the aerial window
   max_width = 40,
@@ -61,7 +61,7 @@ vim.g.aerial = {
   open_automatic_min_symbols = 0,
 
   -- Run this command after jumping to a symbol (false will disable)
-  post_jump_cmd = 'normal! zzjl',
+  post_jump_cmd = 'normal! zz',
 
   -- Set to false to not update the symbols when there are LSP errors
   update_when_errors = true,
@@ -80,14 +80,6 @@ vim.g.aerial = {
 
 -- open_automatic can be specified as a filetype map. For example, the below
 -- configuration will open automatically in all filetypes except python and rust
-vim.g.aerial = {
-  open_automatic = {
-    -- use underscore to specify the default behavior
-    ['_']  = true,
-    python = false,
-    rust   = false,
-  }
-}
 
 -- You can also override the default icons.
 -- vim.g.aerial = {

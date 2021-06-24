@@ -2,6 +2,7 @@
 -- vim.cmd [[packadd nvim-compe]]-
 
 local nvim_lsp = require('lspconfig')
+
 local on_attach = function(client, bufnr)
 	local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
 	local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
@@ -48,6 +49,7 @@ local on_attach = function(client, bufnr)
 		augroup END
 			]], false)
 	end
+  require'aerial'.on_attach(client) -- aerial plug - outliner
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()

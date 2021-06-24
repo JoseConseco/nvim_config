@@ -148,10 +148,8 @@ return require("packer").startup(
 	use { "folke/lsp-trouble.nvim", -- shows nice icons in lsp warnings...
 		requires = "kyazdani42/nvim-web-devicons",
 		config = function() require("nv-lsptrouble") end,}
-	use {'stevearc/aerial.nvim', -- basically better outliner with objects type filter
+	use {'stevearc/aerial.nvim', disable=false, -- basically better outliner with objects type filter
 		config = function() require("nv-aerial") end,}
-	use {'simrat39/symbols-outline.nvim', disable=true, -- :SymbolsOutline  no way to filter to class and methods only..
-		config = function() require('symbols-outline').setup({highlight_hovered_item = false}) end}
 	use {'glepnir/lspsaga.nvim', --cool popup goto def hoover etc - but still wipp
 		disable = true,
 		config = function() require("nv-lspsaga") end,}

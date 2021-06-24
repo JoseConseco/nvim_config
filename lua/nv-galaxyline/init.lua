@@ -26,13 +26,13 @@ gls.left[1] = {
     ViMode = {
         provider = function()
             local alias = {
-                n = " NORMAL ",
-                i = " INSERT ",
-                c = " COMMAND ",
-                V = " VISUAL ",
-                [""] = " VISUAL ",
-                v = " VISUAL ",
-                R = " REPLACE "
+                n = " NORMAL ",
+                i = " INSERT ",
+                c = " COMMAND ",
+                V = " VISUAL ",
+                [""] = " VISUAL ",
+                v = " VISUAL ",
+                R = " REPLACE "
             }
 						local mode_color = {
 													n = colors.darkblue,
@@ -52,7 +52,7 @@ gls.left[1] = {
 				icon = " ",
         separator = " ",
         separator_highlight = {colors.lightbg, colors.lightbg},
-        highlight = {colors.bg, colors.fg, 'bold'}
+        highlight = {colors.lightbg, colors.fg, 'bold'}
     }
 }
 
