@@ -36,6 +36,21 @@ local on_attach = function(client, bufnr)
 		buf_set_keymap("n", "<space>F", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
 	end
 
+	-- adding borders
+	vim.lsp.handlers["textDocument/hover"] =
+		vim.lsp.with(
+			vim.lsp.handlers.hover,
+			{
+				border = "single"
+			}
+		)
+  vim.lsp.handlers["textDocument/signatureHelp"] =
+  vim.lsp.with(
+		vim.lsp.handlers.signature_help,
+		{
+			border = "single"
+		}
+	)
 	-- Set autocommands conditional on server_capabilities
 	if client.resolved_capabilities.document_highlight then
 		vim.api.nvim_exec([[

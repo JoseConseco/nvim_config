@@ -15,7 +15,13 @@ require "compe".setup {
     max_abbr_width = 300,
     max_kind_width = 400,
     max_menu_width = 400,
-    documentation = true,
+		documentation = {
+			border = "rounded",
+			max_width = 120,
+			min_width = 60,
+			max_height = math.floor(vim.o.lines * 0.3),
+			min_height = 1,
+		},
     source = {
 				path = {kind = " "},
         buffer = {kind = " "},

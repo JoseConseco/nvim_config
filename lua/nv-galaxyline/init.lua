@@ -46,7 +46,11 @@ gls.left[1] = {
                           cv = colors.red,ce=colors.red, r = colors.cyan,
                           rm = colors.cyan, ['r?'] = colors.cyan,
                           ['!']  = colors.red,t = colors.red}
-						vim.api.nvim_command('hi GalaxyViMode guibg='..mode_color[vim.fn.mode()])
+						local stat_color = mode_color[vim.fn.mode()]
+						if stat_color == nil then
+							stat_color = colors.darkblue
+						end
+						vim.api.nvim_command('hi GalaxyViMode guibg='..stat_color)
             return alias[vim.fn.mode()]
         end,
 				icon = " ",

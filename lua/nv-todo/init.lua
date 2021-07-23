@@ -10,6 +10,6 @@ require("todo-comments").setup({
 		-- TODO = { icon = " ", color = "info", alt = {"TODO", "WIP"} },
 		WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX", "W" } },
 		HACK = { icon = " ", color = "warning", alt = {"CHECK", "FIX", "F"}},
-		NOTE = { icon = " ", color = "hint", alt = { "INFO", "WIP", "N" } },
+		NOTE = { icon = " ", color = "hint", alt = { "INFO", "WIP", "N", "DONE" } },
 		}
 })

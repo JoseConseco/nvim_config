@@ -13,7 +13,7 @@ vim.o.pumheight = 10 -- Makes popup menu smaller
 vim.o.fileencoding = "utf-8" -- The encoding written to file
 vim.o.cmdheight = 1 -- More space for displaying messages
 vim.o.mouse = "a" -- Enable your mouse
-vim.o.linespace = 14 -- spacing between lines
+vim.o.linespace = 0 -- spacing between lines
 vim.o.splitbelow = true -- Horizontal splits will automatically be below
 vim.o.termguicolors = true -- set term giu colors most terminals support this
 vim.o.splitright = true -- Vertical splits will automatically be to the right
@@ -56,3 +56,12 @@ vim.o.winminwidth=40
 vim.o.guifont = "NotoSansMono Nerd Font Medium:h12" -- "FiraCode Nerd Font:h14"
 vim.g.neovide_refresh_rate = 60
 vim.g.neovide_transparency=1.0
+
+function _G.custom_fold_text()
+  -- local line = vim.fn.getline(vim.v.foldstart)
+  local line_count = vim.v.foldend - vim.v.foldstart + 1
+  return string.rep(' ', vim.v.foldlevel*vim.o.tabstop-4) .. "[+] [" .. line_count .. " Lines]" -- .. line
+end
+
+vim.opt.foldtext = 'v:lua.custom_fold_text()'
+-- vim.opt.fillchars = { eob = "-", fold = "=" }

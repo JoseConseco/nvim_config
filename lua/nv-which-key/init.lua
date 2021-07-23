@@ -152,6 +152,7 @@ wk.register({
 	['<leader>Dp'] =  { ':diffput<CR>',                         'Put(dp)'},
 	['<leader>Dt'] =  { ':diffthis',                            'Diff This'},
 	['<leader>Du'] =  { ':diffupdate',                          'Update changes'},
+	['<leader>Dv'] =  { ':DiffviewOpen',                        'Diffview Open'},
 	['<leader>Dw'] =  { ':windo diffthis<cr>',                  'Diff visible windows'}, --broken from scrollbar
 })
 

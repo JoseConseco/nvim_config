@@ -54,6 +54,8 @@ return require("packer").startup(
 	-- themes
 	-- use 'joshdick/onedark.vim'
 	use 'ful1e5/onedark.nvim'
+	use 'projekt0n/github-nvim-theme'
+
 	use {'folke/tokyonight.nvim',
 		setup=function()  require('themes.tokyonight');    end,
 		config=function() vim.cmd('colorscheme tokyonight'); vim.cmd([[highlight LineNr guifg=#5081c0 | highlight CursorLineNR guifg=#FFba00 ]])
@@ -80,9 +82,9 @@ return require("packer").startup(
 		requires = 'kyazdani42/nvim-web-devicons',
 		config = function() require'bufferline'.setup(); require('nv-bufferline') end
 	} --uses buffers
-	use 'psliwka/vim-smoothie' --smooth PGUP/DOWN
-	-- use {'karb94/neoscroll.nvim',
-	-- 		config=function() require('neoscroll').setup() end} -- lua + wont close () next to char finally good and simple +++
+	-- use 'psliwka/vim-smoothie' --smooth PGUP/DOWN
+	use {'karb94/neoscroll.nvim',
+			config=function() require('neoscroll').setup() end} -- lua + wont close () next to char finally good and simple +++
 
 	use {'wfxr/minimap.vim', disable=true,-- minimap fast  but annoying - messes up windows
 		config=function() require("nv-minimap") end} -- lua + wont close () next to char finally good and simple +++
@@ -93,7 +95,7 @@ return require("packer").startup(
 	-- use "tversteeg/registers.nvim"  -- show content of registers when using " - replaced by new lua which_key
 	use {'nacro90/numb.nvim',
 		config=function() require('numb').setup() end } -- preview line whe using goto :xyz
-	use {'lukas-reineke/indent-blankline.nvim', branch='lua' , after='tokyonight.nvim', disable=false,--  displaying thin vertical lines at each indentation level
+	use {'lukas-reineke/indent-blankline.nvim', after='tokyonight.nvim', disable=false,--  displaying thin vertical lines at each indentation level
 		setup=function() require('nv-indentline') end,
 		config=function() vim.cmd([[highlight! link IndentBlanklineContextChar Comment]])  end} -- preview line whe using goto :xyz
 	-- use {'Xuyuanp/scrollbar.nvim', -- side scrollbar  -fucks up session load often :/
@@ -177,7 +179,8 @@ return require("packer").startup(
 		requires = 'nvim-lua/plenary.nvim',
 		branch = 'foldsigns',
 		config=function() require("nv-gitsigns")  end} -- lua + wont close () next to char finally good and simple +++
-
+  use {'sindrets/diffview.nvim',
+			config = function() require'diffview'.setup{} end}
 
 	-- general
 	-- use {'liuchengxu/vim-which-key',
