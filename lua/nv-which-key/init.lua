@@ -55,7 +55,7 @@ wk.register({
 	['<leader>.'] = { ':Telescope find_files<CR>', 'Find File' },
 	['<leader>:'] = { ':Telescope commands<CR>',   'Commands' },
 	['<leader><lt>'] = {':Telescope buffers<CR>', 'Switch Buffer' },
-	['<leader>r'] = { ':luafile $MYVIMRC<CR>',     'Reload VIMRC' },
+	-- ['<leader>r'] = { ':luafile $MYVIMRC<CR>',     'Reload VIMRC' },
 	['<leader> '] = { ':HopWord<CR>',             'HOP 2Char' },
 	['<leader>e'] = { ':Fern . -reveal=%<CR>',     'File Browser' },
 	['<leader>p'] = { 'viw"_dP',                   'Paste over word' }, -- -d => without override
@@ -122,6 +122,8 @@ wk.register({
 	['<leader>ct'] = {':call v:lua.CmdInput("Tab /")<CR>', 'Tabularize (align)'},
 	['<leader>cF'] = {':Autoformat<CR>',             'Autoformat lines'},
 	['<leader>cc'] = {':TSContextToggle<CR>',             'Context toggle'}, --from treesitter-context plug
+	['<leader>ca'] = {":lua require('nvim-autopairs').disable()<CR>",             'Auto-pairs disable'}, --from treesitter-context plug
+	['<leader>cA'] = {":lua require('nvim-autopairs').enable()<CR>",             'Auto-pairs enable'}, --from treesitter-context plug
 
 	['<leader>cs']= { name = '+Spell'},
 	['<leader>csT'] = {':Telescope spell_suggest<CR>',         'Suggest tele'},
@@ -161,15 +163,15 @@ wk.register({
 	['<leader>d']   = { name = '+Debugger' },
 	['<leader>dd']  = { ":lua require'dap'.continue()<CR>",                                             'Continue/Start debugging'} ,
 	['<leader>dx']  = { ":lua require'dap'.disconnect({ terminateDebuggee = false })<CR>",              'Disconnect'} ,
-	['<leader>dX']  = { ":lua require'dap'.stop()<CR>",                                                 'Stop'} ,
+	['<leader>dX']  = { ":lua require'dap'.close()<CR>",                                                'Close'} ,
 	['<leader>dU']  = { ":lua require'dap'.up()<CR>",                                                   'Stack Up'} ,
 	['<leader>dD']  = { ":lua require'dap'.down()<CR>",                                                 'Stack Down'} ,
 	['<leader>da']  = { ":lua require'dap'.attach('0.0.0.0', 5678)<CR>",                                'Attach (localhost, 5678)'} ,
 	['<leader>dl']  = { ":lua require'dap'.run_last()<CR>",                                             'Re-run Last'},
-	['<leader>du']  = { ":lua require('dapui').setup()<CR>",                                            'Start UI'} ,
 	['<leader>db']  = { ":lua require'dap'.toggle_breakpoint()<CR>",                                    'Toggle breakpoint'},
 	-- ['<leader>dc']  = { ":lua require'dap'.goto_()<CR>",                                             'Run to Cursor'},
-	['<leader>dC']  = { ":lua require('dapui').close()<CR>",                                            'Close UI'},
+	['<leader>du']  = { ":lua require('dapui').setup()<CR>",                                            'UI Start'} ,
+	['<leader>dC']  = { ":lua require('dapui').close()<CR>",                                            'UI Close'},
 	['<leader>dbc'] = { ":lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>", 'Conditional breakpoint'},
 	['<leader>dk']  = { ":lua require'dap.ui.variables'.hover()<CR>",                                   'Eval popup'},
 	['<leader>dK']  = { ":lua require('dapui').eval()<CR>",                                             'Eval window'},
@@ -314,6 +316,10 @@ wk.register({
 	['<leader>oT'] = {':ToggleTerm<CR>', 'Term'},
 })
 
+wk.register({
+	['<leader>r'] = { name = '+Refactor', mode='v' },
+	['<leader>rf'] = {":lua require('refactoring').refactor('Extract Function')<CR>",            'Extract Function', mode='v'},
+})
 
 -- function _G.replace_word()
 --	local name = vim.fn.input('To: ')

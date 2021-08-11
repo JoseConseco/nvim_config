@@ -6,6 +6,7 @@ vim.cmd('set iskeyword+=-') -- treat dash separated words as a word text object"
 --vim.cmd('set shortmess+=c') -- Don't pass messages to |ins-completion-menu|.
 vim.o.hidden = true -- Required to keep multiple buffers open multiple buffers
 vim.wo.wrap = false -- Display long lines as just one line
+
 vim.cmd('set whichwrap+=<,>,[,],h,l') -- move to next line with theses keys
 vim.cmd('set noswapfile') -- move to next line with theses keys
 -- vim.cmd("set diffopt+=iwhite") --avoid comparing whitespaces  - but breaks diff obtain?
@@ -58,10 +59,15 @@ vim.g.neovide_refresh_rate = 60
 vim.g.neovide_transparency=1.0
 
 function _G.custom_fold_text()
-  -- local line = vim.fn.getline(vim.v.foldstart)
+  local line = vim.fn.getline(vim.v.foldstart)
   local line_count = vim.v.foldend - vim.v.foldstart + 1
-  return string.rep(' ', vim.v.foldlevel*vim.o.tabstop-4) .. "[+] [" .. line_count .. " Lines]" -- .. line
+	local white_chars = line:match("^%s*") -- find 0 or more white spaces at beginning of line
+  -- return string.rep(' ', vim.v.foldlevel*4).."[+] ["..line_count .. " Lines]. fold lev:"..vim.v.foldlevel -- .. line
+  return white_chars.."[+] ["..line_count .. " Lines]"
 end
 
 vim.opt.foldtext = 'v:lua.custom_fold_text()'
 -- vim.opt.fillchars = { eob = "-", fold = "=" }
+vim.wo.foldminlines = 3  -- fold only if more than 2 lines in code block
+vim.wo.foldnestmax = 3  -- create max 4 folds (avoids too many fold levels)
+

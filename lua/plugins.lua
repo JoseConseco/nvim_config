@@ -84,7 +84,7 @@ return require("packer").startup(
 	} --uses buffers
 	-- use 'psliwka/vim-smoothie' --smooth PGUP/DOWN
 	use {'karb94/neoscroll.nvim',
-			config=function() require('neoscroll').setup() end} -- lua + wont close () next to char finally good and simple +++
+		config=function() require('neoscroll').setup({hide_cursor=false}) end} -- lua + wont close () next to char finally good and simple +++
 
 	use {'wfxr/minimap.vim', disable=true,-- minimap fast  but annoying - messes up windows
 		config=function() require("nv-minimap") end} -- lua + wont close () next to char finally good and simple +++
@@ -108,12 +108,12 @@ return require("packer").startup(
 
 	-- Debugging
 	use {'mfussenegger/nvim-dap', --too simple
-		config=function() require('nv-dap') end } -- preview line whe using goto :xyz
+		config=function() require('dap'); require('nv-dap') end } -- preview line whe using goto :xyz
 	use {'mfussenegger/nvim-dap-python',
 		config=function() require('dap-python').setup('/usr/bin/python') end}
 	use {'theHamsta/nvim-dap-virtual-text', requires='mfussenegger/nvim-dap',
 		config=function() vim.cmd([[:highlight NvimDapVirtualText guifg=#7296a9]]) end}
-	use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"},
+	use { 'rcarriga/nvim-dap-ui', requires = {'mfussenegger/nvim-dap'},
 		config = function() require("dapui").setup() end}
 	-- use {'puremourning/vimspector',
 	--	config=function()  require("nv-vimspector") end} -- lua + wont close () next to char finally good and simple +++
@@ -121,6 +121,7 @@ return require("packer").startup(
 
 	-- Treesitter
 	use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate',
+		-- branch = '0.5-compat', -- recommended for stable. But no latest updates in here
 		config=function() require("treesitter")  end} -- lua + wont close () next to char finally good and simple +++
 	use 'nvim-treesitter/nvim-treesitter-refactor'
 	use {'romgrk/nvim-treesitter-context', disable=false,-- cool but gives orror on compe-popup - https://github.com/romgrk/nvim-treesitter-context/issues/49
@@ -141,8 +142,7 @@ return require("packer").startup(
 	use {'hrsh7th/vim-vsnip-integ',-- auto completion
 		requires='hrsh7th/vim-vsnip'} -- lua + wont close () next to char finally good and simple +++
 	use {'kosayoda/nvim-lightbulb', -- replaced by lspsaga
-		disable=true,
-		config=function() require("nv-lightbulb")  end} -- lua + wont close () next to char finally good and simple +++
+		disable=true, config=function() require("nv-lightbulb")  end} -- lua + wont close () next to char finally good and simple +++
 	use 'onsails/lspkind-nvim'  -- icons for completion popup
 	-- use {'codota/tabnine-vim'} -- wont work with compe
 	use {'tzachar/compe-tabnine', run='./install.sh',
@@ -153,10 +153,12 @@ return require("packer").startup(
 	use {'stevearc/aerial.nvim', disable=false, -- basically better outliner with objects type filter
 		config = function() require("nv-aerial") end,}
 	use {'glepnir/lspsaga.nvim', --cool popup goto def hoover etc - but still wipp
-		disable = true,
-		config = function() require("nv-lspsaga") end,}
-	-- use {'ray-x/lsp_signature.nvim', - somehow does not work randomly
-	-- 	config = function() require('lsp_signature').on_attach() end}
+		disable = true, config = function() require("nv-lspsaga") end,}
+	use {'ray-x/lsp_signature.nvim'}
+	use { "ThePrimeagen/refactoring.nvim",
+		requires = { {"nvim-lua/plenary.nvim"}, {"nvim-treesitter/nvim-treesitter"} },
+		config = function() require("nv-refactoring") end}
+
 	-- Telescope
 	use {'nvim-telescope/telescope.nvim',
 		requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}},
@@ -194,6 +196,8 @@ return require("packer").startup(
 	use { "folke/todo-comments.nvim",
 		config = function() require('nv-todo') end
 	}
+	use {"gelguy/wilder.nvim", -- auto complete for command mode
+		config = function() require('nv-wilder') end}
 
 	--find and replace ?
 	use 'kevinhwang91/nvim-bqf' --better quickfix  (with preview and complicated mapping)
@@ -239,8 +243,9 @@ return require("packer").startup(
 	-- comit='b8272f539017ffb6de6a05247e7c333b3721279b',
 		config=function() require('nv-autopairs') end }
 
-	use {'terrortylor/nvim-comment',
-		config=function() require('nvim_comment').setup({comment_empty = false})  end} -- in lua     o
+	-- use {'terrortylor/nvim-comment', -- does not support block indent when commenting more than one block of code
+	-- 	config=function() require('nvim_comment').setup({comment_empty = false})  end} -- in lua     o
+	use 'b3nj5m1n/kommentary'
 	use 'icatalina/vim-case-change'  -- rotate strign case - modded by me
 	use 'mg979/vim-visual-multi'  --multi cursor support like vscode...
 

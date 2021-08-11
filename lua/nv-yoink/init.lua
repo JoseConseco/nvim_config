@@ -7,6 +7,9 @@ vim.api.nvim_set_keymap('n', 'P',  '<plug>(YoinkPaste_P)', { silent = true})
 vim.api.nvim_set_keymap('n', 'gp',  '<plug>(YoinkPaste_gp)', {silent = true})
 vim.api.nvim_set_keymap('n', 'gP',  '<plug>(YoinkPaste_gP)', {silent = true})
 
+vim.api.nvim_set_keymap('n', 'vp',  '<plug>(YoinkPaste_p)`[v`]', {silent = true}) -- `[v`]' - reselects paste txt
+vim.api.nvim_set_keymap('n', 'vP',  '<plug>(YoinkPaste_P)`[v`]', {silent = true})
+
 -- cursor position will not change after performing a yank
 vim.api.nvim_set_keymap('n', 'y',  '<plug>(YoinkYankPreserveCursorPosition)', {silent = true})
 vim.api.nvim_set_keymap('x', 'y',  '<plug>(YoinkYankPreserveCursorPosition)', {silent = true})

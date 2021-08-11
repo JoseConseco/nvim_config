@@ -20,6 +20,7 @@ require("telescope").setup {
         layout_config = {
             horizontal = {
                 mirror = false,
+								prompt_position = "top"
                 -- preview_width = 0.65
             },
             vertical = {
@@ -31,8 +32,6 @@ require("telescope").setup {
         generic_sorter = require "telescope.sorters".get_generic_fuzzy_sorter,
         -- shorten_path = true,
         winblend = 0,
-        border = {},
-        borderchars = {"─", "│", "─", "│", "╭", "╮", "╯", "╰"},
         color_devicons = true,
         use_less = true,
         set_env = {["COLORTERM"] = "truecolor"}, -- default = nil,

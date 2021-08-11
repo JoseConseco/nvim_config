@@ -17,3 +17,7 @@ vim.api.nvim_set_keymap('n','<S-F6>', ":lua require'dap'.set_breakpoint(vim.fn.i
 vim.api.nvim_set_keymap('n','<F8>', ":lua require'dap'.step_over()<CR>", {noremap = true})
 vim.api.nvim_set_keymap('n','<F7>', ":lua require'dap'.step_into()<CR>", {noremap = true})
 vim.api.nvim_set_keymap('n','<F9>', ":lua require'dap'.step_out()<CR>", {noremap = true})
+
+
+-- auto complete for REPL
+vim.cmd([[au FileType dap-repl lua require('dap.ext.autocompl').attach()]])
