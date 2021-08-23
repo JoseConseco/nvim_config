@@ -20,10 +20,19 @@ vim.cmd([[
 augroup IndentBlanklineContextAutogroup
     autocmd!
     autocmd ColorScheme * highlight IndentOdd guifg=NONE guibg=NONE gui=nocombine
-		autocmd ColorScheme * highlight IndentEven guifg=NONE guibg=#2c314b gui=nocombine
+	  autocmd ColorScheme * highlight IndentEven guifg=NONE guibg=#263040 gui=nocombine
 	  autocmd ColorScheme * highlight! link IndentBlanklineContextChar Comment
 augroup END
 ]])
+-- tokyonight
+--[[ vim.cmd([[
+augroup IndentBlanklineContextAutogroup
+    autocmd!
+    autocmd ColorScheme * highlight IndentOdd guifg=NONE guibg=NONE gui=nocombine
+	  autocmd ColorScheme * highlight IndentEven guifg=NONE guibg=#2c314b gui=nocombine
+	  autocmd ColorScheme * highlight! link IndentBlanklineContextChar Comment
+augroup END
+]]--) ]]
 
 vim.cmd [[highlight IndentOdd guifg=NONE guibg=NONE gui=nocombine]]
 vim.cmd [[highlight IndentEven guifg=NONE guibg=#2c3144 gui=nocombine]]

@@ -17,6 +17,8 @@ require'telescope'.load_extension('sessions')
 
  --remove white spaces on save and restore cursor pos - using mark '.'
 vim.cmd('autocmd BufWritePre * let save_pos = getpos(".") | %s/\\s\\+$//e | call setpos(".", save_pos)')
+-- color active and unactive windows
+-- vim.cmd([[ set winhighlight=Normal:Normal,NormalNC:CursorLine ]]) -- for tokyo night
 
 -- prevent expanding comment strings on <Ret>
 -- vim.cmd('autocmd FileType * set formatoptions-=r')

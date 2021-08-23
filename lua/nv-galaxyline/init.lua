@@ -93,26 +93,24 @@ gls.left[4] = {
 				project_dir = project_dir..'/'
 			end
 
-			return project_dir..rel_file_dir
+			return project_dir..rel_file_dir.." "
 		end,
         condition = condition.buffer_not_empty,
         highlight = {colors.fg, colors.lightbg}
     }
 }
+local gps = require("nvim-gps")
+
 gls.left[5] = {
-    bread_crumbs = {
-        provider = function ()
-			local bread = require('nvim-treesitter').statusline({
-				indicator_size = 80,
-				type_patterns = {'class','function', 'method'},
-				transform_fn = function(line) return line:gsub('^.*%s(.*)[%(|%[|%{].*$','%1') end,
-				separator = ' ▶ '
-			})
-			return  (bread and bread~='') and '  ▶ '..bread or ''
-		end,
-        condition = condition.buffer_not_empty,
-        highlight = {colors.green, colors.lightbg}
-    }
+    nvimGPS = {
+			provider = function()
+				return gps.get_location()
+			end,
+			condition = function()
+				return gps.is_available()
+			end,
+			highlight = {colors.green, colors.lightbg}
+	}
 }
 -- gls.left[5] = {
 --     FileName = {

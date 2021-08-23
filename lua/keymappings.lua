@@ -12,10 +12,10 @@
 vim.api.nvim_set_keymap('i', 'jk', '<ESC>', {noremap = true, silent = true})
 
 --  add new empty line above/below current line in normal or vis mode (to give breathing space to code)
-vim.api.nvim_set_keymap('n','<M-o>', ':let save_pos = getpos(".") | normal o<Esc> | :call setpos(".", save_pos)<CR>', {noremap = true})
-vim.api.nvim_set_keymap('n','<M-O>', ':let save_pos = getpos(".") | normal O<Esc> | :call setpos(".", [save_pos[0], save_pos[1]+1, save_pos[2], save_pos[3]])<CR>', {noremap = true})
-vim.api.nvim_set_keymap('v','<M-o>', '<ESC> | :let save_pos = getpos(".") | normal o<Esc> | :call setpos(".", save_pos)<CR> | gv', {noremap = true})
-vim.api.nvim_set_keymap('v','<M-O>', '<ESC> | :let save_pos = getpos(".") | normal \'<O<Esc> | :call setpos(".", [save_pos[0], save_pos[1]+1, save_pos[2], save_pos[3]])<CR> | gv', {noremap = true})
+vim.api.nvim_set_keymap('n','<M-o>', ':let save_pos = getpos(".") | normal o<Esc> | :call setpos(".", save_pos)<CR>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n','<M-O>', ':let save_pos = getpos(".") | normal O<Esc> | :call setpos(".", [save_pos[0], save_pos[1]+1, save_pos[2], save_pos[3]])<CR>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('v','<M-o>', '<ESC> | :let save_pos = getpos(".") | normal \'>o<Esc> | :call setpos(".", save_pos)<CR> | gv', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('v','<M-O>', '<ESC> | :let save_pos = getpos(".") | normal \'<O<Esc> | :call setpos(".", [save_pos[0], save_pos[1]+1, save_pos[2], save_pos[3]])<CR> | gv', {noremap = true, silent = true})
 
 -- You can't stop me
 vim.api.nvim_set_keymap('c', 'w!!', 'w !sudo tee %', {})
@@ -108,7 +108,6 @@ vim.api.nvim_set_keymap('v', 'p',  '"_dp`[v`]', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('v', 'P',  '"_dP', {noremap = true, silent = true})
 
 -- yank till end of line
-vim.api.nvim_set_keymap('n', 'Y',  'v$y', {noremap = true, silent = true})
 
 
 -- no highlight
@@ -122,7 +121,9 @@ vim.api.nvim_set_keymap('c', 'g/', 'g/\\v', {noremap = true})
 
 -- search for selection whithout jump
 vim.api.nvim_set_keymap('n', '*', "*zvzz", {noremap = true}) -- zv open fold; zz center on search result
+vim.api.nvim_set_keymap('n', '#', "#zvzz", {noremap = true}) --bacwards,  zv open fold; zz center on search result
 vim.api.nvim_set_keymap('v', '*', "y/\\V<C-R>=escape(@\",'/\')<CR><CR>zvzz", {noremap = true})
+vim.api.nvim_set_keymap('v', '#', "y?\\V<C-R>=escape(@\",'/\')<CR><CR>zvzz", {noremap = true}) -- backward
 -- vim.api.nvim_set_keymap('n', '*', ":keepjumps normal! mi*`i<CR>", {noremap = true})   -- wont affect jump list
 
 -- substitute word under cursor with yanked text (+ register )

@@ -55,17 +55,28 @@ return require("packer").startup(
 	-- use 'joshdick/onedark.vim'
 	use 'ful1e5/onedark.nvim'
 	use 'projekt0n/github-nvim-theme'
+	use {'EdenEast/nightfox.nvim',
+		config=function() vim.cmd('colorscheme nightfox')
+				vim.cmd([[highlight LineNr guifg=#5081c0 | highlight CursorLineNR guifg=#FFba00 ]])
+				vim.cmd([[
+				hi ActiveWindow guibg=#182534
+				hi InactiveWindow guibg=#242a39
+				set winhighlight=Normal:ActiveWindow,NormalNC:InactiveWindow]])
+			end,
+		setup = function() vim.g.nightfox_colors = { red="#dc6959"} end,
+	}
+
 
 	use {'folke/tokyonight.nvim',
-		setup=function()  require('themes.tokyonight');    end,
-		config=function() vim.cmd('colorscheme tokyonight'); vim.cmd([[highlight LineNr guifg=#5081c0 | highlight CursorLineNR guifg=#FFba00 ]])
- end} -- lua + wont close () next to char finally good and simple +++
+		setup=function() require('themes.tokyonight'); end,
+		-- config=function() vim.cmd('colorscheme tokyonight'); vim.cmd([[highlight LineNr guifg=#5081c0 | highlight CursorLineNR guifg=#FFba00 ]])end
+		} -- lua + wont close () next to char finally good and simple +++
 	-- use {'marko-cerovac/material.nvim',
 	-- 	setup=function()  vim.g.material_style = "darker"; vim.g.material_variable_color="#7f62c3"  end} -- lua + wont close () next to char finally good and simple +++
 	use 'mhartington/oceanic-next'
 	use {'sainnhe/edge',
 		setup=function()  require('themes.edge')  end} -- lua + wont close () next to char finally good and simple +++
-	use {'Luxed/ayu-vim',-- dark and lack orange
+	use {'Luxed/ayu-vim',-- dark and lack orange                                             "
 		setup=function() require('themes.ayu-vim') end} -- lua + wont close () next to char finally good and simple +++
 
 
@@ -89,10 +100,6 @@ return require("packer").startup(
 	use {'wfxr/minimap.vim', disable=true,-- minimap fast  but annoying - messes up windows
 		config=function() require("nv-minimap") end} -- lua + wont close () next to char finally good and simple +++
 
-	use {"mhinz/vim-startify",
-		config=function() require('nv-startify') end} -- lua + wont close () next to char finally good and simple +++
-	-- use 'junegunn/vim-peekaboo' -- show content of registers when using " or @
-	-- use "tversteeg/registers.nvim"  -- show content of registers when using " - replaced by new lua which_key
 	use {'nacro90/numb.nvim',
 		config=function() require('numb').setup() end } -- preview line whe using goto :xyz
 	use {'lukas-reineke/indent-blankline.nvim', after='tokyonight.nvim', disable=false,--  displaying thin vertical lines at each indentation level
@@ -104,7 +111,6 @@ return require("packer").startup(
 		config=function()  vim.api.nvim_exec('highlight link ScrollView Normal', false); vim.g.scrollview_character = '▎'  end}
 	use {'machakann/vim-highlightedyank',
 		config=function() vim.g.highlightedyank_highlight_duration = 100 end}
-
 
 	-- Debugging
 	use {'mfussenegger/nvim-dap', --too simple
@@ -164,7 +170,7 @@ return require("packer").startup(
 		requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}},
 		config=function() require("telescope-nvim") end} -- lua + wont lose () next to char finally good and simple +++
 	use 'nvim-telescope/telescope-media-files.nvim'
-	use 'junegunn/fzf.vim'
+	-- use 'junegunn/fzf.vim'
 
 
 	-- Explorer
@@ -212,8 +218,10 @@ return require("packer").startup(
 
 	--undo redo
 	-- use 'maxbrunsfeld/vim-yankstack' --works in normal and visual mode..<M-p> and <M-S-p> but takes  mappings for keys
-	use {'svermeulen/vim-yoink', -- does not take mappings since it reads events
-		config=function() require('nv-yoink') end}
+	use { "AckslD/nvim-neoclip.lua", after='telescope.nvim',
+    config = function() require('nv-neoclip')  end, }
+	--[[ use {'svermeulen/vim-yoink', -- does not take mappings since it reads events
+		config=function() require('nv-yoink') end} ]]
 
 	use 'mbbill/undotree'   -- undo history  :UndotreeToggle to toggle the undo-tree panel.
 	use 'mg979/vim-localhistory' -- local history LHLoad, LHWrite
@@ -229,29 +237,20 @@ return require("packer").startup(
 
 
 	--code/format
-	-- use 'chaoren/vim-wordmotion' -- adds eg support for different snake case as individual words
-	-- use 'tpope/vim-surround' -- eg cs'" -> changes ' to "
-	-- use 'blackcauldron7/surround.nvim' --hotkye s taken, plus unstable?
 	use 'wellle/targets.vim' -- eg ci,  ci_ etc
 	use 'andymass/vim-matchup' -- increase power of %
-	-- use {'lukas-reineke/indent-blankline.nvim', branch = 'lua', disable = true} -- add indents on blank lines
 	use {"sbdchd/neoformat", disable=true,} --verly slow with lsp or treesitter
 
 	use {'Chiel92/vim-autoformat',
 		config=function() require('nv-autoformat') end }
 	use {'windwp/nvim-autopairs',  -- lua + wont close () next to char finally good and simple +++
-	-- comit='b8272f539017ffb6de6a05247e7c333b3721279b',
 		config=function() require('nv-autopairs') end }
 
-	-- use {'terrortylor/nvim-comment', -- does not support block indent when commenting more than one block of code
 	-- 	config=function() require('nvim_comment').setup({comment_empty = false})  end} -- in lua     o
 	use 'b3nj5m1n/kommentary'
 	use 'icatalina/vim-case-change'  -- rotate strign case - modded by me
 	use 'mg979/vim-visual-multi'  --multi cursor support like vscode...
 
-	--spell check
-	use {'kamykn/spelunker.vim', disable = true, -- zl - correct, or Zc, Zf
-		config=function() require('nv-spelunker') end} -- in lua     o
 
 	-- navigation
 	use {"phaazon/hop.nvim",
@@ -262,12 +261,24 @@ return require("packer").startup(
 	-- ternimal in popup
 	use {"akinsho/nvim-toggleterm.lua",
 		config = function() require("toggleterm").setup{} end}
+	use { "SmiteshP/nvim-gps", -- bread_crumbs
+		requires = "nvim-treesitter/nvim-treesitter",
+		config =function() require("nvim-gps").setup({
+			icons = {["class-name"] = "⛬ "},
+			separator = ' ▶ ',
+			}) end,
+	}
+
 	--repls
 	use "rafcamlet/nvim-luapad" -- :Luapad - open interactive scratch bufer with realtime eval
 	use 'metakirby5/codi.vim' -- repls for all other langs ...
 	use 'camspiers/lens.vim' --auto win size
 
-
+  -- project management
+  use {"ahmedkhalf/project.nvim",
+    config = function() require("project_nvim").setup{} end}
+	use {"mhinz/vim-startify",
+		config=function() require('nv-startify') end} -- lua + wont close () next to char finally good and simple +++
 end
 )
 --vim.cmd('packloadall!') -- fixes plugs not seeing config, and load order mess. Or else we need to: so $MYVIMRC

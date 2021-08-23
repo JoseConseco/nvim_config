@@ -50,15 +50,17 @@ end
 
 -- Single mappings
 wk.register({
-	['<leader>S'] = { ':Startify<CR>',             'Startify' },
-	['<leader>/'] = { ':Ag<CR>',                   'Search Project' },  --<plug>fzf,
-	['<leader>.'] = { ':Telescope find_files<CR>', 'Find File' },
-	['<leader>:'] = { ':Telescope commands<CR>',   'Commands' },
-	['<leader><lt>'] = {':Telescope buffers<CR>', 'Switch Buffer' },
-	-- ['<leader>r'] = { ':luafile $MYVIMRC<CR>',     'Reload VIMRC' },
-	['<leader> '] = { ':HopWord<CR>',             'HOP 2Char' },
-	['<leader>e'] = { ':Fern . -reveal=%<CR>',     'File Browser' },
-	['<leader>p'] = { 'viw"_dP',                   'Paste over word' }, -- -d => without override
+	['<leader>S'] = { ':Startify<CR>',                                                 'Startify' },
+	-- ['<leader>/'] = { ":lua require'telescope.builtin'.live_grep{search_dirs={'%:p'}, path_display='hidden', }<CR>",       'Search Project' },
+	['<leader>/'] = { ":lua require'telescope.builtin'.grep_string({})<CR>",       'Find * (Project)' },
+	-- ['<leader>/'] = { ":Telescope grep_string",       'Find *' },
+	['<leader>.'] = { ':Telescope find_files<CR>',                                     'Find File' },
+	['<leader>:'] = { ':Telescope commands<CR>',                                       'Commands' },
+	['<leader><lt>'] = {':Telescope buffers<CR>',                                      'Switch Buffer' },
+	-- ['<leader>r'] = { ':luafile $MYVIMRC<CR>',                                      'Reload VIMRC' },
+	['<leader> '] = { ':HopWord<CR>',                                                  'HOP 2Char' },
+	['<leader>e'] = { ':Fern . -reveal=%<CR>',                                         'File Browser' },
+	['<leader>p'] = { 'viw"_dP',                                                       'Paste over word' }, -- -d => without override
 	['<leader>1'] = 'which_key_ignore',
 	['<leader>2'] = 'which_key_ignore',
 	['<leader>3'] = 'which_key_ignore',
@@ -144,6 +146,11 @@ wk.register({
 	['<leader>cfo'] = {'zo<CR>',                             'open cur(zo)'},
 	['<leader>cfO'] = {'zO<CR>',                             'open all cur(zO)'},
 })
+
+wk.register({
+	['<leader>c'] = { name = '+Refactor'},
+	['<leader>cf'] = {":lua require('refactoring').refactor('Extract Function')<CR>",            'Extract Function'},
+}, {mode = "v", prefix = ""})
 
 wk.register({
 	['<leader>D'] = { name = '+Diff' },
@@ -316,11 +323,6 @@ wk.register({
 	['<leader>oT'] = {':ToggleTerm<CR>', 'Term'},
 })
 
-wk.register({
-	['<leader>r'] = { name = '+Refactor', mode='v' },
-	['<leader>rf'] = {":lua require('refactoring').refactor('Extract Function')<CR>",            'Extract Function', mode='v'},
-})
-
 -- function _G.replace_word()
 --	local name = vim.fn.input('To: ')
 --	vim.cmd(":.,$s/\\<"..vim.fn.expand('<cword>').."\\>/"..name.."/gc|1,''-&&") -- substitute and ask each time
@@ -335,12 +337,18 @@ wk.register({
 	['<leader>Rps'] = {":lua require('spectre').open()<CR>",        'Spectre'},
 	-- ['<leader>R*'] = {":let @/=expand('<cword>')<cr>cgn",        'Replace word with yank'},
 	['<leader>R*'] = {":.,$s/\\<<C-r><C-w>\\>/<C-r>+/gc|1,''-&&<CR>",  'Replace word with yank', mode='n'},       -- \<word\>  -adds whitespace  word limit (sub only whole words)
-	['<leader>R/'] = {function() local name = vim.fn.input('To: ', vim.fn.expand('<cword>')); vim.cmd(":.,$s/\\<"..vim.fn.expand('<cword>').."\\>/"..name.."/gc|1,''-&&") end,                'Replace word with input'},       -- write to reg z (@a) then use it for replacign * word
+	['<leader>R/'] = {function() local name = vim.fn.input('To: ', vim.fn.expand('<cword>')); vim.cmd(":.,$s/\\<"..vim.fn.expand('<cword>').."\\>/"..name.."/gc|1,''-&&") end,                'Replace word'},       -- write to reg z (@a) then use it for replacign * word
 })
+local function t(str)
+    -- Adjust boolean arguments as needed
+    return vim.api.nvim_replace_termcodes(str, true, true, true)
+end
+
 wk.register({  -- second one for visual mode
-	['<leader>R'] = { name = '+Replace' },
-	['<leader>R*'] = {"\"ay:.,$s/<C-r>a/<C-r>+/gc|1,''-&&<CR>",					 'Replace word with yank', mode='v'},    -- \<word\>  -adds whitespace  word limit (sub only whole words)
-})
+	['<leader>R'] = { name = '+Replace'},
+	['<leader>R*'] = {"\"ay:.,$s/<C-r>a/<C-r>+/gc|1,''-&&<CR>",					 'Replace word with yank'},    -- \<word\>  -adds whitespace  word limit (sub only whole words)
+	['<leader>R/'] = {function() vim.cmd("normal! \"ay"); local name = vim.fn.input('To: ', vim.fn.getreg('a')); vim.cmd(":.,$s/"..vim.fn.getreg('a').."/"..name.."/gc|1,''-&&") end ,					 'Replace word'},    -- \<word\>  -adds whitespace  word limit (sub only whole words)
+}, {mode = "v", prefix = ""})
 
 
 wk.register({

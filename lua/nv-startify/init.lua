@@ -19,14 +19,20 @@ vim.g.startify_session_persistence = 1  -- update sess on leaving vim, and loadi
 
 
 vim.g.startify_lists ={
+	{type = 'commands', header  = nil,},
 	{type = 'sessions',  header  = {'    Sessions',}},
-	{type = 'files',     header  = {'    Files',}},
+	-- {type = 'files',     header  = {'    Files',}},
 	{type = 'bookmarks', header  = {'    Bookmarks',}},
 }
 
+vim.g.startify_commands = {
+	{ s = {'Sessions' ,  ":lua require'telescope'.extensions.sessions.sessions{}" }},
+	{ r = {'Recent Files' ,  ':Telescope oldfiles' }},
+	{ b = {'File Brower' ,  ':Telescope file_browser' }},
+}
 
 vim.g.startify_bookmarks = {
 	{ a = '~/.config/blender/2.82/scripts/addons/' },
 	{ z = '~/.local/share/nvim/site/pack/packer/start' },
-	{ r = '~/test.py' },
 }
+
