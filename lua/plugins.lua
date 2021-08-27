@@ -56,14 +56,16 @@ return require("packer").startup(
 	use 'ful1e5/onedark.nvim'
 	use 'projekt0n/github-nvim-theme'
 	use {'EdenEast/nightfox.nvim',
-		config=function() vim.cmd('colorscheme nightfox')
+		config=function()
+				require('nightfox').setup({colors = { red="#dc6959"}})
+				require('nightfox').load()
 				vim.cmd([[highlight LineNr guifg=#5081c0 | highlight CursorLineNR guifg=#FFba00 ]])
 				vim.cmd([[
 				hi ActiveWindow guibg=#182534
 				hi InactiveWindow guibg=#242a39
 				set winhighlight=Normal:ActiveWindow,NormalNC:InactiveWindow]])
 			end,
-		setup = function() vim.g.nightfox_colors = { red="#dc6959"} end,
+		-- setup = function()  end,
 	}
 
 
@@ -111,6 +113,10 @@ return require("packer").startup(
 		config=function()  vim.api.nvim_exec('highlight link ScrollView Normal', false); vim.g.scrollview_character = '▎'  end}
 	use {'machakann/vim-highlightedyank',
 		config=function() vim.g.highlightedyank_highlight_duration = 100 end}
+
+	--[[ use 'camspiers/lens.vim' --auto win size
+	use 'camspiers/animate.vim'  --auto win size ]]
+
 
 	-- Debugging
 	use {'mfussenegger/nvim-dap', --too simple
@@ -254,10 +260,7 @@ return require("packer").startup(
 
 	-- navigation
 	use {"phaazon/hop.nvim",
-		config = function() vim.api.nvim_set_keymap('o', 'c',  ":HopChar1<cr>", {noremap = true}) end}
-	-- use 'rhysd/clever-f.vim' -- f,t,F,T, repeat fff.. to search next occurance of x - wont work with macros!
-	use {'justinmk/vim-sneak', disable = true, -- replaced with hop oper motion
-		config = function() vim.cmd('source ~/.config/nvim/nv-sneak.vim') end}
+		config = function() vim.api.nvim_set_keymap('o', 'l',  ":HopChar1<cr>", {noremap = true}) end}
 	-- ternimal in popup
 	use {"akinsho/nvim-toggleterm.lua",
 		config = function() require("toggleterm").setup{} end}
@@ -272,11 +275,8 @@ return require("packer").startup(
 	--repls
 	use "rafcamlet/nvim-luapad" -- :Luapad - open interactive scratch bufer with realtime eval
 	use 'metakirby5/codi.vim' -- repls for all other langs ...
-	use 'camspiers/lens.vim' --auto win size
 
   -- project management
-  use {"ahmedkhalf/project.nvim",
-    config = function() require("project_nvim").setup{} end}
 	use {"mhinz/vim-startify",
 		config=function() require('nv-startify') end} -- lua + wont close () next to char finally good and simple +++
 end

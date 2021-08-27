@@ -48,8 +48,8 @@ vim.o.timeoutlen = 500 -- By default timeoutlen is 1000 ms
 vim.o.clipboard = "unnamedplus" -- Copy paste between vim and everything else
 vim.o.virtualedit='all'      -- makes cursor not jump,
 
-vim.o.winwidth=80
-vim.o.winminwidth=40
+vim.o.winwidth=60
+vim.o.winminwidth=50
 
 -- vim.g.paste = true --? format pasted str - does it work? seems broken right now..
 

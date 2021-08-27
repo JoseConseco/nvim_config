@@ -37,7 +37,6 @@ local wk = require("which-key")
 -- vim.g.which_key_use_floating_win = 1
 
 -- s=fname()- wont_work for hoteys
--- function _G.conditional_width()
 function _G.CmdInput(cmd)
 	local name = vim.fn.input('Name= ')
 	vim.cmd(cmd..name)
@@ -410,7 +409,7 @@ wk.register({
 	['<leader>wo'] = {'<C-w>o<CR>',                 'Close All but current(o)'},
 	['<leader>ww'] = {':call v:lua.CmdInput(":set winwidth=")<CR>',  'Set width'},
 	['<leader>wm'] = {':call v:lua.CmdInput(":set winminwidth=")<CR>',  'Set min width'},
-	-- ['<leader>ww'] = {':call v:lua.conditional_width()<CR>',  'Auto width'},
+	['<leader>wa'] = {':call v:lua.conditional_width()<CR>',       'Auto width'},
 })
 
 -- TSContextDisable - if srom treesitter-context

@@ -122,8 +122,8 @@ vim.api.nvim_set_keymap('c', 'g/', 'g/\\v', {noremap = true})
 -- search for selection whithout jump
 vim.api.nvim_set_keymap('n', '*', "*zvzz", {noremap = true}) -- zv open fold; zz center on search result
 vim.api.nvim_set_keymap('n', '#', "#zvzz", {noremap = true}) --bacwards,  zv open fold; zz center on search result
-vim.api.nvim_set_keymap('v', '*', "y/\\V<C-R>=escape(@\",'/\')<CR><CR>zvzz", {noremap = true})
-vim.api.nvim_set_keymap('v', '#', "y?\\V<C-R>=escape(@\",'/\')<CR><CR>zvzz", {noremap = true}) -- backward
+vim.api.nvim_set_keymap('v', '*', "y/\\V<C-R>=escape(@\",'/\')<CR>zvzz", {noremap = true})
+vim.api.nvim_set_keymap('v', '#', "y?\\V<C-R>=escape(@\",'/\')<CR>zvzz", {noremap = true}) -- backward
 -- vim.api.nvim_set_keymap('n', '*', ":keepjumps normal! mi*`i<CR>", {noremap = true})   -- wont affect jump list
 
 -- substitute word under cursor with yanked text (+ register )
