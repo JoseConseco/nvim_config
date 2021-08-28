@@ -145,20 +145,33 @@ return require("packer").startup(
 
 
 	-- lsp
-	use {"hrsh7th/nvim-compe", --completion
-		config=function() require("nvim-compe") end} -- lua + wont close () next to char finally good and simple +++
+	--[[ use {"hrsh7th/nvim-compe", --completion
+		config=function() require("nvim-compe") end} -- lua + wont close () next to char finally good and simple +++ ]]
+	use { "hrsh7th/nvim-cmp",
+		requires = { "hrsh7th/cmp-buffer", "hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-path",
+			"hrsh7th/cmp-nvim-lua", "hrsh7th/cmp-vsnip"},
+		config = function() require'nv-cmp' end,
+	}
+	use {'tzachar/cmp-tabnine', requires = 'hrsh7th/nvim-cmp',
+		run='./install.sh',
+		config = function() require('cmp_tabnine.config'):setup({
+		        max_lines = 100;
+		        max_num_results = 3;
+		        sort = true;
+			})
+		end}
 	use {"neovim/nvim-lspconfig",
 		config=function() require("lsp")  end} -- lua + wont close () next to char finally good and simple +++
 	use {'hrsh7th/vim-vsnip',-- auto completion
 		config=function() require("nv-vsnip")  end} -- lua + wont close () next to char finally good and simple +++
-	use {'hrsh7th/vim-vsnip-integ',-- auto completion
-		requires='hrsh7th/vim-vsnip'} -- lua + wont close () next to char finally good and simple +++
+	--[[ use {'hrsh7th/vim-vsnip-integ',-- auto completion
+		requires='hrsh7th/vim-vsnip'} -- lua + wont close () next to char finally good and simple +++ ]]
 	use {'kosayoda/nvim-lightbulb', -- replaced by lspsaga
 		disable=true, config=function() require("nv-lightbulb")  end} -- lua + wont close () next to char finally good and simple +++
 	use 'onsails/lspkind-nvim'  -- icons for completion popup
 	-- use {'codota/tabnine-vim'} -- wont work with compe
-	use {'tzachar/compe-tabnine', run='./install.sh',
-		requires = 'hrsh7th/nvim-compe'}
+	--[[ use {'tzachar/compe-tabnine', run='./install.sh',
+		requires = 'hrsh7th/nvim-compe'} ]]
 	use { "folke/lsp-trouble.nvim", -- shows nice icons in lsp warnings...
 		requires = "kyazdani42/nvim-web-devicons",
 		config = function() require("nv-lsptrouble") end,}
