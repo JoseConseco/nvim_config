@@ -25,10 +25,10 @@ vim.cmd('autocmd BufWritePre * let save_pos = getpos(".") | %s/\\s\\+$//e | call
 
 
 -- absolute <-> relative auto switch
--- vim.cmd([[
--- autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
--- autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
--- ]])
+vim.cmd([[
+autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+]])
 -- line numbers
 -- vim.api.nvim_exec([[
 -- augroup MyColors

@@ -1,5 +1,5 @@
-vim.api.nvim_exec(
-[===[
+vim.cmd(
+[[
 call wilder#enable_cmdline_enter()
 set wildcharm=<Tab>
 cmap <expr> <Tab> wilder#in_context() ? wilder#next() : "\<Tab>"
@@ -10,5 +10,10 @@ call wilder#set_option('pipeline', [ wilder#branch( wilder#cmdline_pipeline({ 'f
 
 call wilder#set_option('renderer', wilder#popupmenu_renderer({ 'highlighter': wilder#basic_highlighter(), }))
 
-]===], false)
+" make magic search work
+call wilder#set_option('pipeline', [wilder#branch( wilder#cmdline_pipeline(), [{_, x -> x[:1] ==# '\v' ? x[2:] : x} ] + wilder#search_pipeline(),  ) ])
+
+" show cmd history when empty cmd line
+call wilder#set_option('pipeline', [wilder#branch([ wilder#check({_, x -> empty(x)}),  wilder#history(),  wilder#result({'draw': [{_, x -> ' ' . x}], }) ], wilder#cmdline_pipeline(),  wilder#search_pipeline()  )])
+]], false)
 -- call wilder#set_option('pipeline', [ wilder#branch( wilder#cmdline_pipeline(), [ {_, x -> x[:1] ==# '\v' ? x[2:] : x}, ] + wilder#search_pipeline(),), ])

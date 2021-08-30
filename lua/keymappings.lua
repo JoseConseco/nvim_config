@@ -9,7 +9,8 @@
 
 
 -- I hate escape
-vim.api.nvim_set_keymap('i', 'jk', '<ESC>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('i', 'jk', '<ESC>zv', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('i', '<ESC>', '<ESC>zv', {noremap = true, silent = true})
 
 --  add new empty line above/below current line in normal or vis mode (to give breathing space to code)
 vim.api.nvim_set_keymap('n','<M-o>', ':let save_pos = getpos(".") | normal o<Esc> | :call setpos(".", save_pos)<CR>', {noremap = true, silent = true})
@@ -120,10 +121,10 @@ vim.api.nvim_set_keymap('c', 's/', 's/\\v', {noremap = true})
 vim.api.nvim_set_keymap('c', 'g/', 'g/\\v', {noremap = true})
 
 -- search for selection whithout jump
-vim.api.nvim_set_keymap('n', '*', "*zvzz", {noremap = true}) -- zv open fold; zz center on search result
-vim.api.nvim_set_keymap('n', '#', "#zvzz", {noremap = true}) --bacwards,  zv open fold; zz center on search result
-vim.api.nvim_set_keymap('v', '*', "y/\\V<C-R>=escape(@\",'/\')<CR>zvzz", {noremap = true})
-vim.api.nvim_set_keymap('v', '#', "y?\\V<C-R>=escape(@\",'/\')<CR>zvzz", {noremap = true}) -- backward
+vim.api.nvim_set_keymap('n', '*', "*zzzv", {noremap = true}) -- zv open fold; zz center on search result
+vim.api.nvim_set_keymap('n', '#', "#zzzv", {noremap = true}) --bacwards,  zv open fold; zz center on search result
+vim.api.nvim_set_keymap('v', '*', "y/\\V<C-R>=escape(@\",'/\')<CR><CR>zzzv", {noremap = true})
+vim.api.nvim_set_keymap('v', '#', "y?\\V<C-R>=escape(@\",'/\')<CR><CR>zzzv", {noremap = true}) -- backward
 -- vim.api.nvim_set_keymap('n', '*', ":keepjumps normal! mi*`i<CR>", {noremap = true})   -- wont affect jump list
 
 -- substitute word under cursor with yanked text (+ register )
@@ -181,11 +182,23 @@ vim.api.nvim_set_keymap("c", "<C-v>", '<C-r>+', { noremap = true } )
 -- vim.api.nvim_set_keymap('n', '<S-TAB>', ':BufferPrevious<CR>', { noremap = true, silent = true })
 
 -- next/repve, join - prevent jumping of cursor
-vim.api.nvim_set_keymap( "n", "n", "nzzzv", { noremap = true } )
-vim.api.nvim_set_keymap( "n", "N", "Nzzzv", { noremap = true } )
+-- vim.api.nvim_set_keymap( "n", "n", "nzzzv", { noremap = true } )
+-- vim.api.nvim_set_keymap( "n", "N", "Nzzzv", { noremap = true } )
+
 vim.api.nvim_set_keymap( "n", "J", "mzJ'z", { noremap = true } )
 
 --add breakpoint for undo at space, . and ,
 vim.api.nvim_set_keymap( "i", " ", " <c-g>u", { noremap = true } )
 vim.api.nvim_set_keymap( "i", ",", ",<c-g>u", { noremap = true } )
 vim.api.nvim_set_keymap( "i", ".", ".<c-g>u", { noremap = true } )
+
+-- Saner behavior of n and N
+vim.cmd([[
+nnoremap <expr> n  'Nn'[v:searchforward].'zzzv'
+xnoremap <expr> n  'Nn'[v:searchforward].'zzzv'
+onoremap <expr> n  'Nn'[v:searchforward]
+
+nnoremap <expr> N  'nN'[v:searchforward].'zzzv'
+xnoremap <expr> N  'nN'[v:searchforward].'zzzv'
+onoremap <expr> N  'nN'[v:searchforward]
+]])
