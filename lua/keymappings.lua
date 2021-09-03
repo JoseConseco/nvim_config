@@ -112,7 +112,11 @@ vim.api.nvim_set_keymap('v', 'P',  '"_dP', {noremap = true, silent = true})
 
 
 -- no highlight
-vim.api.nvim_set_keymap('n', '<C-h>', ':set hlsearch!<CR>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<m-h>', ':set hlsearch!<CR>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<c-h>', '^', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<c-l>', '$', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('v', '<c-h>', '^', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('v', '<c-l>', '$', {noremap = true, silent = true})
 
 -- auto magic search
 vim.api.nvim_set_keymap('n', '/', '/\\v', {noremap = true, silent = true})

@@ -13,4 +13,5 @@ require('neoclip').setup({
       },
     })
 vim.api.nvim_set_keymap('n', '<A-p>',  ":lua require('telescope').extensions.neoclip.default(require('telescope.themes').get_dropdown({initial_mode = 'normal', previewer = false,}))<CR>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap('v', '<A-p>',  ":lua require('telescope').extensions.neoclip.default(require('telescope.themes').get_dropdown({initial_mode = 'normal', previewer = false,}))<CR>", {noremap = true, silent = true})
 

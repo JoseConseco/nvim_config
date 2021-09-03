@@ -41,13 +41,13 @@ local on_attach = function(client, bufnr)
 				border = "single"
 			}
 		)
-  vim.lsp.handlers["textDocument/signatureHelp"] =
-  vim.lsp.with(
-		vim.lsp.handlers.signature_help,
-		{
-			border = "single"
-		}
-	)
+	vim.lsp.handlers["textDocument/signatureHelp"] =
+		vim.lsp.with(
+			vim.lsp.handlers.signature_help,
+			{
+				border = "single"
+			}
+		)
 	-- Set autocommands conditional on server_capabilities
 	if client.resolved_capabilities.document_highlight then
 		vim.api.nvim_exec([[
@@ -61,8 +61,9 @@ local on_attach = function(client, bufnr)
 		augroup END
 			]], false)
 	end
-  require'aerial'.on_attach(client) -- aerial plug - outliner
-	require('lsp_signature').on_attach() -- from ray-x/lsp_signature.nvim
+	require'aerial'.on_attach(client) -- aerial plug - outliner
+	cfg={floating_window=false}
+	require('lsp_signature').on_attach(cfg) -- from ray-x/lsp_signature.nvim
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()

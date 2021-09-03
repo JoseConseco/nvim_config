@@ -49,7 +49,7 @@ end
 
 -- Single mappings
 wk.register({
-	['<leader>S'] = { ':Startify<CR>',                                                 'Startify' },
+	['<leader>S'] = { ':SClose<CR>',                                                 'Startify' },
 	-- ['<leader>/'] = { ":lua require'telescope.builtin'.live_grep{search_dirs={'%:p'}, path_display='hidden', }<CR>",       'Search Project' },
 	['<leader>/'] = { ":lua require'telescope.builtin'.grep_string({})<CR>",       'Find * (Project)' },
 	-- ['<leader>/'] = { ":Telescope grep_string",       'Find *' },
@@ -147,8 +147,9 @@ wk.register({
 })
 
 wk.register({
-	['<leader>c'] = { name = '+Refactor'},
+	['<leader>c'] = { name = '+Code'},
 	['<leader>cf'] = {":lua require('refactoring').refactor('Extract Function')<CR>",            'Extract Function'},
+	['<leader>ct'] = {':call v:lua.CmdInput("Tab /")<CR>', 'Tabularize (align)'},
 }, {mode = "v", prefix = ""})
 
 wk.register({
@@ -192,15 +193,15 @@ end
 -- file
 wk.register({
 	['<leader>f'] = { name = '+File' },
-	['<leader>fs'] = { ':update<CR>',                              'Save'},
+	['<leader>fs'] = { ':update<CR>',                                    'Save'},
 	['<leader>fS'] = { ':call v:lua.CmdInput("w ")<CR>',                 'Save as'},
-	['<leader>fd'] = { ':call delete(expand("%")) | bdelete!<CR>', 'Delete!'},
-	['<leader>fr'] = {':confirm e<CR>',                            'Reload File(e!)'},
-	['<leader>ff'] = {':Telescope file_browser<CR>',               'File Browser (fuzzy)'},
-	['<leader>fy'] = { ":call v:lua.yankpath()<CR>",               'Yank file location<CR>'},
-	['<leader>fo'] = { ':!xdg-open "%:p:h"<CR>',                   'Open containing folder'},
-	['<leader>ft'] = { ':!termite -d "%:p:h"<CR>',                 'Open at terminal'},
-	['<leader>fC'] = {':cd %:p:h<CR>',                             'cd %'},
+	['<leader>fd'] = { ':call delete(expand("%")) | bdelete!<CR>',       'Delete!'},
+	['<leader>fr'] = {':confirm e<CR>',                                  'Reload File(e!)'},
+	['<leader>ff'] = {':Telescope file_browser<CR>',                     'File Browser (fuzzy)'},
+	['<leader>fy'] = { ":call v:lua.yankpath()<CR>",                     'Yank file location<CR>'},
+	['<leader>fo'] = { ':!xdg-open "%:p:h"<CR>',                         'Open containing folder'},
+	['<leader>ft'] = { ':!alacritty -d "%:p:h"<CR>',                       'Open at terminal'},
+	['<leader>fC'] = {':cd %:p:h<CR>',                                   'cd %'},
 })
 
 
@@ -331,7 +332,7 @@ wk.register({
 	['<leader>Rp'] = { name = '+Project' },
 	['<leader>Rpf'] = {':Farr<CR>',                                 'File Farr'},
 	['<leader>Rpe'] = {'<plug>(operator-esearch-prefill)<CR>',      'Esearch'},   -- seems to be maintained
-	['<leader>Rpc'] = {'<Plug>CtrlSFPrompt -R {regex} -G *.py<CR>', 'CtrlSF'},
+	['<leader>Rpc'] = {'<Plug>CtrlSFPrompt -R {regex} -G *.py',     'CtrlSF'},
 	['<leader>Rpw'] = {'<Plug>CtrlSFCCwordPath<CR>',                'CtrlSF Word'},
 	['<leader>Rps'] = {":lua require('spectre').open()<CR>",        'Spectre'},
 	-- ['<leader>R*'] = {":let @/=expand('<cword>')<cr>cgn",        'Replace word with yank'},
@@ -352,14 +353,14 @@ wk.register({  -- second one for visual mode
 
 wk.register({
 	['<leader>P'] = { name = '+Project' },
-	['<leader>P*'] = {':Telescope grep_string<CR>',                                     'Find Word'}    ,
+	['<leader>P*'] = {":lua require'telescope.builtin'.grep_string{path_display = {'shorten'},word_match = '-w', only_sort_text = true, initial_mode = 'normal', }<CR>",                                     'Find Word'}    ,
 	['<leader>P/'] = {':Grepper-cword<CR>',                                             'Word to clist (Grepper)'},
 	['<leader>Ps'] = {':SSave<CR>',                                                     'Sesion Save'}  ,
 	['<leader>Pl'] = {':SLoad<CR>',                                                     'Sesion Load'}  ,
 	['<leader>Pc'] = {':SClose<CR>',                                                    'Sesion Close'} ,
 	['<leader>Pd'] = {':SDelete<CR>',                                                   'Sesion Delete'},
 	['<leader>Pf'] = {':Telescope live_grep<CR>',                                       'Find (live grep)'}     ,
-	['<leader>Pz'] = {":lua require'telescope.builtin'.grep_string{shorten_path = true, word_match = '-w', only_sort_text = true, search = '' }<CR>", 'Find fuzzy'},
+	['<leader>Pz'] = {":lua require'telescope.builtin'.grep_string{path_display = {'tail'}, word_match = '-w', only_sort_text = true, search = '' }<CR>", 'Find fuzzy'},
 })
 
 

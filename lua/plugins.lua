@@ -49,37 +49,31 @@ require("packer").init({
 -- packadd - edge theme delayed?
 return require("packer").startup(
 	function(use)
-		use "wbthomason/packer.nvim" -- Packer can manage itself as an optional plugin
+		use {"wbthomason/packer.nvim", branch='fix/fetch-before-checkout'} -- Packer can manage itself as an optional plugin
 
 		-- themes
 		-- use 'joshdick/onedark.vim'
 		use 'ful1e5/onedark.nvim'
-		use 'projekt0n/github-nvim-theme'
+		use {'projekt0n/github-nvim-theme'}
+			-- config = function() require('github-theme').setup({themeStyle='dimmed', keywordStyle="bold"}) end;}
 		use {'EdenEast/nightfox.nvim',
 			config=function()
-				require('nightfox').setup({colors = { red="#dc6959"}})
+				local nightfox = require('nightfox')
+				nightfox.setup({
+					colors = { red="#dc6959", orange_br="#e49464"},
+					styles={keywords = "bold", functions="bold"}
+				})
 				require('nightfox').load()
 				vim.cmd([[highlight LineNr guifg=#5081c0 | highlight CursorLineNR guifg=#FFba00 ]])
-				vim.cmd([[
-				hi ActiveWindow guibg=#182534
-				hi InactiveWindow guibg=#242a39
-				set winhighlight=Normal:ActiveWindow,NormalNC:InactiveWindow]])
-			end,
-			-- setup = function()  end,
-		}
-
-
+				vim.cmd([[ hi ActiveWindow guibg=#182534
+									hi InactiveWindow guibg=#242a39
+									set winhighlight=Normal:ActiveWindow,NormalNC:InactiveWindow]])
+			end,}
 		use {'folke/tokyonight.nvim',
 			setup=function() require('themes.tokyonight'); end,
 			-- config=function() vim.cmd('colorscheme tokyonight'); vim.cmd([[highlight LineNr guifg=#5081c0 | highlight CursorLineNR guifg=#FFba00 ]])end
 		} -- lua + wont close () next to char finally good and simple +++
-		-- use {'marko-cerovac/material.nvim',
-		--	setup=function()  vim.g.material_style = "darker"; vim.g.material_variable_color="#7f62c3"  end} -- lua + wont close () next to char finally good and simple +++
 		use 'mhartington/oceanic-next'
-		use {'sainnhe/edge',
-			setup=function()  require('themes.edge')  end} -- lua + wont close () next to char finally good and simple +++
-		use {'Luxed/ayu-vim',-- dark and lack orange                                             "
-			setup=function() require('themes.ayu-vim') end} -- lua + wont close () next to char finally good and simple +++
 
 
 		-- UI
@@ -93,8 +87,7 @@ return require("packer").startup(
 			config=function() require("nv-galaxyline") end} -- lua + wont close () next to char finally good and simple +++
 		use {'akinsho/nvim-bufferline.lua',
 			requires = 'kyazdani42/nvim-web-devicons',
-			config = function() require'bufferline'.setup(); require('nv-bufferline') end
-		}
+			config = function() require'bufferline'.setup(); require('nv-bufferline') end }
 		use {'lukas-reineke/indent-blankline.nvim', after='tokyonight.nvim', disable=false,--  displaying thin vertical lines at each indentation level
 			setup=function() require('nv-indentline') end,
 			config=function() vim.cmd([[highlight! link IndentBlanklineContextChar Comment]])  end} -- preview line whe using goto :xyz
@@ -145,11 +138,9 @@ return require("packer").startup(
 			config=function() require("lsp")  end} -- lua + wont close () next to char finally good and simple +++
 		use {'hrsh7th/vim-vsnip', disable=true,-- auto completion
 			config=function() require("nv-vsnip")  end} -- lua + wont close () next to char finally good and simple +++
-		use 'SirVer/ultisnips'
-		use 'honza/vim-snippets'
---[[ use {'kosayoda/nvim-lightbulb', -- replaced by lspsaga, mech both does not seem to work
-		disable=true, config=function() require("nv-lightbulb")  end} -- lua + wont close () next to char finally good and simple +++ ]]
-		use { "folke/lsp-trouble.nvim", -- shows nice icons in lsp warnings...
+		use {'SirVer/ultisnips', requires='honza/vim-snippets',
+			config=function()  vim.g.UltiSnipsRemoveSelectModeMappings = 0  end,}
+		use {"folke/lsp-trouble.nvim", -- shows nice icons in lsp warnings...
 			requires = "kyazdani42/nvim-web-devicons",
 			config = function() require("nv-lsptrouble") end,}
 		use {'stevearc/aerial.nvim', disable=false, -- basically better outliner with objects type filter
@@ -234,8 +225,9 @@ return require("packer").startup(
 
 		--	config=function() require('nvim_comment').setup({comment_empty = false})  end} -- in lua     o
 		use 'b3nj5m1n/kommentary'
-		use 'icatalina/vim-case-change'  -- rotate strign case - modded by me
-		use 'mg979/vim-visual-multi'  --multi cursor support like vscode...
+		use 'JoseConseco/vim-case-change'  -- rotate strign case - modded by me
+		use {'mg979/vim-visual-multi', --multi cursor support like vscode...
+			config = function() vim.g.VM_mouse_mappings=1 end,}
 
 
 		-- navigation
@@ -248,8 +240,8 @@ return require("packer").startup(
 		use {'axlebedev/footprints',
 			config = function()
 				vim.g.footprintsColor = '#512c4f'
-				vim.g.footprintsEasingFunction = 'easeout'
-				vim.g.footprintsHistoryDepth = 10
+				vim.g.footprintsEasingFunction = 'linear'
+				vim.g.footprintsHistoryDepth = 17
 			end}
 
 		-- ternimal in popup

@@ -30,6 +30,8 @@ gls.left[1] = {
                 i = " INSERT ",
                 c = " COMMAND ",
                 V = " VISUAL ",
+                s = " SELECT ",
+                S = " SELECT ",
                 [""] = " VISUAL ",
                 v = " VISUAL ",
                 R = " REPLACE "
@@ -41,6 +43,7 @@ gls.left[1] = {
 													[''] = colors.nord,
 													V=colors.nord,
                           c = colors.magenta,no = colors.red,s = colors.magenta,
+                          s=colors.magenta,[''] = colors.magenta,
                           S=colors.magenta,[''] = colors.magenta,
                           ic = colors.yellow,R = colors.violet,Rv = colors.violet,
                           cv = colors.red,ce=colors.red, r = colors.cyan,

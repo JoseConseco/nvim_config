@@ -47,41 +47,51 @@ cmp.setup {
 		['<C-n>'] = cmp.mapping.select_next_item(),
 		['<S-Tab>'] = cmp.mapping(function(fallback)
 			if vim.fn["UltiSnips#CanJumpBackwards"]() == 1 then
-				return vim.fn.feedkeys(t("<C-R>=UltiSnips#JumpBackwards()<CR>"))
+				vim.fn.feedkeys(t("<C-R>=UltiSnips#JumpBackwards()<CR>"))
 			elseif vim.fn.pumvisible() == 1 then
 				vim.fn.feedkeys(t("<C-p>"), "n")
 			elseif check_back_space() then
 				vim.fn.feedkeys(t("<S-tab>"), "n")
 			else
-				fallback()
+				vim.fn.feedkeys(t("<S-tab>"), "n")
 			end
-		end, { "i", "s", }),
+		end, { "i", "s"}),
 		['<Tab>'] = cmp.mapping(function(fallback)
 			if vim.fn["UltiSnips#CanJumpForwards"]() == 1 then
-				return vim.fn.feedkeys(t("<C-R>=UltiSnips#JumpForwards()<CR>"))
+				vim.fn.feedkeys(t("<esc>:call UltiSnips#JumpForwards()<CR>"))
+				--[[ if vim.fn.mode() == 's' then
+					vim.fn.feedkeys(t("<esc>:call UltiSnips#JumpForwards()<CR>"))
+				elseif vim.fn.mode() == 'i' then
+					vim.fn.feedkeys(t("<C-R>=UltiSnips#JumpForwards()<CR>")) ]]
+				-- end
 			elseif vim.fn.pumvisible() == 1 then
 				vim.fn.feedkeys(t("<C-n>"), "n")
 			elseif check_back_space() then
 				vim.fn.feedkeys(t("<tab>"), "n")
 			else
-				fallback()
+				vim.fn.feedkeys(t("<tab>"), "n")
 			end
-		end, { "i", "s", }),
+		end, { "i", "s"}),
 		['<C-d>'] = cmp.mapping.scroll_docs(-4),
 		['<C-f>'] = cmp.mapping.scroll_docs(4),
 		['<C-e>'] = cmp.mapping.close(),
-		['<CR>'] = cmp.mapping.confirm({
-			behavior = cmp.ConfirmBehavior.Insert,
-			select = true,
+		['<CR>'] = cmp.mapping.confirm({ -- remapped at bottom by autopairs
+			behavior = cmp.ConfirmBehavior.Replace,
+			select = false,
 		}),
 		-- ['<C-Space>'] = cmp.mapping.complete(),
 		['<C-Space>'] = cmp.mapping(function(fallback)
+			-- print(vim.inspect(vim.fn.complete_info()))
 			if vim.fn.pumvisible() == 1 then
-				if vim.fn["UltiSnips#CanExpandSnippet"]() == 1 then
-					return vim.fn.feedkeys(t("<C-R>=UltiSnips#ExpandSnippet()<CR>"))
+				if vim.fn.complete_info()["selected"] ~= -1 then
+					if vim.fn["UltiSnips#CanExpandSnippet"]() == 1 then
+						return vim.fn.feedkeys(t("<C-R>=UltiSnips#ExpandSnippet()<CR>"))
+					else
+						vim.fn.feedkeys(t("<cr>"), "n")
+          end
+				else
+					vim.fn.feedkeys(t("<C-e>"), "n")
 				end
-
-				vim.fn.feedkeys(t("<C-n>"), "n")
 			elseif check_back_space() then
 				vim.fn.feedkeys(t("<cr>"), "n")
 			else
@@ -94,8 +104,8 @@ cmp.setup {
 	-- You should specify your *installed* sources.
 	sources = {
 		{ name = 'cmp_tabnine' },
-		{ name = 'nvim_lsp' },
 		{ name = 'ultisnips' },
+		{ name = 'nvim_lsp' },
 		{ name = 'nvim_lua' },
 		{ name = 'buffer' },
 		{ name = 'path' },
@@ -108,5 +118,5 @@ cmp.setup {
 require("nvim-autopairs.completion.cmp").setup({
   map_cr = true, --  map <CR> on insert mode
   map_complete = true, -- it will auto insert `(` after select function or method item
-  auto_select = true -- automatically select the first item
+  auto_select = false -- automatically select the first item
 })
