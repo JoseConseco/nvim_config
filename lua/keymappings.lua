@@ -174,6 +174,9 @@ vim.api.nvim_set_keymap( "n", "<4-MiddleMouse>", "<nop>", {} ) --and disable 2MM
 vim.api.nvim_set_keymap("i", "<C-v>", '<C-r>+', { noremap = true } )
 vim.api.nvim_set_keymap("c", "<C-v>", '<C-r>+', { noremap = true } )
 
+-- paste fast over sel
+vim.api.nvim_set_keymap("n", " p", '<cmd>normal! viw"_dP<cr>', { noremap = true } )
+
 -- Tab switch buffer
 --vim.api.nvim_set_keymap('n', '<TAB>', ':bnext<CR>', {noremap = true, silent = true})
 --vim.api.nvim_set_keymap('n', '<S-TAB>', ':bprevious<CR>', {noremap = true, silent = true})

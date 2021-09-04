@@ -50,16 +50,16 @@ end
 -- Single mappings
 wk.register({
 	['<leader>S'] = { ':SClose<CR>',                                                 'Startify' },
-	-- ['<leader>/'] = { ":lua require'telescope.builtin'.live_grep{search_dirs={'%:p'}, path_display='hidden', }<CR>",       'Search Project' },
-	['<leader>/'] = { ":lua require'telescope.builtin'.grep_string({})<CR>",       'Find * (Project)' },
-	-- ['<leader>/'] = { ":Telescope grep_string",       'Find *' },
-	['<leader>.'] = { ':Telescope find_files<CR>',                                     'Find File' },
-	['<leader>:'] = { ':Telescope commands<CR>',                                       'Commands' },
+	['<leader>*'] = { ":lua require'telescope.builtin'.grep_string({path_display = {'shorten'},word_match = '-w', only_sort_text = true, initial_mode = 'normal', })<CR>",       'Find * Project' },
+	['<leader>/'] = {":lua require'telescope.builtin'.live_grep{path_display = {'tail'}, word_match = '-w', only_sort_text = true, search = '' }<CR>",                           'Search Project'}     ,
+	['<leader>?'] = {':Grepper -cword  -noprompt<CR> -tool ag',                                             'Word to clist (Grepper)'},
+	-- ['<leader>.'] = { ':Telescope find_files<CR>',                                     'Find File' },
+	-- ['<leader>:'] = { ':Telescope commands<CR>',                                       'Commands' },
 	['<leader><lt>'] = {':Telescope buffers<CR>',                                      'Switch Buffer' },
 	-- ['<leader>r'] = { ':luafile $MYVIMRC<CR>',                                      'Reload VIMRC' },
 	['<leader> '] = { ':HopWord<CR>',                                                  'HOP 2Char' },
-	['<leader>e'] = { ':Fern . -reveal=%<CR>',                                         'File Browser' },
-	['<leader>p'] = { 'viw"_dP',                                                       'Paste over word' }, -- -d => without override
+	-- ['<leader>e'] = { ':Fern . -reveal=%<CR>',                                         'File Browser' },
+	['<leader>p'] = 'which_key_ignore',
 	['<leader>1'] = 'which_key_ignore',
 	['<leader>2'] = 'which_key_ignore',
 	['<leader>3'] = 'which_key_ignore',
@@ -328,16 +328,16 @@ wk.register({
 --	vim.cmd(":.,$s/\\<"..vim.fn.expand('<cword>').."\\>/"..name.."/gc|1,''-&&") -- substitute and ask each time
 -- end
 wk.register({
-	['<leader>R'] = { name = '+Replace' },
-	['<leader>Rp'] = { name = '+Project' },
-	['<leader>Rpf'] = {':Farr<CR>',                                 'File Farr'},
-	['<leader>Rpe'] = {'<plug>(operator-esearch-prefill)<CR>',      'Esearch'},   -- seems to be maintained
-	['<leader>Rpc'] = {'<Plug>CtrlSFPrompt -R {regex} -G *.py',     'CtrlSF'},
-	['<leader>Rpw'] = {'<Plug>CtrlSFCCwordPath<CR>',                'CtrlSF Word'},
-	['<leader>Rps'] = {":lua require('spectre').open()<CR>",        'Spectre'},
-	-- ['<leader>R*'] = {":let @/=expand('<cword>')<cr>cgn",        'Replace word with yank'},
-	['<leader>R*'] = {":.,$s/\\<<C-r><C-w>\\>/<C-r>+/gc|1,''-&&<CR>",  'Replace word with yank', mode='n'},       -- \<word\>  -adds whitespace  word limit (sub only whole words)
-	['<leader>R/'] = {function() local name = vim.fn.input('To: ', vim.fn.expand('<cword>')); vim.cmd(":.,$s/\\<"..vim.fn.expand('<cword>').."\\>/"..name.."/gc|1,''-&&") end,                'Replace word'},       -- write to reg z (@a) then use it for replacign * word
+	['<leader>r'] = { name = '+Replace' },
+	['<leader>rp'] = { name = '+Project' },
+	['<leader>rpf'] = {':Farr<CR>',                                 'File Farr'},
+	['<leader>rpe'] = {'<plug>(operator-esearch-prefill)<CR>',      'Esearch'},   -- seems to be maintained
+	['<leader>rpc'] = {'<Plug>CtrlSFPrompt -R {regex} -G *.py',     'CtrlSF'},
+	['<leader>rpw'] = {'<Plug>CtrlSFCCwordPath<CR>',                'CtrlSF Word'},
+	['<leader>rps'] = {":lua require('spectre').open()<CR>",        'Spectre'},
+	-- ['<leader>r*'] = {":let @/=expand('<cword>')<cr>cgn",        'Replace word with yank'},
+	['<leader>r*'] = {":.,$s/\\<<C-r><C-w>\\>/<C-r>+/gc|1,''-&&<CR>",  'Replace word with yank', mode='n'},       -- \<word\>  -adds whitespace  word limit (sub only whole words)
+	['<leader>r/'] = {function() local name = vim.fn.input('To: ', vim.fn.expand('<cword>')); vim.cmd(":.,$s/\\<"..vim.fn.expand('<cword>').."\\>/"..name.."/gc|1,''-&&") end,                'Replace word'},       -- write to reg z (@a) then use it for replacign * word
 })
 local function t(str)
     -- Adjust boolean arguments as needed
@@ -345,22 +345,22 @@ local function t(str)
 end
 
 wk.register({  -- second one for visual mode
-	['<leader>R'] = { name = '+Replace'},
-	['<leader>R*'] = {"\"ay:.,$s/<C-r>a/<C-r>+/gc|1,''-&&<CR>",					 'Replace word with yank'},    -- \<word\>  -adds whitespace  word limit (sub only whole words)
-	['<leader>R/'] = {function() vim.cmd("normal! \"ay"); local name = vim.fn.input('To: ', vim.fn.getreg('a')); vim.cmd(":.,$s/"..vim.fn.getreg('a').."/"..name.."/gc|1,''-&&") end ,					 'Replace word'},    -- \<word\>  -adds whitespace  word limit (sub only whole words)
+	['<leader>r'] = { name = '+Replace'},
+	['<leader>r*'] = {"\"ay:.,$s/<C-r>a/<C-r>+/gc|1,''-&&<CR>",					 'Replace word with yank'},    -- \<word\>  -adds whitespace  word limit (sub only whole words)
+	['<leader>r/'] = {function() vim.cmd("normal! \"ay"); local name = vim.fn.input('To: ', vim.fn.getreg('a')); vim.cmd(":.,$s/"..vim.fn.getreg('a').."/"..name.."/gc|1,''-&&") end ,					 'Replace word'},    -- \<word\>  -adds whitespace  word limit (sub only whole words)
 }, {mode = "v", prefix = ""})
 
 
 wk.register({
 	['<leader>P'] = { name = '+Project' },
-	['<leader>P*'] = {":lua require'telescope.builtin'.grep_string{path_display = {'shorten'},word_match = '-w', only_sort_text = true, initial_mode = 'normal', }<CR>",                                     'Find Word'}    ,
-	['<leader>P/'] = {':Grepper-cword<CR>',                                             'Word to clist (Grepper)'},
+	-- ['<leader>P*'] = {":lua require'telescope.builtin'.grep_string{path_display = {'shorten'},word_match = '-w', only_sort_text = true, initial_mode = 'normal', }<CR>", 'Find Word'}    ,
+	-- ['<leader>P/'] = {':Grepper-cword<CR>',                                             'Word to clist (Grepper)'},
 	['<leader>Ps'] = {':SSave<CR>',                                                     'Sesion Save'}  ,
 	['<leader>Pl'] = {':SLoad<CR>',                                                     'Sesion Load'}  ,
 	['<leader>Pc'] = {':SClose<CR>',                                                    'Sesion Close'} ,
 	['<leader>Pd'] = {':SDelete<CR>',                                                   'Sesion Delete'},
-	['<leader>Pf'] = {':Telescope live_grep<CR>',                                       'Find (live grep)'}     ,
-	['<leader>Pz'] = {":lua require'telescope.builtin'.grep_string{path_display = {'tail'}, word_match = '-w', only_sort_text = true, search = '' }<CR>", 'Find fuzzy'},
+	-- ['<leader>Pf'] = {':Telescope live_grep<CR>',                                       'Find (live grep)'}     ,
+	-- ['<leader>Pz'] = {":lua require'telescope.builtin'.grep_string{path_display = {'tail'}, word_match = '-w', only_sort_text = true, search = '' }<CR>", 'Find fuzzy'},
 })
 
 

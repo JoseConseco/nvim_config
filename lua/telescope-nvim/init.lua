@@ -51,6 +51,7 @@ require("telescope").setup {
 }
 
 require("telescope").load_extension("media_files")
+-- require('telescope').load_extension('projects')
 
 -- local opt = {noremap = true, silent = true}
 -- mappings

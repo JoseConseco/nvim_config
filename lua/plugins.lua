@@ -49,13 +49,13 @@ require("packer").init({
 -- packadd - edge theme delayed?
 return require("packer").startup(
 	function(use)
-		use {"wbthomason/packer.nvim", branch='fix/fetch-before-checkout'} -- Packer can manage itself as an optional plugin
+		use {"wbthomason/packer.nvim"} -- Packer can manage itself as an optional plugin
 
 		-- themes
 		-- use 'joshdick/onedark.vim'
 		use 'ful1e5/onedark.nvim'
 		use {'projekt0n/github-nvim-theme'}
-			-- config = function() require('github-theme').setup({themeStyle='dimmed', keywordStyle="bold"}) end;}
+		-- config = function() require('github-theme').setup({themeStyle='dimmed', keywordStyle="bold"}) end;}
 		use {'EdenEast/nightfox.nvim',
 			config=function()
 				local nightfox = require('nightfox')
@@ -66,8 +66,8 @@ return require("packer").startup(
 				require('nightfox').load()
 				vim.cmd([[highlight LineNr guifg=#5081c0 | highlight CursorLineNR guifg=#FFba00 ]])
 				vim.cmd([[ hi ActiveWindow guibg=#182534
-									hi InactiveWindow guibg=#242a39
-									set winhighlight=Normal:ActiveWindow,NormalNC:InactiveWindow]])
+				hi InactiveWindow guibg=#242a39
+				set winhighlight=Normal:ActiveWindow,NormalNC:InactiveWindow]])
 			end,}
 		use {'folke/tokyonight.nvim',
 			setup=function() require('themes.tokyonight'); end,
@@ -262,6 +262,8 @@ return require("packer").startup(
 		-- project management
 		use {"mhinz/vim-startify",
 			config=function() require('nv-startify') end} -- lua + wont close () next to char finally good and simple +++
+		--[[ use { "ahmedkhalf/project.nvim", -- does not store opened files in project
+			config = function() require("project_nvim").setup{} end } ]]
 	end
 )
 --vim.cmd('packloadall!') -- fixes plugs not seeing config, and load order mess. Or else we need to: so $MYVIMRC
