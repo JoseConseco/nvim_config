@@ -52,7 +52,7 @@ wk.register({
 	['<leader>S'] = { ':SClose<CR>',                                                 'Startify' },
 	['<leader>*'] = { ":lua require'telescope.builtin'.grep_string({path_display = {'shorten'},word_match = '-w', only_sort_text = true, initial_mode = 'normal', })<CR>",       'Find * Project' },
 	['<leader>/'] = {":lua require'telescope.builtin'.live_grep{path_display = {'tail'}, word_match = '-w', only_sort_text = true, search = '' }<CR>",                           'Search Project'}     ,
-	['<leader>?'] = {':Grepper -cword  -noprompt<CR> -tool ag',                                             'Word to clist (Grepper)'},
+	['<leader>?'] = {':Grepper -cword  -noprompt -tool ag<cr>',                                             'Word to clist (Grepper)'},
 	-- ['<leader>.'] = { ':Telescope find_files<CR>',                                     'Find File' },
 	-- ['<leader>:'] = { ':Telescope commands<CR>',                                       'Commands' },
 	['<leader><lt>'] = {':Telescope buffers<CR>',                                      'Switch Buffer' },

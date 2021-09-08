@@ -232,7 +232,7 @@ return require("packer").startup(
 
 		-- navigation
 		use {"phaazon/hop.nvim",
-			config = function() vim.api.nvim_set_keymap('o', 'l',  ":HopChar1<cr>", {noremap = true}) end}
+			config = function() vim.api.nvim_set_keymap('o', 'h',  ":HopChar1<cr>", {noremap = true}) end}
 		use {'karb94/neoscroll.nvim',  -- smooth scroll
 			config=function() require('neoscroll').setup({hide_cursor=false}) end} -- lua + wont close () next to char finally good and simple +++
 		use {'nacro90/numb.nvim',

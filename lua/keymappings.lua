@@ -10,6 +10,7 @@
 
 -- I hate escape
 vim.api.nvim_set_keymap('i', 'jk', '<ESC>zv', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('i', 'jj', '<ESC>zv', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('i', '<ESC>', '<ESC>zv', {noremap = true, silent = true})
 
 --  add new empty line above/below current line in normal or vis mode (to give breathing space to code)
@@ -108,15 +109,28 @@ vim.api.nvim_set_keymap('n', 'S',  '"_S', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('v', 'p',  '"_dp`[v`]', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('v', 'P',  '"_dP', {noremap = true, silent = true})
 
--- yank till end of line
+-- <C-r> - paste from specified register
+vim.api.nvim_set_keymap("i", "<C-v>", '<C-r>+', { noremap = true } )
+vim.api.nvim_set_keymap("c", "<C-v>", '<C-r>+', { noremap = true } )
+
+-- paste fast over cursor word
+vim.api.nvim_set_keymap("n", " p", '<cmd>normal! viw"_dP<cr>', { noremap = true } )
 
 
 -- no highlight
 vim.api.nvim_set_keymap('n', '<m-h>', ':set hlsearch!<CR>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', 'gh', '^', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', 'gl', '$', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('v', 'gh', '^', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('v', 'gl', '$', {noremap = true, silent = true})
+
 vim.api.nvim_set_keymap('n', '<c-h>', '^', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<c-l>', '$', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('v', '<c-h>', '^', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('v', '<c-l>', '$', {noremap = true, silent = true})
+
+vim.api.nvim_set_keymap('n', '<m-h>', 'v^', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<m-l>', 'v$', {noremap = true, silent = true})
 
 -- auto magic search
 vim.api.nvim_set_keymap('n', '/', '/\\v', {noremap = true, silent = true})
@@ -170,12 +184,6 @@ vim.api.nvim_set_keymap( "n", "<2-MiddleMouse>", "<nop>", {} ) --and disable 2MM
 vim.api.nvim_set_keymap( "n", "<3-MiddleMouse>", "<nop>", {} ) --and disable 2MMB so no accidental paste..
 vim.api.nvim_set_keymap( "n", "<4-MiddleMouse>", "<nop>", {} ) --and disable 2MMB so no accidental paste..
 
--- <C-r> - paste from specified register
-vim.api.nvim_set_keymap("i", "<C-v>", '<C-r>+', { noremap = true } )
-vim.api.nvim_set_keymap("c", "<C-v>", '<C-r>+', { noremap = true } )
-
--- paste fast over sel
-vim.api.nvim_set_keymap("n", " p", '<cmd>normal! viw"_dP<cr>', { noremap = true } )
 
 -- Tab switch buffer
 --vim.api.nvim_set_keymap('n', '<TAB>', ':bnext<CR>', {noremap = true, silent = true})
@@ -193,6 +201,7 @@ vim.api.nvim_set_keymap("n", " p", '<cmd>normal! viw"_dP<cr>', { noremap = true 
 -- vim.api.nvim_set_keymap( "n", "N", "Nzzzv", { noremap = true } )
 
 vim.api.nvim_set_keymap( "n", "J", "mzJ'z", { noremap = true } )
+vim.api.nvim_set_keymap( "n", "<c-J>", "mq:s/\\v,\\s+/,\\r/g<cr>V'q=", { noremap = true } )
 
 --add breakpoint for undo at space, . and ,
 vim.api.nvim_set_keymap( "i", " ", " <c-g>u", { noremap = true } )

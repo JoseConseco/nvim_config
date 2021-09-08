@@ -19,6 +19,7 @@ ts_config.setup {
 	},
 	highlight = {
 		enable = true,
+		disable = {"comment", },
 		use_languagetree = true
 	},
 	indent = {enable = true},

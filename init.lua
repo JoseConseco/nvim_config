@@ -29,6 +29,12 @@ vim.cmd([[
 autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
 autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
 ]])
+
+-- HACK: fix nvim not maximized in allacritty
+vim.cmd([[
+	autocmd VimEnter * :sleep 20m
+	autocmd VimEnter * :silent exec "!kill -s SIGWINCH $PPID"
+]])
 -- line numbers
 -- vim.api.nvim_exec([[
 -- augroup MyColors
