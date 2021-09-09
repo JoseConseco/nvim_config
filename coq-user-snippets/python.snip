@@ -1,0 +1,521 @@
+snippet for with comprehension
+	[${2} for ${2} in ${1}]
+
+snippet test
+	${1} = output: {$1/(.*)/${1:/upcase}/}
+
+snippet print debug
+alias print_debug
+	print(f"$1=}")
+
+
+snippet ipdb_trace
+alias ipdb_trace
+	ipdb.set_trace()
+	$0
+
+snippet pprint snippet
+alias pprint
+	import pprint
+	pprint.pprint($0)
+
+snippet How long it takes
+alias time_oper
+	import time
+	start_time = time.time()
+	print(f'I took --- {time.time() - start_time} seconds ---')
+
+
+snippet poll class method
+alias poll
+	@classmethod
+	def poll(cls, context):
+		return context.active_object
+	$0
+
+snippet prop group
+alias property group pointer
+	class MyPropertyGroup(bpy.types.PropertyGroup):
+		custom_1: bpy.props.FloatProperty(name='My Float')
+		custom_2: bpy.props.IntProperty(name='My Int')
+	bpy.utils.register_class(MyPropertyGroup)
+	bpy.types.Object.my_prop_grp = bpy.props.PointerProperty(type=MyPropertyGroup)
+
+snippet prop coll
+alias property collection
+	class GroupSettings(bpy.types.PropertyGroup):
+		currentEmptyName: bpy.props.StringProperty()
+		currentEmptyWorldMatrix: bpy.props.FloatVectorProperty(size=16)
+		currentEmptyLoc: bpy.props.FloatVectorProperty(default=(0.0,0.0, 0.0), subtype='TRANSLATION')
+	bpy.types.Scene.storedGroupSettings = bpy.props.CollectionProperty(type=GroupSettings)
+
+snippet BoolProp
+alias bool
+	$1: bpy.props.BoolProperty(name='$1', description='', default=${2|True,False|})$0
+
+snippet boolPropVector
+	$1: bpy.props.BoolVectorProperty(name="$1", description='', options={'HIDDEN'},  default=${2|True,False|}, size=$0)
+
+
+snippet StringProp
+alias string
+	$1: bpy.props.StringProperty(name='$1', description='', default='${2}')$0
+
+snippet FloatProp
+alias float
+	$1: bpy.props.FloatProperty(name='$1', description='', default=${2: 0.0}, min=0, max=100, subtype='${3|FACTOR,PERCENTAGE|}')$0
+
+
+snippet IntProperty
+alias integer
+	$1: bpy.props.IntProperty(name="$1", description='', default=${2: 1}, min=0, max=100, subtype='PERCENTAGE')$0
+
+
+snippet PointerProp
+alias pointer
+	$1: bpy.props.PointerProperty(name='$1', type=bpy.types.Object)$0
+
+snippet bmesh editmode
+alias Bmesh Editmode
+	bm = bmesh.from_edit_mesh(me)
+	for v in bm.verts:
+		v.co.x += 1.0
+	bmesh.update_edit_mesh(me, True)
+
+snippet bmesh object mode
+alias bmesh object mode
+	bm = bmesh.new()   # create an empty BMesh
+	bm.from_mesh(me)   # fill it in from a Mesh
+	bm.to_mesh(me)
+	bm.free()  # free and prevent further access
+
+snippet bmesh UV
+alias bmesh UV
+	uv_lay = bm.loops.layers.uv.active
+	for face in bm.faces:
+		for loop in face.loops:
+			uv = loop[uv_lay].uv
+			print(f'Loop UV: {uv[0]},{uv[1]}')
+			vert = loop.vert
+
+snippet bmesh shape
+alias bmesh shape
+	shape_lay = bm.verts.layers.shape['Key.001']
+	for vert in bm.verts:
+		shape = vert[shape_lay]
+		print(f'Vert Shape: {shape.x}, {shape.y}, {shape.z}')
+
+snippet bmesh vcolor
+alias bmesh vcolor
+	color_layer = bm.loops.layers.color.new('color')
+	for face in bm.faces:
+		for loop in face.loops:
+			loop[color_layer] = [1, 1, 1]
+
+snippet bmesh vgroup
+alias bmesh vgroup
+	group_index = obj.vertex_groups.active_index
+	# only ever one deform weight layer
+	dvert_lay = bm.verts.layers.deform.active
+	for vert in bm.verts:
+		dvert = vert[dvert_lay]
+		if group_index in dvert:
+			print(f'Weight {dvert[group_index]}')
+		else:
+			print('Setting Weight')
+			dvert[group_index] = 0.5
+
+snippet EnumProperty
+alias enum
+	$1: bpy.props.EnumProperty(name='$1', description='',
+		items=[
+			('$2', '$2', '$2'),
+			('$3', '$3', '$3')
+		]${4:, options={'ENUM_FLAG'}}, default={'$2'}$0)
+
+
+snippet depsgraph From mesh
+alias depsgraph
+	depsgraph = context.evaluated_depsgraph_get()
+	obj = context.active_object
+	obj_eval = obj.evaluated_get(depsgraph)
+	me_eval = obj_eval.to_mesh()
+	obj_eval.to_mesh_clear()
+	bpy.data.meshes.new_from_object(obj_eval)
+	$0
+
+snippet Draw method for operator
+alias draw
+	def draw(self, context):
+		layout = self.layout
+		row = layout.row(align=True)
+		row.prop(self, '$0')
+
+snippet Draw report for operator
+alias report
+	self.report({'${1|INFO,WARNING,DEBUG,ERROR|}'}, f'{$0}')
+
+
+snippet return ops
+alias return
+	return {'${1|FINISHED,CANCELLED,RUNNING_MODAL,PASS_THROUGH|}'}
+
+
+snippet exception with print
+alias exception
+	except Exception as e: print(e)
+
+snippet Detect shift click on operator
+alias shift_clicked
+	shift_clicked = False
+	def invoke(self, context, event):
+		if event.shift:
+			self.shift_clicked = True
+		return self.execute(context)
+
+snippet Invoke method for operator
+alias invoke
+	def invoke(self, context, event):
+		return self.execute(context)
+
+snippet create blender operator
+alias operator
+	class OBJECT_OT_$1(bpy.types.Operator):
+		bl_idname = "object.$1"
+		bl_label = "$1"
+		bl_description = "$1"
+		bl_options = {"REGISTER","UNDO"}
+
+		@classmethod
+		def poll(cls, context):
+			return context.active_object
+
+		def execute(self, context):
+			obj = context.active_object$0
+			bpy.ops.object.delete()
+			return {"FINISHED"}
+
+
+snippet create blender panel
+alias panel
+	class VIEW3D_PT_$1(bpy.types.Panel):
+		bl_idname = 'VIEW3D_PT_$1'
+		bl_label = '$1'
+		bl_parent_id = 'RENDER_PT_color_management'
+		bl_space_type = 'VIEW_3D'
+		bl_region_type = 'UI'
+		bl_category = 'Tools'
+		bl_context = 'objectmode'
+
+		def draw(self, context):
+			layout = self.layout$0
+
+
+snippet operator modal draw
+alias Modal operator draw function, without any imports or added functions
+	class ${1:MyClassName}(bpy.types.Operator):
+		bl_idname = "${2:my_operator.my_class_name}"
+		bl_label = "$2"
+		bl_description = "${4:Description that shows in blender tooltips}"
+		bl_options = {'REGISTER'}
+
+		@classmethod
+		def poll(cls, context):
+			return True
+
+		def invoke(self, context, event):
+			self._handle = bpy.types.SpaceView3D.draw_handler_add(
+				self.draw_callback_px, args, "WINDOW", "POST_PIXEL")
+			context.window_manager.modal_handler_add(self)
+			return {"RUNNING_MODAL"}
+
+		def modal(self, context, event):
+
+			if event.type == "LEFTMOUSE":
+				return self.finish()
+
+			if event.type in {"RIGHTMOUSE", "ESC"}:
+				return self.cancelled()
+			$0
+			return {"RUNNING_MODAL"}
+
+		def finish(self):
+			bpy.types.SpaceView3D.draw_handler_remove(self._handle, "WINDOW")
+			return {"FINISHED"}
+
+		def cancelled(self):
+			bpy.types.SpaceView3D.draw_handler_remove(self._handle, "WINDOW")
+			return {"CANCELLED"}
+
+		def draw_callback_px(tmp, self, context):
+			pass
+
+
+snippet pie menu
+alias create blender operator
+	class HTOOL_MT_HairToolMenu(bpy.types.Menu):
+		bl_idname = "HTOOL_MT_HairToolMenu"
+		bl_label = "Hair Tool Menu Panel"
+		@classmethod
+		def poll(cls, context):
+			return context.mode == 'OBJECT'
+		def draw(self, context):
+			layout = self.layout
+			pie = layout.menu_pie()
+			# 1 - LEFT
+			pie.operator("wm.call_menu_pie", text="Weigth Tools", icon='PREFERENCES').name = WPT_MT_VerGroupSubToolsPie.bl_idname
+			# 2 - RIGHT
+			box = pie.box()
+			col = box.column(align=True)
+			row = col.row(align=False)
+			row.label(text='Set weights:')
+			row = col.row(align=True)
+			weight_set = row.operator("paint.weight_set_wp", text='0')
+			weight_set.mix_method = "REPLACE"
+			weight_set.weight = 0.0
+			weight_set = row.operator("paint.weight_set_wp", text='0.2')
+			weight_set.mix_method = "REPLACE"
+			weight_set.weight = 0.2
+			# 3 - BOTTOM
+			split = pie.split()
+			col = split.column(align=True)
+			row = col.row(align=True)
+			row.scale_y = 1.5
+			row.operator("object.transfer_weights", icon='PLUS')
+			row = col.row(align=True)
+			row.scale_y = 1.5
+			row.operator("paint.mirror_vg", icon='MOD_MIRROR')
+			row = col.row(align=True)
+			row.scale_y = 1.5
+			row.operator("paint.mirror_vg_project", icon='MOD_MIRROR')
+			# 4 - TOP
+			pie.operator("pose.select_active_vg_bone", icon='CONSTRAINT_BONE')
+			# 5 - TOP - LEFT
+			pie.separator()
+			# 6 - TOP - RIGHT
+			pie.separator()
+			# 7 - BOTTOM - LEFT
+			split = pie.split()
+			col = split.column(align=True)
+			row = col.row(align=True)
+			row.scale_y = 1.5
+			row.operator("object.copy_vg_weight", icon='COPY_ID')
+			row = col.row(align=True)
+			row.scale_y = 1.5
+			row.operator("object.paste_vg_weight", icon='PASTEDOWN')
+			# 8 - BOTTOM - RIGHT
+			split = pie.split()
+			col = split.column(align=True)
+			row = col.row(align=True)
+			row.scale_y = 1.5
+			row.operator("object.define_delta", icon='ARROW_LEFTRIGHT')
+			row = col.row(align=True)
+			row.scale_y = 1.5
+			row.prop(context.scene, "wpt_enable_mirror", text= mirror_str,  emboss=True)
+
+snippet normal menu
+alias menu
+	class SubMenu(bpy.types.Menu):
+		bl_idname = "OBJECT_MT_select_submenu"
+		bl_label = "Select"
+		def draw(self, context):
+			layout = self.layout
+			layout.operator("object.select_all", text="Select/Deselect All").action = 'TOGGLE'
+			layout.operator("object.select_all", text="Inverse").action = 'INVERT'
+			layout.operator("object.select_random", text="Random")
+			# access this operator as a submenu
+			layout.operator_menu_enum("object.select_by_type", "type", text="Select All by Type...")
+			layout.separator()
+			# expand each operator option into this menu
+			layout.operator_enum("object.light_add", "type")
+			layout.separator()
+			# use existing memu
+			layout.menu("VIEW3D_MT_transform")
+
+snippet props dialog
+alias props dialog invoke
+	return context.window_manager.invoke_props_dialog(self)
+
+snippet FloatVectorProperty
+alias color
+	$1: bpy.props.FloatVectorProperty(name="$1", subtype='COLOR', size=4, default=[1.0, 0.0, 0.0, 0.8], min=0.0, max=1.0)
+
+
+snippet blender theme
+alias theme
+	theme = bpy.context.preferences.themes['Default']
+
+
+snippet prefs
+	pref = context.preferences.addons[__name__].preferences
+
+snippet Addon
+
+	# ***** BEGIN GPL LICENSE BLOCK *****
+	#
+	#
+	# This program is free software; you can redistribute it and/or
+	# modify it under the terms of the GNU General Public License
+	# as published by the Free Software Foundation; either version 2
+	# of the License, or (at your option) any later version.
+	#
+	# This program is distributed in the hope that it will be useful,
+	# but WITHOUT ANY WARRANTY; without even the implied warranty of
+	# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.    See the
+	# GNU General Public License for more details.
+	#
+	# You should have received a copy of the GNU General Public License
+	# along with this program; if not, write to the Free Software Foundation,
+	# Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+	#
+	# ***** END GPL LICENCE BLOCK *****
+	import bpy
+	bl_info = {
+		"name": "Tracks Addon",
+		"author": "Your Name Here",
+		"version": (2, 0),
+		"blender": (2, 80, 0),
+		"location": "Location",
+		"description": "Test",
+		"warning": "",
+		"wiki_url": "",
+		"category": "3D View",
+	}
+
+
+	class TRACK_OP_TrackSetp(bpy.types.Operator):
+		bl_idname = "object.track_empties_setup"
+		bl_label = "track empties setup"
+		bl_description = "track empties setup"
+		bl_options = {"REGISTER", "UNDO"}
+
+		addon_name: bpy.props.StringProperty(name='mod name', description='', default='')
+
+		def invoke(self, context, event):
+			wm = context.window_manager
+			# wm.invoke_search_popup(self)
+			return context.window_manager.invoke_props_dialog(self)
+			# return {'FINISHED'}
+
+		def draw(self, context):
+			layout = self.layout
+			layout.prop_search(self, 'addon_name', context.preferences, 'addons')
+
+		@classmethod
+		def poll(cls, context):
+			return context.active_object
+
+		def execute(self, context):
+			cam = bpy.data.objects['Camera']
+			movie_clip = bpy.data.movieclips['Untitled.mp4']
+			plane = bpy.data.objects['Plane.002']
+
+			arma_data = bpy.data.armatures.new("Arma"+movie_clip.name)
+			arma_obj = bpy.data.objects.new("Arma"+movie_clip.name, arma_data)
+			context.scene.collection.objects.link(arma)
+			for track in movie_clip.tracking.tracks:
+				empty = bpy.data.objects.new(track.name, None)
+				context.scene.collection.objects.link(empty)
+				constrain = empty.constraints.new('FOLLOW_TRACK')
+				constrain.use_active_clip = False
+				constrain.clip = movie_clip
+				constrain.camera = cam
+				constrain.track = track.name
+				constrain.object = cam.name
+				constrain.depth_object = plane
+				track_bone = arma.edit_bones.new(prefix + track.name)
+				bone_const = arma_obj.pose.bones[track_bone.name].constraints.new("CHILD_OF")
+				bone_const.target = empty
+				bone_const.use_rotation_x = False
+				bone_const.use_rotation_y = False
+				bone_const.use_rotation_z = False
+				bone_const.use_scale_x = False
+				bone_const.use_scale_y = False
+				bone_const.use_scale_z = False
+
+			return {"FINISHED"}
+
+
+	classes = (
+		ADD_OP_SimpleOp,
+	)
+
+
+	def register():
+		from bpy.utils import register_class
+		for cls in classes:
+			register_class(cls)
+
+
+	def unregister():
+		from bpy.utils import unregister_class
+		for cls in reversed(classes):
+			unregister_class(cls)
+
+
+
+snippet split
+	split = row.split(factor=0.7, align=True)
+	split.operator('garment.setup_keyframes').garment_index = garment_index
+	split.prop(garment, 'sim_time', text='')
+
+snippet try generic
+alias try
+	try:
+		$0
+	except Exception as e:
+		print(e)
+
+snippet bvh tree
+alias bvht
+	from mathutils.bvhtree import BVHTree
+	snap_target_bvht = BVHTree.FromObject(snapTarget, context.evaluated_depsgraph_get())
+	loc, normal, f_index, distance = snap_target_bvht.raycast(origin = prev_pt.co, direction = dir)
+
+snippet bgl draw mesh
+	@staticmethod
+	def draw_mesh_px(self, context):
+		mesh.calc_loop_triangles()
+		vertices = np.empty((len(mesh.vertices), 3), 'f')
+		face_ids = np.empty((len(mesh.loop_triangles), 3), 'i')
+
+		mesh.vertices.foreach_get("co", np.reshape(vertices, len(mesh.vertices) * 3))
+		mesh.loop_triangles.foreach_get("vertices", np.reshape(face_ids, len(mesh.loop_triangles) * 3))
+
+		bgl.glEnable(bgl.GL_BLEND)
+		bgl.glDisable(bgl.GL_DEPTH_TEST)
+		bgl.glEnable(bgl.GL_CULL_FACE)
+		bgl.glCullFace(bgl.GL_BACK)
+		batch_faces = batch_for_shader(shader_3d_uniform, 'TRIS', {"pos": vertices}, indices=face_ids )
+		shader_3d_uniform.bind()
+		shader_3d_uniform.uniform_float("color", self.draw_color + (0.2,))
+		batch_faces.draw(shader_3d_uniform)
+
+		batch_edges = batch_for_shader(shader_3d_uniform, 'LINES', {"pos": vertices}, indices=mehs.edge_keys)
+		shader_3d_uniform.bind()
+		shader_3d_uniform.uniform_float("color",  self.draw_color + (1.0,))
+		batch_edges.draw(shader_3d_uniform)
+
+		bgl.glDisable(bgl.GL_CULL_FACE)
+		bgl.glDisable(bgl.GL_DEPTH_TEST)
+		bgl.glDisable(bgl.GL_BLEND)
+
+snippet profile stats
+	import cProfile, pstats, io
+	from pstats import SortKey
+
+	pr = cProfile.Profile()
+	pr.enable()
+	#*  ... do something ...
+
+	pr.disable()
+	s = io.StringIO()
+	sortby = SortKey.CUMULATIVE
+	ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+	ps.print_stats()
+	print(s.getvalue())
+	# with open('test.txt', 'w+') as f:
+		# f.write(s.getvalue())
+
+
+

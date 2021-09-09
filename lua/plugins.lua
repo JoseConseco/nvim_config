@@ -126,11 +126,14 @@ return require("packer").startup(
 
 		-- lsp
 		use 'onsails/lspkind-nvim'  -- icons for completion popup
-		use { "hrsh7th/nvim-cmp",
+		use { 'ms-jpq/coq_nvim', branch = 'coq', disable = true,
+			setup = function() require('nv-coq') end,
+		} -- main one
+		use { "hrsh7th/nvim-cmp", disable=false,
 			requires = { "hrsh7th/cmp-buffer", "hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-path",
 				"hrsh7th/cmp-nvim-lua",  'quangnguyen30192/cmp-nvim-ultisnips', 'hrsh7th/cmp-calc'}, --"hrsh7th/cmp-vsnip",
 			config = function() require'nv-cmp' end, }
-		use {'tzachar/cmp-tabnine', requires = 'hrsh7th/nvim-cmp', run='./install.sh',
+		use {'tzachar/cmp-tabnine', requires = 'hrsh7th/nvim-cmp', run='./install.sh', disable=false,
 			config = function() require('cmp_tabnine.config'):setup({
 				max_lines = 100; max_num_results = 3; sort = true; })
 			end}
@@ -138,7 +141,7 @@ return require("packer").startup(
 			config=function() require("lsp")  end} -- lua + wont close () next to char finally good and simple +++
 		use {'hrsh7th/vim-vsnip', disable=true,-- auto completion
 			config=function() require("nv-vsnip")  end} -- lua + wont close () next to char finally good and simple +++
-		use {'SirVer/ultisnips', requires='honza/vim-snippets',
+		use {'SirVer/ultisnips', requires='honza/vim-snippets', disable=false,
 			config=function()  vim.g.UltiSnipsRemoveSelectModeMappings = 0  end,}
 		use {"folke/lsp-trouble.nvim", -- shows nice icons in lsp warnings...
 			requires = "kyazdani42/nvim-web-devicons",

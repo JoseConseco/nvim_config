@@ -1,4 +1,5 @@
 local cmp = require('cmp')
+local compare = require('cmp.config.compare')
 local lspkind = require("lspkind")
 
 local t = function(str)
@@ -25,20 +26,12 @@ cmp.setup {
 				path = "[Path]",
 				calc = '[Calc]',
 			})[entry.source.name]
+			-- print(vim.inspect(entry))
 			return vim_item
 		end
 	},
 	documentation = {
-		border = {
-		      {"┌", "FloatBorder"},
-		      {"─", "FloatBorder"},
-		      {"┐", "FloatBorder"},
-		      {"│", "FloatBorder"},
-		      {"┘", "FloatBorder"},
-		      {"─", "FloatBorder"},
-		      {"└", "FloatBorder"},
-		      {"│", "FloatBorder"},
-			}
+		border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
 	},
 	min_length = 0, -- allow for `from package import _` in Python
 	-- You can set mappings if you want
@@ -50,8 +43,8 @@ cmp.setup {
 				vim.fn.feedkeys(t("<C-R>=UltiSnips#JumpBackwards()<CR>"))
 			elseif vim.fn.pumvisible() == 1 then
 				vim.fn.feedkeys(t("<C-p>"), "n")
-			elseif check_back_space() then
-				vim.fn.feedkeys(t("<S-tab>"), "n")
+			--[[ elseif check_back_space() then
+				vim.fn.feedkeys(t("<S-tab>"), "n") ]]
 			else
 				vim.fn.feedkeys(t("<S-tab>"), "n")
 			end
@@ -66,8 +59,8 @@ cmp.setup {
 				-- end
 			elseif vim.fn.pumvisible() == 1 then
 				vim.fn.feedkeys(t("<C-n>"), "n")
-			elseif check_back_space() then
-				vim.fn.feedkeys(t("<tab>"), "n")
+			--[[ elseif check_back_space() then
+				vim.fn.feedkeys(t("<tab>"), "n") ]]
 			else
 				vim.fn.feedkeys(t("<tab>"), "n")
 			end
@@ -92,10 +85,11 @@ cmp.setup {
 				else
 					vim.fn.feedkeys(t("<C-e>"), "n")
 				end
-			elseif check_back_space() then
-				vim.fn.feedkeys(t("<cr>"), "n")
+			--[[ elseif check_back_space() then
+				vim.fn.feedkeys(t("<cr>"), "n") ]]
 			else
-				fallback()
+				cmp.complete()  -- invoke popup
+				-- fallback()
 			end
 		end, { "i", "s", }),
 	},
@@ -104,14 +98,35 @@ cmp.setup {
 	-- You should specify your *installed* sources.
 	sources = {
 		{ name = 'cmp_tabnine' },
-		{ name = 'ultisnips' },
-		{ name = 'nvim_lsp' },
-		{ name = 'nvim_lua' },
-		{ name = 'buffer' },
+		{ name = 'nvim_lsp'},
+		{ name = 'buffer'},
+		{ name = 'ultisnips'},
+		{ name = 'nvim_lua'},
 		{ name = 'path' },
 		{ name = 'calc' },
 		-- { name = 'vsnip' },
 	},
+	sorting = {
+		priority_weight = 1.5,
+		--[[ comparators = {
+        compare.offset,
+        compare.exact,
+        compare.score,
+        compare.kind,
+        compare.sort_text,
+        compare.length,
+        compare.order,
+		} ]]
+		comparators = {
+			compare.score, -- based on :  score = score + ((#sources - (source_index - 1)) * sorting.priority_weight)
+			compare.offset,
+			-- compare.order,
+			-- compare.sort_text,
+			-- compare.exact,
+			-- compare.kind,
+		  -- compare.length,
+		}
+	}
 }
 
 -- windwp/nvim-autopairs -  you need setup cmp first put this after cmp.setup()

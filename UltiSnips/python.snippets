@@ -10,8 +10,9 @@ def capitalize_case(s):  # Test sample
 	return sub(r"[^a-zA-Z]", ' ', s).capitalize()
 endglobal
 
+
 snippet forc "for with comprehension"
-[${2:`!p snip.rv=t[1][:-1]`} for ${2:`!p snip.rv=t[1][:-1]`} in ${1}]$0
+[${2:`!p snip.rv=t[1][:-1]`} for ${2:`!p snip.rv=t[1][:-1]`} in ${1:`!v @+`}]$0
 endsnippet
 
 snippet "box comment" "Box"
