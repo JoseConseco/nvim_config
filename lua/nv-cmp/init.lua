@@ -12,6 +12,16 @@ local check_back_space = function()
 end
 
 
+compare.score_offset = function(entry1, entry2)
+  local diff_offset_score = entry1:get_offset() * entry2.score - entry2:get_offset() * entry1.score
+  if diff_offset_score < 0 then
+    return true
+  elseif diff_offset_score > 0 then
+    return false
+  end
+end
+
+vim.opt.completeopt = 'menu,menuone,noselect'
 cmp.setup {
 	formatting = {
 		format = function(entry, vim_item)
@@ -43,6 +53,8 @@ cmp.setup {
 				vim.fn.feedkeys(t("<C-R>=UltiSnips#JumpBackwards()<CR>"))
 			elseif vim.fn.pumvisible() == 1 then
 				vim.fn.feedkeys(t("<C-p>"), "n")
+			elseif cmp.visible() then
+				cmp.select_prev_item()
 			--[[ elseif check_back_space() then
 				vim.fn.feedkeys(t("<S-tab>"), "n") ]]
 			else
@@ -59,6 +71,8 @@ cmp.setup {
 				-- end
 			elseif vim.fn.pumvisible() == 1 then
 				vim.fn.feedkeys(t("<C-n>"), "n")
+			elseif cmp.visible() then
+				cmp.select_next_item()
 			--[[ elseif check_back_space() then
 				vim.fn.feedkeys(t("<tab>"), "n") ]]
 			else
@@ -73,10 +87,10 @@ cmp.setup {
 			select = false,
 		}),
 		-- ['<C-Space>'] = cmp.mapping.complete(),
-		['<C-Space>'] = cmp.mapping(function(fallback)
+		['<C-SPACE>'] = cmp.mapping(function(fallback)
 			-- print(vim.inspect(vim.fn.complete_info()))
-			if vim.fn.pumvisible() == 1 then
-				if vim.fn.complete_info()["selected"] ~= -1 then
+			if cmp.visible() then
+				if cmp.core.view:get_selected_entry() then
 					if vim.fn["UltiSnips#CanExpandSnippet"]() == 1 then
 						return vim.fn.feedkeys(t("<C-R>=UltiSnips#ExpandSnippet()<CR>"))
 					else
@@ -98,9 +112,9 @@ cmp.setup {
 	-- You should specify your *installed* sources.
 	sources = {
 		{ name = 'cmp_tabnine' },
+		{ name = 'ultisnips'},
 		{ name = 'nvim_lsp'},
 		{ name = 'buffer'},
-		{ name = 'ultisnips'},
 		{ name = 'nvim_lua'},
 		{ name = 'path' },
 		{ name = 'calc' },
@@ -109,22 +123,23 @@ cmp.setup {
 	sorting = {
 		priority_weight = 1.5,
 		--[[ comparators = {
-        compare.offset,
-        compare.exact,
-        compare.score,
-        compare.kind,
-        compare.sort_text,
-        compare.length,
-        compare.order,
+				compare.offset,
+				compare.exact,
+				compare.score,
+				compare.kind,
+				compare.sort_text,
+				compare.length,
+				compare.order,
 		} ]]
 		comparators = {
+			-- compare.score_offset, -- not good at all
 			compare.score, -- based on :  score = score + ((#sources - (source_index - 1)) * sorting.priority_weight)
 			compare.offset,
-			-- compare.order,
+			compare.order,
 			-- compare.sort_text,
 			-- compare.exact,
 			-- compare.kind,
-		  -- compare.length,
+			-- compare.length,
 		}
 	}
 }

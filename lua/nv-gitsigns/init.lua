@@ -32,12 +32,11 @@ signs = {
 		['n <leader>ghr'] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
 		['n <leader>ghn'] = '<cmd>lua require\"gitsigns\".next_hunk()<CR>',
   },
-  watch_index = {
-    interval = 1000
-  },
   sign_priority = 6,
   update_debounce = 200,
   status_formatter = nil, -- Use default
-  use_decoration_api = true,
-	use_internal_diff = true,  -- If luajit is present
 }
+
+require('foldsigns').setup({  -- separate plugins from lewis - for drawing gitsigns on folded code
+	include = {'GitSigns.*'}
+})

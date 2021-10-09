@@ -11,7 +11,14 @@
 -- I hate escape
 vim.api.nvim_set_keymap('i', 'jk', '<ESC>zv', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('i', 'jj', '<ESC>zv', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('i', 'kk', '<ESC>zv', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('i', '<ESC>', '<ESC>zv', {noremap = true, silent = true})
+
+-- map ctrl + j,k,l,h - in inser move
+vim.api.nvim_set_keymap('i', '<c-h>', '<left>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('i', '<c-l>', '<right>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('i', '<c-j>', '<down>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('i', '<c-k>', '<up>', {noremap = true, silent = true})
 
 --  add new empty line above/below current line in normal or vis mode (to give breathing space to code)
 vim.api.nvim_set_keymap('n','<M-o>', ':let save_pos = getpos(".") | normal o<Esc> | :call setpos(".", save_pos)<CR>', {noremap = true, silent = true})
@@ -93,17 +100,18 @@ vim.api.nvim_set_keymap('v', 'D', '"_D', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('v', '<Del>',  '"_d', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<Del>',  '"_x', {noremap = true, silent = true})
 
--- change without overriding register
--- vim.api.nvim_set_keymap('v', 'c',  '"_c', {noremap = true, silent = true})
--- vim.api.nvim_set_keymap('n', 'c',  '"_c', {noremap = true, silent = true})
--- vim.api.nvim_set_keymap('v', 'C',  '"_C', {noremap = true, silent = true})
--- vim.api.nvim_set_keymap('n', 'C',  '"_C', {noremap = true, silent = true})
 
 -- substitute without overriding register
 vim.api.nvim_set_keymap('v', 's',  '"_s', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', 's',  '"_s', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('v', 'S',  '"_S', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', 'S',  '"_S', {noremap = true, silent = true})
+
+-- change without overriding register - meh - cool as vim surround emulation
+--[[ vim.api.nvim_set_keymap('v', 'c',  '"_c', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', 'c',  '"_c', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('v', 'C',  '"_C', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', 'C',  '"_C', {noremap = true, silent = true}) ]]
 
 -- paste without overriding register
 vim.api.nvim_set_keymap('v', 'p',  '"_dp`[v`]', {noremap = true, silent = true})
@@ -119,10 +127,10 @@ vim.api.nvim_set_keymap("n", " p", '<cmd>normal! viw"_dP<cr>', { noremap = true 
 
 -- no highlight
 vim.api.nvim_set_keymap('n', '<m-h>', ':set hlsearch!<CR>', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('n', 'gh', '^', {noremap = true, silent = true})
+--[[ vim.api.nvim_set_keymap('n', 'gh', '^', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', 'gl', '$', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('v', 'gh', '^', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('v', 'gl', '$', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('v', 'gl', '$', {noremap = true, silent = true}) ]]
 
 vim.api.nvim_set_keymap('n', '<c-h>', '^', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<c-l>', '$', {noremap = true, silent = true})
@@ -169,6 +177,8 @@ vim.api.nvim_set_keymap( "n", "<F1>",  ":lua require'telescope'.extensions.sessi
 
 -- File find under F2
 vim.api.nvim_set_keymap( "n", "<F2>",  ':Telescope find_files<CR>',  {noremap = true, silent = true } )
+--switch to last buffer
+vim.api.nvim_set_keymap( "n", "<F10>",  '<c-^>',  {noremap = true, silent = true } )
 
 -- Minimap
 -- vim.api.nvim_set_keymap( "n", "<F3>", ":MinimapToggle<CR>", { noremap = true, silent = true } )

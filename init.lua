@@ -25,16 +25,25 @@ vim.cmd('autocmd BufWritePre * let save_pos = getpos(".") | %s/\\s\\+$//e | call
 
 
 -- absolute <-> relative auto switch
-vim.cmd([[
+--[[=== vim.cmd([[
 autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
 autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
-]])
+]) ===]]
+
+--[==[ vim.cmd([[
+	augroup telefix
+	 autocmd!
+	 autocmd FileType TelescopePrompt autocmd User TelescopeFindPre :ScrollViewDisable
+	 autocmd FileType TelescopePrompt autocmd BufWinLeave * :ScrollViewEnable
+	augroup END
+]]) ]==]
 
 -- HACK: fix nvim not maximized in allacritty
 vim.cmd([[
-	autocmd VimEnter * :sleep 20m
+	autocmd VimEnter * :sleep 80m
 	autocmd VimEnter * :silent exec "!kill -s SIGWINCH $PPID"
 ]])
+-- vim.cmd [[ au BufEnter *.py,*.lua :norm zX<CR> ]] -- recalc folds for buff. but its done too often this way
 -- line numbers
 -- vim.api.nvim_exec([[
 -- augroup MyColors

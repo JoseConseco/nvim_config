@@ -58,7 +58,7 @@ ts_config.setup {
 		highlight_definitions = { enable = true }, --from treesitter-refactor
 		highlight_current_scope = { enable = false },
 	},
-	textobjects = { -- uses 'nvim-treesitter/nvim-treesitter-refactor'
+	--[[ textobjects = { -- uses 'nvim-treesitter/nvim-treesitter-refactor'
 		select = {
 			enable = true,
 			keymaps = {
@@ -98,7 +98,7 @@ ts_config.setup {
 				["[C"] = "@class.outer",
 			},
 		},
-	},
+	}, ]]
 }
 
 -- vim.treesitter.query.set_query('python', 'folds', "(function_definition (block) @fold)")

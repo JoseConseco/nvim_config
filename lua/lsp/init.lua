@@ -63,7 +63,7 @@ local on_attach = function(client, bufnr)
 	end
 	require'aerial'.on_attach(client) -- aerial plug - outliner
 	local cfg = {
-		floating_window=true,
+		floating_window=false,
 		hint_prefix = "🞉 ",
 		doc_len=0,
 		floating_window_above_first = true,

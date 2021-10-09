@@ -70,6 +70,11 @@ wk.register({
 	['<leader>8'] = 'which_key_ignore',
 	['<leader>9'] = 'which_key_ignore',
 })
+
+wk.register({  --ignore magic s and g in cmd mode
+	['s/'] = 'which_key_ignore',
+	['g/'] = 'which_key_ignore',
+}, {mode = "c", prefix = ""})
 -- wk.register({
 -- 	['<leader>'] = {
 -- 		['1-9'] = {
@@ -95,17 +100,18 @@ end
 -- ['s'] = {':BLines',                              'Search lines fzf'},
 wk.register({
 	['<leader>b'] = { name = '+Buffers' },
-	['<leader>b/'] = {':Telescope current_buffer_fuzzy_find<CR>',                             'Search content Tele'},
-	['<leader>b?'] = {':lua require"telescope".extensions.buffer_search.buffer_search{}<CR>', 'Search current nonfzf'},
-	['<leader>b<'] = {":Telescope buffers<CR>", 'Find buffer' } ,
-	['<leader>bn'] = {':enew<CR>',                                                            'New'},
-	['<leader>b]'] = {':BufferLineCycleNext<CR>',                                             'Next'},
-	['<leader>b['] = {':BufferLineCyclePrev<CR>',                                             'Previous'},
-	['<leader>bc'] = {':ScrollViewDisable | confirm bd | silent! ScrollViewEnable<CR>',       'Close'},   -- fixes error on buffer close
-	['<leader>bo'] = {':%bd|e#|bd#<CR>',                                                      'Close all but current'},
-	['<leader>bp'] = {':BufferLinePick<CR>',                                                  'Pick (gb)'},
-	['<leader>br'] = {':confirm e<CR>',                                                       'Reload File(e!)'},
-	['<leader>bf'] = {':Autoformat<CR>',                                                      'Autoformat lines'},
+	['<leader>b/'] = {":lua require('telescope.builtin').current_buffer_fuzzy_find({ sorter = require('telescope.sorters').get_substr_matcher({})})<CR>", 'Search'},
+	['<leader>b?'] = {':Telescope current_buffer_fuzzy_find<CR>',                       'Search fuzzy'},
+	['<leader>b<'] = {':Telescope buffers<CR>',                                         'Get buffer' } ,
+	['<leader>bb'] = {'<c-^>',                                                          'Cycle with Previous'},
+	['<leader>bn'] = {':enew<CR>',                                                      'New'},
+	['<leader>b]'] = {':BufferLineCycleNext<CR>',                                       'Next'},
+	['<leader>b['] = {':BufferLineCyclePrev<CR>',                                       'Previous'},
+	['<leader>bc'] = {':ScrollViewDisable | confirm bd | silent! ScrollViewEnable<CR>', 'Close'},   -- fixes error on buffer close
+	['<leader>bo'] = {':%bd|e#|bd#<CR>',                                                'Close all but current'},
+	['<leader>bp'] = {':BufferLinePick<CR>',                                            'Pick (gb)'},
+	['<leader>br'] = {':confirm e<CR>',                                                 'Reload File(e!)'},
+	['<leader>bf'] = {':Autoformat<CR>',                                                'Autoformat lines'},
 })
 
 -- ['c']= {
@@ -185,6 +191,7 @@ wk.register({
 	['<leader>dn']  = { ":lua require'dap'.step_over()<CR>",                                            'Step Over'},
 	['<leader>dc']  = { ":lua require'dap'.run_to_cursor()<CR>",                                        'Run to Cursor'},
 	['<leader>dr']  = { ":lua require'dap'.repl.toggle()<CR>",                                          'Repl Toggle'},
+	['<leader>dL']  = { ":lua require'osv'.launch()<cr>",                                          'Start Lua Dap Server'},
 })
 
 function _G.yankpath()
@@ -213,7 +220,8 @@ wk.register({
 	['<leader>gd'] = {':Git diff<CR>'                         , 'diff'},
 	['<leader>gD'] = {':Gdiffsplit<CR>'                       , 'diff split'},
 	['<leader>gH'] = {':Gdiffsplit HEAD~1'                    , 'diff split to Head~1'},
-	['<leader>gg'] = {':Ggrep<CR>'                            , 'git grep'},
+	['<leader>gR'] = {':Ggrep<CR>'                            , 'git grep'},
+	['<leader>gg'] = {':LazyGit<CR>'                          , 'LazyGit'},
 	['<leader>gs'] = {':Git<CR>'                              , 'status'}, -- old Gitstatus  - deprecated
 	['<leader>gL'] = {':Gclog<CR>'                            , 'log files revisions'},
 	['<leader>gl'] = {':0Gclog<CR>'                           , 'log current file revisions'},
@@ -391,9 +399,10 @@ wk.register({
 
 wk.register({
 	['<leader>u'] = { name = '+UI' },
-	['<leader>uw'] = {':call v:lua.conditional_width()<CR>',       'Auto width'},
-	['<leader>uc'] = {':Telescope colorscheme<CR>'          , 'Colorscheme'},
-	['<leader>uh'] = {':set hlsearch!<CR>',                   'Search highlight'},
+	['<leader>uw'] = {':call v:lua.conditional_width()<CR>', 'Auto width'},
+	['<leader>uc'] = {':Telescope colorscheme<CR>',          'Colorscheme'},
+	['<leader>uh'] = {':set hlsearch!<CR>',                  'Search highlight'},
+	['<leader>uf'] = {':FocusToggle',                        'Focus Toggle'},
 })
 
 

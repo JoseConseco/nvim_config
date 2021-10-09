@@ -15,6 +15,10 @@ snippet forc "for with comprehension"
 [${2:`!p snip.rv=t[1][:-1]`} for ${2:`!p snip.rv=t[1][:-1]`} in ${1:`!v @+`}]$0
 endsnippet
 
+snippet for "for short"
+for ${2:`!p snip.rv=t[1][:-1]`} in ${1}:$0
+endsnippet
+
 snippet "box comment" "Box"
 #`!p snip.rv = '+' + '─' * (len(t[1]) + 2) +'+'`
 #│ $1 │

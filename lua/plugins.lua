@@ -93,10 +93,19 @@ return require("packer").startup(
 			config=function() vim.cmd([[highlight! link IndentBlanklineContextChar Comment]])  end} -- preview line whe using goto :xyz
 		-- use {'Xuyuanp/scrollbar.nvim', -- side scrollbar  -fucks up session load often :/
 		--	config=function() require("nv-scrollbar")  end } -- preview line whe using goto :xyz
-		use {'dstein64/nvim-scrollview', disable=false,
-			config=function()  vim.api.nvim_exec('highlight link ScrollView Normal', false); vim.g.scrollview_character = '▎'  end}
+		use {'dstein64/nvim-scrollview', disable=true,  -- broken since one or two weeks
+			config=function()  vim.api.nvim_exec('highlight link ScrollView Normal', false); vim.g.scrollview_character = '▎'
+				vim.g.scrollview_excluded_filetypes = {'telescope'}; vim.g.scrollview_hide_on_intersect = true; end}
 		use {'machakann/vim-highlightedyank',
 			config=function() vim.g.highlightedyank_highlight_duration = 100 end}
+		use {'beauwilliams/focus.nvim', disable=true,  -- autoresize windows to gold ration - brokens with scroll
+			config = function() require("focus").setup({
+				enable = true, cursorline = false, signcolumn = false, hybridnumber = false,
+				excluded_filetypes = {"toggleterm", "telescope"},
+				excluded_buftypes = {"help", "telescope"},
+			})  end}
+		use {'https://gitlab.com/yorickpeterse/nvim-window.git',  -- pick window quickly
+			config = function() vim.api.nvim_set_keymap('n', '<c-w>w', ":lua require('nvim-window').pick()<CR>", {noremap = true, silent = true}) end}
 
 
 
@@ -105,10 +114,43 @@ return require("packer").startup(
 			config=function() require('dap'); require('nv-dap') end } -- preview line whe using goto :xyz
 		use {'mfussenegger/nvim-dap-python',
 			config=function() require('dap-python').setup('/usr/bin/python') end}
+		use {'jbyuki/one-small-step-for-vimkind',
+			config=function()
+				local dap = require"dap"
+				dap.configurations.lua = {
+					{
+						type = 'nlua',
+						request = 'attach',
+						name = "Attach to running Neovim instance",
+						host = function()
+							local value = vim.fn.input('Host [127.0.0.1]: ')
+							if value ~= "" then
+								return value
+							end
+							return '127.0.0.1'
+						end,
+						port = function()
+							local val = tonumber(vim.fn.input('Port: '))
+							assert(val, "Please provide a port number")
+							return val
+						end,
+					}
+				}
+
+				dap.adapters.nlua = function(callback, config)
+					callback({ type = 'server', host = config.host, port = config.port  or 8088})
+				end
+			end}
 		use {'theHamsta/nvim-dap-virtual-text', requires='mfussenegger/nvim-dap',
-			config=function() vim.cmd([[:highlight NvimDapVirtualText guifg=#7296a9]]) end}
+			config=function() vim.cmd([[:highlight NvimDapVirtualText guifg=#c296a9]]) end}
 		use { 'rcarriga/nvim-dap-ui', requires = {'mfussenegger/nvim-dap'},
-			config = function() require("dapui").setup() end}
+			config = function()
+				require("dapui").setup()
+				local dap, dapui = require('dap'), require('dapui')
+				dap.listeners.after.event_initialized['dapui_config'] = function() dapui.open() end
+				dap.listeners.before.event_terminated['dapui_config'] = function() dapui.close() end
+				dap.listeners.before.event_exited['dapui_config'] = function() dapui.close() end
+			end}
 
 
 		-- Treesitter
@@ -119,13 +161,35 @@ return require("packer").startup(
 		use {'romgrk/nvim-treesitter-context', disable=false, -- cool but gives orror on compe-popup - https://github.com/romgrk/nvim-treesitter-context/issues/49
 			config=function() require('nv-treesittercontext')   end} -- fixes plug  }
 		-- vim.cmd([[:highlight TreesitterContext guibg=#a4cf69]])
-		use 'nvim-treesitter/nvim-treesitter-textobjects'
-		-- use 'nvim-treesitter/playground'
+		-- use 'nvim-treesitter/nvim-treesitter-textobjects' -- cool but takes lots of keys for func, class, if, etc
+		--[[ use {'David-Kunz/treesitter-unit',  -- eg  ciu, - select ts node - OK but wont work on params, brackets, weird inside vs out
+			config=function()
+				vim.api.nvim_set_keymap('x', 'iu', ':lua require"treesitter-unit".select()<CR>', {noremap=true})
+				vim.api.nvim_set_keymap('x', 'au', ':lua require"treesitter-unit".select(true)<CR>', {noremap=true})
+				vim.api.nvim_set_keymap('o', 'iu', ':<c-u>lua require"treesitter-unit".select()<CR>', {noremap=true})
+				vim.api.nvim_set_keymap('o', 'au', ':<c-u>lua require"treesitter-unit".select(true)<CR>', {noremap=true})
+			end,} ]]
+		-- use 'Jason-M-Chan/ts-textobjects'  -- only works on params but cool
+		use {'RRethy/nvim-treesitter-textsubjects',
+			config=function()
+				require'nvim-treesitter.configs'.setup {
+						textsubjects = {
+								enable = true,
+								keymaps = {
+										['u'] = 'textsubjects-smart', -- default ['.']
+										['U'] = 'textsubjects-container-outer', -- default [';']
+								}
+						},
+				}
+		end}
 		use {'p00f/nvim-ts-rainbow', disable=false, } -- slow?
 
 
 		-- lsp
 		use 'onsails/lspkind-nvim'  -- icons for completion popup
+		use { 'rmagatti/goto-preview',  -- eg show preview directly in editable popup
+			config = function() require('goto-preview').setup({default_mappings=true}) end
+		}
 		use { 'ms-jpq/coq_nvim', branch = 'coq', disable = true,
 			setup = function() require('nv-coq') end,
 		} -- main one
@@ -141,9 +205,9 @@ return require("packer").startup(
 			config=function() require("lsp")  end} -- lua + wont close () next to char finally good and simple +++
 		use {'hrsh7th/vim-vsnip', disable=true,-- auto completion
 			config=function() require("nv-vsnip")  end} -- lua + wont close () next to char finally good and simple +++
-		use {'SirVer/ultisnips', requires='honza/vim-snippets', disable=false,
+		use {'SirVer/ultisnips', disable=false, --  requires='honza/vim-snippets'
 			config=function()  vim.g.UltiSnipsRemoveSelectModeMappings = 0  end,}
-		use {"folke/lsp-trouble.nvim", -- shows nice icons in lsp warnings...
+		use {"folke/lsp-trouble.nvim",  -- shows nice icons in lsp warnings...
 			requires = "kyazdani42/nvim-web-devicons",
 			config = function() require("nv-lsptrouble") end,}
 		use {'stevearc/aerial.nvim', disable=false, -- basically better outliner with objects type filter
@@ -174,9 +238,9 @@ return require("packer").startup(
 
 		-- Git
 		use 'tpope/vim-fugitive'    -- add :Gitxx commands
+		use 'kdheepak/lazygit.nvim'
 		use {'lewis6991/gitsigns.nvim',
-			requires = 'nvim-lua/plenary.nvim',
-			branch = 'foldsigns',
+			requires = {'nvim-lua/plenary.nvim', 'lewis6991/foldsigns.nvim'},
 			config=function() require("nv-gitsigns")  end} -- lua + wont close () next to char finally good and simple +++
 		use {'sindrets/diffview.nvim',
 			config = function() require'diffview'.setup{} end}
@@ -235,14 +299,19 @@ return require("packer").startup(
 
 		-- navigation
 		use {"phaazon/hop.nvim",
-			config = function() vim.api.nvim_set_keymap('o', 'h',  ":HopChar1<cr>", {noremap = true}) end}
+			config = function()
+				vim.api.nvim_set_keymap('o', 'h',  ":HopChar1<cr>", {noremap = true})
+				vim.api.nvim_set_keymap('n', 'gl',  ":HopLine<cr>", {noremap = true})
+			end}
 		use {'karb94/neoscroll.nvim',  -- smooth scroll
 			config=function() require('neoscroll').setup({hide_cursor=false}) end} -- lua + wont close () next to char finally good and simple +++
 		use {'nacro90/numb.nvim',
 			config=function() require('numb').setup() end } -- preview line whe using goto :xyz
 		use {'axlebedev/footprints',
 			config = function()
-				vim.g.footprintsColor = '#512c4f'
+				-- vim.g.footprintsColor = '#512c4f'
+				vim.g.footprintsColor = '#00c0f0'
+				vim.g.footprintsOnCurrentLine = 1
 				vim.g.footprintsEasingFunction = 'linear'
 				vim.g.footprintsHistoryDepth = 17
 			end}
@@ -266,7 +335,7 @@ return require("packer").startup(
 		use {"mhinz/vim-startify",
 			config=function() require('nv-startify') end} -- lua + wont close () next to char finally good and simple +++
 		--[[ use { "ahmedkhalf/project.nvim", -- does not store opened files in project
-			config = function() require("project_nvim").setup{} end } ]]
+		config = function() require("project_nvim").setup{} end } ]]
 	end
 )
 --vim.cmd('packloadall!') -- fixes plugs not seeing config, and load order mess. Or else we need to: so $MYVIMRC
