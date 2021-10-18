@@ -81,7 +81,7 @@ cmp.setup {
 		end, { "i", "s"}),
 		['<C-d>'] = cmp.mapping.scroll_docs(-4),
 		['<C-f>'] = cmp.mapping.scroll_docs(4),
-		['<C-e>'] = cmp.mapping.close(),
+		['<C-e>'] = cmp.mapping.abort(),
 		['<CR>'] = cmp.mapping.confirm({ -- remapped at bottom by autopairs
 			behavior = cmp.ConfirmBehavior.Replace,
 			select = false,
@@ -94,7 +94,7 @@ cmp.setup {
 					if vim.fn["UltiSnips#CanExpandSnippet"]() == 1 then
 						return vim.fn.feedkeys(t("<C-R>=UltiSnips#ExpandSnippet()<CR>"))
 					else
-						vim.fn.feedkeys(t("<cr>"), "n")
+						cmp.complete()
           end
 				else
 					vim.fn.feedkeys(t("<C-e>"), "n")

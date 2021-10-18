@@ -7,7 +7,7 @@ require("todo-comments").setup({
 		pattern = [[\s*<(KEYWORDS):?\s+]], -- pattern used for highlightng (vim regex)
 	},
 	keywords = {
-		TODO = { icon = " ", color = "info", alt = {"TODO", "WIP"} },
+		TODO = { icon = " ", color = "hint", alt = {"TODO", "WIP"} },
 		WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX"} },
 		HACK = { icon = " ", color = "warning", alt = {"CHECK", "FIX"}},
 		NOTE = { icon = " ", color = "hint", alt = { "INFO", "WIP", "VIP", "DONE" } },

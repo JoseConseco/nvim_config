@@ -162,27 +162,13 @@ return require("packer").startup(
 			config=function() require('nv-treesittercontext')   end} -- fixes plug  }
 		-- vim.cmd([[:highlight TreesitterContext guibg=#a4cf69]])
 		-- use 'nvim-treesitter/nvim-treesitter-textobjects' -- cool but takes lots of keys for func, class, if, etc
-		--[[ use {'David-Kunz/treesitter-unit',  -- eg  ciu, - select ts node - OK but wont work on params, brackets, weird inside vs out
+		use {'mfussenegger/nvim-ts-hint-textobject',
 			config=function()
-				vim.api.nvim_set_keymap('x', 'iu', ':lua require"treesitter-unit".select()<CR>', {noremap=true})
-				vim.api.nvim_set_keymap('x', 'au', ':lua require"treesitter-unit".select(true)<CR>', {noremap=true})
-				vim.api.nvim_set_keymap('o', 'iu', ':<c-u>lua require"treesitter-unit".select()<CR>', {noremap=true})
-				vim.api.nvim_set_keymap('o', 'au', ':<c-u>lua require"treesitter-unit".select(true)<CR>', {noremap=true})
-			end,} ]]
-		-- use 'Jason-M-Chan/ts-textobjects'  -- only works on params but cool
-		use {'RRethy/nvim-treesitter-textsubjects',
-			config=function()
-				require'nvim-treesitter.configs'.setup {
-						textsubjects = {
-								enable = true,
-								keymaps = {
-										['u'] = 'textsubjects-smart', -- default ['.']
-										['U'] = 'textsubjects-container-outer', -- default [';']
-								}
-						},
-				}
-		end}
-		use {'p00f/nvim-ts-rainbow', disable=false, } -- slow?
+				vim.api.nvim_set_keymap('o', 'u', ":<C-U>lua require('tsht').nodes()<CR>", {noremap = false, silent = true})
+				vim.api.nvim_set_keymap('v', 'u', ":lua require('tsht').nodes()<CR>", {noremap = true, silent = true})
+			end
+		}
+		use 'p00f/nvim-ts-rainbow'
 
 
 		-- lsp
@@ -203,8 +189,6 @@ return require("packer").startup(
 			end}
 		use {"neovim/nvim-lspconfig",
 			config=function() require("lsp")  end} -- lua + wont close () next to char finally good and simple +++
-		use {'hrsh7th/vim-vsnip', disable=true,-- auto completion
-			config=function() require("nv-vsnip")  end} -- lua + wont close () next to char finally good and simple +++
 		use {'SirVer/ultisnips', disable=false, --  requires='honza/vim-snippets'
 			config=function()  vim.g.UltiSnipsRemoveSelectModeMappings = 0  end,}
 		use {"folke/lsp-trouble.nvim",  -- shows nice icons in lsp warnings...
@@ -212,8 +196,6 @@ return require("packer").startup(
 			config = function() require("nv-lsptrouble") end,}
 		use {'stevearc/aerial.nvim', disable=false, -- basically better outliner with objects type filter
 			config = function() require("nv-aerial") end,}
-		use {'glepnir/lspsaga.nvim', disable = true,--cool popup goto def hoover etc - but still wipp
-			config = function() require("nv-lspsaga") end,}
 		use {'ray-x/lsp_signature.nvim'}
 		use { "ThePrimeagen/refactoring.nvim",
 			requires = { {"nvim-lua/plenary.nvim"}, {"nvim-treesitter/nvim-treesitter"} },
@@ -301,7 +283,8 @@ return require("packer").startup(
 		use {"phaazon/hop.nvim",
 			config = function()
 				vim.api.nvim_set_keymap('o', 'h',  ":HopChar1<cr>", {noremap = true})
-				vim.api.nvim_set_keymap('n', 'gl',  ":HopLine<cr>", {noremap = true})
+				vim.api.nvim_set_keymap('n', 'gl',  ":HopLineStart<cr>", {noremap = true})
+				vim.api.nvim_set_keymap('n', 'gw',  ":HopWord<cr>", {noremap = true})
 			end}
 		use {'karb94/neoscroll.nvim',  -- smooth scroll
 			config=function() require('neoscroll').setup({hide_cursor=false}) end} -- lua + wont close () next to char finally good and simple +++
@@ -315,6 +298,8 @@ return require("packer").startup(
 				vim.g.footprintsEasingFunction = 'linear'
 				vim.g.footprintsHistoryDepth = 17
 			end}
+
+		use 'vim-scripts/RelOps' -- only show relative number wien in operator pending mode
 
 		-- ternimal in popup
 		use {"akinsho/nvim-toggleterm.lua",

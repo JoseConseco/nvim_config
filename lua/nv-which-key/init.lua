@@ -107,7 +107,7 @@ wk.register({
 	['<leader>bn'] = {':enew<CR>',                                                      'New'},
 	['<leader>b]'] = {':BufferLineCycleNext<CR>',                                       'Next'},
 	['<leader>b['] = {':BufferLineCyclePrev<CR>',                                       'Previous'},
-	['<leader>bc'] = {':ScrollViewDisable | confirm bd | silent! ScrollViewEnable<CR>', 'Close'},   -- fixes error on buffer close
+	['<leader>bc'] = {':confirm bd<CR>', 'Close'},   -- fixes error on buffer close
 	['<leader>bo'] = {':%bd|e#|bd#<CR>',                                                'Close all but current'},
 	['<leader>bp'] = {':BufferLinePick<CR>',                                            'Pick (gb)'},
 	['<leader>br'] = {':confirm e<CR>',                                                 'Reload File(e!)'},

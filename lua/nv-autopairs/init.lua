@@ -9,6 +9,7 @@ require('nvim-autopairs').setup({
 	-- 	['`'] = '`',
 	-- },
 	disable_filetype = { "TelescopePrompt" },
+	disable_in_macro = false,
 	-- gbreak_line_filetype = nil, -- mean all file type
 	-- ghtml_break_line_filetype = {'html' , 'vue' , 'typescriptreact' , 'svelte' , 'javascriptreact'},
 	ignored_next_char = "%w",
