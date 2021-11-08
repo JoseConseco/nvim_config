@@ -16,21 +16,26 @@
 -- vim.g.indent_blankline_context_patterns = {'class', 'function', 'method',  'while', 'for'} -- 'if',
 
 -- prevent colorchemes from clearing colors
+
+
+-- print(HighlightMultiplier('Comment', 'guifg', 0.1))
+-- print('test')
+
 vim.cmd([[
 augroup IndentBlanklineContextAutogroup
-    autocmd!
-    autocmd ColorScheme * highlight IndentOdd guifg=NONE guibg=NONE gui=nocombine
-	  autocmd ColorScheme * highlight IndentEven guifg=NONE guibg=#263040 gui=nocombine
-	  autocmd ColorScheme * highlight! link IndentBlanklineContextChar Comment
+autocmd!
+autocmd ColorScheme * highlight IndentOdd guifg=NONE guibg=NONE gui=nocombine
+autocmd ColorScheme * call v:lua.gen_hl('IndentEven', 'Normal')
+autocmd ColorScheme * highlight! link IndentBlanklineContextChar Comment
 augroup END
 ]])
 -- tokyonight
 --[[ vim.cmd([[
 augroup IndentBlanklineContextAutogroup
-    autocmd!
-    autocmd ColorScheme * highlight IndentOdd guifg=NONE guibg=NONE gui=nocombine
-	  autocmd ColorScheme * highlight IndentEven guifg=NONE guibg=#2c314b gui=nocombine
-	  autocmd ColorScheme * highlight! link IndentBlanklineContextChar Comment
+		autocmd!
+		autocmd ColorScheme * highlight IndentOdd guifg=NONE guibg=NONE gui=nocombine
+		autocmd ColorScheme * highlight IndentEven guifg=NONE guibg=#2c314b gui=nocombine
+		autocmd ColorScheme * highlight! link IndentBlanklineContextChar Comment
 augroup END
 ]]--) ]]
 

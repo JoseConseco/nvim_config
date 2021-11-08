@@ -51,16 +51,20 @@ local on_attach = function(client, bufnr)
 	-- Set autocommands conditional on server_capabilities
 	if client.resolved_capabilities.document_highlight then
 		vim.api.nvim_exec([[
-		hi LspReferenceRead cterm=bold ctermbg=red guibg=#305070
-		hi LspReferenceText cterm=bold ctermbg=red guibg=#305070
-		hi LspReferenceWrite cterm=bold ctermbg=red guibg=#305070
+		augroup HoverLspRefColorsSetup
+		autocmd!
+		autocmd ColorScheme * call v:lua.gen_hl('LspReferenceRead', 'Search')
+		autocmd ColorScheme * call v:lua.gen_hl('LspReferenceText', 'Search')
+		autocmd ColorScheme * call v:lua.gen_hl('LspReferenceWrite', 'Search')
+		augroup END
 		augroup lsp_document_highlight
 		autocmd! * <buffer>
 		autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
 		autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
 		augroup END
-			]], false)
+		]], false)
 	end
+
 	require'aerial'.on_attach(client) -- aerial plug - outliner
 	local cfg = {
 		floating_window=false,

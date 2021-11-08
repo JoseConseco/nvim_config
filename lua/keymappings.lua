@@ -185,7 +185,9 @@ vim.api.nvim_set_keymap( "n", "<F10>",  '<c-^>',  {noremap = true, silent = true
 
 
 -- NTree replacement
-vim.api.nvim_set_keymap( "n", "<F4>", ":Fern . -drawer -reveal=% -toggle -width=35<CR>", { noremap = true, silent = true} )
+-- vim.api.nvim_set_keymap( "n", "<F4>", ":Fern . -drawer -reveal=% -toggle -width=35<CR>", { noremap = true, silent = true} )
+-- vim.api.nvim_set_keymap( "n", "<F4>", "<Cmd>NnnPicker %:p:h<CR>", { noremap = true, silent = true} ) -- randomly wont work
+vim.cmd([[nnoremap <F4> <cmd>NnnPicker %:p:h<CR>]])
 
 
 --MM click to toggle folds under cursor(zA)

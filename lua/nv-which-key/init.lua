@@ -131,6 +131,7 @@ wk.register({
 	['<leader>cc'] = {':TSContextToggle<CR>',             'Context toggle'}, --from treesitter-context plug
 	['<leader>ca'] = {":lua require('nvim-autopairs').disable()<CR>",             'Auto-pairs disable'}, --from treesitter-context plug
 	['<leader>cA'] = {":lua require('nvim-autopairs').enable()<CR>",             'Auto-pairs enable'}, --from treesitter-context plug
+	['<leader>cl'] = {":CreateCompletionLine<CR>",             'Create Completion'}, --from treesitter-context plug
 
 	['<leader>cs']= { name = '+Spell'},
 	['<leader>csT'] = {':Telescope spell_suggest<CR>',         'Suggest tele'},
@@ -174,7 +175,7 @@ wk.register({
 
 wk.register({
 	['<leader>d']   = { name = '+Debugger' },
-	['<leader>dd']  = { ":lua require'dap'.continue()<CR>",                                             'Continue/Start debugging'} ,
+	['<leader>dd']  = { ":lua require'dap'.continue()<cr>",                                             'Continue/Start debugging'} ,
 	['<leader>dx']  = { ":lua require'dap'.disconnect({ terminateDebuggee = false })<CR>",              'Disconnect'} ,
 	['<leader>dX']  = { ":lua require'dap'.close()<CR>",                                                'Close'} ,
 	['<leader>dU']  = { ":lua require'dap'.up()<CR>",                                                   'Stack Up'} ,
@@ -184,7 +185,7 @@ wk.register({
 	['<leader>db']  = { ":lua require'dap'.toggle_breakpoint()<CR>",                                    'Toggle breakpoint'},
 	-- ['<leader>dc']  = { ":lua require'dap'.goto_()<CR>",                                             'Run to Cursor'},
 	['<leader>du']  = { ":lua require('dapui').setup()<CR>",                                            'UI Start'} ,
-	['<leader>dC']  = { ":lua require('dapui').close()<CR>",                                            'UI Close'},
+	['<leader>dC']  = { ":lua require('dapui').close()<cr>:DapVirtualTextForceRefresh<CR>",                      'UI Close'},
 	['<leader>dbc'] = { ":lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>", 'Conditional breakpoint'},
 	['<leader>dk']  = { ":lua require'dap.ui.variables'.hover()<CR>",                                   'Eval popup'},
 	['<leader>dK']  = { ":lua require('dapui').eval()<CR>",                                             'Eval window'},
@@ -207,7 +208,7 @@ wk.register({
 	['<leader>ff'] = {':Telescope file_browser<CR>',                     'File Browser (fuzzy)'},
 	['<leader>fy'] = { ":call v:lua.yankpath()<CR>",                     'Yank file location<CR>'},
 	['<leader>fo'] = { ':!xdg-open "%:p:h"<CR>',                         'Open containing folder'},
-	['<leader>ft'] = { ':!alacritty -d "%:p:h"<CR>',                       'Open at terminal'},
+	['<leader>ft'] = { ':!alacritty --working-directory "%:p:h"<CR>',    'Open at terminal'},
 	['<leader>fC'] = {':cd %:p:h<CR>',                                   'cd %'},
 })
 
@@ -316,7 +317,7 @@ end
 wk.register({
 	['<leader>o'] = { name = '+Open' },
 	['<leader>o/'] = {'q/',                                     'Search History (q/)'},
-	['<leader>o.'] = {':Fern . -reveal=%<CR>',                  'File Browse (Fern)'},
+	-- ['<leader>o.'] = {':Fern . -reveal=%<CR>',                  'File Browse (Fern)'},
 	['<leader>of'] = {':Telescope file_browser<CR>',            'File Browser (fuzzy)'},
 	['<leader>oE'] = {':Ex<CR>',                                'Open Explorer(Ex)'} ,
 	['<leader>oU'] = {':UndotreeToggle<CR>',                    'Undo Tree'} ,
@@ -425,9 +426,9 @@ wk.register({
 -- TSContextDisable - if srom treesitter-context
 wk.register({
 	['<leader>q'] = { name = '+Quit' },
-	['<leader>qq'] = {':FernDo close<CR>| :TSContextDisable<cr> | :confirm qa<CR>',        'Quit Confirm (qa)'},
+	['<leader>qq'] = {':TSContextDisable<cr> | :confirm qa<CR>',        'Quit Confirm (qa)'},
 	['<leader>qf'] = {':q!<CR>',                                    'Force Quit (q!)'},
-	['<leader>qs'] = {':FernDo close<CR> | :bufdo update | q!<CR>', 'Quit Save all (wqa!)'},
+	['<leader>qs'] = {':bufdo update | q!<CR>', 'Quit Save all (wqa!)'},
 })
 
 

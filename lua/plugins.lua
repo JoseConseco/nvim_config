@@ -12,7 +12,7 @@ end
 vim.cmd 'autocmd BufWritePost plugins.lua PackerCompile' -- Auto compile when there are changes in plugins.lua
 require("packer").init({
 	git = {
-		clone_timeout=100,
+		clone_timeout=20,
 	},
 })
 
@@ -54,6 +54,16 @@ return require("packer").startup(
 		-- themes
 		-- use 'joshdick/onedark.vim'
 		use 'ful1e5/onedark.nvim'
+		use {'rmehri01/onenord.nvim',
+			config = function ()
+				require('onenord').setup({
+				borders = true, -- Split window borders
+				italics = { comments = true , strings = false, keywords = true, functions = false, variables = false, },
+				bold = { comments = false , strings = false, keywords = true, functions = true, variables = false, },
+				custom_highlights = {Normal={bg='#282C2F'}}, -- Overwrite default highlight groups
+			})
+			end
+		}
 		use {'projekt0n/github-nvim-theme'}
 		-- config = function() require('github-theme').setup({themeStyle='dimmed', keywordStyle="bold"}) end;}
 		use {'EdenEast/nightfox.nvim',
@@ -82,9 +92,13 @@ return require("packer").startup(
 		use "kyazdani42/nvim-web-devicons"
 		use {"ryanoasis/vim-devicons",
 			config=function() require("web-devicons") end} -- lua + wont close () next to char finally good and simple +++
-		use {'glepnir/galaxyline.nvim', disable=false, --status line and bufferline
+		use {'glepnir/galaxyline.nvim', disable=true, --status line and bufferline
 			requires = {'kyazdani42/nvim-web-devicons'},
 			config=function() require("nv-galaxyline") end} -- lua + wont close () next to char finally good and simple +++
+		use { 'nvim-lualine/lualine.nvim',
+			requires = {'kyazdani42/nvim-web-devicons'},
+			config=function() require("nv-lualine") end -- lua + wont close () next to char finally good and simple +++
+		}
 		use {'akinsho/nvim-bufferline.lua',
 			requires = 'kyazdani42/nvim-web-devicons',
 			config = function() require'bufferline'.setup(); require('nv-bufferline') end }
@@ -142,7 +156,23 @@ return require("packer").startup(
 				end
 			end}
 		use {'theHamsta/nvim-dap-virtual-text', requires='mfussenegger/nvim-dap',
-			config=function() vim.cmd([[:highlight NvimDapVirtualText guifg=#c296a9]]) end}
+			config=function()
+				require("nvim-dap-virtual-text").setup({
+					enabled = true,                     -- enable this plugin (the default)
+					enabled_commands = true,            -- create commands DapVirtualTextEnable, DapVirtualTextDisable, DapVirtualTextToggle, (DapVirtualTextForceRefresh for refreshing when debug adapter did notify its termination)
+					highlight_changed_variables = true, -- highlight changed values with NvimDapVirtualTextChanged, else always NvimDapVirtualText
+					highlight_new_as_changed = true,   -- highlight new variables in the same way as changed variables (if highlight_changed_variables)
+					show_stop_reason = true,            -- show stop reason when stopped for exceptions
+					commented = false,                  -- prefix virtual text with comment string
+					-- experimental features:
+					virt_text_pos = 'right_align',      -- position of virtual text, see :h nvim_buf_set_extmark() - 'right_align', 'eol', 'overlay'
+					all_frames = false,                 -- show virtual text for all stack frames not only current. Only works for debugpy on my machine.
+					virt_lines = false,                 -- show virtual lines instead of virtual text (will flicker!)
+					virt_text_win_col = 85,             -- position the virtual text at a fixed window column (starting from the first text column) ,
+																							-- e.g. 80 to position at column 80 see :h nvim_buf_set_extmark()
+				})
+				vim.cmd([[:highlight NvimDapVirtualText guifg=#c296a9]])
+			end}
 		use { 'rcarriga/nvim-dap-ui', requires = {'mfussenegger/nvim-dap'},
 			config = function()
 				require("dapui").setup()
@@ -179,6 +209,22 @@ return require("packer").startup(
 		use { 'ms-jpq/coq_nvim', branch = 'coq', disable = true,
 			setup = function() require('nv-coq') end,
 		} -- main one
+		use {'ms-jpq/coq.thirdparty', disable = true,
+      config = function()
+		  require("coq_3p") {
+				{ src = "nvimlua", short_name = "nLUA" },
+				{ src = "copilot", short_name = "COP", tmp_accept_key = "<c-r>" },
+			}
+			end,
+		}
+		-- use 'tom-doerr/vim_codex' -- only works on all comments? So no good for complicated code..
+		use {'github/copilot.vim',
+			config=function()
+				vim.g.copilot_no_tab_map = true
+				vim.g.copilot_assume_mapped = true
+				vim.g.copilot_tab_fallback = ""
+			end,
+		}
 		use { "hrsh7th/nvim-cmp", disable=false,
 			requires = { "hrsh7th/cmp-buffer", "hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-path",
 				"hrsh7th/cmp-nvim-lua",  'quangnguyen30192/cmp-nvim-ultisnips', 'hrsh7th/cmp-calc'}, --"hrsh7th/cmp-vsnip",
@@ -210,12 +256,30 @@ return require("packer").startup(
 
 
 		-- Explorer
-		use {'lambdalisue/fern.vim',
+		use { "luukvbaal/nnn.nvim",
+			-- config = function() require("nnn").setup({picker={cmd='nnn -G -C'}}) end
+			config = function() require("nnn").setup({
+				-- picker={cmd='nnn -G -C'},
+				picker={ cmd='tmux new-session nnn -Pp -G -C -d' }, -- with -G git, -d details
+				mappings = {
+						{ "<C-w>", require("nnn").builtin.cd_to_path },        -- cd to file directory
+				}
+			}) end
+		}
+		--[[ use { 'ms-jpq/chadtree',
+			branch = 'chad',
+			run = 'python3 -m chadtree deps',	-- install deps
+		} ]]
+		--[[ use { 'kyazdani42/nvim-tree.lua',
+		    requires = 'kyazdani42/nvim-web-devicons',
+		    config = function() require'nvimTree' end
+		} ]]
+		--[[ use {'lambdalisue/fern.vim',
 			config=vim.cmd('source ~/.config/nvim/nv_fern.vim')} -- support toggle, open cwd, drawer and splitv, fast, etc
 		use {'lambdalisue/fern-git-status.vim',
 			requires ='fern.vim'}
 		use {'lambdalisue/fern-renderer-nerdfont.vim',
-			requires ={'fern.vim', 'lambdalisue/nerdfont.vim'}}
+			requires ={'fern.vim', 'lambdalisue/nerdfont.vim'}} ]]
 
 
 		-- Git
@@ -282,6 +346,7 @@ return require("packer").startup(
 		-- navigation
 		use {"phaazon/hop.nvim",
 			config = function()
+				require'hop'.setup{}
 				vim.api.nvim_set_keymap('o', 'h',  ":HopChar1<cr>", {noremap = true})
 				vim.api.nvim_set_keymap('n', 'gl',  ":HopLineStart<cr>", {noremap = true})
 				vim.api.nvim_set_keymap('n', 'gw',  ":HopWord<cr>", {noremap = true})

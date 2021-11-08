@@ -76,12 +76,19 @@ cmp.setup {
 			--[[ elseif check_back_space() then
 				vim.fn.feedkeys(t("<tab>"), "n") ]]
 			else
-				vim.fn.feedkeys(t("<tab>"), "n")
+				fallback()
+				local copilot_keys = vim.fn["copilot#Accept"]()
+				if copilot_keys ~= "" then
+						vim.api.nvim_feedkeys(copilot_keys, "i", true)
+				else
+						fallback()
+				end
 			end
 		end, { "i", "s"}),
 		['<C-d>'] = cmp.mapping.scroll_docs(-4),
 		['<C-f>'] = cmp.mapping.scroll_docs(4),
-		['<C-e>'] = cmp.mapping.abort(),
+		['<C-e>'] = cmp.mapping.close(),
+		-- ['<C-e>'] = cmp.mapping.abort(),
 		['<CR>'] = cmp.mapping.confirm({ -- remapped at bottom by autopairs
 			behavior = cmp.ConfirmBehavior.Replace,
 			select = false,
@@ -96,14 +103,28 @@ cmp.setup {
 					else
 						cmp.complete()
           end
-				else
-					vim.fn.feedkeys(t("<C-e>"), "n")
+				else -- no selected entry
+					local copilot_keys = vim.fn["copilot#Accept"]()
+					if copilot_keys ~= "" then
+						vim.api.nvim_feedkeys(copilot_keys, "i", true)
+					else
+						vim.fn.feedkeys(t("<C-e>"), "n") -- close if no entry selected
+						-- cmp.complete()  -- force invoke popup
+					end
 				end
 			--[[ elseif check_back_space() then
 				vim.fn.feedkeys(t("<cr>"), "n") ]]
-			else
-				cmp.complete()  -- invoke popup
+			else -- no popup
+				local copilot_keys = vim.fn["copilot#Accept"]()
+				if copilot_keys ~= "" then
+					vim.api.nvim_feedkeys(copilot_keys, "i", true)
+				else
+					-- fallback()
+					cmp.complete()  -- force invoke popup
+				end
+
 				-- fallback()
+
 			end
 		end, { "i", "s", }),
 	},
@@ -133,6 +154,7 @@ cmp.setup {
 		} ]]
 		comparators = {
 			-- compare.score_offset, -- not good at all
+			compare.recently_used,
 			compare.score, -- based on :  score = score + ((#sources - (source_index - 1)) * sorting.priority_weight)
 			compare.offset,
 			compare.order,
@@ -145,8 +167,11 @@ cmp.setup {
 }
 
 -- windwp/nvim-autopairs -  you need setup cmp first put this after cmp.setup()
-require("nvim-autopairs.completion.cmp").setup({
+--[[ require("nvim-autopairs.completion.cmp").setup({
   map_cr = true, --  map <CR> on insert mode
   map_complete = true, -- it will auto insert `(` after select function or method item
   auto_select = false -- automatically select the first item
-})
+}) ]]
+local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+cmp.event:on( 'confirm_done', cmp_autopairs.on_confirm_done({ map_char = { tex = '' } }))
+

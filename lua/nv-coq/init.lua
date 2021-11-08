@@ -1,6 +1,9 @@
 vim.g.coq_settings = {
 	auto_start = true,  -- true, or 'shut-up'
-	keymap = { recommended = false },
+	keymap = {
+		recommended = false,
+		jump_to_mark = '<c-p>',
+	},
 	clients = {
 		tabnine = {enabled = true, weight_adjust=1.4 }
 	}
@@ -55,3 +58,4 @@ MUtils.BS = function()
 end
 
 vim.api.nvim_set_keymap('i', '<bs>', 'v:lua.MUtils.BS()', { expr = true, noremap = true })
+
