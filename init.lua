@@ -44,6 +44,7 @@ vim.cmd([[
 	autocmd VimEnter * :sleep 80m
 	autocmd VimEnter * :silent exec "!kill -s SIGWINCH $PPID"
 ]])
+
 -- vim.cmd [[ au BufEnter *.py,*.lua :norm zX<CR> ]] -- recalc folds for buff. but its done too often this way
 -- line numbers
 -- vim.api.nvim_exec([[
@@ -59,16 +60,14 @@ vim.cmd([[
 --close NTree on quit..does not work on session it seems
 -- vim.cmd('autocmd VimLeave * NERDTreeClose')
 
--- local my_vimrc = vim.fn.expand('$MYVIMRC')
--- vim.cmd(':luafile '..my_vimrc) --cos some colors do not load correctly..
+
 -- disable autofoldd when edit mode - prevents edited code folding..
 -- from https://vim.fandom.com/wiki/Keep_folds_closed_while_inserting_text
-
 vim.cmd([[
 augroup folds
 	autocmd InsertLeave,WinLeave * :normal zv
 augroup END
-]])
+]])  -- zx - reclaculate folds, zv - unfold cursor line
 
 
 --[==[vim.cmd([[

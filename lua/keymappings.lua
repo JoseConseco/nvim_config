@@ -141,10 +141,10 @@ vim.api.nvim_set_keymap('n', '<m-h>', 'v^', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<m-l>', 'v$', {noremap = true, silent = true})
 
 -- auto magic search
-vim.api.nvim_set_keymap('n', '/', '/\\v', {noremap = true, silent = true})
+--[[ vim.api.nvim_set_keymap('n', '/', '/\\v', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('v', '/', '/\\v', {noremap = true})
 vim.api.nvim_set_keymap('c', 's/', 's/\\v', {noremap = true})
-vim.api.nvim_set_keymap('c', 'g/', 'g/\\v', {noremap = true})
+vim.api.nvim_set_keymap('c', 'g/', 'g/\\v', {noremap = true}) ]]
 
 -- search for selection whithout jump
 vim.api.nvim_set_keymap('n', '*', "*zzzv", {noremap = true}) -- zv open fold; zz center on search result

@@ -63,7 +63,7 @@ require'lualine'.setup {
 			-- {'filename', path=1},
 			{gps.get_location, cond = gps.is_available, color={fg=colors.green}}
 		},
-    lualine_x = {'encoding'},
+    lualine_x = {}, -- 'encoding'
     lualine_y = {'branch', 'diff',
                   {'diagnostics', sources={'nvim_lsp'}}},
     lualine_z = {'progress'}

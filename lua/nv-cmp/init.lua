@@ -6,11 +6,6 @@ local t = function(str)
 	return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
 
-local check_back_space = function()
-	local col = vim.fn.col('.') - 1
-	return col == 0 or vim.fn.getline('.'):sub(col, col):match('%s')
-end
-
 
 compare.score_offset = function(entry1, entry2)
   local diff_offset_score = entry1:get_offset() * entry2.score - entry2:get_offset() * entry1.score
@@ -21,7 +16,7 @@ compare.score_offset = function(entry1, entry2)
   end
 end
 
-vim.opt.completeopt = 'menu,menuone,noselect'
+vim.opt.completeopt = 'menu,menuone,noselect,noinsert'
 cmp.setup {
 	formatting = {
 		format = function(entry, vim_item)
@@ -31,6 +26,7 @@ cmp.setup {
 				nvim_lsp = "[LSP]",
 				ultisnips = "[USnip]",
 				nvim_lua = "[LUA]",
+				rg = "[RG]",
 				-- vsnip = "[Vsnip]",
 				buffer = "[Buffer]",
 				path = "[Path]",
@@ -55,8 +51,6 @@ cmp.setup {
 				vim.fn.feedkeys(t("<C-p>"), "n")
 			elseif cmp.visible() then
 				cmp.select_prev_item()
-			--[[ elseif check_back_space() then
-				vim.fn.feedkeys(t("<S-tab>"), "n") ]]
 			else
 				vim.fn.feedkeys(t("<S-tab>"), "n")
 			end
@@ -73,16 +67,8 @@ cmp.setup {
 				vim.fn.feedkeys(t("<C-n>"), "n")
 			elseif cmp.visible() then
 				cmp.select_next_item()
-			--[[ elseif check_back_space() then
-				vim.fn.feedkeys(t("<tab>"), "n") ]]
 			else
 				fallback()
-				local copilot_keys = vim.fn["copilot#Accept"]()
-				if copilot_keys ~= "" then
-						vim.api.nvim_feedkeys(copilot_keys, "i", true)
-				else
-						fallback()
-				end
 			end
 		end, { "i", "s"}),
 		['<C-d>'] = cmp.mapping.scroll_docs(-4),
@@ -112,8 +98,6 @@ cmp.setup {
 						-- cmp.complete()  -- force invoke popup
 					end
 				end
-			--[[ elseif check_back_space() then
-				vim.fn.feedkeys(t("<cr>"), "n") ]]
 			else -- no popup
 				local copilot_keys = vim.fn["copilot#Accept"]()
 				if copilot_keys ~= "" then
@@ -129,15 +113,18 @@ cmp.setup {
 		end, { "i", "s", }),
 	},
 
+
 	-- snippet = {expand = function(args) vim.fn["UltiSnips#Anon"](args.body) end},
 	-- You should specify your *installed* sources.
 	sources = {
 		{ name = 'cmp_tabnine' },
 		{ name = 'ultisnips'},
 		{ name = 'nvim_lsp'},
+		{ name = 'rg'},
 		{ name = 'buffer'},
 		{ name = 'nvim_lua'},
-		{ name = 'path' },
+		-- { name = 'path' },
+		{ name = 'fuzzy_path'}, -- from tzacher
 		{ name = 'calc' },
 		-- { name = 'vsnip' },
 	},
@@ -166,6 +153,7 @@ cmp.setup {
 	}
 }
 
+
 -- windwp/nvim-autopairs -  you need setup cmp first put this after cmp.setup()
 --[[ require("nvim-autopairs.completion.cmp").setup({
   map_cr = true, --  map <CR> on insert mode
@@ -175,3 +163,37 @@ cmp.setup {
 local cmp_autopairs = require('nvim-autopairs.completion.cmp')
 cmp.event:on( 'confirm_done', cmp_autopairs.on_confirm_done({ map_char = { tex = '' } }))
 
+cmp.setup.cmdline(':', {
+	formatting = {
+		format = function(entry, vim_item)
+			vim_item.kind = lspkind.presets.default[vim_item.kind]..' '..vim_item.kind
+			vim_item.abbr = vim.fn.strcharpart(vim_item.abbr, 0, 50) -- hack to clamp cmp-cmdline-history len
+			vim_item.menu = ({
+				cmdline_history = "[HIST]",
+				cmdline = "[CMD]",
+				fuzzy_path = "[PATH]",
+				buffer = "[BUFF]",
+			})[entry.source.name]
+			return vim_item
+		end
+	},
+  sources = cmp.config.sources( {
+		{ name = 'cmdline_history' },
+    { name = 'cmdline' },
+		{ name = 'fuzzy_path'}, -- from tzacher
+    { name = 'buffer' },
+  })
+})
+cmp.setup.cmdline('/', {
+  sources = cmp.config.sources({
+		-- { name = 'buffer' },
+		-- { name = 'rg'}, -- or 'rg'
+		{
+			name = 'fuzzy_buffer', opts = { }
+		}
+	})
+})
+
+-- be_string
+-- /\vstring/search
+-- /\mstring/search

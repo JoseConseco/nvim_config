@@ -55,12 +55,16 @@ vim.opt.winminwidth=50
 
 -- vim.g.paste = true --? format pasted str - does it work? seems broken right now..
 
-vim.o.guifont = "JetBrainsMonoNL Nerd Font Mono, Medium:h12"     -- icons ok, but ugly
+-- vim.o.guifont = "JetBrainsMonoNL Nerd Font Mono, Medium:h12"     -- icons ok, but ugly
 -- vim.o.guifont = "Source Code Pro:h12"  -- icons missng
 -- vim.o.guifont = "FiraCode Nerd Font:h13"   --acutally OK
 -- vim.o.guifont = "NotoSansMono Nerd Font Medium:h12" -- missing icons
 vim.g.neovide_refresh_rate = 60
 vim.g.neovide_transparency=1.0
+
+if vim.g.nvui then
+	print('nvi')
+end
 
 function _G.custom_fold_text()
   local line = vim.fn.getline(vim.v.foldstart)

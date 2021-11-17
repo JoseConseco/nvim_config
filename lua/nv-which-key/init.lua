@@ -337,16 +337,16 @@ wk.register({
 --	vim.cmd(":.,$s/\\<"..vim.fn.expand('<cword>').."\\>/"..name.."/gc|1,''-&&") -- substitute and ask each time
 -- end
 wk.register({
-	['<leader>r'] = { name = '+Replace' },
-	['<leader>rp'] = { name = '+Project' },
-	['<leader>rpf'] = {':Farr<CR>',                                 'File Farr'},
-	['<leader>rpe'] = {'<plug>(operator-esearch-prefill)<CR>',      'Esearch'},   -- seems to be maintained
-	['<leader>rpc'] = {'<Plug>CtrlSFPrompt -R {regex} -G *.py',     'CtrlSF'},
-	['<leader>rpw'] = {'<Plug>CtrlSFCCwordPath<CR>',                'CtrlSF Word'},
-	['<leader>rps'] = {":lua require('spectre').open()<CR>",        'Spectre'},
+	['<leader>s'] =   { name = '+Substitute' },
+	['<leader>sp'] =  { name = '+Project' },
+	['<leader>spf'] = {':Farr<CR>',                                 'File Farr'},
+	['<leader>spe'] = {'<plug>(operator-esearch-prefill)<CR>',      'Esearch'},   -- seems to be maintained
+	['<leader>spc'] = {'<Plug>CtrlSFPrompt -R {regex} -G *.py',     'CtrlSF'},
+	['<leader>spw'] = {'<Plug>CtrlSFCCwordPath<CR>',                'CtrlSF Word'},
+	['<leader>sps'] = {":lua require('spectre').open()<CR>",        'Spectre'},
 	-- ['<leader>r*'] = {":let @/=expand('<cword>')<cr>cgn",        'Replace word with yank'},
-	['<leader>r*'] = {":.,$s/\\<<C-r><C-w>\\>/<C-r>+/gc|1,''-&&<CR>",  'Replace word with yank', mode='n'},       -- \<word\>  -adds whitespace  word limit (sub only whole words)
-	['<leader>r/'] = {function() local name = vim.fn.input('To: ', vim.fn.expand('<cword>')); vim.cmd(":.,$s/\\<"..vim.fn.expand('<cword>').."\\>/"..name.."/gc|1,''-&&") end,                'Replace word'},       -- write to reg z (@a) then use it for replacign * word
+	['<leader>s*'] = {":.,$s/\\<<C-r><C-w>\\>/<C-r>+/gc|1,''-&&<CR>",  'Replace word with yank', mode='n'},       -- \<word\>  -adds whitespace  word limit (sub only whole words)
+	['<leader>s/'] = {function() local name = vim.fn.input('To: ', vim.fn.expand('<cword>')); vim.cmd(":.,$s/\\<"..vim.fn.expand('<cword>').."\\>/"..name.."/gc|1,''-&&") end,                'Replace word'},       -- write to reg z (@a) then use it for replacign * word
 })
 local function t(str)
     -- Adjust boolean arguments as needed
@@ -354,9 +354,9 @@ local function t(str)
 end
 
 wk.register({  -- second one for visual mode
-	['<leader>r'] = { name = '+Replace'},
-	['<leader>r*'] = {"\"ay:.,$s/<C-r>a/<C-r>+/gc|1,''-&&<CR>",					 'Replace word with yank'},    -- \<word\>  -adds whitespace  word limit (sub only whole words)
-	['<leader>r/'] = {function() vim.cmd("normal! \"ay"); local name = vim.fn.input('To: ', vim.fn.getreg('a')); vim.cmd(":.,$s/"..vim.fn.getreg('a').."/"..name.."/gc|1,''-&&") end ,					 'Replace word'},    -- \<word\>  -adds whitespace  word limit (sub only whole words)
+	['<leader>s'] = { name = '+Replace'},
+	['<leader>s*'] = {"\"ay:.,$s/<C-r>a/<C-r>+/gc|1,''-&&<CR>",					 'Replace word with yank'},    -- \<word\>  -adds whitespace  word limit (sub only whole words)
+	['<leader>s/'] = {function() vim.cmd("normal! \"ay"); local name = vim.fn.input('To: ', vim.fn.getreg('a')); vim.cmd(":.,$s/"..vim.fn.getreg('a').."/"..name.."/gc|1,''-&&") end ,					 'Replace word'},    -- \<word\>  -adds whitespace  word limit (sub only whole words)
 }, {mode = "v", prefix = ""})
 
 

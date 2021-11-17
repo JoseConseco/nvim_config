@@ -54,10 +54,6 @@ ts_config.setup {
 		},
 	},
 	autopairs = {enable = true}, -- for windwp/nvim-autopairs plug
-	refactor = {
-		highlight_definitions = { enable = true }, --from treesitter-refactor
-		highlight_current_scope = { enable = false },
-	},
 	--[[ textobjects = { -- uses 'nvim-treesitter/nvim-treesitter-refactor'
 		select = {
 			enable = true,
