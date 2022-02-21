@@ -45,6 +45,7 @@ vim.cmd([[
 	autocmd VimEnter * :silent exec "!kill -s SIGWINCH $PPID"
 ]])
 
+
 -- vim.cmd [[ au BufEnter *.py,*.lua :norm zX<CR> ]] -- recalc folds for buff. but its done too often this way
 -- line numbers
 -- vim.api.nvim_exec([[
@@ -79,4 +80,12 @@ augroup folds
 	autocmd InsertLeave,WinLeave * if exists('w:last_fdm') | let &l:foldmethod=w:last_fdm | unlet w:last_fdm | endif
 augroup END
 ]]) ]==]
+
+-- Highlight yanked text
+vim.cmd[[
+	augroup highlight_yank
+	autocmd!
+	au TextYankPost * silent! lua vim.highlight.on_yank({higroup="Todo", timeout=100})
+	augroup END
+]]
 

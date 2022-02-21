@@ -73,7 +73,7 @@ vim.api.nvim_set_keymap('n', '<Up>', 'gk',{noremap = true})
 
 --  Fast saving like normal humans with ctrl+s  :w - always, :up - only when file was changed
 vim.api.nvim_set_keymap('n', '<C-s>', ':up<CR>', {noremap = true})
-vim.api.nvim_set_keymap('v', '<C-s>', ':uw<CR>gv', {noremap = true})
+vim.api.nvim_set_keymap('v', '<C-s>', '<esc>:up | normal gv<cr>', {noremap = true})
 vim.api.nvim_set_keymap('c', '<C-s>', ':uw<CR>', {noremap = true})
 vim.api.nvim_set_keymap('i', '<C-s>', '<Esc>:up<CR>', {noremap = true})
 
@@ -123,6 +123,7 @@ vim.api.nvim_set_keymap("c", "<C-v>", '<C-r>+', { noremap = true } )
 
 -- paste fast over cursor word
 vim.api.nvim_set_keymap("n", " p", '<cmd>normal! viw"_dP<cr>', { noremap = true } )
+-- vim.api.nvim_set_keymap("n", "gp", [==[`[v`]]==], { noremap = true } )
 
 
 -- no highlight
@@ -187,7 +188,8 @@ vim.api.nvim_set_keymap( "n", "<F10>",  '<c-^>',  {noremap = true, silent = true
 -- NTree replacement
 -- vim.api.nvim_set_keymap( "n", "<F4>", ":Fern . -drawer -reveal=% -toggle -width=35<CR>", { noremap = true, silent = true} )
 -- vim.api.nvim_set_keymap( "n", "<F4>", "<Cmd>NnnPicker %:p:h<CR>", { noremap = true, silent = true} ) -- randomly wont work
-vim.cmd([[nnoremap <F4> <cmd>NnnPicker %:p:h<CR>]])
+-- vim.cmd([[nnoremap <F4> <cmd>NnnPicker %:p:h<CR>]])
+vim.api.nvim_set_keymap( "n", "<F4>",  ':RangerCurrentFile<CR>',  {noremap = true, silent = true } )
 
 
 --MM click to toggle folds under cursor(zA)
@@ -214,6 +216,10 @@ vim.api.nvim_set_keymap( "n", "<4-MiddleMouse>", "<nop>", {} ) --and disable 2MM
 
 vim.api.nvim_set_keymap( "n", "J", "mzJ'z", { noremap = true } )
 vim.api.nvim_set_keymap( "n", "<c-J>", "mq:s/\\v,\\s+/,\\r/g<cr>V'q=", { noremap = true } )
+
+-- repeat last ciw - on next word
+vim.api.nvim_set_keymap( "n", "g.", "/\\V<C-r>\"<CR>cgn<C-a><Esc>", { noremap = true } )
+vim.api.nvim_set_keymap( "n", "cg*", "*Ncgn", { noremap = true } )
 
 --add breakpoint for undo at space, . and ,
 vim.api.nvim_set_keymap( "i", " ", " <c-g>u", { noremap = true } )

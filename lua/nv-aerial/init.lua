@@ -1,6 +1,6 @@
-vim.api.nvim_set_keymap('n', '<F3>', ':AerialToggle<CR>', { noremap = true})
+vim.api.nvim_set_keymap('n', '<F3>', ':AerialOpen float<CR> | :AerialTreeCloseAll<cr>', { noremap = true})
 
-vim.g.aerial = {
+require('aerial').setup({
   -- Enum: persist, close, auto
   --   persist - aerial window will stay open until closed
   --   close   - aerial window will close when original file is no longer visible
@@ -51,17 +51,17 @@ vim.g.aerial = {
 
   -- Whether to open aerial automatically when entering a buffer.
   -- Can also be specified per-filetype as a map (see below)
-  open_automatic = false,
+  -- open_automatic = false,
 
   -- If open_automatic is true, only open aerial if the source buffer is at
   -- least this long
-  open_automatic_min_lines = 0,
+  -- open_automatic_min_lines = 0,
 
   -- If open_automatic is true, only open aerial if there are at least this many symbols
-  open_automatic_min_symbols = 0,
+  -- open_automatic_min_symbols = 0,
 
   -- Run this command after jumping to a symbol (false will disable)
-  post_jump_cmd = 'normal! zz',
+  post_jump_cmd = 'normal! zzzv',
 
   -- Set to false to not update the symbols when there are LSP errors
   update_when_errors = true,
@@ -76,7 +76,17 @@ vim.g.aerial = {
     "Method",
     "Struct",
   },
-}
+	float = {
+    border = "rounded", -- Controls border appearance. Passed to nvim_open_win
+    row = 1, -- Controls row offset from cursor. Passed to nvim_open_win
+    col = 1, -- Controls col offset from cursor. Passed to nvim_open_win
+    max_height = 100, -- The maximum height of the floating aerial window
+
+    -- The minimum height of the floating aerial window
+    -- To disable dynamic resizing, set this to be equal to max_height
+    min_height = 15,
+  },
+})
 
 -- open_automatic can be specified as a filetype map. For example, the below
 -- configuration will open automatically in all filetypes except python and rust

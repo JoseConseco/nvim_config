@@ -50,8 +50,10 @@ require("telescope").setup {
     }
 }
 
+require("telescope").load_extension("fzf")  -- from 'nvim-telescope/telescope-fzf-native.nvim'
 require("telescope").load_extension("media_files")
 require('telescope').load_extension('vim_bookmarks')
+require('telescope').load_extension('aerial')
 -- require('telescope').load_extension('projects')
 
 -- local opt = {noremap = true, silent = true}

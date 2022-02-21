@@ -7,9 +7,21 @@ require('neoclip').setup({
       on_paste = {
         set_reg = false,
       },
-      keys = {
-        i = {  paste_behind = '<cr>', },
-        n = {  paste = 'p', paste_behind = '<cr>'},
+keys = {
+        telescope = {
+          i = {
+            -- select = '<cr>',
+            paste = 'p',
+            paste_behind = '<cr>',
+            custom = {},
+          },
+          n = {
+            -- select = '<cr>',
+            paste = 'p',
+            paste_behind = '<cr>',
+            custom = {},
+          },
+        },
       },
     })
 vim.api.nvim_set_keymap('n', '<A-p>',  ":lua require('telescope').extensions.neoclip.default(require('telescope.themes').get_dropdown({initial_mode = 'normal', previewer = false,}))<CR>", {noremap = true, silent = true})

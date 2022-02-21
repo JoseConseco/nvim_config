@@ -65,12 +65,14 @@ local on_attach = function(client, bufnr)
 		]], false)
 	end
 
-	require'aerial'.on_attach(client) -- aerial plug - outliner
+	-- require'aerial'.on_attach(client) -- aerial plug - outliner - now uses treesitter
 	local cfg = {
 		floating_window=false,
+		hint_enable = true, -- virtual hint enable
 		hint_prefix = "🞉 ",
 		doc_len=0,
 		floating_window_above_first = true,
+		auto_close_after = 4,
 		handler_opts = { border = "single" },  -- double, single, shadow, none
 	}
 	require('lsp_signature').on_attach(cfg) -- from ray-x/lsp_signature.nvim

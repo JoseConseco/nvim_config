@@ -54,6 +54,10 @@ ts_config.setup {
 		},
 	},
 	autopairs = {enable = true}, -- for windwp/nvim-autopairs plug
+  matchup = { -- for windwp/matchup.nvim
+    enable = true,              -- mandatory, false will disable the whole extension
+    disable = {"ruby" },  -- optional, list of language that will be disabled
+  },
 	--[[ textobjects = { -- uses 'nvim-treesitter/nvim-treesitter-refactor'
 		select = {
 			enable = true,

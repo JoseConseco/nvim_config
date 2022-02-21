@@ -157,7 +157,7 @@ for vert in bm.verts:
 endsnippet
 
 snippet enum "EnumProperty"
-$1: bpy.props.EnumProperty(name='$1', description='',
+$1: bpy.props.EnumProperty(name='`!p snip.rv = title_case(t[1])`', description='',
 	items=[
 		('`!p snip.rv = upper_case(t[2])`', '$2', '$2'),
 		('`!p snip.rv = upper_case(t[3])`', '$3', '$3')
@@ -227,7 +227,7 @@ class OBJECT_OT_`!p snip.rv = title_case(t[1])`(bpy.types.Operator):
 
 endsnippet
 
-snippet panel "create blender panel"
+snippet panel "create normal panel"
 class VIEW3D_PT_`!p snip.rv = title_case(t[1])`(bpy.types.Panel):
 	bl_idname = 'VIEW3D_PT_$1'
 	bl_label = '`!p snip.rv = capitalize_case(t[1])`'
@@ -242,7 +242,18 @@ class VIEW3D_PT_`!p snip.rv = title_case(t[1])`(bpy.types.Panel):
 
 endsnippet
 
-snippet "operator modal draw" "Modal operator draw function, without any imports or added functions"
+snippet "parent panel" "create parent panel"
+class VIEW3D_PT_$1(bpy.types.Panel):
+	bl_space_type = 'VIEW_3D'
+	bl_region_type = 'UI'
+	bl_category = 'Tools'
+
+	def draw(self, context):
+		layout = self.layout$0
+
+endsnippet
+
+snippet modal "Modal operator draw function, without any imports or added functions"
 class ${1:MyClassName}(bpy.types.Operator):
 	bl_idname = "${2:my_operator.my_class_name}"
 	bl_label = "$2"

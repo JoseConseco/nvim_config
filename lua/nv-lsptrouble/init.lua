@@ -1,7 +1,7 @@
  require("trouble").setup({
 	height = 10, -- height of the trouble list
 	icons = true, -- use dev-icons for filenames
-	mode = "lsp_document_diagnostics", -- "lsp_workspace_diagnostics"
+	mode = "document_diagnostics", -- "lsp_workspace_diagnostics"
 	fold_open = "", -- icon used for open folds
 	fold_closed = "", -- icon used for closed folds
 

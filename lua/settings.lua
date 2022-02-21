@@ -4,7 +4,7 @@
 
 vim.cmd('set iskeyword+=-') -- treat dash separated words as a word text object"
 --vim.cmd('set shortmess+=c') -- Don't pass messages to |ins-completion-menu|.
-vim.opt.hidden = true -- Required to keep multiple buffers open multiple buffers
+-- vim.opt.hidden = true -- Required to keep multiple buffers open multiple buffers- defaut true since ver 6.0
 vim.wo.wrap = false -- Display long lines as just one line
 vim.opt.listchars=""   -- hide listchars -> whitespaces chars
 vim.cmd([[setlocal nolist]]) -- wont work
@@ -55,9 +55,9 @@ vim.opt.winminwidth=50
 
 -- vim.g.paste = true --? format pasted str - does it work? seems broken right now..
 
--- vim.o.guifont = "JetBrainsMonoNL Nerd Font Mono, Medium:h12"     -- icons ok, but ugly
--- vim.o.guifont = "Source Code Pro:h12"  -- icons missng
--- vim.o.guifont = "FiraCode Nerd Font:h13"   --acutally OK
+-- vim.o.guifont = "JetBrainsMonoNL Nerd Font Mono, Medium:h8"     -- icons ok, but ugly
+vim.o.guifont = "Source Code Pro SemiBold:h9"  -- icons missng
+-- vim.o.guifont = "FiraCode Nerd Font:h11"   --acutally OK
 -- vim.o.guifont = "NotoSansMono Nerd Font Medium:h12" -- missing icons
 vim.g.neovide_refresh_rate = 60
 vim.g.neovide_transparency=1.0

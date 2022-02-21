@@ -57,7 +57,7 @@ wk.register({
 	-- ['<leader>:'] = { ':Telescope commands<CR>',                                       'Commands' },
 	['<leader><lt>'] = {':Telescope buffers<CR>',                                      'Switch Buffer' },
 	-- ['<leader>r'] = { ':luafile $MYVIMRC<CR>',                                      'Reload VIMRC' },
-	['<leader> '] = { ':HopWord<CR>',                                                  'HOP 2Char' },
+	-- ['<leader> '] = { ':HopWord<CR>',                                                  'HOP 2Char' },
 	-- ['<leader>e'] = { ':Fern . -reveal=%<CR>',                                         'File Browser' },
 	['<leader>p'] = 'which_key_ignore',
 	['<leader>1'] = 'which_key_ignore',
@@ -87,14 +87,17 @@ wk.register({  --ignore magic s and g in cmd mode
 
 function _G.compare_to_clipboard()
 	local ftype = vim.api.nvim_eval("&filetype")
-	vim.cmd("vsplit")
-	vim.cmd("enew")
-	vim.cmd("normal! P")
-	vim.cmd("setlocal buftype=nowrite")
-	vim.cmd("set filetype="..ftype)
-	vim.cmd("diffthis")
-	vim.cmd([[execute "normal! \<C-w>h"]])
-	vim.cmd("diffthis")
+	vim.cmd(string.format([[
+    vsplit
+    enew
+    normal! P
+    setlocal buftype=nowrite
+    set filetype=%s
+    diffthis
+    bprevious
+    execute "normal! \<C-w>\<C-w>"
+    diffthis
+  ]], ftype))
 end
 -- b for buffers  - for nvim-bufferline<Plug>
 -- ['s'] = {':BLines',                              'Search lines fzf'},
@@ -133,12 +136,8 @@ wk.register({
 	['<leader>cA'] = {":lua require('nvim-autopairs').enable()<CR>",             'Auto-pairs enable'}, --from treesitter-context plug
 	['<leader>cl'] = {":CreateCompletionLine<CR>",             'Create Completion'}, --from treesitter-context plug
 
-	['<leader>cs']= { name = '+Spell'},
-	['<leader>csT'] = {':Telescope spell_suggest<CR>',         'Suggest tele'},
-	['<leader>csS'] = {':setlocal spell! spelllang=en_us<CR>', 'VIM spellchecking'},
-	['<leader>cst'] = {':normal ZT<CR>',                       'Toggle Spelunker(ZT)'},
-	['<leader>css'] = {':normal Zl<CR>',                       'Suggest (Zl)'},
-	['<leader>csa'] = {':normal Zw<CR>',                       'Add selected word'},
+	['<leader>css'] = {':setlocal spell!| spelllang=en_us<CR>', 'Toggle Spellcheck'},
+	['<leader>csa'] = {'zg<CR>', 'Add To Dictionary (zg)'},
 
 	['<leader>cf']= { name = '+Folds'},
 	['<leader>cff'] = {':call v:lua.conditional_fold()<CR>', 'Toggle all ON/OFF'},
@@ -180,14 +179,15 @@ wk.register({
 	['<leader>dX']  = { ":lua require'dap'.close()<CR>",                                                'Close'} ,
 	['<leader>dU']  = { ":lua require'dap'.up()<CR>",                                                   'Stack Up'} ,
 	['<leader>dD']  = { ":lua require'dap'.down()<CR>",                                                 'Stack Down'} ,
-	['<leader>da']  = { ":lua require'dap'.attach('0.0.0.0', 5678)<CR>",                                'Attach (localhost, 5678)'} ,
+	['<leader>da']  = { ":lua require'dap'.run({type='python', request='attach', host='127.0.0.1', port=5678})<CR>",    'Attach (localhost, 5678)'} ,
+	-- ['<leader>da']  = { ":lua require'dap'.attach('0.0.0.0', 5678)<CR>",                                'Attach (localhost, 5678)'} ,
 	['<leader>dl']  = { ":lua require'dap'.run_last()<CR>",                                             'Re-run Last'},
 	['<leader>db']  = { ":lua require'dap'.toggle_breakpoint()<CR>",                                    'Toggle breakpoint'},
 	-- ['<leader>dc']  = { ":lua require'dap'.goto_()<CR>",                                             'Run to Cursor'},
 	['<leader>du']  = { ":lua require('dapui').setup()<CR>",                                            'UI Start'} ,
 	['<leader>dC']  = { ":lua require('dapui').close()<cr>:DapVirtualTextForceRefresh<CR>",                      'UI Close'},
 	['<leader>dbc'] = { ":lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>", 'Conditional breakpoint'},
-	['<leader>dk']  = { ":lua require'dap.ui.variables'.hover()<CR>",                                   'Eval popup'},
+	['<leader>dk']  = { ":lua require('dap.ui.widgets').hover()<CR>",                                   'Eval popup'},
 	['<leader>dK']  = { ":lua require('dapui').eval()<CR>",                                             'Eval window'},
 	['<leader>dn']  = { ":lua require'dap'.step_over()<CR>",                                            'Step Over'},
 	['<leader>dc']  = { ":lua require'dap'.run_to_cursor()<CR>",                                        'Run to Cursor'},
@@ -345,8 +345,14 @@ wk.register({
 	['<leader>spw'] = {'<Plug>CtrlSFCCwordPath<CR>',                'CtrlSF Word'},
 	['<leader>sps'] = {":lua require('spectre').open()<CR>",        'Spectre'},
 	-- ['<leader>r*'] = {":let @/=expand('<cword>')<cr>cgn",        'Replace word with yank'},
-	['<leader>s*'] = {":.,$s/\\<<C-r><C-w>\\>/<C-r>+/gc|1,''-&&<CR>",  'Replace word with yank', mode='n'},       -- \<word\>  -adds whitespace  word limit (sub only whole words)
-	['<leader>s/'] = {function() local name = vim.fn.input('To: ', vim.fn.expand('<cword>')); vim.cmd(":.,$s/\\<"..vim.fn.expand('<cword>').."\\>/"..name.."/gc|1,''-&&") end,                'Replace word'},       -- write to reg z (@a) then use it for replacign * word
+	-- ['<leader>s*'] = {":.,$s/\\<<C-r><C-w>\\>/<C-r>+/gc|1,''-&&<CR>",  'Replace word with yank', mode='n'},       -- \<word\>  -adds whitespace  word limit (sub only whole words)
+	-- ['<leader>s/'] = {
+	-- function()
+	-- 	local name = vim.fn.input('To: ', vim.fn.expand('<cword>'));
+	-- 	vim.cmd(":.,$s/\\<"..vim.fn.expand('<cword>').."\\>/"..name.."/gc|1,''-&&")
+	-- end,                                                                                  'Replace word'},       -- write to reg z (@a) then use it for replacign * word
+	['<leader>s/'] = {":lua require('searchbox').replace({default_value = vim.fn.expand('<cword>'), confirm = 'menu'})<CR>", 'Find and Replace word'},       -- write to reg z (@a) then use it for replacign * word
+	['<leader>s*'] = {[["ayiw:lua require('searchbox').replace({confirm='menu'})<CR><C-r>=getreg('a')<CR><CR>:sl m<CR><C-r>=getreg('"')<CR>]], 'Replace word'},       -- write to reg z (@a) then use it for replacign * word
 })
 local function t(str)
     -- Adjust boolean arguments as needed
@@ -355,8 +361,15 @@ end
 
 wk.register({  -- second one for visual mode
 	['<leader>s'] = { name = '+Replace'},
-	['<leader>s*'] = {"\"ay:.,$s/<C-r>a/<C-r>+/gc|1,''-&&<CR>",					 'Replace word with yank'},    -- \<word\>  -adds whitespace  word limit (sub only whole words)
-	['<leader>s/'] = {function() vim.cmd("normal! \"ay"); local name = vim.fn.input('To: ', vim.fn.getreg('a')); vim.cmd(":.,$s/"..vim.fn.getreg('a').."/"..name.."/gc|1,''-&&") end ,					 'Replace word'},    -- \<word\>  -adds whitespace  word limit (sub only whole words)
+	-- ['<leader>s*'] = {"\"ay:.,$s/<C-r>a/<C-r>+/gc|1,''-&&<CR>",					 'Replace word with yank'},    -- \<word\>  -adds whitespace  word limit (sub only whole words)
+	['<leader>s/'] = {[["ay<esc>:lua require('searchbox').replace({confirm = 'menu'})<CR><C-r>=getreg('a')<CR>]], 'Find and Replace word'},       -- write to reg z (@a) then use it for replacign * word
+	['<leader>s*'] = {[["ay<esc>:lua require('searchbox').replace({confirm='menu'})<CR><C-r>=getreg('a')<CR><CR>:sl m<CR><C-r>=getreg('a')<CR>]], 'Replace word'},       -- write to reg z (@a) then use it for replacign * word
+	-- ['<leader>s/'] = {
+	-- function()
+	-- 	vim.cmd("normal! \"ay")
+	-- 	local name = vim.fn.input('To: ', vim.fn.getreg('a'))
+	-- 	vim.cmd(":.,$s/"..vim.fn.getreg('a').."/"..name.."/gc|1,''-&&")
+	-- end ,		                                                            			 'Replace word'},    -- \<word\>  -adds whitespace  word limit (sub only whole words)
 }, {mode = "v", prefix = ""})
 
 
@@ -376,24 +389,23 @@ wk.register({
 
 wk.register({
 	['<leader>t'] = { name = '+Telescope' },
-	['<leader>tA'] = {':Telescope builtin<CR>'                     , 'all'},
+	['<leader>tA'] = {':Telescope builtin<CR>'                     , 'Telescope builtins'},
 	['<leader>tf'] = {':Telescope find_files<CR>'                  , 'files'},
-	['<leader>tF'] = {':Telescope git_files<CR>'                   , 'git_files'},
-	['<leader>tT'] = {':Telescope tags<CR>'                        , 'tags'},
-	['<leader>tt'] = {':Telescope current_buffer_tags<CR>'         , 'buffer_tags'},
+	-- ['<leader>tF'] = {':Telescope git_files<CR>'                   , 'git_files'},
+	-- ['<leader>ts'] = {':Telescope git_status<CR>'                  , 'git_status'},
+	-- ['<leader>tT'] = {':Telescope tags<CR>'                        , 'tags'},
+	-- ['<leader>tt'] = {':Telescope current_buffer_tags<CR>'         , 'buffer_tags'},
 	['<leader>th'] = {':Telescope command_history<CR>'             , 'history'},
-	['<leader>tH'] = {':Telescope help_tags<CR>'                   , 'help_tags'},
+	['<leader>ta'] = {':Telescope aerial<CR>'  , 'Vim Bookmarsk'},
+	['<leader>tb'] = {':Telescope vim_bookmarks current_file<CR>'  , 'Vim Bookmarsk'},
+	['<leader>tB'] = {':Telescope vim_bookmarks all<CR>'           , 'Vim Bookmarsk All'},
 	['<leader>tk'] = {':Telescope keymaps<CR>'                     , 'keymaps'},
-	['<leader>tl'] = {':Telescope loclist<CR>'                     , 'loclist'},
-	['<leader>tm'] = {':Telescope marks<CR>'                       , 'marks'},
 	['<leader>to'] = {':Telescope vim_options<CR>'                 , 'vim_options'},
-	['<leader>tM'] = {':Telescope man_pages<CR>'                   , 'man_pages'},
-	['<leader>tp'] = {':Telescope fd<CR>'                          , 'fd'},
+	-- ['<leader>tM'] = {':Telescope man_pages<CR>'                   , 'man_pages'},
+	-- ['<leader>tp'] = {':Telescope fd<CR>'                          , 'fd'},
 	['<leader>tP'] = {':Telescope spell_suggest<CR>'               , 'spell_suggest'},
-	['<leader>ts'] = {':Telescope git_status<CR>'                  , 'git_status'},
-	['<leader>tG'] = {':Telescope grep_string<CR>'                 , 'Find Word pwd'},
-	['<leader>ty'] = {':Telescope symbols<CR>'                     , 'symbols'},
-	['<leader>tR'] = {':Telescope reloader<CR>'                    , 'reloader'},
+	-- ['<leader>tG'] = {':Telescope grep_string<CR>'                 , 'Find Word pwd'},
+	-- ['<leader>tR'] = {':Telescope reloader<CR>'                    , 'reloader'},
 	['<leader>tw'] = {':Telescope file_browser<CR>'                , 'File Browser Fuzzy'},
 })
 
@@ -423,13 +435,17 @@ wk.register({
 	['<leader>wa'] = {':call v:lua.conditional_width()<CR>',       'Auto width'},
 })
 
--- TSContextDisable - if srom treesitter-context
+-- TSContextDisable - if srm treesitter-context
 wk.register({
 	['<leader>q'] = { name = '+Quit' },
 	['<leader>qq'] = {':TSContextDisable<cr> | :confirm qa<CR>',        'Quit Confirm (qa)'},
 	['<leader>qf'] = {':q!<CR>',                                    'Force Quit (q!)'},
 	['<leader>qs'] = {':bufdo update | q!<CR>', 'Quit Save all (wqa!)'},
 })
+wk.register({  -- second one for visual mode
+	['<leader>q'] = { name = '+Replace'},
+	['<leader>qq'] = {':<ESC> | :TSContextDisable<cr> | :confirm qa<CR>',        'Quit Confirm (qa)'},
+}, {mode = "v", prefix = ""})
 
 
 -- Register which key map
