@@ -47,6 +47,11 @@ require("packer").init({
 --                                -- with one of these module names, the plugin will be loaded.
 -- }
 -- packadd - edge theme delayed?
+
+ local nofirenvim = function()
+    return vim.fn.exists('g:started_by_firenvim') ~= 1
+end
+
 return require("packer").startup(
 	function(use)
 		use {"wbthomason/packer.nvim"} -- Packer can manage itself as an optional plugin
@@ -97,10 +102,12 @@ return require("packer").startup(
 		use {"ryanoasis/vim-devicons",
 			config=function() require("web-devicons") end} -- lua + wont close () next to char finally good and simple +++
 		use { 'nvim-lualine/lualine.nvim',
+			cond = { nofirenvim},
 			requires = {'kyazdani42/nvim-web-devicons'},
 			config=function() require("nv-lualine") end -- lua + wont close () next to char finally good and simple +++
 		}
 		use {'akinsho/nvim-bufferline.lua',
+			cond = { nofirenvim},
 			requires = 'kyazdani42/nvim-web-devicons',
 			config = function() require'bufferline'.setup(); require('nv-bufferline') end }
 		use {'lukas-reineke/indent-blankline.nvim', after='tokyonight.nvim', disable=false,--  displaying thin vertical lines at each indentation level
@@ -120,7 +127,7 @@ return require("packer").startup(
 
 			config=function()
 				require('nv-indentline')
-			end} -- preview line whe using goto :xyz
+		end} -- preview line whe using goto :xyz
 		use {'Xuyuanp/scrollbar.nvim', disable=true, -- side scrollbar  -fucks up session load often :/ - but at least wont break tele
 			config=function()
 				vim.cmd([[
@@ -155,6 +162,7 @@ return require("packer").startup(
 			end
 		}
 		use {'kevinhwang91/nvim-hlslens', after='nvim-scrollbar',
+			cond = { nofirenvim},
 			config=function()
 				require("scrollbar.handlers.search").setup()
 			end
@@ -203,7 +211,7 @@ return require("packer").startup(
 				dap.adapters.nlua = function(callback, config)
 					callback({ type = 'server', host = config.host, port = config.port  or 8088})
 				end
-			end}
+		end}
 		use {'theHamsta/nvim-dap-virtual-text', requires='mfussenegger/nvim-dap',
 			config=function()
 				require("nvim-dap-virtual-text").setup({
@@ -221,7 +229,7 @@ return require("packer").startup(
 					-- e.g. 80 to position at column 80 see :h nvim_buf_set_extmark()
 				})
 				vim.cmd([[:highlight NvimDapVirtualText guifg=#c296a9]])
-			end}
+		end}
 		use { 'rcarriga/nvim-dap-ui', requires = {'mfussenegger/nvim-dap'},
 			config = function()
 				require("dapui").setup()
@@ -229,7 +237,7 @@ return require("packer").startup(
 				dap.listeners.after.event_initialized['dapui_config'] = function() dapui.open() end
 				dap.listeners.before.event_terminated['dapui_config'] = function() dapui.close() end
 				dap.listeners.before.event_exited['dapui_config'] = function() dapui.close() end
-			end}
+		end}
 
 
 
@@ -287,7 +295,7 @@ return require("packer").startup(
 		use {'tzachar/cmp-tabnine', requires = 'hrsh7th/nvim-cmp', run='./install.sh', disable=false,
 			config = function() require('cmp_tabnine.config'):setup({
 				max_lines = 100; max_num_results = 3; sort = true; })
-			end}
+		end}
 		use {"neovim/nvim-lspconfig",
 			config=function() require("lsp")  end} -- lua + wont close () next to char finally good and simple +++
 		use {'SirVer/ultisnips', disable=false, --  requires='honza/vim-snippets'
@@ -321,9 +329,11 @@ return require("packer").startup(
 		-- Git  -------------------------------------------------------------------------------------------------------
 		use 'tpope/vim-fugitive'    -- add :Gitxx commands
 		use {'lewis6991/gitsigns.nvim',
+			cond = { nofirenvim},
 			requires = {'nvim-lua/plenary.nvim', 'lewis6991/foldsigns.nvim'},
 			config=function() require("nv-gitsigns")  end} -- lua + wont close () next to char finally good and simple +++
 		use {'sindrets/diffview.nvim',
+			cond = { nofirenvim},
 			config = function() require'diffview'.setup{} end}
 
 		-- general  -------------------------------------------------------------------------------------------------------
@@ -366,12 +376,12 @@ return require("packer").startup(
 			setup=function() vim.g.matchup_matchparen_deferred = 1  end,
 			config = function()
 				vim.g.matchup_matchparen_deferred = 1
-			end}
+		end}
 		use {'monkoose/matchparen.nvim', disable=true, -- what idt does?
 			config = function()
 				vim.g.loaded_matchparen = 1
 				require("matchparen").setup()
-			end}
+		end}
 
 		use {'Chiel92/vim-autoformat',
 			config=function() require('nv-autoformat') end }
@@ -439,7 +449,7 @@ return require("packer").startup(
 				vim.api.nvim_set_keymap('o', 't', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = true })<cr>", {})
 				vim.api.nvim_set_keymap('o', 'T', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true })<cr>", {})
 
-		end}
+			end}
 		use {'karb94/neoscroll.nvim',  -- smooth scroll
 			config=function() require('neoscroll').setup({hide_cursor=false}) end} -- lua + wont close () next to char finally good and simple +++
 		use {'nacro90/numb.nvim',
@@ -451,7 +461,7 @@ return require("packer").startup(
 				vim.g.footprintsOnCurrentLine = 0
 				vim.g.footprintsEasingFunction = 'linear'
 				vim.g.footprintsHistoryDepth = 27
-			end}
+		end}
 
 		-- use 'vim-scripts/RelOps' -- only show relative number wien in operator pending mode - breaks yank if set to register
 		use {'MattesGroeger/vim-bookmarks',
@@ -472,7 +482,7 @@ return require("packer").startup(
 					lazygit:toggle()
 				end
 
-		end}
+			end}
 
 		use { "SmiteshP/nvim-gps", -- bread_crumbs
 			requires = "nvim-treesitter/nvim-treesitter",
@@ -489,14 +499,25 @@ return require("packer").startup(
 
 
 		-- Vim in browser -------------------------------------------------------------------------------------------------------
-
 		use {
 			'glacambre/firenvim',
-			run = function() vim.fn['firenvim#install'](0) end
+			run = function() vim.fn['firenvim#install'](0) end,
+			setup = function()
+				require"nv-firenvim"
+			end,
+			after = 'nightfox.nvim',
+			config = function()
+				if vim.fn.exists('g:started_by_firenvim') == 1 then
+					require('nightfox').load('dayfox')
+				else
+					require('nightfox').load('nightfox')
+				end
+			end
 		}
 
 		-- project management
 		use {"mhinz/vim-startify",
+			cond = { nofirenvim},
 			config=function() require('nv-startify') end} -- lua + wont close () next to char finally good and simple +++
 		--[[ use { "ahmedkhalf/project.nvim", -- does not store opened files in project
 		config = function() require("project_nvim").setup{} end } ]]
