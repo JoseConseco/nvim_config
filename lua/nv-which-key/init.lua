@@ -131,7 +131,8 @@ wk.register({
 	['<leader>c.'] = {':Telescope filetypes<CR>',    'filetypes'},
 	['<leader>ct'] = {':call v:lua.CmdInput("Tab /")<CR>', 'Tabularize (align)'},
 	['<leader>cF'] = {':Autoformat<CR>',             'Autoformat lines'},
-	['<leader>cc'] = {':TSContextToggle<CR>',             'Context toggle'}, --from treesitter-context plug
+	['<leader>cc'] = {':Neogen<CR>',             'Generate annotations'},
+	-- ['<leader>cc'] = {':TSContextToggle<CR>',             'Context toggle'}, --from treesitter-context plug
 	['<leader>ca'] = {":lua require('nvim-autopairs').disable()<CR>",             'Auto-pairs disable'}, --from treesitter-context plug
 	['<leader>cA'] = {":lua require('nvim-autopairs').enable()<CR>",             'Auto-pairs enable'}, --from treesitter-context plug
 	['<leader>cl'] = {":CreateCompletionLine<CR>",             'Create Completion'}, --from treesitter-context plug
@@ -222,7 +223,7 @@ wk.register({
 	['<leader>gD'] = {':Gdiffsplit<CR>'                       , 'diff split'},
 	['<leader>gH'] = {':Gdiffsplit HEAD~1'                    , 'diff split to Head~1'},
 	['<leader>gR'] = {':Ggrep<CR>'                            , 'git grep'},
-	['<leader>gg'] = {':LazyGit<CR>'                          , 'LazyGit'},
+	['<leader>gg'] = {':lua lazygit_toggle()<CR>'             , 'LazyGit'},  -- defined in  nvim-toggleterm.lua plug
 	['<leader>gs'] = {':Git<CR>'                              , 'status'}, -- old Gitstatus  - deprecated
 	['<leader>gL'] = {':Gclog<CR>'                            , 'log files revisions'},
 	['<leader>gl'] = {':0Gclog<CR>'                           , 'log current file revisions'},
@@ -318,7 +319,7 @@ wk.register({
 	['<leader>o'] = { name = '+Open' },
 	['<leader>o/'] = {'q/',                                     'Search History (q/)'},
 	-- ['<leader>o.'] = {':Fern . -reveal=%<CR>',                  'File Browse (Fern)'},
-	['<leader>of'] = {':Telescope file_browser<CR>',            'File Browser (fuzzy)'},
+	['<leader>of'] = {':Telescope file_browser<CR><ESC>',            'File Browser (fuzzy)'},
 	['<leader>oE'] = {':Ex<CR>',                                'Open Explorer(Ex)'} ,
 	['<leader>oU'] = {':UndotreeToggle<CR>',                    'Undo Tree'} ,
 	['<leader>oh'] = {'q:',                                     'Commands History (q:)'},
@@ -329,7 +330,7 @@ wk.register({
 	['<leader>oL'] = {":lua.require('luapad').detach()<CR>",    'Luapad Repl Off'},
 	['<leader>oc'] = {':Codi<CR>',                              'Codi Start (multi lang REPL)'},
 	['<leader>oC'] = {':Codi!<CR>',                             'Codi Stop'},
-	['<leader>oT'] = {':ToggleTerm<CR>', 'Term'},
+	['<leader>ot'] = {':ToggleTerm<CR>', 'Term'},
 })
 
 -- function _G.replace_word()
@@ -436,9 +437,17 @@ wk.register({
 })
 
 -- TSContextDisable - if srm treesitter-context
+if vim.fn.exists('g:started_by_firenvim') == 1 then
+	wk.register({['<leader>qq'] = {':wq!<CR>',        'Quit Firenvim'}})
+else
+	wk.register({['<leader>qq'] = {':TSContextDisable<cr> | :confirm qa<CR>',        'Quit Confirm (qa)'}})
+end
+
+-- local x = 2
+
 wk.register({
 	['<leader>q'] = { name = '+Quit' },
-	['<leader>qq'] = {':TSContextDisable<cr> | :confirm qa<CR>',        'Quit Confirm (qa)'},
+	-- ['<leader>qq'] = {':TSContextDisable<cr> | :confirm qa<CR>',        'Quit Confirm (qa)'},
 	['<leader>qf'] = {':q!<CR>',                                    'Force Quit (q!)'},
 	['<leader>qs'] = {':bufdo update | q!<CR>', 'Quit Save all (wqa!)'},
 })

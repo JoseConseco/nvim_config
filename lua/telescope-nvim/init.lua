@@ -1,59 +1,89 @@
+local fb_actions = require "telescope._extensions.file_browser.actions"
+local actions = require "telescope.actions"
+
 require("telescope").setup {
-    defaults = {
-        vimgrep_arguments = {
-            "rg",
-            "--color=never",
-            "--no-heading",
-            "--with-filename",
-            "--line-number",
-            "--column",
-            "--smart-case"
-        },
-        -- prompt_position = "top",
-        prompt_prefix = " ",
-        selection_caret = " ",
-        entry_prefix = "  ",
-        initial_mode = "insert",
-        selection_strategy = "reset",
-        sorting_strategy = "ascending",
-        layout_strategy = "horizontal",
-        layout_config = {
-            horizontal = {
-                mirror = false,
-								prompt_position = "top"
-                -- preview_width = 0.65
-            },
-            vertical = {
-                mirror = false
-            }
-        },
-        file_sorter = require "telescope.sorters".get_fuzzy_file,
-        file_ignore_patterns = {"__cache__/.*", "%.pyc" },
-        generic_sorter = require "telescope.sorters".get_generic_fuzzy_sorter,
-        -- shorten_path = true,
-        winblend = 0,
-        color_devicons = true,
-        use_less = true,
-				path_display = {'smart'},
-        set_env = {["COLORTERM"] = "truecolor"}, -- default = nil,
-        file_previewer = require "telescope.previewers".vim_buffer_cat.new,
-        grep_previewer = require "telescope.previewers".vim_buffer_vimgrep.new,
-        qflist_previewer = require "telescope.previewers".vim_buffer_qflist.new,
-        -- Developer configurations: Not meant for general override
-        buffer_previewer_maker = require "telescope.previewers".buffer_previewer_maker
-    },
-    extensions = {
-        media_files = {
-            filetypes = {"png", "webp", "jpg", "jpeg"},
-            find_cmd = "rg" -- find command (defaults to `fd`)
-        }
-    }
+	defaults = {
+		vimgrep_arguments = {
+			"rg",
+			"--color=never",
+			"--no-heading",
+			"--with-filename",
+			"--line-number",
+			"--column",
+			"--smart-case"
+		},
+		-- prompt_position = "top",
+		prompt_prefix = " ",
+		selection_caret = " ",
+		entry_prefix = "  ",
+		initial_mode = "insert",
+		selection_strategy = "reset",
+		sorting_strategy = "ascending",
+		layout_strategy = "horizontal",
+		layout_config = {
+			horizontal = {
+				mirror = false,
+				prompt_position = "top"
+				-- preview_width = 0.65
+			},
+			vertical = {
+				mirror = false
+			}
+		},
+		file_sorter = require "telescope.sorters".get_fuzzy_file,
+		file_ignore_patterns = {"__cache__/.*", "%.pyc" },
+		generic_sorter = require "telescope.sorters".get_generic_fuzzy_sorter,
+		-- shorten_path = true,
+		winblend = 0,
+		color_devicons = true,
+		use_less = true,
+		path_display = {'smart'},
+		set_env = {["COLORTERM"] = "truecolor"}, -- default = nil,
+		file_previewer = require "telescope.previewers".vim_buffer_cat.new,
+		grep_previewer = require "telescope.previewers".vim_buffer_vimgrep.new,
+		qflist_previewer = require "telescope.previewers".vim_buffer_qflist.new,
+		-- Developer configurations: Not meant for general override
+		buffer_previewer_maker = require "telescope.previewers".buffer_previewer_maker
+	},
+	extensions = {
+		media_files = {
+			filetypes = {"png", "webp", "jpg", "jpeg"},
+			find_cmd = "rg" -- find command (defaults to `fd`)
+		},
+		file_browser = {
+			grouped = true,
+			sorting_strategy = 'ascending',
+			mappings = {
+				["n"] = {
+					["a"] = fb_actions.create,
+					["c"] = fb_actions.create,
+					["r"] = fb_actions.rename,
+					["m"] = fb_actions.move,
+					["y"] = fb_actions.copy,
+					["d"] = fb_actions.remove,
+					["x"] = fb_actions.remove,
+					["o"] = fb_actions.open,
+					["h"] = fb_actions.goto_parent_dir,
+					["e"] = fb_actions.goto_home_dir,
+					["w"] = fb_actions.goto_cwd,
+					["t"] = fb_actions.change_cwd,
+					["b"] = fb_actions.toggle_browser,
+					["H"] = fb_actions.toggle_hidden,
+					["s"] = fb_actions.toggle_all,
+					-- ["l"] = vim.api.nvim_feedkeys('<CR>'),
+					["l"] = actions.select_default,
+				},
+			},
+		}
+
+	}
 }
 
 require("telescope").load_extension("fzf")  -- from 'nvim-telescope/telescope-fzf-native.nvim'
 require("telescope").load_extension("media_files")
 require('telescope').load_extension('vim_bookmarks')
 require('telescope').load_extension('aerial')
+require("telescope").load_extension "file_browser"
 -- require('telescope').load_extension('projects')
 
 -- local opt = {noremap = true, silent = true}
