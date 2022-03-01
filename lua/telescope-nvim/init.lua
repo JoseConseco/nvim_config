@@ -50,6 +50,9 @@ require("telescope").setup {
 			filetypes = {"png", "webp", "jpg", "jpeg"},
 			find_cmd = "rg" -- find command (defaults to `fd`)
 		},
+		sessions_picker = {
+			sessions_dir = vim.fn.stdpath('data') ..'/session/',
+		},
 		file_browser = {
 			grouped = true,
 			sorting_strategy = 'ascending',
@@ -84,6 +87,7 @@ require("telescope").load_extension("media_files")
 require('telescope').load_extension('vim_bookmarks')
 require('telescope').load_extension('aerial')
 require("telescope").load_extension "file_browser"
+require("telescope").load_extension "sessions_picker"
 -- require('telescope').load_extension('projects')
 
 -- local opt = {noremap = true, silent = true}

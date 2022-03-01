@@ -38,8 +38,11 @@ local wk = require("which-key")
 
 -- s=fname()- wont_work for hoteys
 function _G.CmdInput(cmd)
-	local name = vim.fn.input('Name= ')
-	vim.cmd(cmd..name)
+	local name = vim.fn.input('Name: ')
+	-- eg: cmd =  string.format('Script Name: "%s"', name)
+	local full_cmd = string.format(cmd, name)
+	print(full_cmd)
+	vim.cmd( full_cmd)
 end
 
 -- Hide status line
@@ -49,7 +52,8 @@ end
 
 -- Single mappings
 wk.register({
-	['<leader>S'] = { ':SClose<CR>',                                                 'Startify' },
+	-- ['<leader>S'] = { ':SClose<CR>',                                                 'Startify' },
+	['<leader>S'] = { ':lua MiniStarter.open()<CR>',                                                 'MiniStarter' },
 	['<leader>*'] = { ":lua require'telescope.builtin'.grep_string({path_display = {'shorten'},word_match = '-w', only_sort_text = true, initial_mode = 'normal', })<CR>",       'Find * Project' },
 	['<leader>/'] = {":lua require'telescope.builtin'.live_grep{path_display = {'tail'}, word_match = '-w', only_sort_text = true, search = '' }<CR>",                           'Search Project'}     ,
 	['<leader>?'] = {':Grepper -cword  -noprompt -tool ag<cr>',                                             'Word to clist (Grepper)'},
@@ -114,7 +118,7 @@ wk.register({
 	['<leader>bo'] = {':%bd|e#|bd#<CR>',                                                'Close all but current'},
 	['<leader>bp'] = {':BufferLinePick<CR>',                                            'Pick (gb)'},
 	['<leader>br'] = {':confirm e<CR>',                                                 'Reload File(e!)'},
-	['<leader>bf'] = {':Autoformat<CR>',                                                'Autoformat lines'},
+	-- ['<leader>bf'] = {':Autoformat<CR>',                                                'Autoformat lines'},
 })
 
 -- ['c']= {
@@ -129,8 +133,8 @@ wk.register({
 wk.register({
 	['<leader>c'] = { name = '+Code' },
 	['<leader>c.'] = {':Telescope filetypes<CR>',    'filetypes'},
-	['<leader>ct'] = {':call v:lua.CmdInput("Tab /")<CR>', 'Tabularize (align)'},
-	['<leader>cF'] = {':Autoformat<CR>',             'Autoformat lines'},
+	['<leader>ct'] = {':call v:lua.CmdInput("Tab /%s")<CR>', 'Tabularize (align)'},
+	-- ['<leader>cF'] = {':Autoformat<CR>',             'Autoformat lines'},
 	['<leader>cc'] = {':Neogen<CR>',             'Generate annotations'},
 	-- ['<leader>cc'] = {':TSContextToggle<CR>',             'Context toggle'}, --from treesitter-context plug
 	['<leader>ca'] = {":lua require('nvim-autopairs').disable()<CR>",             'Auto-pairs disable'}, --from treesitter-context plug
@@ -140,23 +144,23 @@ wk.register({
 	['<leader>css'] = {':setlocal spell!| spelllang=en_us<CR>', 'Toggle Spellcheck'},
 	['<leader>csa'] = {'zg<CR>', 'Add To Dictionary (zg)'},
 
-	['<leader>cf']= { name = '+Folds'},
-	['<leader>cff'] = {':call v:lua.conditional_fold()<CR>', 'Toggle all ON/OFF'},
-	['<leader>cfM'] = {'zM<CR>',                             'Close all(zM)'},
-	['<leader>cfR'] = {'zR<CR>',                             'Open all (zR)'},
-	['<leader>cf+'] = {'zm<CR>',                             'inc+1 (zm)'},
-	['<leader>cf-'] = {'zr<CR>',                             'dec-1 (zr)'},
-	['<leader>cfa'] = {'za<CR>',                             'Toggle at cur(za)'},
-	['<leader>cfA'] = {'zA<CR>',                             'Toggle at cur rec(zA)'},
-	['<leader>cfT'] = {'zi<CR>',                             'Toggle fold enable(zi)'},
-	['<leader>cfo'] = {'zo<CR>',                             'open cur(zo)'},
-	['<leader>cfO'] = {'zO<CR>',                             'open all cur(zO)'},
+	-- ['<leader>cf']= { name = '+Folds'},
+	-- ['<leader>cff'] = {':call v:lua.conditional_fold()<CR>', 'Toggle all ON/OFF'},
+	-- ['<leader>cfM'] = {'zM<CR>',                             'Close all(zM)'},
+	-- ['<leader>cfR'] = {'zR<CR>',                             'Open all (zR)'},
+	-- ['<leader>cf+'] = {'zm<CR>',                             'inc+1 (zm)'},
+	-- ['<leader>cf-'] = {'zr<CR>',                             'dec-1 (zr)'},
+	-- ['<leader>cfa'] = {'za<CR>',                             'Toggle at cur(za)'},
+	-- ['<leader>cfA'] = {'zA<CR>',                             'Toggle at cur rec(zA)'},
+	-- ['<leader>cfT'] = {'zi<CR>',                             'Toggle fold enable(zi)'},
+	-- ['<leader>cfo'] = {'zo<CR>',                             'open cur(zo)'},
+	-- ['<leader>cfO'] = {'zO<CR>',                             'open all cur(zO)'},
 })
 
 wk.register({
 	['<leader>c'] = { name = '+Code'},
-	['<leader>cf'] = {":lua require('refactoring').refactor('Extract Function')<CR>",            'Extract Function'},
-	['<leader>ct'] = {':call v:lua.CmdInput("Tab /")<CR>', 'Tabularize (align)'},
+	['<leader>ce'] = {":lua require('refactoring').refactor('Extract Function')<CR>",            'Extract Function'},
+	['<leader>ct'] = {':call v:lua.CmdInput("Tab /%s")<CR>', 'Tabularize (align)'},
 }, {mode = "v", prefix = ""})
 
 wk.register({
@@ -203,7 +207,7 @@ end
 wk.register({
 	['<leader>f'] = { name = '+File' },
 	['<leader>fs'] = { ':update<CR>',                                    'Save'},
-	['<leader>fS'] = { ':call v:lua.CmdInput("w ")<CR>',                 'Save as'},
+	['<leader>fS'] = { ':call v:lua.CmdInput("w %s")<CR>',                 'Save as'},
 	['<leader>fd'] = { ':call delete(expand("%")) | bdelete!<CR>',       'Delete!'},
 	['<leader>fr'] = {':confirm e<CR>',                                  'Reload File(e!)'},
 	['<leader>ff'] = {':Telescope file_browser<CR>',                     'File Browser (fuzzy)'},
@@ -241,7 +245,7 @@ wk.register({
 wk.register({
 	['<leader>h'] = { name = '+History' },
 	['<leader>hu'] = {':UndotreeToggle<CR>',            'Undo Tree'} ,
-	['<leader>hw'] = {':call v:lua.CmdInput("LHWrite ")<CR>', 'Local History Write'},
+	['<leader>hw'] = {':call v:lua.CmdInput("LHWrite %s")<CR>', 'Local History Write'},
 	['<leader>hl'] = {':LHLoad<CR>',                    'Local History Load'},
 	['<leader>hb'] = {':LHBrowse<CR>',                  'Local History Browse'},
 	['<leader>hx'] = {':LHDelete<CR>',                  'Local History Delete'},
@@ -320,6 +324,7 @@ wk.register({
 	['<leader>o/'] = {'q/',                                     'Search History (q/)'},
 	-- ['<leader>o.'] = {':Fern . -reveal=%<CR>',                  'File Browse (Fern)'},
 	['<leader>of'] = {':Telescope file_browser<CR><ESC>',            'File Browser (fuzzy)'},
+	['<leader>od'] = {':Dirbuf<CR>',                               'Dirbuf'},
 	['<leader>oE'] = {':Ex<CR>',                                'Open Explorer(Ex)'} ,
 	['<leader>oU'] = {':UndotreeToggle<CR>',                    'Undo Tree'} ,
 	['<leader>oh'] = {'q:',                                     'Commands History (q:)'},
@@ -378,10 +383,14 @@ wk.register({
 	['<leader>P'] = { name = '+Project' },
 	-- ['<leader>P*'] = {":lua require'telescope.builtin'.grep_string{path_display = {'shorten'},word_match = '-w', only_sort_text = true, initial_mode = 'normal', }<CR>", 'Find Word'}    ,
 	-- ['<leader>P/'] = {':Grepper-cword<CR>',                                             'Word to clist (Grepper)'},
-	['<leader>Ps'] = {':SSave<CR>',                                                     'Sesion Save'}  ,
-	['<leader>Pl'] = {':SLoad<CR>',                                                     'Sesion Load'}  ,
+	['<leader>Ps'] = {':call v:lua.CmdInput("lua MiniSessions.write(\'%s\')")<CR>',              'Sesion Save'}  ,
 	['<leader>Pc'] = {':SClose<CR>',                                                    'Sesion Close'} ,
 	['<leader>Pd'] = {':SDelete<CR>',                                                   'Sesion Delete'},
+	-- Startify
+	-- ['<leader>Ps'] = {':SSave<CR>',                                                     'Sesion Save'}  ,
+	-- ['<leader>Pl'] = {':SLoad<CR>',                                                     'Sesion Load'}  ,
+	-- ['<leader>Pc'] = {':SClose<CR>',                                                    'Sesion Close'} ,
+	-- ['<leader>Pd'] = {':SDelete<CR>',                                                   'Sesion Delete'},
 	-- ['<leader>Pf'] = {':Telescope live_grep<CR>',                                       'Find (live grep)'}     ,
 	-- ['<leader>Pz'] = {":lua require'telescope.builtin'.grep_string{path_display = {'tail'}, word_match = '-w', only_sort_text = true, search = '' }<CR>", 'Find fuzzy'},
 })

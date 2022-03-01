@@ -1,7 +1,8 @@
--- load plugins
-
-require("hl_adjust")
-require('plugins')
+local P = function(x)
+	print(vim.inspect(x))
+end
+require "hl_adjust"
+	require('plugins')
 -- vim.cmd('packloadall!') -- fixes plugs not seeing config, and load order mess. Or else we need to: so $MYVIMRC  but fucks up packer.sync...
 require('settings')
 require('keymappings')
@@ -9,7 +10,6 @@ require('keymappings')
 -- set themes props before loading actuall theme ?
 -- vim.cmd('colorscheme tokyonight')  -- onedark, OceanicNext, edge
 
-require'telescope'.load_extension('sessions')
 
 -- ~/.local/lib/python3.9/site-package - debugpy is here (pip show debugpy)
 -- require('dap-python').setup('/usr/bin/python')
@@ -88,4 +88,3 @@ vim.cmd[[
 	au TextYankPost * silent! lua vim.highlight.on_yank({higroup="Todo", timeout=100})
 	augroup END
 ]]
-

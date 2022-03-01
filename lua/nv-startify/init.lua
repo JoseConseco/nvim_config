@@ -26,7 +26,7 @@ vim.g.startify_lists ={
 }
 
 vim.g.startify_commands = {
-	{ s = {'Sessions' ,  ":lua require'telescope'.extensions.sessions.sessions{}" }},
+	{ s = {'Sessions' ,  ":lua require'telescope'.extensions.sessions_picker.sessions{}" }},
 	{ r = {'Recent Files' ,  ':Telescope oldfiles' }},
 	{ b = {'File Brower' ,  ':Telescope file_browser' }},
 }

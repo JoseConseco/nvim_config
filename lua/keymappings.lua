@@ -174,7 +174,7 @@ vim.api.nvim_set_keymap('n', 'zC',  'zM', {noremap = true, silent = true})
 -- vim.api.nvim_set_keymap( "n", "<Leader>ff",  'v:lua.conditional_fold()',  { expr = true, noremap = true, silent = true } )
 
 
-vim.api.nvim_set_keymap( "n", "<F1>",  ":lua require'telescope'.extensions.sessions.sessions{}<CR>",  {noremap = true, silent = true } )
+vim.api.nvim_set_keymap( "n", "<F1>",  ":Telescope sessions_picker<CR>",  {noremap = true, silent = true } )
 
 -- File find under F2
 vim.api.nvim_set_keymap( "n", "<F2>",  ':Telescope find_files<CR>',  {noremap = true, silent = true } )

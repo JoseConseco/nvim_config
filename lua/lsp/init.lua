@@ -27,11 +27,11 @@ local on_attach = function(client, bufnr)
 	-- buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
 
 	-- Set some keybinds conditional on server capabilities
-	if client.resolved_capabilities.document_formatting then
-		buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-	elseif client.resolved_capabilities.document_range_formatting then
-		buf_set_keymap("n", "<space>F", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
-	end
+	-- if client.resolved_capabilities.document_formatting then
+	buf_set_keymap("n", "<space>cf", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+	-- elseif client.resolved_capabilities.document_range_formatting then
+	buf_set_keymap("v", "<space>cf", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
+	-- end
 
 	-- adding borders
 	vim.lsp.handlers["textDocument/hover"] =
@@ -209,9 +209,13 @@ nvim_lsp.pyright.setup{
 --   },
 -- }
 
+-- local runtime_path = vim.split(package.path, ';')
+-- table.insert(runtime_path, "lua/?.lua")
+-- table.insert(runtime_path, "lua/?/init.lua")
 
 nvim_lsp.sumneko_lua.setup {
 	cmd = {'lua-language-server', "-E", '/usr/share/lua-language-server/main.lua'};
+	on_attach = on_attach,
 	settings = {
 		Lua = {
 			runtime = {
@@ -226,10 +230,11 @@ nvim_lsp.sumneko_lua.setup {
 			},
 			workspace = {
 				-- Make the server aware of Neovim runtime files
-				library = {
-					[vim.fn.expand('$VIMRUNTIME/lua')] = true,
-					[vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
-				},
+				library = vim.api.nvim_get_runtime_file("", true),
+				-- library = {
+				-- 	[vim.fn.expand('$VIMRUNTIME/lua')] = true,
+				-- 	[vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
+				-- },
 			},
 			-- Do not send telemetry data containing a randomized but unique identifier
 			telemetry = {
@@ -241,6 +246,7 @@ nvim_lsp.sumneko_lua.setup {
 
 require'lspconfig'.vimls.setup{
 	cmd = { "vim-language-server", "--stdio" };
+	on_attach = on_attach,
 	filetypes = {"vim"},
 	init_options = {
 		diagnostic = {

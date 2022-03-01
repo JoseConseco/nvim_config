@@ -10,8 +10,14 @@ vim.g.firenvim_config = {
 			selector = 'textarea',
 			takeover = 'never',
 		},
-		['stackoverflow.com'] = { takeover= 'always' },
-		['github.com'] = { takeover= 'always' },
+		-- Firenvim has a setting named takeover that can be set to always, empty, never, nonempty or once.
+		-- When set to always, Firenvim will always take over elements for you.
+		-- When set to empty, Firenvim will only take over empty elements.
+		-- When set to never, Firenvim will never automatically appear, thus forcing you to use a keyboard shortcut
+		-- When set to nonempty, Firenvim will only take over elements that aren't empty.
+		-- When set to once, Firenvim will take over elements the first time you select them,
+		['stackoverflow.com'] = { takeover= 'once' },
+		['github.com'] = { takeover= 'once' },
 	}
 }
 

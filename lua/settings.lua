@@ -53,10 +53,10 @@ vim.opt.virtualedit='all'      -- makes cursor not jump,
 vim.opt.winwidth=60
 vim.opt.winminwidth=50
 
--- vim.g.paste = true --? format pasted str - does it work? seems broken right now..
+vim.g.paste = true --? format pasted str - does it work? seems broken right now..
 
 -- vim.o.guifont = "JetBrainsMonoNL Nerd Font Mono, Medium:h8"     -- icons ok, but ugly
-vim.o.guifont = "Source Code Pro SemiBold:h10"  -- icons missng
+vim.o.guifont = "Source Code Pro SemiBold:h11"  -- icons missng
 -- vim.o.guifont = "FiraCode Nerd Font:h11"   --acutally OK
 -- vim.o.guifont = "NotoSansMono Nerd Font Medium:h12" -- missing icons
 vim.g.neovide_refresh_rate = 60

@@ -107,7 +107,7 @@ ts_config.setup {
 -- require("nvim-treesitter").queries.python.
 vim.wo.foldmethod="expr"
 vim.wo.foldexpr="nvim_treesitter#foldexpr()"    -- o will give errors...
-vim.wo.foldenable=true --do notenable fold at start
+vim.wo.foldenable=vim.fn.exists('g:started_by_firenvim') ~= 1 --do notenable fold at start
 
 
 vim.api.nvim_set_keymap('n', '+',  ':normal v+<cr>', {noremap = true, silent = true}) -- + will now switch to normal and  grow selection from treesitter

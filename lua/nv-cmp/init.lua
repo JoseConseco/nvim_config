@@ -209,7 +209,7 @@ cmp.setup.cmdline('/', {
 		-- { name = 'buffer' },
 		-- { name = 'rg'}, -- or 'rg'
 		{
-			name = 'fuzzy_buffer', opts = { }
+			name = 'fuzzy_buffer', option = { }
 		}
 	})
 })
