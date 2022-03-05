@@ -82,9 +82,38 @@ augroup END
 ]]) ]==]
 
 -- Highlight yanked text
-vim.cmd[[
-	augroup highlight_yank
-	autocmd!
-	au TextYankPost * silent! lua vim.highlight.on_yank({higroup="Todo", timeout=100})
+-- vim.cmd[[
+-- 	augroup highlight_yank
+-- 	autocmd!
+-- 	au TextYankPost * silent! lua vim.highlight.on_yank({higroup="Todo", timeout=100})
+-- 	augroup END
+-- ]]
+-- vim.api.nvim_create_autocmd("TextYankPost", { command = vim.highlight.on_yank({higroup="Todo", timeout=100})})
+vim.api.nvim_create_autocmd("TextYankPost", {
+  pattern = "*",
+  callback = function ()
+    vim.highlight.on_yank({higroup="Todo", timeout=100})
+  end,
+})
+
+
+-- fix cmd line supressed messages on echo (cmp fault?)
+-- see issue: https://github.com/gelguy/wilder.nvim/issues/41#issuecomment-860025867
+ vim.cmd([[
+	function! SetShortmessF(on) abort
+	  if a:on
+	    set shortmess+=F
+	  else
+	    set shortmess-=F
+	  endif
+	  return ''
+	endfunction
+
+	nnoremap <expr> : SetShortmessF(1) . ':'
+
+	augroup WilderShortmessFix
+	  autocmd!
+	  autocmd CmdlineLeave * call SetShortmessF(0)
 	augroup END
-]]
+]])
+

@@ -14,6 +14,10 @@ vim.api.nvim_set_keymap('i', 'jj', '<ESC>zv', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('i', 'kk', '<ESC>zv', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('i', '<ESC>', '<ESC>zv', {noremap = true, silent = true})
 
+-- when no wrap - move by visual lines
+vim.api.nvim_set_keymap('n', 'j', 'gj', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', 'k', 'gk', {noremap = true, silent = true})
+
 -- map ctrl + j,k,l,h - in inser move
 vim.api.nvim_set_keymap('i', '<c-h>', '<left>', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('i', '<c-l>', '<right>', {noremap = true, silent = true})
@@ -225,6 +229,19 @@ vim.api.nvim_set_keymap( "n", "cg*", "*Ncgn", { noremap = true } )
 vim.api.nvim_set_keymap( "i", " ", " <c-g>u", { noremap = true } )
 vim.api.nvim_set_keymap( "i", ",", ",<c-g>u", { noremap = true } )
 vim.api.nvim_set_keymap( "i", ".", ".<c-g>u", { noremap = true } )
+
+local function open_sub_folds()
+	local line_data = vim.api.nvim_win_get_cursor(0) -- returns {row, col}
+	local fold_closed = vim.fn.foldclosed(line_data[1])
+	if fold_closed == -1 then -- not folded
+		return  "zczO"
+	else -- if fold - then open normall
+		return "zO"
+	end
+end
+
+vim.keymap.set( "n", "zO", open_sub_folds, { remap = false, expr = true } )
+
 
 -- Saner behavior of n and N
 vim.cmd([[

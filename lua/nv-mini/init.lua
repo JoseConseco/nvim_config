@@ -52,8 +52,8 @@ local my_items = {
 	-- starter.sections.recent_files(10, true),
 	-- Use this if you set up 'mini.sessions'
 	starter.sections.sessions(9, true),
-	{ name = 'Addons', action = ':e ~/.config/blender/2.82/scripts/addons', section = 'Bookmarks' },
-	{ name = 'NvimPlugs', action = ':e ~/.local/share/nvim/site/pack/packer/start', section = 'Bookmarks' },
+	{ name = 'Addons', action = ':Explore ~/.config/blender/2.82/scripts/addons', section = 'Bookmarks' },
+	{ name = 'NvimPlugs', action = ':Explore ~/.local/share/nvim/site/pack/packer/start', section = 'Bookmarks' },
 
 }
 if vim.fn.exists('g:started_by_firenvim') ~= 1 then
