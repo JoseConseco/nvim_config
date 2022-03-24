@@ -26,9 +26,6 @@ require("aerial").setup({
   -- Disable aerial on files with this many lines
   disable_max_lines = 10000,
 
-  -- A list of all symbols to display. Set to false to display all symbols.
-  -- This can be a filetype map (see :help aerial-filetype-map)
-  -- To see all available values, see :help SymbolKind
 
 
   -- Enum: split_width, full_width, last, none
@@ -55,7 +52,7 @@ require("aerial").setup({
   -- default collapsed icon. The default icon set is determined by the
   -- "nerd_font" option below.
   -- If you have lspkind-nvim installed, aerial will use it for icons.
-  icons = {},
+  -- icons = {},
 
   -- Control which windows and buffers aerial should ignore.
   -- If close_behavior is "global", focusing an ignored window/buffer will
@@ -136,6 +133,8 @@ require("aerial").setup({
 
 
   -- A list of all symbols to display. Set to false to display all symbols.
+  -- This can be a filetype map (see :help aerial-filetype-map)
+  -- To see all available values, see :help SymbolKind
   filter_kind = {
     "Class",
     "Constructor",

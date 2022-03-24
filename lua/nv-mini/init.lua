@@ -23,7 +23,7 @@ require('mini.sessions').setup({
 	autoread = false,
 
 	-- Whether to write current session before quitting Neovim
-	autowrite = true,
+	autowrite = false,
 
 	-- Directory where global sessions are stored (use `''` to disable)
 	directory = '/home/bartosz/.local/share/nvim/session',--<"session" subdir of user data directory from |stdpath()|>,
@@ -45,7 +45,7 @@ require('mini.sessions').setup({
 local starter = require('mini.starter')
 local my_items = {
 	starter.sections.builtin_actions(),
-	{ name = 'Sessions', action = ":lua require'telescope'.extensions.sessions.sessions{}", section = 'Telescope' },
+	{ name = 'Sessions', action = ":Telescope sessions_picker", section = 'Telescope' },
 	{ name = 'Recent Files', action = ':Telescope oldfiles', section = 'Telescope' },
 	{ name = 'File Brower', action = ':Telescope file_browser', section = 'Telescope' },
 	-- starter.sections.recent_files(10, false),

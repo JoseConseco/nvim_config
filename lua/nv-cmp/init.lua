@@ -198,8 +198,8 @@ cmp.setup.cmdline(':', {
 		end
 	},
 	sources = cmp.config.sources( {
-		{ name = 'cmdline_history' },
 		{ name = 'cmdline' },
+		{ name = 'cmdline_history' },
 		{ name = 'fuzzy_path'}, -- from tzacher
 		{ name = 'buffer' },
 	})
@@ -211,7 +211,10 @@ cmp.setup.cmdline('/', {
 		{
 			name = 'fuzzy_buffer', option = { }
 		}
-	})
+	}),
+	sorting = {
+			priority_weight = 1.0,
+	}
 })
 
 -- be_string

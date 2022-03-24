@@ -75,13 +75,30 @@ return require("packer").startup(function(use)
   use {
     "EdenEast/nightfox.nvim",
     config = function()
-      local nightfox = require "nightfox"
-      nightfox.setup {
-        colors = { red = "#dc6959", orange_br = "#e49464" },
-        styles = { keywords = "bold", functions = "bold" },
-        hlgroups = { HopNextKey = {}, HopNextKey1 = {}, HopNextKey2 = { fg = "${blue}" }, HopUnmatched = {} },
+      -- hlgroups = { HopNextKey = {}, HopNextKey1 = {}, HopNextKey2 = { fg = "${blue}" }, HopUnmatched = {} },
+      require("nightfox").setup {
+				options = {
+					dim_inactive = true,
+					styles = { -- Style to be applied to different syntax groups
+						functions = "bold",
+						keywords = "bold",
+					},
+					inverse = { -- Inverse highlight for different types
+						match_paren = false,
+						visual = true,
+						search = true,
+					},
+				},
+				pallets = {
+					nightfox = {
+						red = "#dc6959",
+						orange_br = "#e49464",
+					},
+					nordfox = {
+						comment = "#60728a",
+					},
+				},
       }
-      require("nightfox").load()
       vim.cmd [[highlight LineNr guifg=#5081c0 | highlight CursorLineNR guifg=#FFba00 ]]
       vim.cmd [[ hi ActiveWindow guibg=#182534
 				hi InactiveWindow guibg=#242a39
@@ -141,7 +158,7 @@ return require("packer").startup(function(use)
 				autocmd ColorScheme * call v:lua.gen_hl('IndentEven', 'Normal')
 				autocmd ColorScheme * highlight! link IndentBlanklineContextChar Comment
 				augroup END
-				]]
+			]]
       vim.cmd [[highlight! link IndentBlanklineContextChar Comment]]
       vim.cmd [[highlight IndentOdd guifg=NONE guibg=NONE gui=nocombine]]
       vim.cmd [[highlight IndentEven guifg=NONE guibg=#2c3144 gui=nocombine]]
@@ -162,7 +179,7 @@ return require("packer").startup(function(use)
 				autocmd WinEnter,FocusGained           * silent! lua require('scrollbar').show()
 				autocmd WinLeave,BufLeave,BufWinLeave,FocusLost            * silent! lua require('scrollbar').clear()
 				augroup end
-				]]
+			]]
       vim.g.scrollbar_shape = { head = "▎", body = "▎", tail = "▎" }
     end,
   }
@@ -285,16 +302,16 @@ return require("packer").startup(function(use)
         virt_text_win_col = 85, -- position the virtual text at a fixed window column (starting from the first text column) ,
         -- e.g. 80 to position at column 80 see :h nvim_buf_set_extmark()
       }
-			-- vim.api.nvim_exec("highlight! link NvimDapVirtualText DiagnosticVirtualTextInfo", false)
-			-- vim.api.nvim_exec("highlight! link NvimDapVirtualTextChanged DiagnosticVirtualTextWarn", false)
-			-- not sure why this works but above wont
+      -- vim.api.nvim_exec("highlight! link NvimDapVirtualText DiagnosticVirtualTextInfo", false)
+      -- vim.api.nvim_exec("highlight! link NvimDapVirtualTextChanged DiagnosticVirtualTextWarn", false)
+      -- not sure why this works but above wont
       vim.cmd [[
 				augroup DapTextUpdate
 				autocmd!
 				autocmd ColorScheme * highlight! link NvimDapVirtualText DiagnosticVirtualTextInfo
 				autocmd ColorScheme * highlight! link NvimDapVirtualTextChanged DiagnosticVirtualTextWarn
 				augroup END
-				]]
+			]]
     end,
   }
   use {
@@ -342,6 +359,12 @@ return require("packer").startup(function(use)
   }
   use "p00f/nvim-ts-rainbow"
   use "nvim-treesitter/playground"
+  use {
+    "lewis6991/spellsitter.nvim", -- nicer highlights for spellcheck
+    config = function()
+      require("spellsitter").setup()
+    end,
+  }
 
   -- lsp -------------------------------------------------------------------------------------------------------
   use "onsails/lspkind-nvim" -- icons for completion popup
@@ -447,35 +470,7 @@ return require("packer").startup(function(use)
   use {
     "jose-elias-alvarez/null-ls.nvim",
     config = function()
-      require("null-ls").setup {
-        -- debug = true,
-        sources = {
-          require("null-ls").builtins.formatting.prettier.with({
-	            filetypes = { "html", "css", "javascript", "javascriptreact", "markdown", "json", "yaml" },
-	        }), -- support range format
-          require("null-ls").builtins.formatting.stylua.with {
-            extra_args = { "--config-path", "/home/bartosz/.config/nvim/lua/.stylua.toml" },
-          }, -- support range format
-          -- require("null-ls").builtins.formatting.yapf.with({
-          -- 		extra_args = { "--style","{based_on_style: pep8, column_limit: 129}" }, -- To add more arguments to a source's defaults
-          -- }), -- support range format
-          require("null-ls").builtins.formatting.autopep8.with {
-            -- 		-- filetypes = { "html", "json", "yaml", "markdown" },
-            -- args = {},
-            extra_args = { "--max-line-length=230","--ignore=E226,E24,W50,W690" }, -- To add more arguments to a source's defaults
-          }, -- support range format
-          require("null-ls").builtins.completion.spell,
-        },
-				on_attach = function(client, bufnr)
-						local opts = { noremap=true, silent=true }
-						local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-						-- if client.resolved_capabilities.document_formatting then
-						buf_set_keymap("n", "<space>cf", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-						-- elseif client.resolved_capabilities.document_range_formatting then
-						buf_set_keymap("v", "<space>cf", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
-						-- end
-				end,
-      }
+      require "nv-null"
     end,
     requires = { "nvim-lua/plenary.nvim" },
   }
@@ -492,8 +487,8 @@ return require("packer").startup(function(use)
 
   -- Explorer  -------------------------------------------------------------------------------------------------------
   -- use { "kevinhwang91/rnvimr"} -- wont edti file
-  use { "francoiscabrol/ranger.vim", requires = "rbgrouleff/bclose.vim" }
-	use { "elihunter173/dirbuf.nvim"} -- edit dir as buffer text
+  -- use { "francoiscabrol/ranger.vim", requires = "rbgrouleff/bclose.vim" }
+  use { "elihunter173/dirbuf.nvim" } -- edit dir as buffer text
 
   -- Git  -------------------------------------------------------------------------------------------------------
   use {
@@ -567,7 +562,7 @@ return require("packer").startup(function(use)
   use "wellle/targets.vim" -- eg ci,  ci_ etc
   use {
     "andymass/vim-matchup",
-    disable = true, -- increase power of % - slow as hell
+    disable = false, -- increase power of % - slow as hell (not any more?) higlights fun, if etc. ranges
     setup = function()
       vim.g.matchup_matchparen_deferred = 1
     end,
@@ -577,7 +572,7 @@ return require("packer").startup(function(use)
   }
   use {
     "monkoose/matchparen.nvim",
-    disable = true, -- what idt does?
+    disable = false, -- what idt does? - faster highlight (), [], & {} compared to vim builtin matchparen
     config = function()
       vim.g.loaded_matchparen = 1
       require("matchparen").setup()
@@ -615,44 +610,51 @@ return require("packer").startup(function(use)
     -- Uncomment next line if you want to follow only stable versions
     tag = "*",
   }
-	use {  -- increse decrease numbers but also datas, true to false etc
-		"monaqa/dial.nvim",
-		config = function()
-			local augend = require("dial.augend")
-			require("dial.config").augends:register_group{
-				-- default augends used when no group name is specified
-				default = {
-					augend.integer.alias.decimal,   -- nonnegative decimal number (0, 1, 2, 3, ...)
-					augend.integer.alias.hex,       -- nonnegative hex number  (0x01, 0x1a1f, etc.)
-					augend.date.alias["%Y/%m/%d"],  -- date (2022/02/19, etc.)
-					augend.constant.alias.bool,
-					augend.constant.new{
-				      elements = {"True", "False"},
-				      word = true, -- if false, "sand" is incremented into "sor", "doctor" into "doctand", etc.
-				      cyclic = true,  -- "or" is incremented into "and".
-				    },
-					augend.constant.new{
-				      elements = {"==", "!="},
-				      word = false, -- if false, "sand" is incremented into "sor", "doctor" into "doctand", etc.
-				      cyclic = true,  -- "or" is incremented into "and".
-				    },
-				},
+  use { -- increse decrease numbers but also datas, true to false etc
+    "monaqa/dial.nvim",
+    config = function()
+      local augend = require "dial.augend"
+      require("dial.config").augends:register_group {
+        -- default augends used when no group name is specified
+        default = {
+          augend.integer.alias.decimal, -- nonnegative decimal number (0, 1, 2, 3, ...)
+          augend.integer.alias.hex, -- nonnegative hex number  (0x01, 0x1a1f, etc.)
+          augend.date.alias["%Y/%m/%d"], -- date (2022/02/19, etc.)
+          augend.constant.alias.bool,
+          -- augend.paren.alias.brackets,
+          -- augend.paren.alias.quote,
+          augend.paren.new {
+            patterns = { { "(", ")" }, { "[", "]" }, { "{", "}" }, { "(", ")" }, { "'", "'" }, { '"', '"' }, { "'", "'" } },
+            nested = true,
+            cyclic = false,
+          },
+          augend.constant.new {
+            elements = { "True", "False" },
+            word = true, -- if false, "sand" is incremented into "sor", "doctor" into "doctand", etc.
+            cyclic = true, -- "or" is incremented into "and".
+          },
+          augend.constant.new {
+            elements = { "==", "!=" },
+            word = false, -- if false, "sand" is incremented into "sor", "doctor" into "doctand", etc.
+            cyclic = true, -- "or" is incremented into "and".
+          },
+        },
 
-				-- augends used when group with name `mygroup` is specified
-				mygroup = {
-					augend.integer.alias.decimal,
-					augend.constant.alias.bool,    -- boolean value (true <-> false)
-					augend.date.alias["%m/%d/%Y"], -- date (02/19/2022, etc.)
-				}
-			}
-			vim.api.nvim_set_keymap("n", "<C-a>", require("dial.map").inc_normal(), {noremap = true})
-			vim.api.nvim_set_keymap("n", "<C-x>", require("dial.map").dec_normal(), {noremap = true})
-			vim.api.nvim_set_keymap("v", "<C-a>", require("dial.map").inc_visual(), {noremap = true})
-			vim.api.nvim_set_keymap("v", "<C-x>", require("dial.map").dec_visual(), {noremap = true})
-			vim.api.nvim_set_keymap("v", "g<C-a>", require("dial.map").inc_gvisual(), {noremap = true})
-			vim.api.nvim_set_keymap("v", "g<C-x>", require("dial.map").dec_gvisual(), {noremap = true})
-		end,
-	}
+        -- augends used when group with name `mygroup` is specified
+        mygroup = {
+          augend.integer.alias.decimal,
+          augend.constant.alias.bool, -- boolean value (true <-> false)
+          augend.date.alias["%m/%d/%Y"], -- date (02/19/2022, etc.)
+        },
+      }
+      vim.api.nvim_set_keymap("n", "<C-a>", require("dial.map").inc_normal(), { noremap = true })
+      vim.api.nvim_set_keymap("n", "<C-x>", require("dial.map").dec_normal(), { noremap = true })
+      vim.api.nvim_set_keymap("v", "<C-a>", require("dial.map").inc_visual(), { noremap = true })
+      vim.api.nvim_set_keymap("v", "<C-x>", require("dial.map").dec_visual(), { noremap = true })
+      vim.api.nvim_set_keymap("v", "g<C-a>", require("dial.map").inc_gvisual(), { noremap = true })
+      vim.api.nvim_set_keymap("v", "g<C-x>", require("dial.map").dec_gvisual(), { noremap = true })
+    end,
+  }
 
   -- navigation  -------------------------------------------------------------------------------------------------------
   use {
@@ -717,18 +719,25 @@ return require("packer").startup(function(use)
   }
 
   -- ternimal in popup -------------------------------------------------------------------------------------------------------
-  use {
-    "akinsho/nvim-toggleterm.lua",
-    config = function()
-      require("toggleterm").setup {}
-      local Terminal = require("toggleterm.terminal").Terminal
-      local lazygit = Terminal:new { cmd = "lazygit", hidden = true, direction = "float" }
-
-      function _G.lazygit_toggle()
-        lazygit:toggle()
-      end
-    end,
-  }
+	use {'voldikss/vim-floaterm', -- in vimscript - but works with ranger and lazygit and other
+		setup = function()
+			vim.g.floaterm_height = 0.9
+			vim.g.floaterm_width = 0.9
+			vim.g.floaterm_opener = 'edit'
+		end
+	}
+  -- use {
+  --   "akinsho/nvim-toggleterm.lua", -- in lua but doew not work with ranger
+  --   config = function()
+  --     require("toggleterm").setup {}
+  --     local Terminal = require("toggleterm.terminal").Terminal
+  --     local lazygit = Terminal:new { cmd = "lazygit", hidden = true, direction = "float" }
+  --
+  --     function _G.lazygit_toggle()
+  --       lazygit:toggle()
+  --     end
+  --   end,
+  -- }
 
   use {
     "SmiteshP/nvim-gps", -- bread_crumbs
@@ -757,9 +766,9 @@ return require("packer").startup(function(use)
     after = "nightfox.nvim",
     config = function()
       if vim.fn.exists "g:started_by_firenvim" == 1 then
-        require("nightfox").load "dayfox"
+        vim.cmd[[colorscheme dayfox]]
       else
-        require("nightfox").load "nightfox"
+				vim.cmd[[colorscheme nightfox]]
       end
     end,
   }

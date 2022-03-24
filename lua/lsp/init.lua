@@ -1,5 +1,10 @@
 local nvim_lsp = require('lspconfig')
 
+local opts = { noremap=true, silent=true }
+-- vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+-- vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
 local on_attach = function(client, bufnr)
 	local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
 	local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
@@ -7,7 +12,6 @@ local on_attach = function(client, bufnr)
 	buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
 	-- Mappings.
-	local opts = { noremap=true, silent=true }
 	buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
 	-- buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
 	buf_set_keymap('n', 'gd', ":lua require('telescope.builtin').lsp_definitions({initial_mode = 'normal'})<CR>", opts) --zv - open fold at line
@@ -21,10 +25,6 @@ local on_attach = function(client, bufnr)
 	-- buf_set_keymap('n', '<space>lrn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
 	-- buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
 	buf_set_keymap('n', 'gr', ":lua require('telescope.builtin').lsp_references({initial_mode = 'normal'})<CR>", opts)
-	-- buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-	-- buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-	-- buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-	-- buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
 
 	-- Set some keybinds conditional on server capabilities
 	if client.resolved_capabilities.document_formatting then
@@ -216,6 +216,7 @@ nvim_lsp.pyright.setup{
 nvim_lsp.sumneko_lua.setup {
 	cmd = {'lua-language-server', "-E", '/usr/share/lua-language-server/main.lua'};
 	on_attach = on_attach,
+	capabilities = capabilities,
 	settings = {
 		Lua = {
 			runtime = {
@@ -247,6 +248,7 @@ nvim_lsp.sumneko_lua.setup {
 require'lspconfig'.vimls.setup{
 	cmd = { "vim-language-server", "--stdio" };
 	on_attach = on_attach,
+	capabilities = capabilities,
 	filetypes = {"vim"},
 	init_options = {
 		diagnostic = {
@@ -269,4 +271,16 @@ require'lspconfig'.vimls.setup{
 	root_dir = function(fname)
 		return util.find_git_ancestor(fname) or vim.fn.getcwd()
 	end,
+}
+
+
+require'lspconfig'.ltex.setup{
+	cmd = { "ltex-ls" },
+	on_attach = on_attach,
+	capabilities = capabilities,
+	filetypes = { "bib", "gitcommit", "markdown", "org", "plaintex", "rst", "rnoweb", "tex" },
+	root_dir = function(fname)
+		return util.find_git_ancestor(fname) or vim.fn.getcwd()
+	end,
+	single_file_support = true,
 }

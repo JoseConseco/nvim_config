@@ -1,3 +1,7 @@
+P = function(v)
+	print(vim.inspect(v))
+	return v
+end
 
 local fmt = string.format
 
@@ -14,7 +18,9 @@ local function get_color_from_hl(name)
 end
 
 local function to_rgb(color)
-  return tonumber(color:sub(2, 3), 16), tonumber(color:sub(4, 5), 16), tonumber(color:sub(6), 16)
+	if color ~= nil then
+		return tonumber(color:sub(2, 3), 16), tonumber(color:sub(4, 5), 16), tonumber(color:sub(6), 16)
+	end
 end
 
 local function clamp_color(color)
@@ -42,6 +48,10 @@ end
 
 function _G.gen_hl(new_highlight, in_highlight)
   local normal = get_color_from_hl(in_highlight)
+	if normal.background == nil then
+		print("No background color for " .. in_highlight)
+		return
+	end
 	local r, g, b = to_rgb(normal.background)
 	local factor = -6
 	if r + g + b < 255+127 then

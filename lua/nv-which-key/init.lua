@@ -53,7 +53,6 @@ end
 -- Single mappings
 wk.register({
 	-- ['<leader>S'] = { ':SClose<CR>',                                                 'Startify' },
-	['<leader>S'] = { ':lua MiniStarter.open()<CR>',                                                 'MiniStarter' },
 	['<leader>*'] = { ":lua require'telescope.builtin'.grep_string({path_display = {'shorten'},word_match = '-w', only_sort_text = true, initial_mode = 'normal', })<CR>",       'Find * Project' },
 	['<leader>/'] = {":lua require'telescope.builtin'.live_grep{path_display = {'tail'}, word_match = '-w', only_sort_text = true, search = '' }<CR>",                           'Search Project'}     ,
 	['<leader>?'] = {':Grepper -cword  -noprompt -tool ag<cr>',                                             'Word to clist (Grepper)'},
@@ -227,7 +226,7 @@ wk.register({
 	['<leader>gD'] = {':Gdiffsplit<CR>'                       , 'diff split'},
 	['<leader>gH'] = {':Gdiffsplit HEAD~1'                    , 'diff split to Head~1'},
 	['<leader>gR'] = {':Ggrep<CR>'                            , 'git grep'},
-	['<leader>gg'] = {':lua lazygit_toggle()<CR>'             , 'LazyGit'},  -- defined in  nvim-toggleterm.lua plug
+	['<leader>gg'] = {':FloatermNew lazygit<CR>'             , 'LazyGit'},  -- defined in  nvim-toggleterm.lua plug
 	['<leader>gs'] = {':Git<CR>'                              , 'status'}, -- old Gitstatus  - deprecated
 	['<leader>gL'] = {':Gclog<CR>'                            , 'log files revisions'},
 	['<leader>gl'] = {':0Gclog<CR>'                           , 'log current file revisions'},
@@ -257,7 +256,8 @@ wk.register({
 wk.register({
 	['<leader>l'] = { name = '+LSP' },
 	['<leader>lD'] = {':lua vim.lsp.buf.declaration()<CR>',                                    'Declaration (gD)'},
-	['<leader>ld'] = {':lua vim.lsp.buf.definition()<CR>',                                     'Definition (gd)'},
+	-- ['<leader>ld'] = {':lua vim.lsp.buf.definition()<CR>',                                     'Definition (gd)'},
+	['<leader>ld'] = {'<cmd>lua vim.diagnostic.setloclist()<CR>', 'Diagnostics to LocList'} ,
 	['<leader>lK'] = {':lua vim.lsp.buf.hover()<CR>',                                          'Hover (K)'},
 	['<leader>li'] = {':lua vim.lsp.buf.implementation()<CR>',                                 'Implementation (gi)'},
 	['<leader>lh'] = {':lua vim.lsp.buf.signature_help()<CR>',                                 'Signature Help'},
@@ -270,19 +270,6 @@ wk.register({
 	['<leader>lL'] = {':lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR><CR>', 'List Workspace Folders'} ,
 	['<leader>lt'] = {':LspTroubleToggle<CR>',                                                 'Lsp Trouble Toggle'},
 
-	['<leader>lS'] = { name = '+LSPSaga' },
-	['<leader>lSf'] = {':Lspsaga lsp_finder<CR>',         'Lsp Finder'} ,
-	['<leader>lSa'] = {':Lspsaga code_action<CR>',        'Code Action'} ,
-	['<leader>lSK'] = {':Lspsaga hover_doc<CR>',          'Hover Doc'} ,
-	['<leader>lSs'] = {':Lspsaga signature_help<CR>',     'Signature Help'} ,
-	['<leader>lSr'] = {':Lspsaga rename<CR>',             'Rename'} ,
-	['<leader>lSp'] = {':Lspsaga preview_definition<CR>', 'Preview Definition'} ,
-
-	['<leader>lg'] = { name = '+diagnostics' },
-	['<leader>lgl'] = {':lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', 'Line'} ,
-	['<leader>lg['] = {':lua vim.lsp.diagnostic.goto_prev()<CR>',             'Prev'} ,
-	['<leader>lg]'] = {':lua vim.lsp.diagnostic.goto_next()<CR>',             'Next'} ,
-	['<leader>lgq'] = {':lua vim.lsp.diagnostic.set_loclist()<CR>',           'Diagnostic to Loclist'} ,
 
 	['<leader>lT'] = { name = '+Telescope' },
 	['<leader>lTr'] = {':Telescope lsp_references<CR>',           'References'},
@@ -335,7 +322,7 @@ wk.register({
 	['<leader>oL'] = {":lua.require('luapad').detach()<CR>",    'Luapad Repl Off'},
 	['<leader>oc'] = {':Codi<CR>',                              'Codi Start (multi lang REPL)'},
 	['<leader>oC'] = {':Codi!<CR>',                             'Codi Stop'},
-	['<leader>ot'] = {':ToggleTerm<CR>', 'Term'},
+	['<leader>ot'] = {':FloatermNew<CR>', 'Term'},
 })
 
 -- function _G.replace_word()
@@ -378,14 +365,35 @@ wk.register({  -- second one for visual mode
 	-- end ,		                                                            			 'Replace word'},    -- \<word\>  -adds whitespace  word limit (sub only whole words)
 }, {mode = "v", prefix = ""})
 
+-- MiniSessions.write(nil, {force = true})
+-- function to save current session, close all buffers and open MiniStarter.open() - startup screen
+
+function Save_current_session()
+		if vim.v.this_session ~= '' then
+			MiniSessions.write(nil, {force = true})
+			print('Saved Session')
+		end
+end
+
+local function StarterOpen()
+		Save_current_session()
+		local buffers = vim.api.nvim_list_bufs()
+		for _, buffer in ipairs(buffers) do
+				vim.api.nvim_buf_delete(buffer,{})
+		end
+		MiniStarter.open()
+		vim.fn.feedkeys(t('<CR>'))
+end
 
 wk.register({
-	['<leader>P'] = { name = '+Project' },
+	['<leader>S'] = { name = '+Session' },
+	['<leader>SS'] = { StarterOpen,                                                 'MiniStarter' },
 	-- ['<leader>P*'] = {":lua require'telescope.builtin'.grep_string{path_display = {'shorten'},word_match = '-w', only_sort_text = true, initial_mode = 'normal', }<CR>", 'Find Word'}    ,
 	-- ['<leader>P/'] = {':Grepper-cword<CR>',                                             'Word to clist (Grepper)'},
-	['<leader>Ps'] = {':call v:lua.CmdInput("lua MiniSessions.write(\'%s\')")<CR>',              'Sesion Save'}  ,
-	['<leader>Pc'] = {':SClose<CR>',                                                    'Sesion Close'} ,
-	['<leader>Pd'] = {':SDelete<CR>',                                                   'Sesion Delete'},
+	['<leader>Ss'] = { Save_current_session,    'Save Current'}  ,
+	['<leader>Sa'] = {':call v:lua.CmdInput("lua MiniSessions.write(\'%s\')")<CR>',              'Save as'}  ,
+	['<leader>Sc'] = {':SClose<CR>',                                                    'Sesion Close'} ,
+	['<leader>Sd'] = {':SDelete<CR>',                                                   'Sesion Delete'},
 	-- Startify
 	-- ['<leader>Ps'] = {':SSave<CR>',                                                     'Sesion Save'}  ,
 	-- ['<leader>Pl'] = {':SLoad<CR>',                                                     'Sesion Load'}  ,
@@ -398,25 +406,7 @@ wk.register({
 
 
 wk.register({
-	['<leader>t'] = { name = '+Telescope' },
-	['<leader>tA'] = {':Telescope builtin<CR>'                     , 'Telescope builtins'},
-	['<leader>tf'] = {':Telescope find_files<CR>'                  , 'files'},
-	-- ['<leader>tF'] = {':Telescope git_files<CR>'                   , 'git_files'},
-	-- ['<leader>ts'] = {':Telescope git_status<CR>'                  , 'git_status'},
-	-- ['<leader>tT'] = {':Telescope tags<CR>'                        , 'tags'},
-	-- ['<leader>tt'] = {':Telescope current_buffer_tags<CR>'         , 'buffer_tags'},
-	['<leader>th'] = {':Telescope command_history<CR>'             , 'history'},
-	['<leader>ta'] = {':Telescope aerial<CR>'  , 'Vim Bookmarsk'},
-	['<leader>tb'] = {':Telescope vim_bookmarks current_file<CR>'  , 'Vim Bookmarsk'},
-	['<leader>tB'] = {':Telescope vim_bookmarks all<CR>'           , 'Vim Bookmarsk All'},
-	['<leader>tk'] = {':Telescope keymaps<CR>'                     , 'keymaps'},
-	['<leader>to'] = {':Telescope vim_options<CR>'                 , 'vim_options'},
-	-- ['<leader>tM'] = {':Telescope man_pages<CR>'                   , 'man_pages'},
-	-- ['<leader>tp'] = {':Telescope fd<CR>'                          , 'fd'},
-	['<leader>tP'] = {':Telescope spell_suggest<CR>'               , 'spell_suggest'},
-	-- ['<leader>tG'] = {':Telescope grep_string<CR>'                 , 'Find Word pwd'},
-	-- ['<leader>tR'] = {':Telescope reloader<CR>'                    , 'reloader'},
-	['<leader>tw'] = {':Telescope file_browser<CR>'                , 'File Browser Fuzzy'},
+	['<leader>t'] = {':Telescope<CR>'                     , 'Telescope builtins'},
 })
 
 
@@ -445,24 +435,21 @@ wk.register({
 	['<leader>wa'] = {':call v:lua.conditional_width()<CR>',       'Auto width'},
 })
 
+
 -- TSContextDisable - if srm treesitter-context
 if vim.fn.exists('g:started_by_firenvim') == 1 then
-	wk.register({['<leader>qq'] = {':wq!<CR>',        'Quit Firenvim'}})
+	wk.register({['<leader>qq'] = {':wq!<CR>' , 'Quit Firenvim'}})
 else
-	wk.register({['<leader>qq'] = {':TSContextDisable<cr> | :confirm qa<CR>',        'Quit Confirm (qa)'}})
+	wk.register({['<leader>qq'] = {':TSContextDisable<cr>|:call v:lua.Save_current_session()<CR>|:confirm qa<CR>',        'Quit Confirm (qa)'}})
 end
-
--- local x = 2
-
 wk.register({
-	['<leader>q'] = { name = '+Quit' },
-	-- ['<leader>qq'] = {':TSContextDisable<cr> | :confirm qa<CR>',        'Quit Confirm (qa)'},
-	['<leader>qf'] = {':q!<CR>',                                    'Force Quit (q!)'},
-	['<leader>qs'] = {':bufdo update | q!<CR>', 'Quit Save all (wqa!)'},
+	['<leader>q'] = { name = '+Quit' }       ,
+	['<leader>qf'] = {':q!<CR>'                , 'Force Quit (q!)'}      ,
+	['<leader>qs'] = {':bufdo update | q!<CR>' , 'Quit Save all (wqa!)'} ,
 })
 wk.register({  -- second one for visual mode
-	['<leader>q'] = { name = '+Replace'},
-	['<leader>qq'] = {':<ESC> | :TSContextDisable<cr> | :confirm qa<CR>',        'Quit Confirm (qa)'},
+	['<leader>q'] = { name = '+Quit'},
+	['<leader>qq'] = {':<ESC>|:TSContextDisable<cr>|:call v:lua.Save_current_session()<CR>|:confirm qa<CR>',        'Quit Confirm (qa)'},
 }, {mode = "v", prefix = ""})
 
 
