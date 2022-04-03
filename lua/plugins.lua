@@ -9,7 +9,13 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   vim.api.nvim_command "packadd packer.nvim"
 end
 
-vim.cmd "autocmd BufWritePost plugins.lua PackerCompile" -- Auto compile when there are changes in plugins.lua
+-- vim.cmd [[
+-- augroup packer_user_config
+--   autocmd!
+--   autocmd BufWritePost plugins.lua source <afile> | PackerCompile
+-- augroup end]]
+
+-- Auto compile when there are changes in plugins.lua
 require("packer").init {
   git = {
     clone_timeout = 20,
@@ -48,10 +54,8 @@ require("packer").init {
 -- }
 -- packadd - edge theme delayed?
 
-local nofirenvim = function()
-  return vim.fn.exists "g:started_by_firenvim" ~= 1
-end
-
+local theme_change_au = vim.api.nvim_create_augroup("MyThemeChangeAu", { clear = true })
+local vim_enter_au = vim.api.nvim_create_augroup("MyWinEnter", { clear = true })
 return require("packer").startup(function(use)
   use { "wbthomason/packer.nvim" } -- Packer can manage itself as an optional plugin
 
@@ -61,6 +65,7 @@ return require("packer").startup(function(use)
   use "ful1e5/onedark.nvim"
   use {
     "rmehri01/onenord.nvim",
+    disable = true,
     config = function()
       require("onenord").setup {
         borders = true, -- Split window borders
@@ -70,42 +75,88 @@ return require("packer").startup(function(use)
       }
     end,
   }
-  use { "projekt0n/github-nvim-theme" }
-  -- config = function() require('github-theme').setup({themeStyle='dimmed', keywordStyle="bold"}) end;}
+  use {
+    "projekt0n/github-nvim-theme",
+    config = function()
+      require("github-theme").setup {
+				theme_style = "light",
+				colors = {bg = "#f5f5f5"},
+				keyword_style = "bold",
+				comment_style = "italic",
+			}
+    end,
+  }
   use {
     "EdenEast/nightfox.nvim",
     config = function()
       -- hlgroups = { HopNextKey = {}, HopNextKey1 = {}, HopNextKey2 = { fg = "${blue}" }, HopUnmatched = {} },
       require("nightfox").setup {
-				options = {
-					dim_inactive = true,
-					styles = { -- Style to be applied to different syntax groups
-						functions = "bold",
-						keywords = "bold",
-					},
-					inverse = { -- Inverse highlight for different types
-						match_paren = false,
-						visual = true,
-						search = true,
-					},
-				},
-				pallets = {
-					nightfox = {
-						red = "#dc6959",
-						orange_br = "#e49464",
-					},
-					nordfox = {
-						comment = "#60728a",
-					},
-				},
+        options = {
+          transparent = false,
+          dim_inactive = true,
+          styles = { -- Style to be applied to different syntax groups
+            functions = "bold",
+            keywords = "bold",
+          },
+          inverse = { -- Inverse highlight for different types
+            match_paren = false,
+            visual = false,
+            search = true,
+          },
+        },
+        palettes = {
+          nightfox = {
+            red = "#df6959",
+            orange_br = "#e49464",
+          },
+          nordfox = {
+            comment = "#60728a",
+          },
+          dayfox = {
+            bg1 = "#f7f7f5",
+						cyan = "#106990",
+          },
+        },
       }
       vim.cmd [[highlight LineNr guifg=#5081c0 | highlight CursorLineNR guifg=#FFba00 ]]
-      vim.cmd [[ hi ActiveWindow guibg=#182534
-				hi InactiveWindow guibg=#242a39
-				set winhighlight=Normal:ActiveWindow,NormalNC:InactiveWindow]]
+      vim.api.nvim_create_autocmd("ColorScheme, UIEnter", {
+        pattern = "*",
+        callback = function()
+          local hl_adjust = require "hl_adjust"
+          hl_adjust.highlight_adjust_col("NormalNC", "Normal", { action = "contrast", factor = -3 })
+          vim.cmd [[set winhighlight=Normal:Normal,NormalNC:NormalNC]]
+        end,
+        group = theme_change_au,
+      })
+      -- vim.cmd [[ hi ActiveWindow guibg=#182534
+      -- 	hi InactiveWindow guibg=#242a39
+      -- 	set winhighlight=Normal:Normal,NormalNC:NormalNC]]
     end,
-    after = "onenord.nvim",
+    -- after = "onenord.nvim",
   }
+  use {
+    "m-demare/hlargs.nvim",
+    after = "nightfox.nvim",
+    config = function()
+      local palette = require("nightfox.palette").load "nightfox"
+      require("hlargs").setup {
+        color = palette.cyan.bright, -- color of 'ident' - how ot make it work for all themes?
+        paint_arg_declarations = false,
+        excluded_argnames = {
+          declarations = {
+            python = { "self", "cls" },
+            lua = { "self" },
+          },
+          usages = {
+            python = { "self", "cls" },
+            lua = { "self" },
+          },
+        },
+      }
+      vim.api.nvim_create_autocmd("ColorScheme", { pattern = "*", command = [[highlight! link Hlargs TSParameter]], group = theme_change_au }) -- zx - reclaculate folds, zv - unfold cursor line
+    end,
+  }
+
   use {
     "folke/tokyonight.nvim",
     setup = function()
@@ -131,7 +182,6 @@ return require("packer").startup(function(use)
   } -- lua + wont close () next to char finally good and simple +++
   use {
     "nvim-lualine/lualine.nvim",
-    cond = { nofirenvim },
     requires = { "kyazdani42/nvim-web-devicons" },
     config = function()
       require "nv-lualine"
@@ -139,7 +189,6 @@ return require("packer").startup(function(use)
   }
   use {
     "akinsho/nvim-bufferline.lua",
-    cond = { nofirenvim },
     requires = "kyazdani42/nvim-web-devicons",
     config = function()
       require("bufferline").setup()
@@ -148,26 +197,21 @@ return require("packer").startup(function(use)
   }
   use {
     "lukas-reineke/indent-blankline.nvim",
-    after = "tokyonight.nvim",
-    disable = false, --  displaying thin vertical lines at each indentation level
-    setup = function()
-      vim.cmd [[
-				augroup IndentBlanklineContextAutogroup
-				autocmd!
-				autocmd ColorScheme * highlight IndentOdd guifg=NONE guibg=NONE gui=nocombine
-				autocmd ColorScheme * call v:lua.gen_hl('IndentEven', 'Normal')
-				autocmd ColorScheme * highlight! link IndentBlanklineContextChar Comment
-				augroup END
-			]]
-      vim.cmd [[highlight! link IndentBlanklineContextChar Comment]]
-      vim.cmd [[highlight IndentOdd guifg=NONE guibg=NONE gui=nocombine]]
-      vim.cmd [[highlight IndentEven guifg=NONE guibg=#2c3144 gui=nocombine]]
-    end,
-
+    after = "nightfox.nvim",
     config = function()
+      vim.api.nvim_create_autocmd("ColorScheme, UIEnter", {
+        pattern = "*",
+        callback = function()
+          local hl_adjust = require "hl_adjust"
+          hl_adjust.highlight_adjust_col("IndentEven", "Normal", {})
+          vim.cmd [[highlight IndentOdd guifg=NONE guibg=NONE gui=nocombine]]
+          vim.cmd [[highlight! link IndentBlanklineContextChar Comment]]
+        end,
+        group = theme_change_au,
+      })
       require "nv-indentline"
     end,
-  } -- preview line whe using goto :xyz
+  }
   use {
     "Xuyuanp/scrollbar.nvim",
     disable = true, -- side scrollbar  -fucks up session load often :/ - but at least wont break tele
@@ -208,7 +252,6 @@ return require("packer").startup(function(use)
   use {
     "kevinhwang91/nvim-hlslens",
     after = "nvim-scrollbar",
-    cond = { nofirenvim },
     config = function()
       require("scrollbar.handlers.search").setup()
     end,
@@ -228,16 +271,18 @@ return require("packer").startup(function(use)
   -- use {'machakann/vim-highlightedyank',
   --	config=function() vim.g.highlightedyank_highlight_duration = 100 end}
   use {
+    "https://gitlab.com/yorickpeterse/nvim-window.git", -- pick window quickly
+    config = function()
+      vim.api.nvim_set_keymap("n", "<c-w>w", ":lua require('nvim-window').pick()<CR>", { noremap = true, silent = true })
+    end,
+  }
+
+  -- WIndows manage  -------------------------------------------------------------------------------------------------------
+  use {
     "beauwilliams/focus.nvim",
     disable = false, -- autoresize windows to gold ration - brokens with scroll
     config = function()
       require("focus").setup { enable = true }
-    end,
-  }
-  use {
-    "https://gitlab.com/yorickpeterse/nvim-window.git", -- pick window quickly
-    config = function()
-      vim.api.nvim_set_keymap("n", "<c-w>w", ":lua require('nvim-window').pick()<CR>", { noremap = true, silent = true })
     end,
   }
 
@@ -305,13 +350,8 @@ return require("packer").startup(function(use)
       -- vim.api.nvim_exec("highlight! link NvimDapVirtualText DiagnosticVirtualTextInfo", false)
       -- vim.api.nvim_exec("highlight! link NvimDapVirtualTextChanged DiagnosticVirtualTextWarn", false)
       -- not sure why this works but above wont
-      vim.cmd [[
-				augroup DapTextUpdate
-				autocmd!
-				autocmd ColorScheme * highlight! link NvimDapVirtualText DiagnosticVirtualTextInfo
-				autocmd ColorScheme * highlight! link NvimDapVirtualTextChanged DiagnosticVirtualTextWarn
-				augroup END
-			]]
+      vim.api.nvim_create_autocmd("ColorScheme", { pattern = "*", command = [[highlight! link NvimDapVirtualText DiagnosticVirtualTextInfo]], group = theme_change_au }) -- zx - reclaculate folds, zv - unfold cursor line
+      vim.api.nvim_create_autocmd("ColorScheme", { pattern = "*", command = [[highlight! link NvimDapVirtualTextChanged DiagnosticVirtualTextWarn]], group = theme_change_au }) -- zx - reclaculate folds, zv - unfold cursor line
     end,
   }
   use {
@@ -357,7 +397,27 @@ return require("packer").startup(function(use)
       vim.api.nvim_set_keymap("v", "u", ":lua require('tsht').nodes()<CR>", { noremap = true, silent = true })
     end,
   }
-  use "p00f/nvim-ts-rainbow"
+  use {
+    "p00f/nvim-ts-rainbow",
+    after = "nightfox.nvim",
+    config = function()
+      -- add colorscheme change hook
+      vim.api.nvim_create_autocmd("ColorScheme", {
+        pattern = "*",
+        callback = function()
+          local hl_adjust = require "hl_adjust"
+          hl_adjust.match_color_to_highlight("#ebcb8b", "TSKeywordOperator", "rainbowcol1", "fg")
+          hl_adjust.match_color_to_highlight("#a3be8c", "TSKeywordOperator", "rainbowcol2", "fg")
+          hl_adjust.match_color_to_highlight("#88c0d0", "TSKeywordOperator", "rainbowcol3", "fg")
+          hl_adjust.match_color_to_highlight("#6ea1ec", "TSKeywordOperator", "rainbowcol4", "fg")
+          hl_adjust.match_color_to_highlight("#b48ead", "TSKeywordOperator", "rainbowcol5", "fg")
+          hl_adjust.match_color_to_highlight("#df717a", "TSKeywordOperator", "rainbowcol6", "fg")
+          hl_adjust.match_color_to_highlight("#d08770", "TSKeywordOperator", "rainbowcol7", "fg")
+        end,
+        group = theme_change_au,
+      })
+    end,
+  }
   use "nvim-treesitter/playground"
   use {
     "lewis6991/spellsitter.nvim", -- nicer highlights for spellcheck
@@ -493,11 +553,9 @@ return require("packer").startup(function(use)
   -- Git  -------------------------------------------------------------------------------------------------------
   use {
     "tpope/vim-fugitive", -- add :Gitxx commands
-    cond = { nofirenvim },
   }
   use {
     "lewis6991/gitsigns.nvim",
-    cond = { nofirenvim },
     requires = { "nvim-lua/plenary.nvim", "lewis6991/foldsigns.nvim" },
     config = function()
       require "nv-gitsigns"
@@ -505,7 +563,6 @@ return require("packer").startup(function(use)
   } -- lua + wont close () next to char finally good and simple +++
   use {
     "sindrets/diffview.nvim",
-    cond = { nofirenvim },
     config = function()
       require("diffview").setup {}
     end,
@@ -526,11 +583,11 @@ return require("packer").startup(function(use)
   }
 
   --find and replace ? -------------------------------------------------------------------------------------------------------
-  use {
-    "VonHeikemen/searchbox.nvim",
-    disable = false,
-    requires = { { "MunifTanjim/nui.nvim" } },
-  }
+  -- use {  -- replaced by cg* mapping
+  --   "VonHeikemen/searchbox.nvim",
+  --   disable = false,
+  --   requires = { { "MunifTanjim/nui.nvim" } },
+  -- }
   use "kevinhwang91/nvim-bqf" --better quickfix  (with preview and complicated mapping)
   use "brooth/far.vim" --use: Far(r) from to **/*.py   > then :Fardo
   use "dyng/ctrlsf.vim" --Run :CtrlSF [pattern]
@@ -572,7 +629,7 @@ return require("packer").startup(function(use)
   }
   use {
     "monkoose/matchparen.nvim",
-    disable = false, -- what idt does? - faster highlight (), [], & {} compared to vim builtin matchparen
+    disable = true, -- what idt does? - faster highlight (), [], & {} compared to vim builtin matchparen
     config = function()
       vim.g.loaded_matchparen = 1
       require("matchparen").setup()
@@ -625,7 +682,7 @@ return require("packer").startup(function(use)
           -- augend.paren.alias.quote,
           augend.paren.new {
             patterns = { { "(", ")" }, { "[", "]" }, { "{", "}" }, { "(", ")" }, { "'", "'" }, { '"', '"' }, { "'", "'" } },
-            nested = true,
+            nested = false,
             cyclic = false,
           },
           augend.constant.new {
@@ -699,7 +756,6 @@ return require("packer").startup(function(use)
   } -- preview line whe using goto :xyz
   use {
     "axlebedev/footprints",
-    cond = { nofirenvim },
     config = function()
       -- vim.g.footprintsColor = '#512c4f'
       vim.g.footprintsColor = "#00c0f0"
@@ -719,13 +775,14 @@ return require("packer").startup(function(use)
   }
 
   -- ternimal in popup -------------------------------------------------------------------------------------------------------
-	use {'voldikss/vim-floaterm', -- in vimscript - but works with ranger and lazygit and other
-		setup = function()
-			vim.g.floaterm_height = 0.9
-			vim.g.floaterm_width = 0.9
-			vim.g.floaterm_opener = 'edit'
-		end
-	}
+  use {
+    "voldikss/vim-floaterm", -- in vimscript - but works with ranger and lazygit and other
+    setup = function()
+      vim.g.floaterm_height = 0.9
+      vim.g.floaterm_width = 0.9
+      vim.g.floaterm_opener = "edit"
+    end,
+  }
   -- use {
   --   "akinsho/nvim-toggleterm.lua", -- in lua but doew not work with ranger
   --   config = function()
@@ -754,30 +811,10 @@ return require("packer").startup(function(use)
   use "rafcamlet/nvim-luapad" -- :Luapad - open interactive scratch bufer with realtime eval
   use "metakirby5/codi.vim" -- repls for all other langs ...
 
-  -- Vim in browser -------------------------------------------------------------------------------------------------------
-  use {
-    "glacambre/firenvim",
-    run = function()
-      vim.fn["firenvim#install"](0)
-    end,
-    setup = function()
-      require "nv-firenvim"
-    end,
-    after = "nightfox.nvim",
-    config = function()
-      if vim.fn.exists "g:started_by_firenvim" == 1 then
-        vim.cmd[[colorscheme dayfox]]
-      else
-				vim.cmd[[colorscheme nightfox]]
-      end
-    end,
-  }
-
   -- project management
   use {
     "mhinz/vim-startify",
     disable = true,
-    cond = { nofirenvim },
     config = function()
       require "nv-startify"
     end,

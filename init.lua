@@ -1,13 +1,37 @@
 local P = function(x)
   print(vim.inspect(x))
 end
-require "hl_adjust"
 require "plugins"
+require "hl_adjust"
 -- vim.cmd('packloadall!') -- fixes plugs not seeing config, and load order mess. Or else we need to: so $MYVIMRC  but fucks up packer.sync...
 require "settings"
 require "keymappings"
 
 local init_group = vim.api.nvim_create_augroup("MyInitAuGroup", {clear = true})
+
+
+-- why it wont load indentline even odd correctly?
+local function theme_change_timeday(start_hour, end_hour)
+	local time = tonumber(vim.fn.strftime("%H"))
+	if time < start_hour or time > end_hour then
+		-- print('dark')
+		vim.cmd [[colorscheme nightfox]]
+	else
+		-- print('light')
+		vim.cmd [[colorscheme dayfox]]
+	end
+	vim.cmd [[doautoall ColorScheme]]
+end
+
+vim.api.nvim_create_autocmd("VimEnter", { --FocusGained
+  pattern = "*",
+  callback = function()
+		theme_change_timeday(9, 15)
+	end,
+	group = init_group,
+	-- nested = true, -- dow notwork in this case
+})
+
 -- set themes props before loading actuall theme ?
 -- vim.cmd('colorscheme tokyonight')  -- onedark, OceanicNext, edge
 

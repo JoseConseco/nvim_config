@@ -50,19 +50,33 @@ local on_attach = function(client, bufnr)
 		)
 	-- Set autocommands conditional on server_capabilities
 	if client.resolved_capabilities.document_highlight then
-		vim.api.nvim_exec([[
-		augroup HoverLspRefColorsSetup
-		autocmd!
-		autocmd ColorScheme * call v:lua.gen_hl('LspReferenceRead', 'Search')
-		autocmd ColorScheme * call v:lua.gen_hl('LspReferenceText', 'Search')
-		autocmd ColorScheme * call v:lua.gen_hl('LspReferenceWrite', 'Search')
-		augroup END
-		augroup lsp_document_highlight
-		autocmd! * <buffer>
-		autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-		autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-		augroup END
-		]], false)
+		local hover_lsp_col = vim.api.nvim_create_augroup("HoverLspRefColorsSetup", {clear = true})
+		local hl_adjust = require("hl_adjust")
+		vim.api.nvim_create_autocmd("ColorScheme", {
+			pattern = "*",
+			callback = function()
+				hl_adjust.highlight_adjust_col('LspReferenceRead', 'Search',{})
+				hl_adjust.highlight_adjust_col('LspReferenceText', 'Search',{})
+				hl_adjust.highlight_adjust_col('LspReferenceWrite', 'Search',{})
+			end,
+			group = hover_lsp_col,
+		})
+
+		local lsp_doc_hi = vim.api.nvim_create_augroup("lsp_document_highlight", {clear = true})
+		vim.api.nvim_create_autocmd("CursorHold", {
+			pattern = "<buffer>",
+			callback = function()
+				vim.lsp.buf.document_highlight()
+			end,
+			group = lsp_doc_hi,
+		})
+		vim.api.nvim_create_autocmd("CursorMoved", {
+			pattern = "<buffer>",
+			callback = function()
+				vim.lsp.buf.clear_references()
+			end,
+			group = lsp_doc_hi,
+		})
 	end
 
 	-- require'aerial'.on_attach(client) -- aerial plug - outliner - now uses treesitter

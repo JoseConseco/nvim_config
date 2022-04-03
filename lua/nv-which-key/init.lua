@@ -339,13 +339,13 @@ wk.register({
 	['<leader>sps'] = {":lua require('spectre').open()<CR>",        'Spectre'},
 	-- ['<leader>r*'] = {":let @/=expand('<cword>')<cr>cgn",        'Replace word with yank'},
 	-- ['<leader>s*'] = {":.,$s/\\<<C-r><C-w>\\>/<C-r>+/gc|1,''-&&<CR>",  'Replace word with yank', mode='n'},       -- \<word\>  -adds whitespace  word limit (sub only whole words)
-	-- ['<leader>s/'] = {
-	-- function()
-	-- 	local name = vim.fn.input('To: ', vim.fn.expand('<cword>'));
-	-- 	vim.cmd(":.,$s/\\<"..vim.fn.expand('<cword>').."\\>/"..name.."/gc|1,''-&&")
-	-- end,                                                                                  'Replace word'},       -- write to reg z (@a) then use it for replacign * word
-	['<leader>s/'] = {":lua require('searchbox').replace({default_value = vim.fn.expand('<cword>'), confirm = 'menu'})<CR>", 'Find and Replace word'},       -- write to reg z (@a) then use it for replacign * word
-	['<leader>s*'] = {[["ayiw:lua require('searchbox').replace({confirm='menu'})<CR><C-r>=getreg('a')<CR><CR>:sl m<CR><C-r>=getreg('"')<CR>]], 'Replace word'},       -- write to reg z (@a) then use it for replacign * word
+	['<leader>s/'] = {
+	function()
+		local name = vim.fn.input('To: ', vim.fn.expand('<cword>'));
+		vim.cmd(":.,$s/\\<"..vim.fn.expand('<cword>').."\\>/"..name.."/gc|1,''-&&")
+	end,                                                                                  'Replace word'},       -- write to reg z (@a) then use it for replacign * word
+	-- ['<leader>s/'] = {":lua require('searchbox').replace({default_value = vim.fn.expand('<cword>'), confirm = 'menu'})<CR>", 'Find and Replace word'},       -- write to reg z (@a) then use it for replacign * word
+	-- ['<leader>s*'] = {[["ayiw:lua require('searchbox').replace({confirm='menu'})<CR><C-r>=getreg('a')<CR><CR>:sl m<CR><C-r>=getreg('"')<CR>]], 'Replace word'},       -- write to reg z (@a) then use it for replacign * word
 })
 local function t(str)
     -- Adjust boolean arguments as needed
@@ -355,8 +355,8 @@ end
 wk.register({  -- second one for visual mode
 	['<leader>s'] = { name = '+Replace'},
 	-- ['<leader>s*'] = {"\"ay:.,$s/<C-r>a/<C-r>+/gc|1,''-&&<CR>",					 'Replace word with yank'},    -- \<word\>  -adds whitespace  word limit (sub only whole words)
-	['<leader>s/'] = {[["ay<esc>:lua require('searchbox').replace({confirm = 'menu'})<CR><C-r>=getreg('a')<CR>]], 'Find and Replace word'},       -- write to reg z (@a) then use it for replacign * word
-	['<leader>s*'] = {[["ay<esc>:lua require('searchbox').replace({confirm='menu'})<CR><C-r>=getreg('a')<CR><CR>:sl m<CR><C-r>=getreg('a')<CR>]], 'Replace word'},       -- write to reg z (@a) then use it for replacign * word
+	-- ['<leader>s/'] = {[["ay<esc>:lua require('searchbox').replace({confirm = 'menu'})<CR><C-r>=getreg('a')<CR>]], 'Find and Replace word'},       -- write to reg z (@a) then use it for replacign * word
+	-- ['<leader>s*'] = {[["ay<esc>:lua require('searchbox').replace({confirm='menu'})<CR><C-r>=getreg('a')<CR><CR>:sl m<CR><C-r>=getreg('a')<CR>]], 'Replace word'},       -- write to reg z (@a) then use it for replacign * word
 	-- ['<leader>s/'] = {
 	-- function()
 	-- 	vim.cmd("normal! \"ay")
@@ -379,7 +379,7 @@ local function StarterOpen()
 		Save_current_session()
 		local buffers = vim.api.nvim_list_bufs()
 		for _, buffer in ipairs(buffers) do
-				vim.api.nvim_buf_delete(buffer,{})
+				vim.api.nvim_buf_delete(buffer,{force = true})
 		end
 		MiniStarter.open()
 		vim.fn.feedkeys(t('<CR>'))
@@ -437,15 +437,11 @@ wk.register({
 
 
 -- TSContextDisable - if srm treesitter-context
-if vim.fn.exists('g:started_by_firenvim') == 1 then
-	wk.register({['<leader>qq'] = {':wq!<CR>' , 'Quit Firenvim'}})
-else
-	wk.register({['<leader>qq'] = {':TSContextDisable<cr>|:call v:lua.Save_current_session()<CR>|:confirm qa<CR>',        'Quit Confirm (qa)'}})
-end
 wk.register({
 	['<leader>q'] = { name = '+Quit' }       ,
 	['<leader>qf'] = {':q!<CR>'                , 'Force Quit (q!)'}      ,
 	['<leader>qs'] = {':bufdo update | q!<CR>' , 'Quit Save all (wqa!)'} ,
+	['<leader>qq'] = {':TSContextDisable<cr>|:call v:lua.Save_current_session()<CR>|:confirm qa<CR>',        'Quit Confirm (qa)'},
 })
 wk.register({  -- second one for visual mode
 	['<leader>q'] = { name = '+Quit'},

@@ -7,6 +7,11 @@
 -- c  Command-line mode map. Defined using ':cmap' or ':cnoremap'.
 -- o  Operator pending mode map. Defined using ':omap' or ':onoremap'.
 
+-- better go up or down
+vim.api.nvim_set_keymap('n', 'gg', 'G', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', 'G', 'gg', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('v', 'gg', 'G', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('v', 'G', 'gg', {noremap = true, silent = true})
 
 -- I hate escape
 vim.api.nvim_set_keymap('i', 'jk', '<ESC>zv', {noremap = true, silent = true})
@@ -223,7 +228,8 @@ vim.api.nvim_set_keymap( "n", "<c-J>", "mq:s/\\v,\\s+/,\\r/g<cr>V'q=", { noremap
 
 -- repeat last ciw - on next word
 vim.api.nvim_set_keymap( "n", "g.", "/\\V<C-r>\"<CR>cgn<C-a><Esc>", { noremap = true } )
-vim.api.nvim_set_keymap( "n", "cg*", "*Ncgn", { noremap = true } )
+vim.api.nvim_set_keymap( "n", "cg*", '*N"_cgn', { noremap = true } )
+vim.api.nvim_set_keymap( "v", "cg*", "\"ay/\\V<C-R>=escape(@a,'/\')<CR><CR>N\"_cgn", { noremap = true } ) -- based on * visual remap
 
 --add breakpoint for undo at space, . and ,
 vim.api.nvim_set_keymap( "i", " ", " <c-g>u", { noremap = true } )

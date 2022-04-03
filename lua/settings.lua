@@ -5,7 +5,7 @@
 vim.cmd('set iskeyword+=-') -- treat dash separated words as a word text object"
 --vim.cmd('set shortmess+=c') -- Don't pass messages to |ins-completion-menu|.
 -- vim.opt.hidden = true -- Required to keep multiple buffers open multiple buffers- defaut true since ver 6.0
-vim.wo.wrap = vim.fn.exists('g:started_by_firenvim') == 1 -- Display long lines as just one line
+vim.wo.wrap = false -- Display long lines as just one line
 vim.opt.listchars=""   -- hide listchars -> whitespaces chars
 vim.cmd([[setlocal nolist]]) -- wont work
 
