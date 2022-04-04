@@ -78,12 +78,12 @@ return require("packer").startup(function(use)
   use {
     "projekt0n/github-nvim-theme",
     config = function()
-      require("github-theme").setup {
-				theme_style = "light",
-				colors = {bg = "#f5f5f5"},
-				keyword_style = "bold",
-				comment_style = "italic",
-			}
+			--require("github-theme").setup {
+			-- 	theme_style = "light",
+			-- 	colors = {bg = "#f5f5f5"},
+			-- 	keyword_style = "bold",
+			-- 	comment_style = "italic",
+			-- }
     end,
   }
   use {
@@ -334,11 +334,10 @@ return require("packer").startup(function(use)
   use {
     "nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
-    -- branch = '0.5-compat', -- recommended for stable. But no latest updates in here
     config = function()
       require "treesitter"
     end,
-  } -- lua + wont close () next to char finally good and simple +++
+  }
   use {
     "romgrk/nvim-treesitter-context",
     disable = false, -- cool but gives orror on compe-popup - https://github.com/romgrk/nvim-treesitter-context/issues/49

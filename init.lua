@@ -9,15 +9,12 @@ require "keymappings"
 
 local init_group = vim.api.nvim_create_augroup("MyInitAuGroup", {clear = true})
 
-
 -- why it wont load indentline even odd correctly?
 local function theme_change_timeday(start_hour, end_hour)
 	local time = tonumber(vim.fn.strftime("%H"))
 	if time < start_hour or time > end_hour then
-		-- print('dark')
 		vim.cmd [[colorscheme nightfox]]
 	else
-		-- print('light')
 		vim.cmd [[colorscheme dayfox]]
 	end
 	vim.cmd [[doautoall ColorScheme]]
