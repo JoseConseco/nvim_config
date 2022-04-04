@@ -161,9 +161,11 @@ return require("packer").startup(function(use)
         pattern = "*",
         callback = function()
           local hl_adjust = require "hl_adjust"
-          hl_adjust.highlight_adjust_col("IndentEven", "Normal", {})
+          hl_adjust.highlight_adjust_col("IndentEven", "Normal", {action='contrast', factor=-6}) -- reduce contrast by default by -5
           vim.cmd [[highlight IndentOdd guifg=NONE guibg=NONE gui=nocombine]]
-          vim.cmd [[highlight! link IndentBlanklineContextChar Comment]]
+					-- hl_adjust.highlight_adjust_col("IndentBlanklineContextChar", "Normal", {action='contrast', factor=-10}) -- reduce contrast by default by -5
+					vim.cmd [[highlight! link IndentBlanklineContextChar Comment]]
+
         end,
         group = theme_change_au,
       })

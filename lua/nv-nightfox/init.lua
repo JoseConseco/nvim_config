@@ -1,6 +1,7 @@
 local theme_change_au = vim.api.nvim_create_augroup("MyThemeChangeAu", { clear = true })
 
 local dayfox_col = require("nightfox.palette").load "dayfox"
+local dawnfox_col = require("nightfox.palette").load "dawnfox"
 -- local dayfox_spec = require('nightfox.spec').load("nightfox")
 
 require("nightfox").setup {
@@ -26,8 +27,11 @@ require("nightfox").setup {
       comment = "#60728a",
     },
     dayfox = {
-      bg1 = "#f7f7f5",
-      cyan = "#208990",
+      bg1 = "#f7f7f5", -- brighter
+      cyan = "#208990", -- darker for args
+    },
+    dawnfox = {
+			bg1 = "#FFFAF3", -- brighter
     },
   },
   specs = {
@@ -37,8 +41,15 @@ require("nightfox").setup {
 				conditional = dayfox_col.red.base, -- if, then etc
 				operator = dayfox_col.red.base, -- for and, or etc - was black
 				ident = dayfox_col.magenta.base,  -- cyan by default
+				type = "#dd9024"  -- was too bright
 			},
     },
+		dawnfox = {
+			syntax = {
+				-- type = dawnfox_col.yellow.dark,
+				type = "#dc9010", -- was too bright
+			},
+		}
   },
 }
 vim.cmd [[highlight LineNr guifg=#5081c0 | highlight CursorLineNR guifg=#FFba00 ]]
@@ -46,7 +57,7 @@ vim.api.nvim_create_autocmd("ColorScheme, UIEnter", {
   pattern = "*",
   callback = function()
     local hl_adjust = require "hl_adjust"
-    hl_adjust.highlight_adjust_col("NormalNC", "Normal", { action = "contrast", factor = -3 })
+    hl_adjust.highlight_adjust_col("NormalNC", "Normal", { action = "contrast", factor = -5 })
     vim.cmd [[set winhighlight=Normal:Normal,NormalNC:NormalNC]]
   end,
   group = theme_change_au,
