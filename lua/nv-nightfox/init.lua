@@ -1,6 +1,7 @@
 local theme_change_au = vim.api.nvim_create_augroup("MyThemeChangeAu", { clear = true })
 
 local dayfox_col = require("nightfox.palette").load "dayfox"
+local nightfox_col = require("nightfox.palette").load "nightfox"
 local dawnfox_col = require("nightfox.palette").load "dawnfox"
 -- local dayfox_spec = require('nightfox.spec').load("nightfox")
 
@@ -11,6 +12,7 @@ require("nightfox").setup {
     styles = { -- Style to be applied to different syntax groups
       functions = "bold",
       keywords = "bold",
+      conditional = "italic",
     },
     inverse = { -- Inverse highlight for different types
       match_paren = false,
@@ -20,36 +22,50 @@ require("nightfox").setup {
   },
   palettes = {
     nightfox = {
-      red = "#df6959",
+      red = { base = "#df6959", bright = "#df6959", dim = "#df6959" },
       orange_br = "#e49464",
     },
     nordfox = {
       comment = "#60728a",
     },
     dayfox = {
-      bg1 = "#f7f7f5", -- brighter
-      cyan = "#208990", -- darker for args
+      bg1 = "#F7F7FA", -- brighter
+      cyan = { base = "#208990", bright = "#259495", dim = "#107980" }, -- darken
     },
     dawnfox = {
-			bg1 = "#FFFAF3", -- brighter
+      bg1 = "#FFFAF3", -- brighter
+      bg2 = "#eae1e3", -- brighter
+      yellow = { base = "#ee9310", bright = "#f19615", dim = "#d38305" },
     },
   },
   specs = {
     dayfox = {
-			syntax = {
-				func = dayfox_col.blue.bright, -- was almost black
-				conditional = dayfox_col.red.base, -- if, then etc
-				operator = dayfox_col.red.base, -- for and, or etc - was black
-				ident = dayfox_col.magenta.base,  -- cyan by default
-				type = "#dd9024"  -- was too bright
-			},
+      syntax = {
+        func = dayfox_col.blue.bright, -- was blue.dim
+        conditional = dayfox_col.red.base, -- if, then etc
+        operator = dayfox_col.red.base, -- for and, or etc - was black
+        ident = dayfox_col.magenta.base, -- cyan by default
+      },
     },
-		dawnfox = {
-			syntax = {
-				-- type = dawnfox_col.yellow.dark,
-				type = "#dc9010", -- was too bright
-			},
-		}
+    dawnfox = {
+      syntax = {
+        func = dawnfox_col.blue.bright, -- was blue.dim
+        conditional = dawnfox_col.red.base, -- if, then etc
+        operator = dawnfox_col.red.base, -- for and, or etc - was black
+      },
+    },
+    nightfox = {
+      syntax = {
+        func = nightfox_col.blue.bright, -- was blue.dim
+        conditional = nightfox_col.red.base, -- if, then etc
+        operator = nightfox_col.red.base, -- for and, or etc - was black
+      },
+    },
+  },
+  groups = {
+    -- Conditional = { fg = "syntax.builtin0", style = "bold" },
+    Conditional = { link = "TSKeywordFunction" },
+    Operator = { link = "TSKeywordFunction" },
   },
 }
 vim.cmd [[highlight LineNr guifg=#5081c0 | highlight CursorLineNR guifg=#FFba00 ]]

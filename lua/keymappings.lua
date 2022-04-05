@@ -171,8 +171,6 @@ vim.api.nvim_set_keymap('v', '#', "y?\\V<C-R>=escape(@\",'/\')<CR><CR>zzzv", {no
 -- vim.api.nvim_set_keymap("n", "<C-a>", 'gg<S-v>G', {noremap = true})
 -- vim.api.nvim_set_keymap("n", "<C-a>", [[ <Cmd> %y+<CR>]], {noremap = true})
 
---close all Folds remap
-vim.api.nvim_set_keymap('n', 'zC',  'zM', {noremap = true, silent = true})
 
 -- Hop plug
 -- vim.api.nvim_set_keymap('n', '<A-s>',  ':HopChar2<Return>', {noremap = true, silent = true})
@@ -236,18 +234,29 @@ vim.api.nvim_set_keymap( "i", " ", " <c-g>u", { noremap = true } )
 vim.api.nvim_set_keymap( "i", ",", ",<c-g>u", { noremap = true } )
 vim.api.nvim_set_keymap( "i", ".", ".<c-g>u", { noremap = true } )
 
+local function t(str)
+    return vim.api.nvim_replace_termcodes(str, true, true, true)
+end
 local function open_sub_folds()
 	local line_data = vim.api.nvim_win_get_cursor(0) -- returns {row, col}
 	local fold_closed = vim.fn.foldclosed(line_data[1])
 	if fold_closed == -1 then -- not folded
-		return  "zczO"
+		return ":normal! zczO"..t('<cr>') -- normal - prevets flicker
+		-- return "zczO"
 	else -- if fold - then open normall
-		return "zO"
+		return ":normal! zO"..t('<cr>')  -- normal - prevets flicker
+		-- return "zO"
 	end
 end
 
-vim.keymap.set( "n", "zO", open_sub_folds, { remap = false, expr = true } )
+vim.keymap.set( "n", "zO", open_sub_folds, { remap = true, expr = true } )
 
+-- better subfodls
+-- vim.keymap.set( "n", "zO", close_sub_folds, { remap = true, expr = true } )
+-- vim.api.nvim_set_keymap('n', 'zC',  'zC:foldc!|normal! zo<cr>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', 'zC',  ':execute "normal! zC" | foldc! | exe "normal! zv"<cr>', {noremap = true, silent = true }) -- close fold under cursor rec
+
+--close all Folds remap
 
 -- Saner behavior of n and N
 vim.cmd([[
