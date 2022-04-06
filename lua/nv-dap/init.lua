@@ -1,6 +1,6 @@
-vim.fn.sign_define("DapBreakpoint", { text = "⭘", texthl = "LspDiagnosticsDefaultHint", linehl = "", numhl = "" })
-vim.fn.sign_define("DapStopped", { text = "●", texthl = "LspDiagnosticsDefaultError", linehl = "", numhl = "" })
-vim.fn.sign_define("DapLogPoint", { text = "﮿", texthl = "LspDiagnosticsDefaultHint", linehl = "", numhl = "" })
+vim.fn.sign_define("DapBreakpoint", { text = "⭘", texthl = "DiagnosticsHint", linehl = "", numhl = "" })
+vim.fn.sign_define("DapStopped", { text = "●", texthl = "DiagnosticsError", linehl = "", numhl = "" })
+vim.fn.sign_define("DapLogPoint", { text = "﮿", texthl = "DiagnosticsHint", linehl = "", numhl = "" })
 -- require('dap-python').setup('~/.local/lib/python3.9/site-packages/') -- from vim-dap-python
  require("dap-python").setup("/usr/bin/python") -- from vim-dap-python
 

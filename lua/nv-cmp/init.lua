@@ -235,27 +235,27 @@ cmp.setup.cmdline("/", {
 -- /\vstring/search
 -- /\mstring/search
 
-vim.cmd [[
-augroup SetCmpColors
-autocmd!
-" gray
-autocmd ColorScheme * highlight! CmpItemAbbrDeprecated guibg=NONE gui=strikethrough guifg=#808080
-" blue
-autocmd ColorScheme * highlight! CmpItemAbbrMatch guibg=NONE guifg=#569CD6
-autocmd ColorScheme * highlight! CmpItemAbbrMatchFuzzy guibg=NONE guifg=#569CD6
-" light blue
-autocmd ColorScheme * highlight! CmpItemKindVariable guibg=NONE guifg=#9CDCFE
-autocmd ColorScheme * highlight! CmpItemKindInterface guibg=NONE guifg=#9CDCFE
-autocmd ColorScheme * highlight! CmpItemKindText guibg=NONE guifg=#9CDCFE
-" pink
-autocmd ColorScheme * highlight! CmpItemKindFunction guibg=NONE guifg=#C586C0
-autocmd ColorScheme * highlight! CmpItemKindMethod guibg=NONE guifg=#C586C0
-" front
-autocmd ColorScheme * highlight! CmpItemKindKeyword guibg=NONE guifg=#D4D4D4
-autocmd ColorScheme * highlight! CmpItemKindProperty guibg=NONE guifg=#D4D4D4
-autocmd ColorScheme * highlight! CmpItemKindUnit guibg=NONE guifg=#D4D4D4
-augroup END
-]]
+-- vim.cmd [[
+-- augroup SetCmpColors
+-- autocmd!
+-- " gray
+-- autocmd ColorScheme * highlight! CmpItemAbbrDeprecated guibg=NONE gui=strikethrough guifg=#808080
+-- " blue
+-- autocmd ColorScheme * highlight! CmpItemAbbrMatch guibg=NONE guifg=#569CD6
+-- autocmd ColorScheme * highlight! CmpItemAbbrMatchFuzzy guibg=NONE guifg=#569CD6
+-- " light blue
+-- autocmd ColorScheme * highlight! CmpItemKindVariable guibg=NONE guifg=#9CDCFE
+-- autocmd ColorScheme * highlight! CmpItemKindInterface guibg=NONE guifg=#9CDCFE
+-- autocmd ColorScheme * highlight! CmpItemKindText guibg=NONE guifg=#9CDCFE
+-- " pink
+-- autocmd ColorScheme * highlight! CmpItemKindFunction guibg=NONE guifg=#C586C0
+-- autocmd ColorScheme * highlight! CmpItemKindMethod guibg=NONE guifg=#C586C0
+-- " front
+-- autocmd ColorScheme * highlight! CmpItemKindKeyword guibg=NONE guifg=#D4D4D4
+-- autocmd ColorScheme * highlight! CmpItemKindProperty guibg=NONE guifg=#D4D4D4
+-- autocmd ColorScheme * highlight! CmpItemKindUnit guibg=NONE guifg=#D4D4D4
+-- augroup END
+-- ]]
 
 -- dict plugin
 require("cmp_dictionary").setup {

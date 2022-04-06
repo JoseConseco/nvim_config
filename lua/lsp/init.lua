@@ -50,17 +50,16 @@ local on_attach = function(client, bufnr)
 		)
 	-- Set autocommands conditional on server_capabilities
 	if client.resolved_capabilities.document_highlight then
-		local hover_lsp_col = vim.api.nvim_create_augroup("HoverLspRefColorsSetup", {clear = true})
-		local hl_adjust = require("hl_adjust")
-		vim.api.nvim_create_autocmd("ColorScheme", {
-			pattern = "*",
-			callback = function()
-				hl_adjust.highlight_adjust_col('LspReferenceRead', 'Search',{})
-				hl_adjust.highlight_adjust_col('LspReferenceText', 'Search',{})
-				hl_adjust.highlight_adjust_col('LspReferenceWrite', 'Search',{})
-			end,
-			group = hover_lsp_col,
-		})
+		vim.api.nvim_set_hl(0, 'LspReferenceRead', { reverse = true })
+		vim.api.nvim_set_hl(0, 'LspReferenceText', { reverse = true })
+		vim.api.nvim_set_hl(0, 'LspReferenceWrite', { reverse = true })
+
+		-- local hl_adjust = require("hl_adjust") -- wont properly set on vim init....
+		--
+		-- hl_adjust.highlight_adjust_col('LspReferenceRead', 'Search',{})
+		-- hl_adjust.highlight_adjust_col('LspReferenceText', 'Search',{})
+		-- hl_adjust.highlight_adjust_col('LspReferenceWrite', 'Search',{})
+
 
 		local lsp_doc_hi = vim.api.nvim_create_augroup("lsp_document_highlight", {clear = true})
 		vim.api.nvim_create_autocmd("CursorHold", {

@@ -147,8 +147,8 @@ vim.api.nvim_set_keymap('n', '<c-l>', '$', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('v', '<c-h>', '^', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('v', '<c-l>', '$', {noremap = true, silent = true})
 
-vim.api.nvim_set_keymap('n', '<m-h>', 'v^', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('n', '<m-l>', 'v$', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('v', '<m-h>', "<cmd>normal xbP`[v`]'<cr>", {noremap = true, silent = true}) -- move sel forward one word
+vim.api.nvim_set_keymap('v', '<m-l>', "<cmd>normal xep`]v`['<cr>", {noremap = true, silent = true}) -- move sel backward one word
 
 -- auto magic search
 --[[ vim.api.nvim_set_keymap('n', '/', '/\\v', {noremap = true, silent = true})
@@ -156,11 +156,11 @@ vim.api.nvim_set_keymap('v', '/', '/\\v', {noremap = true})
 vim.api.nvim_set_keymap('c', 's/', 's/\\v', {noremap = true})
 vim.api.nvim_set_keymap('c', 'g/', 'g/\\v', {noremap = true}) ]]
 
--- search for selection whithout jump
-vim.api.nvim_set_keymap('n', '*', "*zzzv", {noremap = true}) -- zv open fold; zz center on search result
-vim.api.nvim_set_keymap('n', '#', "#zzzv", {noremap = true}) --bacwards,  zv open fold; zz center on search result
-vim.api.nvim_set_keymap('v', '*', "y/\\V<C-R>=escape(@\",'/\')<CR><CR>zzzv", {noremap = true})
-vim.api.nvim_set_keymap('v', '#', "y?\\V<C-R>=escape(@\",'/\')<CR><CR>zzzv", {noremap = true}) -- backward
+-- search for selection whithout jump  -- with "kevinhwang91/nvim-hlslens" support
+vim.api.nvim_set_keymap('n', '*', "*zzzv<Cmd>lua require('hlslens').start()<CR>", {noremap = true}) -- zv open fold; zz center on search result
+vim.api.nvim_set_keymap('n', '#', "#zzzv<Cmd>lua require('hlslens').start()<CR>", {noremap = true}) --bacwards,  zv open fold; zz center on search result
+vim.api.nvim_set_keymap('v', '*', "y/\\V<C-R>=escape(@\",'/\')<CR><CR>zzzv<Cmd>lua require('hlslens').start()<CR>", {noremap = true})
+vim.api.nvim_set_keymap('v', '#', "y?\\V<C-R>=escape(@\",'/\')<CR><CR>zzzv<Cmd>lua require('hlslens').start()<CR>", {noremap = true}) -- backward
 -- vim.api.nvim_set_keymap('n', '*', ":keepjumps normal! mi*`i<CR>", {noremap = true})   -- wont affect jump list
 
 -- substitute word under cursor with yanked text (+ register )
@@ -258,13 +258,13 @@ vim.api.nvim_set_keymap('n', 'zC',  ':execute "normal! zC" | foldc! | exe "norma
 
 --close all Folds remap
 
--- Saner behavior of n and N
+-- Saner behavior of n and N - plus added hlslens
 vim.cmd([[
-nnoremap <expr> n  'Nn'[v:searchforward].'zzzv'
-xnoremap <expr> n  'Nn'[v:searchforward].'zzzv'
-onoremap <expr> n  'Nn'[v:searchforward]
+nnoremap <expr> n  'Nn<Cmd>lua require("hlslens").start()<CR>'[v:searchforward].'zzzv<Cmd>lua require("hlslens").start()<CR>'
+xnoremap <expr> n  'Nn<Cmd>lua require("hlslens").start()<CR>'[v:searchforward].'zzzv<Cmd>lua require("hlslens").start()<CR>'
+onoremap <expr> n  'Nn<Cmd>lua require("hlslens").start()<CR>'[v:searchforward]
 
-nnoremap <expr> N  'nN'[v:searchforward].'zzzv'
-xnoremap <expr> N  'nN'[v:searchforward].'zzzv'
-onoremap <expr> N  'nN'[v:searchforward]
+nnoremap <expr> N  'nN<Cmd>lua require("hlslens").start()<CR>'[v:searchforward].'zzzv<Cmd>lua require("hlslens").start()<CR>'
+xnoremap <expr> N  'nN<Cmd>lua require("hlslens").start()<CR>'[v:searchforward].'zzzv<Cmd>lua require("hlslens").start()<CR>'
+onoremap <expr> N  'nN<Cmd>lua require("hlslens").start()<CR>'[v:searchforward]
 ]])

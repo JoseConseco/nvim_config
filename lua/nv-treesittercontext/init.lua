@@ -1,15 +1,10 @@
 require('treesitter-context.config').setup{enable = false,}
-vim.api.nvim_exec('highlight link TreesitterContext PmenuSel', false)
+local hl_adjust = require "hl_adjust"
+-- hl_adjust.highlight_link("TreesitterContext", "PmenuSel")
+hl_adjust.highlight_adjust_col("TreesitterContext", "Normal", {action='contrast', factor=-11}) -- reduce contrast by default by -5
 
-vim.cmd([[
-augroup TSContextToggle
-	    " Clear the autocmds of the current group to prevent them from piling
-	    " up each time you reload your vimrc.
-	    autocmd!
+local ctx_toggle = vim.api.nvim_create_augroup("TSContextToggle", { clear = true })
 
-	    " This autocmd calls 'MyFunction()' everytime Vim tries to create/edit
-	    " a buffer tied to a file in /'path/to/project/**/'.
-	    autocmd InsertEnter * :TSContextDisable
-	    autocmd InsertLeave,BufEnter * :TSContextEnable
- augroup END
-]])
+vim.api.nvim_create_autocmd("InsertEnter", { pattern = "*", command = [[:TSContextDisable]], group = ctx_toggle, })
+vim.api.nvim_create_autocmd("InsertLeave,BufEnter", { pattern = "*", command = [[:TSContextEnable]], group = ctx_toggle, })
+

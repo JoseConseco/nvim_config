@@ -54,7 +54,6 @@ require("packer").init {
 -- }
 -- packadd - edge theme delayed?
 
-local theme_change_au = vim.api.nvim_create_augroup("MyThemeChangeAu", { clear = true })
 
 return require("packer").startup(function(use)
   use { "wbthomason/packer.nvim" } -- Packer can manage itself as an optional plugin
@@ -111,7 +110,8 @@ return require("packer").startup(function(use)
           },
         },
       }
-      vim.api.nvim_create_autocmd("ColorScheme", { pattern = "*", command = [[highlight! link Hlargs TSParameter]], group = theme_change_au }) -- zx - reclaculate folds, zv - unfold cursor line
+			local hl_adjust = require "hl_adjust"
+			hl_adjust.highlight_link("Hlargs", "TSParameter")
     end,
   }
 
@@ -157,18 +157,12 @@ return require("packer").startup(function(use)
     "lukas-reineke/indent-blankline.nvim",
     after = "nightfox.nvim",
     config = function()
-      vim.api.nvim_create_autocmd("ColorScheme, UIEnter", {
-        pattern = "*",
-        callback = function()
-          local hl_adjust = require "hl_adjust"
-          hl_adjust.highlight_adjust_col("IndentEven", "Normal", {action='contrast', factor=-6}) -- reduce contrast by default by -5
-          vim.cmd [[highlight IndentOdd guifg=NONE guibg=NONE gui=nocombine]]
-					-- hl_adjust.highlight_adjust_col("IndentBlanklineContextChar", "Normal", {action='contrast', factor=-10}) -- reduce contrast by default by -5
-					vim.cmd [[highlight! link IndentBlanklineContextChar Comment]]
-
-        end,
-        group = theme_change_au,
-      })
+			local hl_adjust = require "hl_adjust"
+			hl_adjust.highlight_adjust_col("IndentEven", "Normal", {action='contrast', factor=-6}) -- reduce contrast by default by -5
+			vim.cmd [[highlight IndentOdd guifg=NONE guibg=NONE gui=nocombine]]
+			-- hl_adjust.highlight_adjust_col("IndentBlanklineContextChar", "Normal", {action='contrast', factor=-10}) -- reduce contrast by default by -5
+			-- vim.cmd [[highlight! link IndentBlanklineContextChar Comment]]
+			hl_adjust.highlight_link("IndentBlanklineContextChar", "Comment")
       require "nv-indentline"
     end,
   }
@@ -213,7 +207,16 @@ return require("packer").startup(function(use)
     "kevinhwang91/nvim-hlslens",
     after = "nvim-scrollbar",
     config = function()
-      require("scrollbar.handlers.search").setup()
+      require("scrollbar.handlers.search").setup({
+				calm_down = true,
+			})
+			local kopts = {noremap = true, silent = true}
+			vim.api.nvim_set_keymap('n', 'n',
+					[[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]],
+					kopts)
+			vim.api.nvim_set_keymap('n', 'N',
+					[[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]],
+					kopts)
     end,
   }
 
@@ -310,8 +313,10 @@ return require("packer").startup(function(use)
       -- vim.api.nvim_exec("highlight! link NvimDapVirtualText DiagnosticVirtualTextInfo", false)
       -- vim.api.nvim_exec("highlight! link NvimDapVirtualTextChanged DiagnosticVirtualTextWarn", false)
       -- not sure why this works but above wont
-      vim.api.nvim_create_autocmd("ColorScheme", { pattern = "*", command = [[highlight! link NvimDapVirtualText DiagnosticVirtualTextInfo]], group = theme_change_au }) -- zx - reclaculate folds, zv - unfold cursor line
-      vim.api.nvim_create_autocmd("ColorScheme", { pattern = "*", command = [[highlight! link NvimDapVirtualTextChanged DiagnosticVirtualTextWarn]], group = theme_change_au }) -- zx - reclaculate folds, zv - unfold cursor line
+
+			local hl_adjust = require "hl_adjust"
+			hl_adjust.highlight_link("NvimDapVirtualText", "DiagnosticVirtualTextInfo")
+			hl_adjust.highlight_link("NvimDapVirtualTextChanged", "DiagnosticVirtualTextWarn")
     end,
   }
   use {
@@ -349,6 +354,7 @@ return require("packer").startup(function(use)
   } -- fixes plug  }
   -- vim.cmd([[:highlight TreesitterContext guibg=#a4cf69]])
   -- use 'nvim-treesitter/nvim-treesitter-textobjects' -- cool but takes lots of keys for func, class, if, etc
+	use 'mizlan/iswap.nvim'
   use {
     "mfussenegger/nvim-ts-hint-textobject",
     config = function()
@@ -361,20 +367,15 @@ return require("packer").startup(function(use)
     after = "nightfox.nvim",
     config = function()
       -- add colorscheme change hook
-      vim.api.nvim_create_autocmd("ColorScheme", {
-        pattern = "*",
-        callback = function()
-          local hl_adjust = require "hl_adjust"
-          hl_adjust.match_color_to_highlight("#ebcb8b", "TSKeywordOperator", "rainbowcol1", "fg")
-          hl_adjust.match_color_to_highlight("#a3be8c", "TSKeywordOperator", "rainbowcol2", "fg")
-          hl_adjust.match_color_to_highlight("#88c0d0", "TSKeywordOperator", "rainbowcol3", "fg")
-          hl_adjust.match_color_to_highlight("#6ea1ec", "TSKeywordOperator", "rainbowcol4", "fg")
-          hl_adjust.match_color_to_highlight("#b48ead", "TSKeywordOperator", "rainbowcol5", "fg")
-          hl_adjust.match_color_to_highlight("#df717a", "TSKeywordOperator", "rainbowcol6", "fg")
-          hl_adjust.match_color_to_highlight("#d08770", "TSKeywordOperator", "rainbowcol7", "fg")
-        end,
-        group = theme_change_au,
-      })
+			local hl_adjust = require "hl_adjust"
+			hl_adjust.match_color_to_highlight("#ebcb8b", "TSKeywordOperator", "rainbowcol1", "fg")
+			hl_adjust.match_color_to_highlight("#a3be8c", "TSKeywordOperator", "rainbowcol2", "fg")
+			hl_adjust.match_color_to_highlight("#88c0d0", "TSKeywordOperator", "rainbowcol3", "fg")
+			hl_adjust.match_color_to_highlight("#6ea1ec", "TSKeywordOperator", "rainbowcol4", "fg")
+			hl_adjust.match_color_to_highlight("#b48ead", "TSKeywordOperator", "rainbowcol5", "fg")
+			hl_adjust.match_color_to_highlight("#df717a", "TSKeywordOperator", "rainbowcol6", "fg")
+			hl_adjust.match_color_to_highlight("#d08770", "TSKeywordOperator", "rainbowcol7", "fg")
+
     end,
   }
   use "nvim-treesitter/playground"
@@ -461,13 +462,6 @@ return require("packer").startup(function(use)
     config = function()
       vim.g.UltiSnipsRemoveSelectModeMappings = 0
       vim.cmd [[autocmd BufWritePost *.snippets :CmpUltisnipsReloadSnippets]]
-    end,
-  }
-  use {
-    "folke/lsp-trouble.nvim", -- shows nice icons in lsp warnings...
-    requires = "kyazdani42/nvim-web-devicons",
-    config = function()
-      require "nv-lsptrouble"
     end,
   }
   use {
@@ -609,6 +603,13 @@ return require("packer").startup(function(use)
     "mg979/vim-visual-multi", --multi cursor support like vscode...
     config = function()
       vim.g.VM_mouse_mappings = 1
+			vim.cmd([[
+				aug VMlens
+						au!
+						au User visual_multi_start lua require('vmlens').start()
+						au User visual_multi_exit lua require('vmlens').exit()
+				aug END
+			]])
     end,
   }
   use {

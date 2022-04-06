@@ -119,6 +119,37 @@ local function highlight_adjust_col(new_highlight_name, src_highlight, opts)
   write_highlight(new_highlight_name, new_hi_data)
 end
 
-M.highlight_adjust_col = highlight_adjust_col
-M.match_color_to_highlight = match_color_to_highlight
+local theme_change_au = vim.api.nvim_create_augroup("MyThemeChangeAu", { clear = true })
+
+local function match_color_to_highlight_au(base_color, ref_highlight, new_highlight_name, mode)
+	vim.api.nvim_create_autocmd("ColorScheme", {
+		pattern = "*",
+		callback = function()
+			match_color_to_highlight(base_color, ref_highlight, new_highlight_name, mode)
+		end,
+		group = theme_change_au,
+	})
+end
+
+local function highlight_adjust_col_au(new_highlight_name, src_highlight, opts)
+	vim.api.nvim_create_autocmd("ColorScheme", {
+		pattern = "*",
+		callback = function()
+			highlight_adjust_col(new_highlight_name, src_highlight, opts) -- reduce contrast by default by -5
+		end,
+		group = theme_change_au,
+	})
+end
+local function highlight_link_au(from_highlight, to_highlight)
+	vim.api.nvim_create_autocmd("ColorScheme", {
+		pattern = "*",
+		command = 'highlight! link '..from_highlight..' '..to_highlight,
+		group = theme_change_au,
+	})
+end
+
+
+M.highlight_link = highlight_link_au -- link without adjusting color
+M.highlight_adjust_col = highlight_adjust_col_au
+M.match_color_to_highlight = match_color_to_highlight_au
 return M

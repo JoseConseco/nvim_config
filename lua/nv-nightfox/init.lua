@@ -1,5 +1,3 @@
-local theme_change_au = vim.api.nvim_create_augroup("MyThemeChangeAu", { clear = true })
-
 local dayfox_col = require("nightfox.palette").load "dayfox"
 local nightfox_col = require("nightfox.palette").load "nightfox"
 local dawnfox_col = require("nightfox.palette").load "dawnfox"
@@ -16,7 +14,7 @@ require("nightfox").setup {
     },
     inverse = { -- Inverse highlight for different types
       match_paren = false,
-      visual = false,
+      visual = true,
       search = true,
     },
   },
@@ -29,7 +27,16 @@ require("nightfox").setup {
       comment = "#60728a",
     },
     dayfox = {
-      bg1 = "#F7F7FA", -- brighter
+      white = { base = "#ee9310", bright = "#f19615", dim = "#d38305" },
+
+			bg0     = "#dfdfdf", -- Dark bg (status line and float)
+			bg1     = "#F7F7FA", -- Default bg
+			bg2     = "#dce1e8", -- Lighter bg (cursor line)
+			bg3     = "#ebecec", -- Lighter bg (colorcolm folds)
+			bg4     = "#dcdcdc", -- Conceal, border fg
+
+  sel0    = "#eeefef", -- Popup bg, visual selection bg
+  sel1    = "#dcdcdc", -- Popup sel bg, search bg
       cyan = { base = "#208990", bright = "#259495", dim = "#107980" }, -- darken
     },
     dawnfox = {
@@ -43,7 +50,7 @@ require("nightfox").setup {
       syntax = {
         func = dayfox_col.blue.bright, -- was blue.dim
         conditional = dayfox_col.red.base, -- if, then etc
-        operator = dayfox_col.red.base, -- for and, or etc - was black
+        -- operator = dayfox_col.red.base, -- for and, or etc - was black
         ident = dayfox_col.magenta.base, -- cyan by default
       },
     },
@@ -51,32 +58,34 @@ require("nightfox").setup {
       syntax = {
         func = dawnfox_col.blue.bright, -- was blue.dim
         conditional = dawnfox_col.red.base, -- if, then etc
-        operator = dawnfox_col.red.base, -- for and, or etc - was black
+        -- operator = dawnfox_col.red.base, -- for and, or etc - was black
       },
     },
     nightfox = {
       syntax = {
         func = nightfox_col.blue.bright, -- was blue.dim
         conditional = nightfox_col.red.base, -- if, then etc
-        operator = nightfox_col.red.base, -- for and, or etc - was black
       },
     },
   },
   groups = {
     -- Conditional = { fg = "syntax.builtin0", style = "bold" },
     Conditional = { link = "TSKeywordFunction" },
-    Operator = { link = "TSKeywordFunction" },
+    TSKeywordOperator = { link = "TSKeywordFunction" },
+    -- Operator = { link = "TSKeywordFunction" },
   },
 }
 vim.cmd [[highlight LineNr guifg=#5081c0 | highlight CursorLineNR guifg=#FFba00 ]]
-vim.api.nvim_create_autocmd("ColorScheme, UIEnter", {
+local hl_adjust = require "hl_adjust"
+hl_adjust.highlight_adjust_col("NormalNC", "Normal", { action = "contrast", factor = -5 })
+-- local theme_change_au = vim.api.nvim_create_augroup("MyThemeChangeAu", { clear = true })
+
+vim.api.nvim_create_autocmd("ColorScheme", {
   pattern = "*",
   callback = function()
-    local hl_adjust = require "hl_adjust"
-    hl_adjust.highlight_adjust_col("NormalNC", "Normal", { action = "contrast", factor = -5 })
     vim.cmd [[set winhighlight=Normal:Normal,NormalNC:NormalNC]]
   end,
-  group = theme_change_au,
+  -- group = theme_change_au,
 })
 
 -- hlgroups = { HopNextKey = {}, HopNextKey1 = {}, HopNextKey2 = { fg = "${blue}" }, HopUnmatched = {} },
