@@ -74,6 +74,7 @@ return require("packer").startup(function(use)
       }
     end,
   }
+	use 'Mofiqul/adwaita.nvim'
   use {
     "projekt0n/github-nvim-theme",
     config = function()
@@ -208,15 +209,16 @@ return require("packer").startup(function(use)
     after = "nvim-scrollbar",
     config = function()
       require("scrollbar.handlers.search").setup({
+				nearest_only = true,
 				calm_down = true,
+				-- override_lens = function() end,
 			})
-			local kopts = {noremap = true, silent = true}
-			vim.api.nvim_set_keymap('n', 'n',
-					[[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]],
-					kopts)
-			vim.api.nvim_set_keymap('n', 'N',
-					[[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]],
-					kopts)
+			-- set at bottom of keymaps
+			-- local kopts = {noremap = true, silent = true}
+			-- vim.api.nvim_set_keymap('n', 'n',
+			-- 		[[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]], kopts)
+			-- vim.api.nvim_set_keymap('n', 'N',
+			-- 		[[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]], kopts)
     end,
   }
 
@@ -450,6 +452,19 @@ return require("packer").startup(function(use)
       }
     end,
   }
+	--  use{
+	-- 	"zbirenbaum/copilot.lua", -- alternative in lua
+	-- 	event = {"VimEnter"},
+	-- 	config = function()
+	-- 		vim.defer_fn(function()
+	-- 			require("copilot").setup()
+	-- 		end, 100)
+	-- 	end,
+	-- }
+	-- use {
+	--    "zbirenbaum/copilot-cmp",
+	--    after = {"copilot.lua", "nvim-cmp"},
+	-- }
   use {
     "neovim/nvim-lspconfig",
     config = function()
@@ -741,6 +756,9 @@ return require("packer").startup(function(use)
       vim.g.floaterm_height = 0.9
       vim.g.floaterm_width = 0.9
       vim.g.floaterm_opener = "edit"
+      vim.g.floaterm_borderchars = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}
+			local hl_adjust = require("hl_adjust")
+			hl_adjust.highlight_link("FloatermBorder", "Normal")
     end,
   }
   -- use {

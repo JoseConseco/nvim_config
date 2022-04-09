@@ -62,9 +62,6 @@ vim.o.guifont = "Source Code Pro SemiBold:h11"  -- icons missng
 vim.g.neovide_refresh_rate = 60
 vim.g.neovide_transparency=1.0
 
-if vim.g.nvui then
-	print('nvi')
-end
 
 function _G.custom_fold_text()
   local line = vim.fn.getline(vim.v.foldstart)
@@ -78,4 +75,5 @@ vim.opt.foldtext = 'v:lua.custom_fold_text()'
 -- vim.opt.fillchars = { eob = "-", fold = "=" }
 vim.opt.foldminlines = 3  -- fold only if more than 2 lines in code block
 vim.opt.foldnestmax = 3  -- create max 4 folds (avoids too many fold levels)
+vim.opt.foldopen:append({'jump', 'insert'})  -- default: "block,hor,mark,percent,quickfix, search,tag,undo"
 

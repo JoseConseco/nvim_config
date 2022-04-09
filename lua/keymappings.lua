@@ -260,11 +260,23 @@ vim.api.nvim_set_keymap('n', 'zC',  ':execute "normal! zC" | foldc! | exe "norma
 
 -- Saner behavior of n and N - plus added hlslens
 vim.cmd([[
-nnoremap <expr> n  'Nn<Cmd>lua require("hlslens").start()<CR>'[v:searchforward].'zzzv<Cmd>lua require("hlslens").start()<CR>'
-xnoremap <expr> n  'Nn<Cmd>lua require("hlslens").start()<CR>'[v:searchforward].'zzzv<Cmd>lua require("hlslens").start()<CR>'
-onoremap <expr> n  'Nn<Cmd>lua require("hlslens").start()<CR>'[v:searchforward]
+nnoremap <expr> n  'Nn'[v:searchforward].'zzzv<Cmd>lua require("hlslens").start()<CR>'
+xnoremap <expr> n  'Nn'[v:searchforward].'zzzv<Cmd>lua require("hlslens").start()<CR>'
+onoremap <expr> n  'Nn'[v:searchforward].'<Cmd>lua require("hlslens").start()<CR>'
 
-nnoremap <expr> N  'nN<Cmd>lua require("hlslens").start()<CR>'[v:searchforward].'zzzv<Cmd>lua require("hlslens").start()<CR>'
-xnoremap <expr> N  'nN<Cmd>lua require("hlslens").start()<CR>'[v:searchforward].'zzzv<Cmd>lua require("hlslens").start()<CR>'
-onoremap <expr> N  'nN<Cmd>lua require("hlslens").start()<CR>'[v:searchforward]
+nnoremap <expr> N  'nN'[v:searchforward].'zzzv<Cmd>lua require("hlslens").start()<CR>'
+xnoremap <expr> N  'nN'[v:searchforward].'zzzv<Cmd>lua require("hlslens").start()<CR>'
+onoremap <expr> N  'nN'[v:searchforward].'<Cmd>lua require("hlslens").start()<CR>'
 ]])
+
+-- vim.cmd([[
+-- nnoremap <expr> n  'Nn'[v:searchforward].'zzzv'
+-- xnoremap <expr> n  'Nn'[v:searchforward].'zzzv'
+-- onoremap <expr> n  'Nn'[v:searchforward]
+--
+-- nnoremap <expr> N  'nN'[v:searchforward].'zzzv'
+-- xnoremap <expr> N  'nN'[v:searchforward].'zzzv'
+-- onoremap <expr> N  'nN'[v:searchforward]
+-- ]])
+--
+--

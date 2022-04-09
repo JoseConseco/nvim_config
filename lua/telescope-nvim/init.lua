@@ -85,15 +85,17 @@ require("telescope").setup {
 	}
 }
 local hl_adjust = require "hl_adjust"
-hl_adjust.highlight_link('TelescopePromptNormal', 'Normal')
-hl_adjust.highlight_link('TelescopePromptBorder', 'Normal')
-hl_adjust.highlight_link('TelescopePromptPrefix', 'Normal')
+
+hl_adjust.highlight_adjust_col("TelescopePromptNormal", "Normal", { action = "contrast", factor = 4 })
+hl_adjust.highlight_link('TelescopePromptBorder', 'TelescopePromptNormal')
+hl_adjust.highlight_link('TelescopePromptPrefix', 'TelescopePromptNormal')
 
 hl_adjust.highlight_link('TelescopePreviewTitle', 'Search')
 hl_adjust.highlight_link('TelescopePromptTitle', 'Search')
 hl_adjust.highlight_link('TelescopeResultsTitle', 'Search')
 
-hl_adjust.highlight_adjust_col("TelescopeBorder", "Normal", { action = "contrast", factor = -2 })
+-- hl_adjust.highlight_adjust_col("TelescopeBorder", "Normal", { action = "contrast", factor = -2 })
+hl_adjust.highlight_link('TelescopeBorder', 'Normal')
 hl_adjust.highlight_link('TelescopeNormal', 'TelescopeBorder')
 hl_adjust.highlight_link('TelescopeMatching', 'TelescopeBorder')
 

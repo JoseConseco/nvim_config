@@ -127,7 +127,7 @@ cmp.setup {
   },
   sources = cmp.config.sources {
     -- { name = "nvim_lsp_signature_help" },
-	{ name = "cmp_tabnine", priority=8},
+		{ name = "cmp_tabnine", priority=8},
     { name = "nvim_lsp", priority=8},
     { name = "ultisnips", priority=7 },
 		{ name = "buffer", priority=7 }, -- first for locality sorting?

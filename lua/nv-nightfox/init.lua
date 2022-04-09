@@ -73,6 +73,16 @@ require("nightfox").setup {
     Conditional = { link = "TSKeywordFunction" },
     TSKeywordOperator = { link = "TSKeywordFunction" },
     -- Operator = { link = "TSKeywordFunction" },
+
+		-- TelescopeBorder = { link = "NormalFloat" },
+		-- TelescopePromptBorder = { link = "Folded" },
+		-- TelescopePromptNormal = {link = "Folded"},
+		-- TelescopePromptPrefix = {link = "Folded"},
+		-- TelescopeNormal = { link = "NormalFloat" },
+		-- TelescopePreviewTitle = { link = "Search" },
+		-- TelescopePromptTitle = { link = "Search" },
+		-- TelescopeResultsTitle = { link = "Search"},
+		-- TelescopeMatching = { link = "PmenuSel"},
   },
 }
 vim.cmd [[highlight LineNr guifg=#5081c0 | highlight CursorLineNR guifg=#FFba00 ]]

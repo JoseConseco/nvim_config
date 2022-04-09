@@ -36,17 +36,27 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   group = init_group,
 })
 
+
+vim.api.nvim_create_autocmd({"BufEnter","InsertLeave","TextYankPost", "WinEnter"}, { --"TextChanged"
+  pattern = "*",
+  callback = function()
+		-- print("open fold")
+    local line_data = vim.api.nvim_win_get_cursor(0) -- returns {row, col}
+		-- print("row: "..line_data[1])
+    local fold_closed = vim.fn.foldclosed(line_data[1]) -- -1 if no fold at line
+		-- print("closed: "..fold_closed)
+    if fold_closed < line_data[1] and fold_closed ~= -1 then --fold before cursor, and fold exist (not -1)
+      vim.cmd [[normal! zv]]
+    end
+  end,
+  group = init_group,
+})
+
 -- NOTE: fix nvim not maximized in allacritty
 vim.cmd [[
 	autocmd VimEnter * :sleep 80m
 	autocmd VimEnter * :silent exec "!kill -s SIGWINCH $PPID"
 ]]
-
-vim.api.nvim_create_autocmd("InsertLeave,WinLeave", {
-  pattern = "*",
-  command = [[:normal zv]],
-  group = init_group,
-}) -- zx - reclaculate folds, zv - unfold cursor line
 
 -- vim.cmd [[
 -- augroup folds
@@ -72,7 +82,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   group = init_group,
 })
 
--- fix cmd line supressed messages on echo (cmp fault?)
+-- fix cmd line suppressed messages on echo (cmp fault?)
 -- see issue: https://github.com/gelguy/wilder.nvim/issues/41#issuecomment-860025867
 vim.cmd [[
 	function! SetShortmessF(on) abort

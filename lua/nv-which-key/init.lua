@@ -136,7 +136,8 @@ wk.register({
 	-- ['<leader>cA'] = {":lua require('nvim-autopairs').enable()<CR>",             'Auto-pairs enable'}, --from treesitter-context plug
 	['<leader>cl'] = {":CreateCompletionLine<CR>",             'Create Completion'}, --from treesitter-context plug
 
-	['<leader>css'] = {':setlocal spell!| spelllang=en_us<CR>', 'Toggle Spellcheck'},
+	['<leader>cs'] = { name = '+Spell' },
+	['<leader>css'] = {':setlocal spell! spelllang=en_us<CR>', 'Toggle Spellcheck'},
 	['<leader>csa'] = {'zg<CR>', 'Add To Dictionary (zg)'},
 
 	-- ['<leader>cf']= { name = '+Folds'},
