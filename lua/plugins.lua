@@ -54,13 +54,13 @@ require("packer").init {
 -- }
 -- packadd - edge theme delayed?
 
-
 return require("packer").startup(function(use)
   use { "wbthomason/packer.nvim" } -- Packer can manage itself as an optional plugin
 
   -- themes -------------------------------------------------------------------------------------------------------
   -- use 'joshdick/onedark.vim'
   use "nvim-lua/plenary.nvim"
+  use "mvpopuk/inspired-github.vim"
   use "ful1e5/onedark.nvim"
   use {
     "rmehri01/onenord.nvim",
@@ -74,22 +74,22 @@ return require("packer").startup(function(use)
       }
     end,
   }
-	use 'Mofiqul/adwaita.nvim'
+  use "Mofiqul/adwaita.nvim"
   use {
     "projekt0n/github-nvim-theme",
     config = function()
-			--require("github-theme").setup {
-			-- 	theme_style = "light",
-			-- 	colors = {bg = "#f5f5f5"},
-			-- 	keyword_style = "bold",
-			-- 	comment_style = "italic",
-			-- }
+      --require("github-theme").setup {
+      -- 	theme_style = "light",
+      -- 	colors = {bg = "#f5f5f5"},
+      -- 	keyword_style = "bold",
+      -- 	comment_style = "italic",
+      -- }
     end,
   }
   use {
     "EdenEast/nightfox.nvim",
     config = function()
-			require("nv-nightfox")
+      require "nv-nightfox"
     end,
   }
   use {
@@ -111,8 +111,8 @@ return require("packer").startup(function(use)
           },
         },
       }
-			local hl_adjust = require "hl_adjust"
-			hl_adjust.highlight_link("Hlargs", "TSParameter")
+      local hl_adjust = require "hl_adjust"
+      hl_adjust.highlight_link("Hlargs", "TSParameter")
     end,
   }
 
@@ -158,12 +158,12 @@ return require("packer").startup(function(use)
     "lukas-reineke/indent-blankline.nvim",
     after = "nightfox.nvim",
     config = function()
-			local hl_adjust = require "hl_adjust"
-			hl_adjust.highlight_adjust_col("IndentEven", "Normal", {action='contrast', factor=-6}) -- reduce contrast by default by -5
-			vim.cmd [[highlight IndentOdd guifg=NONE guibg=NONE gui=nocombine]]
-			-- hl_adjust.highlight_adjust_col("IndentBlanklineContextChar", "Normal", {action='contrast', factor=-10}) -- reduce contrast by default by -5
-			-- vim.cmd [[highlight! link IndentBlanklineContextChar Comment]]
-			hl_adjust.highlight_link("IndentBlanklineContextChar", "Comment")
+      local hl_adjust = require "hl_adjust"
+      hl_adjust.highlight_adjust_col("IndentEven", "Normal", { action = "contrast", factor = -6 }) -- reduce contrast by default by -5
+      vim.cmd [[highlight IndentOdd guifg=NONE guibg=NONE gui=nocombine]]
+      -- hl_adjust.highlight_adjust_col("IndentBlanklineContextChar", "Normal", {action='contrast', factor=-10}) -- reduce contrast by default by -5
+      -- vim.cmd [[highlight! link IndentBlanklineContextChar Comment]]
+      hl_adjust.highlight_link("IndentBlanklineContextChar", "Comment")
       require "nv-indentline"
     end,
   }
@@ -208,17 +208,17 @@ return require("packer").startup(function(use)
     "kevinhwang91/nvim-hlslens",
     after = "nvim-scrollbar",
     config = function()
-      require("scrollbar.handlers.search").setup({
-				nearest_only = true,
-				calm_down = true,
-				-- override_lens = function() end,
-			})
-			-- set at bottom of keymaps
-			-- local kopts = {noremap = true, silent = true}
-			-- vim.api.nvim_set_keymap('n', 'n',
-			-- 		[[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]], kopts)
-			-- vim.api.nvim_set_keymap('n', 'N',
-			-- 		[[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]], kopts)
+      require("scrollbar.handlers.search").setup {
+        nearest_only = true,
+        calm_down = false,
+        -- override_lens = function() end,
+      }
+      -- set at bottom of keymaps
+      -- local kopts = {noremap = true, silent = true}
+      -- vim.api.nvim_set_keymap('n', 'n',
+      -- 		[[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]], kopts)
+      -- vim.api.nvim_set_keymap('n', 'N',
+      -- 		[[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]], kopts)
     end,
   }
 
@@ -316,9 +316,9 @@ return require("packer").startup(function(use)
       -- vim.api.nvim_exec("highlight! link NvimDapVirtualTextChanged DiagnosticVirtualTextWarn", false)
       -- not sure why this works but above wont
 
-			local hl_adjust = require "hl_adjust"
-			hl_adjust.highlight_link("NvimDapVirtualText", "DiagnosticVirtualTextInfo")
-			hl_adjust.highlight_link("NvimDapVirtualTextChanged", "DiagnosticVirtualTextWarn")
+      local hl_adjust = require "hl_adjust"
+      hl_adjust.highlight_link("NvimDapVirtualText", "DiagnosticVirtualTextInfo")
+      hl_adjust.highlight_link("NvimDapVirtualTextChanged", "DiagnosticVirtualTextWarn")
     end,
   }
   use {
@@ -356,7 +356,7 @@ return require("packer").startup(function(use)
   } -- fixes plug  }
   -- vim.cmd([[:highlight TreesitterContext guibg=#a4cf69]])
   -- use 'nvim-treesitter/nvim-treesitter-textobjects' -- cool but takes lots of keys for func, class, if, etc
-	use 'mizlan/iswap.nvim'
+  use "mizlan/iswap.nvim"
   use {
     "mfussenegger/nvim-ts-hint-textobject",
     config = function()
@@ -369,15 +369,14 @@ return require("packer").startup(function(use)
     after = "nightfox.nvim",
     config = function()
       -- add colorscheme change hook
-			local hl_adjust = require "hl_adjust"
-			hl_adjust.match_color_to_highlight("#ebcb8b", "TSKeywordOperator", "rainbowcol1", "fg")
-			hl_adjust.match_color_to_highlight("#a3be8c", "TSKeywordOperator", "rainbowcol2", "fg")
-			hl_adjust.match_color_to_highlight("#88c0d0", "TSKeywordOperator", "rainbowcol3", "fg")
-			hl_adjust.match_color_to_highlight("#6ea1ec", "TSKeywordOperator", "rainbowcol4", "fg")
-			hl_adjust.match_color_to_highlight("#b48ead", "TSKeywordOperator", "rainbowcol5", "fg")
-			hl_adjust.match_color_to_highlight("#df717a", "TSKeywordOperator", "rainbowcol6", "fg")
-			hl_adjust.match_color_to_highlight("#d08770", "TSKeywordOperator", "rainbowcol7", "fg")
-
+      local hl_adjust = require "hl_adjust"
+      hl_adjust.match_color_to_highlight("#ebcb8b", "TSPunctBracket", "rainbowcol1", "fg")
+      hl_adjust.match_color_to_highlight("#a3be8c", "TSPunctBracket", "rainbowcol2", "fg")
+      hl_adjust.match_color_to_highlight("#88c0d0", "TSPunctBracket", "rainbowcol3", "fg")
+      hl_adjust.match_color_to_highlight("#6ea1ec", "TSPunctBracket", "rainbowcol4", "fg")
+      hl_adjust.match_color_to_highlight("#b48ead", "TSPunctBracket", "rainbowcol5", "fg")
+      hl_adjust.match_color_to_highlight("#df717a", "TSPunctBracket", "rainbowcol6", "fg")
+      hl_adjust.match_color_to_highlight("#d08770", "TSPunctBracket", "rainbowcol7", "fg")
     end,
   }
   use "nvim-treesitter/playground"
@@ -392,6 +391,7 @@ return require("packer").startup(function(use)
   use "onsails/lspkind-nvim" -- icons for completion popup
   use {
     "rmagatti/goto-preview", -- eg show preview directly in editable popup
+    disable = true,
     config = function()
       require("goto-preview").setup { default_mappings = true }
     end,
@@ -452,19 +452,19 @@ return require("packer").startup(function(use)
       }
     end,
   }
-	--  use{
-	-- 	"zbirenbaum/copilot.lua", -- alternative in lua
-	-- 	event = {"VimEnter"},
-	-- 	config = function()
-	-- 		vim.defer_fn(function()
-	-- 			require("copilot").setup()
-	-- 		end, 100)
-	-- 	end,
-	-- }
-	-- use {
-	--    "zbirenbaum/copilot-cmp",
-	--    after = {"copilot.lua", "nvim-cmp"},
-	-- }
+  --  use{
+  -- 	"zbirenbaum/copilot.lua", -- alternative in lua
+  -- 	event = {"VimEnter"},
+  -- 	config = function()
+  -- 		vim.defer_fn(function()
+  -- 			require("copilot").setup()
+  -- 		end, 100)
+  -- 	end,
+  -- }
+  -- use {
+  --    "zbirenbaum/copilot-cmp",
+  --    after = {"copilot.lua", "nvim-cmp"},
+  -- }
   use {
     "neovim/nvim-lspconfig",
     config = function()
@@ -486,7 +486,7 @@ return require("packer").startup(function(use)
       require "nv-aerial"
     end,
   }
-  use { "ray-x/lsp_signature.nvim" }
+  use { "ray-x/lsp_signature.nvim" } -- used for funct() signature hint
   use {
     "ThePrimeagen/refactoring.nvim",
     disable = false,
@@ -512,6 +512,10 @@ return require("packer").startup(function(use)
     end,
   } -- lua + wont lose () next to char finally good and simple +++
   use "nvim-telescope/telescope-media-files.nvim"
+  use {
+    "nvim-telescope/telescope-smart-history.nvim", -- per project history
+    requires = { "tami5/sqlite.lua" },
+  }
 
   -- Explorer  -------------------------------------------------------------------------------------------------------
   -- use { "kevinhwang91/rnvimr"} -- wont edti file
@@ -575,13 +579,14 @@ return require("packer").startup(function(use)
   use "mg979/vim-localhistory" -- local history LHLoad, LHWrite
 
   --aligning -------------------------------------------------------------------------------------------------------
-  use {
-    "junegunn/vim-easy-align", -- def:  ga  - then thing, and around what symbol :  eg  ga
-    config = function()
-      require "nv-easyalign"
-    end,
-  } -- lua + wont close () next to char finally good and simple +++
-  use "godlygeek/tabular"
+  -- replaced by visual_multi - align \\a
+  -- use {
+  --   "junegunn/vim-easy-align", -- def:  ga  - then thing, and around what symbol :  eg  ga
+  --   config = function()
+  --     require "nv-easyalign"
+  --   end,
+  -- } -- lua + wont close () next to char finally good and simple +++
+  -- use "godlygeek/tabular"
 
   --code/format -------------------------------------------------------------------------------------------------------
   use "wellle/targets.vim" -- eg ci,  ci_ etc
@@ -618,13 +623,13 @@ return require("packer").startup(function(use)
     "mg979/vim-visual-multi", --multi cursor support like vscode...
     config = function()
       vim.g.VM_mouse_mappings = 1
-			vim.cmd([[
+      vim.cmd [[
 				aug VMlens
 						au!
 						au User visual_multi_start lua require('vmlens').start()
 						au User visual_multi_exit lua require('vmlens').exit()
 				aug END
-			]])
+			]]
     end,
   }
   use {
@@ -656,10 +661,15 @@ return require("packer").startup(function(use)
           -- augend.paren.alias.brackets,
           -- augend.paren.alias.quote,
           augend.paren.new {
-            patterns = { { "(", ")" }, { "[", "]" }, { "{", "}" }, { "(", ")" }, { "'", "'" }, { '"', '"' }, { "'", "'" } },
-            nested = false,
-            cyclic = false,
+            elements = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f", "A", "B", "C", "D", "E", "F" },
+            word = false,
+            cyclic = true,
           },
+          -- augend.paren.new {
+          --   patterns = { { "(", ")" }, { "[", "]" }, { "{", "}" }, { "(", ")" }, { "'", "'" }, { '"', '"' }, { "'", "'" } },
+          --   nested = false,
+          --   cyclic = false,
+          -- },
           augend.constant.new {
             elements = { "True", "False" },
             word = true, -- if false, "sand" is incremented into "sor", "doctor" into "doctand", etc.
@@ -756,9 +766,9 @@ return require("packer").startup(function(use)
       vim.g.floaterm_height = 0.9
       vim.g.floaterm_width = 0.9
       vim.g.floaterm_opener = "edit"
-      vim.g.floaterm_borderchars = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}
-			local hl_adjust = require("hl_adjust")
-			hl_adjust.highlight_link("FloatermBorder", "Normal")
+      vim.g.floaterm_borderchars = { " ", " ", " ", " ", " ", " ", " ", " " }
+      local hl_adjust = require "hl_adjust"
+      hl_adjust.highlight_link("FloatermBorder", "Normal")
     end,
   }
   -- use {

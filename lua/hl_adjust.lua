@@ -63,17 +63,17 @@ local function match_color_to_highlight(base_color, ref_highlight, new_highlight
 	-- P(src_hl_data)
   local new_hi_data = {}
   for k, v in pairs(src_hl_data) do
-    if type(v) == "number" then
-			local old_col = Color.from_hex(hex(v))
+		if type(k) == "string" then -- ignore eg. "boolean" keys
+			if type(v) == "number" then
+				local old_col = Color.from_hex(hex(v))
 
-			local reference_hsl = old_col:to_hsl()
-			local base_c = Color.from_hex(base_color)
-			local base_hsl = base_c:to_hsl()
-			local new_color = Color.from_hsl(base_hsl.hue, base_hsl.saturation, reference_hsl.lightness)
-      new_hi_data[k] = new_color:to_hex()
-    -- elseif type(v) == "boolean" then
-      -- new_hi_data[k] = v
-    end
+				local reference_hsl = old_col:to_hsl()
+				local base_c = Color.from_hex(base_color)
+				local base_hsl = base_c:to_hsl()
+				local new_color = Color.from_hsl(base_hsl.hue, base_hsl.saturation, reference_hsl.lightness)
+				new_hi_data[k] = new_color:to_hex()
+			end
+		end
   end
 	-- print(new_highlight_name)
 	-- P(new_hi_data)

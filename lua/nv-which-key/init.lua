@@ -103,17 +103,16 @@ end
 wk.register({
 	['<leader>b'] = { name = '+Buffers' },
 	['<leader>b/'] = {":lua require('telescope.builtin').current_buffer_fuzzy_find({ sorter = require('telescope.sorters').get_substr_matcher({})})<CR>", 'Search'},
-	['<leader>b?'] = {':Telescope current_buffer_fuzzy_find<CR>',                       'Search fuzzy'},
-	['<leader>b<'] = {':Telescope buffers<CR>',                                         'Get buffer' } ,
-	['<leader>bb'] = {'<c-^>',                                                          'Cycle with Previous'},
-	['<leader>bn'] = {':enew<CR>',                                                      'New'},
-	['<leader>b]'] = {':BufferLineCycleNext<CR>',                                       'Next'},
-	['<leader>b['] = {':BufferLineCyclePrev<CR>',                                       'Previous'},
-	['<leader>bc'] = {':confirm bd<CR>', 'Close'},   -- fixes error on buffer close
-	['<leader>bo'] = {':%bd|e#|bd#<CR>',                                                'Close all but current'},
-	['<leader>bp'] = {':BufferLinePick<CR>',                                            'Pick (gb)'},
-	['<leader>br'] = {':confirm e<CR>',                                                 'Reload File(e!)'},
-	-- ['<leader>bf'] = {':Autoformat<CR>',                                                'Autoformat lines'},
+	['<leader>b?'] = {':Telescope current_buffer_fuzzy_find<CR>',                                                                                         'Search fuzzy'},
+	['<leader>b<'] = {':Telescope buffers<CR>',                                                                                                           'Get buffer' } ,
+	['<leader>bb'] = {'<c-^>',                                                                                                                            'Cycle with Previous'},
+	['<leader>bn'] = {':enew<CR>',                                                                                                                        'New'},
+	['<leader>b]'] = {':BufferLineCycleNext<CR>',                                                                                                         'Next'},
+	['<leader>b['] = {':BufferLineCyclePrev<CR>',                                                                                                         'Previous'},
+	['<leader>bc'] = {':confirm bd<CR>',                                                                                                                  'Close'},   -- fixes error on buffer close
+	['<leader>bo'] = {':%bd|e#|bd#<CR>',                                                                                                                  'Close all but current'},
+	['<leader>bp'] = {':BufferLinePick<CR>',                                                                                                              'Pick (gb)'},
+	['<leader>br'] = {':confirm e<CR>',                                                                                                                   'Reload File(e!)'},
 })
 
 -- ['c']= {
@@ -128,7 +127,6 @@ wk.register({
 wk.register({
 	['<leader>c'] = { name = '+Code' },
 	['<leader>c.'] = {':Telescope filetypes<CR>',    'filetypes'},
-	['<leader>ct'] = {':call v:lua.CmdInput("Tab /%s")<CR>', 'Tabularize (align)'},
 	-- ['<leader>cF'] = {':Autoformat<CR>',             'Autoformat lines'},
 	['<leader>cc'] = {':Neogen<CR>',             'Generate annotations'},
 	-- ['<leader>cc'] = {':TSContextToggle<CR>',             'Context toggle'}, --from treesitter-context plug
@@ -156,7 +154,6 @@ wk.register({
 wk.register({
 	['<leader>c'] = { name = '+Code'},
 	['<leader>ce'] = {":lua require('refactoring').refactor('Extract Function')<CR>",            'Extract Function'},
-	['<leader>ct'] = {':call v:lua.CmdInput("Tab /%s")<CR>', 'Tabularize (align)'},
 }, {mode = "v", prefix = ""})
 
 wk.register({
@@ -202,15 +199,16 @@ end
 -- file
 wk.register({
 	['<leader>f'] = { name = '+File' },
-	['<leader>fs'] = { ':update<CR>',                                    'Save'},
+	['<leader>fs'] = { ':update<CR>',                                      'Save'},
 	['<leader>fS'] = { ':call v:lua.CmdInput("w %s")<CR>',                 'Save as'},
-	['<leader>fd'] = { ':call delete(expand("%")) | bdelete!<CR>',       'Delete!'},
-	['<leader>fr'] = {':confirm e<CR>',                                  'Reload File(e!)'},
-	['<leader>ff'] = {':Telescope file_browser<CR>',                     'File Browser (fuzzy)'},
-	['<leader>fy'] = { ":call v:lua.yankpath()<CR>",                     'Yank file location<CR>'},
-	['<leader>fo'] = { ':!xdg-open "%:p:h"<CR>',                         'Open containing folder'},
-	['<leader>ft'] = { ':!alacritty --working-directory "%:p:h"<CR>',    'Open at terminal'},
-	['<leader>fC'] = {':cd %:p:h<CR>',                                   'cd %'},
+	['<leader>fe'] = { ':luafile%<CR>',                                    'Source %'},
+	['<leader>fd'] = { ':call delete(expand("%")) | bdelete!<CR>',         'Delete!'},
+	['<leader>fr'] = {':confirm e<CR>',                                    'Reload File(e!)'},
+	['<leader>ff'] = {':Telescope file_browser<CR>',                       'File Browser (fuzzy)'},
+	['<leader>fy'] = { ":call v:lua.yankpath()<CR>",                       'Yank file location<CR>'},
+	['<leader>fo'] = { ':!xdg-open "%:p:h"<CR>',                           'Open containing folder'},
+	['<leader>ft'] = { ':!alacritty --working-directory "%:p:h"<CR>',      'Open at terminal'},
+	['<leader>fC'] = {':cd %:p:h<CR>',                                     'cd %'},
 })
 
 
@@ -305,20 +303,20 @@ end
 
 wk.register({
 	['<leader>o'] = { name = '+Open' },
-	['<leader>o/'] = {'q/',                                     'Search History (q/)'},
-	-- ['<leader>o.'] = {':Fern . -reveal=%<CR>',                  'File Browse (Fern)'},
+	['<leader>o/'] = {'q/',                                          'Search History (q/)'},
+	-- ['<leader>o.'] = {':Fern . -reveal=%<CR>',                    'File Browse (Fern)'},
 	['<leader>of'] = {':Telescope file_browser<CR><ESC>',            'File Browser (fuzzy)'},
-	['<leader>od'] = {':Dirbuf<CR>',                               'Dirbuf'},
-	['<leader>oE'] = {':Ex<CR>',                                'Open Explorer(Ex)'} ,
-	['<leader>oU'] = {':UndotreeToggle<CR>',                    'Undo Tree'} ,
-	['<leader>oh'] = {'q:',                                     'Commands History (q:)'},
-	['<leader>oq'] = {':copen<CR>',                             'Quickfix (copen)'},
-	['<leader>oo'] = {':lopen<CR>',                             'Loclist (lopen)'},
-	['<leader>oO'] = {':SymbolsOutline<CR>',                    'Outliner (lsp)'},
-	['<leader>ol'] = {':Luapad<CR>',                            'Luapad Repl On'},
-	['<leader>oL'] = {":lua.require('luapad').detach()<CR>",    'Luapad Repl Off'},
-	['<leader>oc'] = {':Codi<CR>',                              'Codi Start (multi lang REPL)'},
-	['<leader>oC'] = {':Codi!<CR>',                             'Codi Stop'},
+	['<leader>od'] = {':Dirbuf<CR>',                                 'Dirbuf'},
+	['<leader>oE'] = {':Ex<CR>',                                     'Open Explorer(Ex)'} ,
+	['<leader>oU'] = {':UndotreeToggle<CR>',                         'Undo Tree'} ,
+	['<leader>oh'] = {'q:',                                          'Commands History (q:)'},
+	['<leader>oq'] = {':copen<CR>',                                  'Quickfix (copen)'},
+	['<leader>oo'] = {':lopen<CR>',                                  'Loclist (lopen)'},
+	['<leader>oO'] = {':SymbolsOutline<CR>',                         'Outliner (lsp)'},
+	['<leader>ol'] = {':Luapad<CR>',                                 'Luapad Repl On'},
+	['<leader>oL'] = {":lua.require('luapad').detach()<CR>",         'Luapad Repl Off'},
+	['<leader>oc'] = {':Codi<CR>',                                   'Codi Start (multi lang REPL)'},
+	['<leader>oC'] = {':Codi!<CR>',                                  'Codi Stop'},
 	['<leader>ot'] = {':FloatermNew<CR>', 'Term'},
 })
 
@@ -418,17 +416,17 @@ wk.register({
 -- n is for Window
 wk.register({
 	['<leader>w'] = { name = '+Window' },
-	['<leader>w='] = {'<C-w>=<CR>',                 'Equalize(=)'},
-	['<leader>w>'] = {':vertical resize +25<CR>',    'Increase(>)'},
-	['<leader>w<lt>'] = {':vertical resize -25<CR>', 'Decrease(<)'},
-	['<leader>wh'] = {'<C-w>s<CR>',                 'Split below(s)'},
-	['<leader>wv'] = {'<C-w>v<CR>',                 'Split right(v)'},
-	['<leader>wq'] = {'<C-w>q<CR>',                 'Quit window(q)'},
-	['<leader>wO'] = {':only<CR>',                  'Close All other splits(o)'},
-	['<leader>wo'] = {'<C-w>o<CR>',                 'Close All but current(o)'},
-	['<leader>ww'] = {':call v:lua.CmdInput(":set winwidth=")<CR>',  'Set width'},
+	['<leader>w='] = {'<C-w>=<CR>',                                     'Equalize(=)'},
+	['<leader>w>'] = {':vertical resize +25<CR>',                       'Increase(>)'},
+	['<leader>w<lt>'] = {':vertical resize -25<CR>',                    'Decrease(<)'},
+	['<leader>wh'] = {'<C-w>s<CR>',                                     'Split below(s)'},
+	['<leader>wv'] = {'<C-w>v<CR>',                                     'Split right(v)'},
+	['<leader>wq'] = {'<C-w>q<CR>',                                     'Quit window(q)'},
+	['<leader>wO'] = {':only<CR>',                                      'Close All other splits(o)'},
+	['<leader>wo'] = {'<C-w>o<CR>',                                     'Close All but current(o)'},
+	['<leader>ww'] = {':call v:lua.CmdInput(":set winwidth=")<CR>',     'Set width'},
 	['<leader>wm'] = {':call v:lua.CmdInput(":set winminwidth=")<CR>',  'Set min width'},
-	['<leader>wa'] = {':call v:lua.conditional_width()<CR>',       'Auto width'},
+	['<leader>wa'] = {':call v:lua.conditional_width()<CR>',            'Auto width'},
 })
 
 

@@ -201,10 +201,10 @@ cmp.setup.cmdline(":", {
     end,
   },
   sources = cmp.config.sources {
-    { name = "cmdline_history", priority = 2 },
-    { name = "cmdline", priority = 2 },
-    { name = "fuzzy_path", priority = 1 }, -- from tzacher
-    { name = "buffer", priority = 1 },
+    { name = "cmdline_history", priority = 2, group_index=2 },
+    { name = "cmdline", priority = 2, group_index=1 },
+    { name = "fuzzy_path", priority = 1, group_index=2 }, -- from tzacher
+    { name = "buffer", priority = 1, group_index=2 },
   },
 })
 cmp.setup.cmdline("/", {
