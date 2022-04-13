@@ -54,11 +54,11 @@ local on_attach = function(client, bufnr)
 		vim.api.nvim_set_hl(0, 'LspReferenceText', { reverse = true })
 		vim.api.nvim_set_hl(0, 'LspReferenceWrite', { reverse = true })
 
-		-- local hl_adjust = require("hl_adjust") -- wont properly set on vim init....
+		-- local hl_manager = require("hl_manager") -- wont properly set on vim init....
 		--
-		-- hl_adjust.highlight_adjust_col('LspReferenceRead', 'Search',{})
-		-- hl_adjust.highlight_adjust_col('LspReferenceText', 'Search',{})
-		-- hl_adjust.highlight_adjust_col('LspReferenceWrite', 'Search',{})
+		-- hl_manager.highlight_from_src('LspReferenceRead', 'Search',{})
+		-- hl_manager.highlight_from_src('LspReferenceText', 'Search',{})
+		-- hl_manager.highlight_from_src('LspReferenceWrite', 'Search',{})
 
 
 		local lsp_doc_hi = vim.api.nvim_create_augroup("lsp_document_highlight", {clear = true})

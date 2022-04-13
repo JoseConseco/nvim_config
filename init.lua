@@ -2,7 +2,7 @@ local P = function(x)
   print(vim.inspect(x))
 end
 require "plugins"
-require "hl_adjust"
+require "hl_manager"
 -- vim.cmd('packloadall!') -- fixes plugs not seeing config, and load order mess. Or else we need to: so $MYVIMRC  but fucks up packer.sync...
 require "settings"
 require "keymappings"

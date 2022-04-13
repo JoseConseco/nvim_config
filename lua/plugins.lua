@@ -88,6 +88,7 @@ return require("packer").startup(function(use)
   }
   use {
     "EdenEast/nightfox.nvim",
+		branch = "feat/interactive",
     config = function()
       require "nv-nightfox"
     end,
@@ -111,8 +112,8 @@ return require("packer").startup(function(use)
           },
         },
       }
-      local hl_adjust = require "hl_adjust"
-      hl_adjust.highlight_link("Hlargs", "TSParameter")
+      local hl_manager = require "hl_manager"
+      hl_manager.highlight_link("Hlargs", "TSParameter")
     end,
   }
 
@@ -158,12 +159,12 @@ return require("packer").startup(function(use)
     "lukas-reineke/indent-blankline.nvim",
     after = "nightfox.nvim",
     config = function()
-      local hl_adjust = require "hl_adjust"
-      hl_adjust.highlight_adjust_col("IndentEven", "Normal", { action = "contrast", factor = -6 }) -- reduce contrast by default by -5
+      local hl_manager = require "hl_manager"
+      hl_manager.highlight_from_src("IndentEven", "Normal", { action = "contrast", factor = -6 }) -- reduce contrast by default by -5
       vim.cmd [[highlight IndentOdd guifg=NONE guibg=NONE gui=nocombine]]
-      -- hl_adjust.highlight_adjust_col("IndentBlanklineContextChar", "Normal", {action='contrast', factor=-10}) -- reduce contrast by default by -5
+      -- hl_manager.highlight_from_src("IndentBlanklineContextChar", "Normal", {action='contrast', factor=-10}) -- reduce contrast by default by -5
       -- vim.cmd [[highlight! link IndentBlanklineContextChar Comment]]
-      hl_adjust.highlight_link("IndentBlanklineContextChar", "Comment")
+      hl_manager.highlight_link("IndentBlanklineContextChar", "Comment")
       require "nv-indentline"
     end,
   }
@@ -316,9 +317,9 @@ return require("packer").startup(function(use)
       -- vim.api.nvim_exec("highlight! link NvimDapVirtualTextChanged DiagnosticVirtualTextWarn", false)
       -- not sure why this works but above wont
 
-      local hl_adjust = require "hl_adjust"
-      hl_adjust.highlight_link("NvimDapVirtualText", "DiagnosticVirtualTextInfo")
-      hl_adjust.highlight_link("NvimDapVirtualTextChanged", "DiagnosticVirtualTextWarn")
+      local hl_manager = require "hl_manager"
+      hl_manager.highlight_link("NvimDapVirtualText", "DiagnosticVirtualTextInfo")
+      hl_manager.highlight_link("NvimDapVirtualTextChanged", "DiagnosticVirtualTextWarn")
     end,
   }
   use {
@@ -369,14 +370,14 @@ return require("packer").startup(function(use)
     after = "nightfox.nvim",
     config = function()
       -- add colorscheme change hook
-      local hl_adjust = require "hl_adjust"
-      hl_adjust.match_color_to_highlight("#ebcb8b", "TSPunctBracket", "rainbowcol1", "fg")
-      hl_adjust.match_color_to_highlight("#a3be8c", "TSPunctBracket", "rainbowcol2", "fg")
-      hl_adjust.match_color_to_highlight("#88c0d0", "TSPunctBracket", "rainbowcol3", "fg")
-      hl_adjust.match_color_to_highlight("#6ea1ec", "TSPunctBracket", "rainbowcol4", "fg")
-      hl_adjust.match_color_to_highlight("#b48ead", "TSPunctBracket", "rainbowcol5", "fg")
-      hl_adjust.match_color_to_highlight("#df717a", "TSPunctBracket", "rainbowcol6", "fg")
-      hl_adjust.match_color_to_highlight("#d08770", "TSPunctBracket", "rainbowcol7", "fg")
+      local hl_manager = require "hl_manager"
+      hl_manager.match_color_to_highlight("#ebcb8b", "TSPunctBracket", "rainbowcol1", "fg")
+      hl_manager.match_color_to_highlight("#a3be8c", "TSPunctBracket", "rainbowcol2", "fg")
+      hl_manager.match_color_to_highlight("#88c0d0", "TSPunctBracket", "rainbowcol3", "fg")
+      hl_manager.match_color_to_highlight("#6ea1ec", "TSPunctBracket", "rainbowcol4", "fg")
+      hl_manager.match_color_to_highlight("#b48ead", "TSPunctBracket", "rainbowcol5", "fg")
+      hl_manager.match_color_to_highlight("#df717a", "TSPunctBracket", "rainbowcol6", "fg")
+      hl_manager.match_color_to_highlight("#d08770", "TSPunctBracket", "rainbowcol7", "fg")
     end,
   }
   use "nvim-treesitter/playground"
@@ -654,16 +655,31 @@ return require("packer").startup(function(use)
       require("dial.config").augends:register_group {
         -- default augends used when no group name is specified
         default = {
-          augend.integer.alias.decimal, -- nonnegative decimal number (0, 1, 2, 3, ...)
-          augend.integer.alias.hex, -- nonnegative hex number  (0x01, 0x1a1f, etc.)
+          -- augend.integer.alias.decimal, -- nonnegative decimal number (0, 1, 2, 3, ...)
+          -- augend.hexcolor.new({case="upper"}), -- nonnegative hex number  (0x01, 0x1a1f, etc.)
           augend.date.alias["%Y/%m/%d"], -- date (2022/02/19, etc.)
           augend.constant.alias.bool,
           -- augend.paren.alias.brackets,
           -- augend.paren.alias.quote,
-          augend.paren.new {
-            elements = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f", "A", "B", "C", "D", "E", "F" },
-            word = false,
-            cyclic = true,
+          --     augend.constant.new {
+          --       elements = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f", "A", "B", "C", "D", "E", "F" },
+          --       word = false,
+          --       cyclic = true,
+          -- case = "upper",
+          --     },
+          augend.user.new {
+            find = require("dial.augend.common").find_pattern "%x",
+            add = function(text, addend, cursor)
+              local n = tonumber(text, 16)
+              if n then
+                n = math.fmod(n + addend, 16)
+              else
+                n = 0
+              end
+              text = string.format("%X", n) -- text = tostring(n)
+              cursor = #text
+              return { text = text, cursor = cursor }
+            end,
           },
           -- augend.paren.new {
           --   patterns = { { "(", ")" }, { "[", "]" }, { "{", "}" }, { "(", ")" }, { "'", "'" }, { '"', '"' }, { "'", "'" } },
@@ -767,8 +783,8 @@ return require("packer").startup(function(use)
       vim.g.floaterm_width = 0.9
       vim.g.floaterm_opener = "edit"
       vim.g.floaterm_borderchars = { " ", " ", " ", " ", " ", " ", " ", " " }
-      local hl_adjust = require "hl_adjust"
-      hl_adjust.highlight_link("FloatermBorder", "Normal")
+      local hl_manager = require "hl_manager"
+      hl_manager.highlight_link("FloatermBorder", "Normal")
     end,
   }
   -- use {

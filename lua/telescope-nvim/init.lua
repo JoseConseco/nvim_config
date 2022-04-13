@@ -118,20 +118,20 @@ require("telescope").setup {
     },
   },
 }
-local hl_adjust = require "hl_adjust"
+local hl_manager = require "hl_manager"
 
-hl_adjust.highlight_adjust_col("TelescopePromptNormal", "Normal", { action = "contrast", factor = 4 })
-hl_adjust.highlight_link("TelescopePromptBorder", "TelescopePromptNormal")
-hl_adjust.highlight_link("TelescopePromptPrefix", "TelescopePromptNormal")
+hl_manager.highlight_from_src("TelescopePromptNormal", "Normal", { action = "contrast", factor = 4 })
+hl_manager.highlight_link("TelescopePromptBorder", "TelescopePromptNormal")
+hl_manager.highlight_link("TelescopePromptPrefix", "TelescopePromptNormal")
 
-hl_adjust.highlight_link("TelescopePreviewTitle", "Search")
-hl_adjust.highlight_link("TelescopePromptTitle", "Search")
-hl_adjust.highlight_link("TelescopeResultsTitle", "Search")
+hl_manager.highlight_link("TelescopePreviewTitle", "Search")
+hl_manager.highlight_link("TelescopePromptTitle", "Search")
+hl_manager.highlight_link("TelescopeResultsTitle", "Search")
 
--- hl_adjust.highlight_adjust_col("TelescopeBorder", "Normal", { action = "contrast", factor = -2 })
-hl_adjust.highlight_link("TelescopeBorder", "Normal")
-hl_adjust.highlight_link("TelescopeNormal", "TelescopeBorder")
-hl_adjust.highlight_link("TelescopeMatching", "TelescopeBorder")
+-- hl_manager.highlight_from_src("TelescopeBorder", "Normal", { action = "contrast", factor = -2 })
+hl_manager.highlight_link("TelescopeBorder", "Normal")
+hl_manager.highlight_link("TelescopeNormal", "TelescopeBorder")
+hl_manager.highlight_link("TelescopeMatching", "TelescopeBorder")
 
 -- vim.cmd [[highlight! link TelescopeBorder Normal]]
 -- vim.cmd [[highlight! link TelescopePromptNormal Normal]]

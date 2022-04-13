@@ -86,7 +86,7 @@ end
 ---@param opts table options
 ---      @action string 'contrast' or 'brighten' default 'contrast'
 ---			 @factor number (-100, 100) default -5 (reduce contrast)
-local function highlight_adjust_col(new_highlight_name, src_highlight, opts)
+local function highlight_from_src(new_highlight_name, src_highlight, opts)
   local action = opts.action and opts.action or "contrast"
   local factor = opts.factor and opts.factor or -5
 
@@ -131,11 +131,11 @@ local function match_color_to_highlight_au(base_color, ref_highlight, new_highli
 	})
 end
 
-local function highlight_adjust_col_au(new_highlight_name, src_highlight, opts)
+local function highlight_from_src_au(new_highlight_name, src_highlight, opts)
 	vim.api.nvim_create_autocmd("ColorScheme", {
 		pattern = "*",
 		callback = function()
-			highlight_adjust_col(new_highlight_name, src_highlight, opts) -- reduce contrast by default by -5
+			highlight_from_src(new_highlight_name, src_highlight, opts) -- reduce contrast by default by -5
 		end,
 		group = theme_change_au,
 	})
@@ -150,6 +150,6 @@ end
 
 
 M.highlight_link = highlight_link_au -- link without adjusting color
-M.highlight_adjust_col = highlight_adjust_col_au
+M.highlight_from_src = highlight_from_src_au
 M.match_color_to_highlight = match_color_to_highlight_au
 return M
