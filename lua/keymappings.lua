@@ -136,7 +136,7 @@ vim.api.nvim_set_keymap("n", " p", '<cmd>normal! viw"_dP<cr>', { noremap = true 
 
 
 -- no highlight
-vim.api.nvim_set_keymap('n', '<m-h>', ':set hlsearch!<CR>', {noremap = true, silent = true})
+-- vim.api.nvim_set_keymap('n', '<m-h>', ':set hlsearch!<CR>', {noremap = true, silent = true})
 --[[ vim.api.nvim_set_keymap('n', 'gh', '^', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', 'gl', '$', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('v', 'gh', '^', {noremap = true, silent = true})
@@ -147,8 +147,10 @@ vim.api.nvim_set_keymap('n', '<c-l>', '$', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('v', '<c-h>', '^', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('v', '<c-l>', '$', {noremap = true, silent = true})
 
-vim.api.nvim_set_keymap('v', '<m-h>', "<cmd>normal xbP`[v`]'<cr>", {noremap = true, silent = true}) -- move sel forward one word
-vim.api.nvim_set_keymap('v', '<m-l>', "<cmd>normal xep`]v`['<cr>", {noremap = true, silent = true}) -- move sel backward one word
+vim.api.nvim_set_keymap('n', '<m-h>', "<cmd>ISwapCursorNodeLeft<CR>", {noremap = true, silent = true}) -- move sel forward one word
+vim.api.nvim_set_keymap('n', '<m-l>', "<cmd>ISwapCursorNodeRight<CR>", {noremap = true, silent = true}) -- move sel backward one word
+-- vim.api.nvim_set_keymap('v', '<m-h>', "<cmd>normal xbP`[v`]'<cr>", {noremap = true, silent = true}) -- move sel forward one word
+-- vim.api.nvim_set_keymap('v', '<m-l>', "<cmd>normal xep`]v`['<cr>", {noremap = true, silent = true}) -- move sel backward one word
 
 -- auto magic search
 --[[ vim.api.nvim_set_keymap('n', '/', '/\\v', {noremap = true, silent = true})

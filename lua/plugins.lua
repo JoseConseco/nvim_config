@@ -88,7 +88,7 @@ return require("packer").startup(function(use)
   }
   use {
     "EdenEast/nightfox.nvim",
-		branch = "feat/interactive",
+		-- branch = "feat/interactive",
     config = function()
       require "nv-nightfox"
     end,
@@ -186,7 +186,7 @@ return require("packer").startup(function(use)
 
   use {
     "petertriho/nvim-scrollbar",
-    disable = false, -- scrollbar which shows search resutls   and errors
+    cond = true, -- scrollbar which shows search resutls   and errors
     config = function()
       require("scrollbar").setup {
         handle = {
@@ -350,14 +350,23 @@ return require("packer").startup(function(use)
   }
   use {
     "romgrk/nvim-treesitter-context",
-    disable = false, -- cool but gives orror on compe-popup - https://github.com/romgrk/nvim-treesitter-context/issues/49
+    cond = true, -- cool but gives orror on compe-popup - https://github.com/romgrk/nvim-treesitter-context/issues/49
     config = function()
       require "nv-treesittercontext"
     end,
   } -- fixes plug  }
   -- vim.cmd([[:highlight TreesitterContext guibg=#a4cf69]])
   -- use 'nvim-treesitter/nvim-treesitter-textobjects' -- cool but takes lots of keys for func, class, if, etc
-  use "mizlan/iswap.nvim"
+  -- use {"mizlan/iswap.nvim",
+  use {"JoseConseco/iswap.nvim",
+		config = function()
+			require "iswap".setup{
+				hl_snipe = 'ErrorMsg',
+				autoswap = true,
+				hl_selection = ''
+			}
+		end,
+	}
   use {
     "mfussenegger/nvim-ts-hint-textobject",
     config = function()
@@ -428,9 +437,9 @@ return require("packer").startup(function(use)
       "quangnguyen30192/cmp-nvim-ultisnips",
       "hrsh7th/cmp-calc",
       "lukas-reineke/cmp-rg",
-      "hrsh7th/cmp-nvim-lsp-signature-help",
-      "uga-rosa/cmp-dictionary",
-      "f3fora/cmp-spell",
+      -- "hrsh7th/cmp-nvim-lsp-signature-help", - x ray better
+      -- "uga-rosa/cmp-dictionary", -- based on custom dict
+      "f3fora/cmp-spell", -- vim spell hast to be enabled
     }, --"hrsh7th/cmp-vsnip",
     config = function()
       require "nv-cmp"
@@ -438,8 +447,8 @@ return require("packer").startup(function(use)
   }
   use { "dmitmel/cmp-cmdline-history", requires = "hrsh7th/cmp-cmdline" }
   use { "nvim-telescope/telescope-fzf-native.nvim", run = "make" }
-  use { "tzachar/cmp-fuzzy-path", requires = { "hrsh7th/nvim-cmp", "hrsh7th/cmp-path", "tzachar/fuzzy.nvim" } }
-  use { "tzachar/cmp-fuzzy-buffer", requires = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" } }
+  -- use { "tzachar/cmp-fuzzy-path", requires = { "hrsh7th/nvim-cmp", "hrsh7th/cmp-path", "tzachar/fuzzy.nvim" } }
+  -- use { "tzachar/cmp-fuzzy-buffer", requires = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" } }
   use {
     "tzachar/cmp-tabnine",
     requires = "hrsh7th/nvim-cmp",
@@ -498,6 +507,7 @@ return require("packer").startup(function(use)
   }
   use {
     "jose-elias-alvarez/null-ls.nvim",
+		commit = "bd9dfc6015241334c140fb065445ba9443e6de14",
     config = function()
       require "nv-null"
     end,
@@ -507,6 +517,7 @@ return require("packer").startup(function(use)
   -- Telescope   -------------------------------------------------------------------------------------------------------
   use {
     "nvim-telescope/telescope.nvim",
+		-- branch = "fix/another_teardown_issue",
     requires = { { "nvim-lua/popup.nvim" }, { "nvim-lua/plenary.nvim" }, { "tom-anders/telescope-vim-bookmarks.nvim" }, "nvim-telescope/telescope-file-browser.nvim", "JoseConseco/telescope_sessions_picker.nvim" },
     config = function()
       require "telescope-nvim"
@@ -544,6 +555,7 @@ return require("packer").startup(function(use)
   -- general  -------------------------------------------------------------------------------------------------------
   use {
     "folke/which-key.nvim",
+		branch = "pr/278",
     config = function()
       require "nv-which-key"
     end,
@@ -554,6 +566,20 @@ return require("packer").startup(function(use)
       require "nv-todo"
     end,
   }
+	use {
+		'rainbowhxch/accelerated-jk.nvim',
+		config = function()
+			vim.api.nvim_set_keymap('n', 'j', '<Plug>(accelerated_jk_gj)', {})
+			vim.api.nvim_set_keymap('n', 'k', '<Plug>(accelerated_jk_gk)', {})
+			 require('accelerated-jk').setup({
+					mode = 'time_driven',
+					enable_deceleration = false,
+					acceleration_limit = 150,
+					acceleration_table = { 5, 29}, -- after 25js, jump to next speed
+					deceleration_table = { {550, 9999} }
+			})
+		end,
+	}
 
   --find and replace ? -------------------------------------------------------------------------------------------------------
   -- use {  -- replaced by cg* mapping
@@ -593,7 +619,7 @@ return require("packer").startup(function(use)
   use "wellle/targets.vim" -- eg ci,  ci_ etc
   use {
     "andymass/vim-matchup",
-    disable = false, -- increase power of % - slow as hell (not any more?) higlights fun, if etc. ranges
+    disable = true, -- increase power of % - slow as hell (not any more?) higlights fun, if etc. ranges
     setup = function()
       vim.g.matchup_matchparen_deferred = 1
     end,

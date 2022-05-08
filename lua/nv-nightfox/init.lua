@@ -1,9 +1,4 @@
-local dayfox_col = require("nightfox.palette").load "dayfox"
-local nightfox_col = require("nightfox.palette").load "nightfox"
-local dawnfox_col = require("nightfox.palette").load "dawnfox"
--- local dayfox_spec = require('nightfox.spec').load("nightfox")
-
-require("nightfox").setup {
+require("nightfox").setup({
   options = {
     transparent = false,
     dim_inactive = true,
@@ -31,8 +26,8 @@ require("nightfox").setup {
 
       bg0 = "#dfdfdf", -- Dark bg (status line and float)
       bg1 = "#F7F7FA", -- Default bg
-      bg2 = "#dce1e8", -- Lighter bg (cursor line)
-      bg3 = "#ebecec", -- Lighter bg (colorcolm folds)
+      bg2 = "#E8E8EC", -- Lighter bg (colorcolm folds)
+      bg3 = "#DbEAfB", -- Lighter bg (cursor line)
       bg4 = "#dcdcdc", -- Conceal, border fg
 
       sel0 = "#eeefef", -- Popup bg, visual selection bg
@@ -48,43 +43,26 @@ require("nightfox").setup {
   specs = {
     dayfox = {
       syntax = {
-        func = dayfox_col.blue.bright, -- was blue.dim
-        conditional = dayfox_col.red.base, -- if, then etc
-        -- operator = dayfox_col.red.base, -- for and, or etc - was black
-        ident = dayfox_col.magenta.base, -- cyan by default
+        func = "blue.bright", -- was blue.dim
+        ident = "magenta", -- cyan by default
       },
     },
     dawnfox = {
       syntax = {
-        func = dawnfox_col.blue.bright, -- was blue.dim
-        conditional = dawnfox_col.red.base, -- if, then etc
-        -- operator = dawnfox_col.red.base, -- for and, or etc - was black
+        func = "palette.blue.bright", -- was blue.dim
       },
     },
     nightfox = {
       syntax = {
-        func = nightfox_col.blue.bright, -- was blue.dim
-        conditional = nightfox_col.red.base, -- if, then etc
+        func = "blue.bright", -- was blue.dim
       },
     },
   },
   groups = {
-    -- Conditional = { fg = "syntax.builtin0", style = "bold" },
     Conditional = { link = "TSKeywordFunction" },
-    TSKeywordOperator = { link = "TSKeywordFunction" },
-    -- Operator = { link = "TSKeywordFunction" },
-
-    -- TelescopeBorder = { link = "NormalFloat" },
-    -- TelescopePromptBorder = { link = "Folded" },
-    -- TelescopePromptNormal = {link = "Folded"},
-    -- TelescopePromptPrefix = {link = "Folded"},
-    -- TelescopeNormal = { link = "NormalFloat" },
-    -- TelescopePreviewTitle = { link = "Search" },
-    -- TelescopePromptTitle = { link = "Search" },
-    -- TelescopeResultsTitle = { link = "Search"},
-    -- TelescopeMatching = { link = "PmenuSel"},
+    TSKeywordOperator = { link = "TSKeywordFunction" }, -- eg. for x `in` y
   },
-}
+})
 vim.cmd [[highlight LineNr guifg=#5081c0 | highlight CursorLineNR guifg=#FFba00 ]]
 local hl_manager = require "hl_manager"
 hl_manager.highlight_from_src("NormalNC", "Normal", { action = "contrast", factor = -5 })

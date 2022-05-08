@@ -56,10 +56,10 @@ vim.opt.winminwidth=50
 vim.g.paste = true --? format pasted str - does it work? seems broken right now..
 
 -- vim.o.guifont = "JetBrainsMonoNL Nerd Font Mono, Medium:h8"     -- icons ok, but ugly
-vim.o.guifont = "Source Code Pro SemiBold:h11"  -- icons missng
+vim.o.guifont = "Source Code Pro:h9"  -- icons missng
 -- vim.o.guifont = "FiraCode Nerd Font:h11"   --acutally OK
 -- vim.o.guifont = "NotoSansMono Nerd Font Medium:h12" -- missing icons
-vim.g.neovide_refresh_rate = 60
+vim.g.neovide_refresh_rate = 30
 vim.g.neovide_transparency=1.0
 
 
@@ -73,7 +73,7 @@ end
 
 vim.opt.foldtext = 'v:lua.custom_fold_text()'
 -- vim.opt.fillchars = { eob = "-", fold = "=" }
-vim.opt.foldminlines = 3  -- fold only if more than 2 lines in code block
-vim.opt.foldnestmax = 3  -- create max 4 folds (avoids too many fold levels)
+vim.opt.foldminlines = 1  -- fold only if more than 2 lines in code block
+vim.opt.foldnestmax = 4  -- create max 4 folds (avoids too many fold levels)
 vim.opt.foldopen:append({'jump', 'insert'})  -- default: "block,hor,mark,percent,quickfix, search,tag,undo"
 

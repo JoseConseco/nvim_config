@@ -49,7 +49,7 @@ local on_attach = function(client, bufnr)
 			}
 		)
 	-- Set autocommands conditional on server_capabilities
-	if client.resolved_capabilities.document_highlight then
+	if client.resolved_capabilities.document_highlight then  -- in 8.0 - server_capabilities
 		vim.api.nvim_set_hl(0, 'LspReferenceRead', { reverse = true })
 		vim.api.nvim_set_hl(0, 'LspReferenceText', { reverse = true })
 		vim.api.nvim_set_hl(0, 'LspReferenceWrite', { reverse = true })
@@ -112,13 +112,7 @@ capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 -- set the path to the sumneko installation; if you previously installed via the now deprecated :LspInstall, use
 --
 local util = require 'lspconfig/util'
-local root_files = {
-	'setup.py',
-	'pyproject.toml',
-	'setup.cfg',
-	'requirements.txt',
-	'.git',
-}
+
 
 nvim_lsp.pyright.setup{
 	capabilities = capabilities;
@@ -126,8 +120,17 @@ nvim_lsp.pyright.setup{
 	cmd = { "pyright-langserver", "--stdio" };
 	filetypes = { "python" };
 	root_dir = function(filename)
+		local root_files = {
+			-- 'setup.py',
+			-- 'pyproject.toml',
+			-- 'setup.cfg',
+			-- 'requirements.txt',
+			'.git',
+		}
 		return util.root_pattern(unpack(root_files))(filename) or
-			util.path.dirname(filename)
+			util.find_git_ancestor(filename) or
+			nil -- forces to run in signle file mode
+			-- util.path.dirname(filename) -- this will point to root addons == very slow
 	end;
 	settings = {
 		pyright = {

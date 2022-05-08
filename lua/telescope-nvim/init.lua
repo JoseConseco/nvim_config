@@ -10,16 +10,17 @@ end
 
 -- prevets cycle_history_prev form appending more and more spaces
 local function fix_prev(prompt_bufnr, map)
-	press "<C-o>cc" -- <c-o> execute normal cmd in inset mode
-	require "telescope.actions".cycle_history_prev(prompt_bufnr)
-	return true
+  press "<C-o>cc" -- <c-o> execute normal cmd in inset mode
+  require("telescope.actions").cycle_history_prev(prompt_bufnr)
+  return true
 end
 
 local function fix_next(prompt_bufnr, map)
-	press "<C-o>cc" -- <c-o> execute normal cmd in inset mode
-	require "telescope.actions".cycle_history_next(prompt_bufnr)
-	return true
+  press "<C-o>cc" -- <c-o> execute normal cmd in inset mode
+  require("telescope.actions").cycle_history_next(prompt_bufnr)
+  return true
 end
+
 
 require("telescope").setup {
   defaults = {
@@ -63,6 +64,8 @@ require("telescope").setup {
         ["<C-Down>"] = fix_next,
         ["<C-Up>"] = fix_prev,
       },
+			n = {
+				}
     },
     file_sorter = require("telescope.sorters").get_fuzzy_file,
     file_ignore_patterns = { "__cache__/.*", "%.pyc" },
@@ -78,10 +81,18 @@ require("telescope").setup {
     qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
     -- Developer configurations: Not meant for general override
     buffer_previewer_maker = require("telescope.previewers").buffer_previewer_maker,
-		history = { -- from nvim-telescope/telescope-smart-history.nvim plug
-			path = vim.fn.stdpath "data" .. "/databases/telescope_history.sqlite3",
-			limit = 100,
-		},
+    history = { -- from nvim-telescope/telescope-smart-history.nvim plug
+      path = vim.fn.stdpath "data" .. "/databases/telescope_history.sqlite3",
+      limit = 100,
+    },
+  },
+  pickers = {
+    live_grep = {
+      on_input_filter_cb = function(prompt)
+        -- AND operator for live_grep like how fzf handles spaces with wildcards in rg
+        return { prompt = prompt:gsub("%s", ".*") }
+      end,
+    },
   },
   extensions = {
     media_files = {
@@ -90,6 +101,13 @@ require("telescope").setup {
     },
     sessions_picker = {
       sessions_dir = vim.fn.stdpath "data" .. "/session/",
+    },
+    fzf = {
+      fuzzy = true, -- false will only do exact matching
+      override_generic_sorter = true, -- override the generic sorter
+      override_file_sorter = true, -- override the file sorter
+      case_mode = "smart_case", -- or "ignore_case" or "respect_case"
+      -- the default case_mode is "smart_case"
     },
     file_browser = {
       grouped = true,
@@ -131,7 +149,7 @@ hl_manager.highlight_link("TelescopeResultsTitle", "Search")
 -- hl_manager.highlight_from_src("TelescopeBorder", "Normal", { action = "contrast", factor = -2 })
 hl_manager.highlight_link("TelescopeBorder", "Normal")
 hl_manager.highlight_link("TelescopeNormal", "TelescopeBorder")
-hl_manager.highlight_link("TelescopeMatching", "TelescopeBorder")
+hl_manager.highlight_link("TelescopeMatching", "Search")
 
 -- vim.cmd [[highlight! link TelescopeBorder Normal]]
 -- vim.cmd [[highlight! link TelescopePromptNormal Normal]]

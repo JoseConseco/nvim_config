@@ -7,14 +7,14 @@ local t = function(str)
   return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
 
-compare.score_offset = function(entry1, entry2)
-  local diff_offset_score = entry1:get_offset() * entry2.score - entry2:get_offset() * entry1.score
-  if diff_offset_score < 0 then
-    return true
-  elseif diff_offset_score > 0 then
-    return false
-  end
-end
+-- compare.score_offset = function(entry1, entry2)
+--   local diff_offset_score = entry1:get_offset() * entry2.score - entry2:get_offset() * entry1.score
+--   if diff_offset_score < 0 then
+--     return true
+--   elseif diff_offset_score > 0 then
+--     return false
+--   end
+-- end
 
 local press = function(key)
   vim.api.nvim_feedkeys(t(key, true, true, true), "n", true)
@@ -29,12 +29,12 @@ cmp.setup {
         cmp_tabnine = "[T9]",
         nvim_lsp = "[LSP]",
         ultisnips = "[USnip]",
-        dictionary = "[DICT]",
-        spell = "[SPELL]",
+        -- dictionary = "[DICT]",
+        spell = "[SPELL]", -- from f3fora/cmp-spell (vim spell has to be enabled)
         nvim_lua = "[LUA]",
         rg = "[RG]",
         -- vsnip = "[Vsnip]",
-        fuzzy_path = "[PATH]",
+        path = "[PATH]",
         buffer = "[Buffer]",
         -- path = "[Path]",
         calc = "[Calc]",
@@ -42,8 +42,16 @@ cmp.setup {
       -- print(vim.inspect(entry))
     },
   },
-  documentation = {
-    border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+  window = {
+    documentation = {
+      border = "rounded",
+      scrollbar = "║",
+    },
+    completion = {
+      -- border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+      border = "rounded",
+      scrollbar = "║",
+    },
   },
   min_length = 0, -- allow for `from package import _` in Python
   -- You can set mappings if you want
@@ -60,7 +68,7 @@ cmp.setup {
       else
         press "<S-tab>"
       end
-    end, { "i", "s" }),
+    end, { "i", "s", "c" }),
     ["<Tab>"] = cmp.mapping(function(fallback)
       if vim.fn["UltiSnips#CanJumpForwards"]() == 1 then
         press "<esc>:call UltiSnips#JumpForwards()<CR>"
@@ -76,7 +84,7 @@ cmp.setup {
       else
         fallback()
       end
-    end, { "i", "s" }),
+    end, { "i", "s", "c" }),
     ["<C-d>"] = cmp.mapping.scroll_docs(-4),
     ["<C-f>"] = cmp.mapping.scroll_docs(4),
     ["<C-e>"] = cmp.mapping.close(),
@@ -125,37 +133,22 @@ cmp.setup {
       vim.fn["UltiSnips#Anon"](args.body)
     end,
   },
-  sources = cmp.config.sources {
+  sources = {
     -- { name = "nvim_lsp_signature_help" },
-		{ name = "cmp_tabnine", priority=8},
-    { name = "nvim_lsp", priority=8},
-    { name = "ultisnips", priority=7 },
-		{ name = "buffer", priority=7 }, -- first for locality sorting?
-    { name = "spell", keyword_length = 3, priority=5, keyword_pattern = [[\w\+]] },
-    { name = "dictionary", keyword_length = 3, priority=5, keyword_pattern = [[\w\+]] }, -- from uga-rosa/cmp-dictionary plug
+    { name = "cmp_tabnine", priority = 8, group_index = 1 },
+    { name = "nvim_lsp", priority = 8, group_index = 1 },
+    { name = "ultisnips", priority = 7, group_index = 1 },
+    { name = "nvim_lua", priority = 5, group_index = 1 },
+    { name = "buffer", priority = 5, max_item_count = 3, keyword_length = 4, group_index = 2 }, -- first for locality sorting?
+    { name = "spell", priority = 5, keyword_pattern = [[\w\+]], keyword_length = 4, group_index = 2 },
+    -- { name = "dictionary", keyword_length = 3, priority = 5, keyword_pattern = [[\w\+]] }, -- from uga-rosa/cmp-dictionary plug
     -- { name = 'rg'},
-    { name = "nvim_lua", priority=5 },
-    -- { name = 'path' },
-    { name = "fuzzy_path", priority=4 }, -- from tzacher
-    { name = "calc", priority = 3 },
+    { name = 'path', priority = 1, group_index = 1 },
+    { name = "calc", priority = 3, group_index = 2 },
     -- { name = 'vsnip' },
   },
   sorting = {
     priority_weight = 1.0,
-    -- sorting = {
-    --     priority_weight = 2,
-    --     comparators = {
-    --       compare.offset,
-    --       compare.exact,
-    --       -- compare.scopes,
-    --       compare.score,
-    --       compare.recently_used,
-    --       compare.locality,
-    --       compare.kind,
-    --       compare.sort_text,
-    --       compare.length,
-    --       compare.order,
-    --   },
     comparators = {
       -- compare.score_offset, -- not good at all
       -- function(...)
@@ -189,37 +182,36 @@ cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done { map_char = { tex = 
 cmp.setup.cmdline(":", {
   formatting = {
     format = function(entry, vim_item)
-      vim_item.kind = lspkind.presets.default[vim_item.kind] .. " " .. vim_item.kind
+      -- vim_item.kind = lspkind.presets.default[vim_item.kind] .. " " .. vim_item.kind
       vim_item.abbr = vim.fn.strcharpart(vim_item.abbr, 0, 50) -- hack to clamp cmp-cmdline-history len
       vim_item.menu = ({
         cmdline_history = "[HIST]",
         cmdline = "[CMD]",
-        fuzzy_path = "[PATH]",
+        path = "[PATH]",
         buffer = "[BUFF]",
       })[entry.source.name]
       return vim_item
     end,
   },
-  sources = cmp.config.sources {
-    { name = "cmdline_history", priority = 2, group_index=2 },
-    { name = "cmdline", priority = 2, group_index=1 },
-    { name = "fuzzy_path", priority = 1, group_index=2 }, -- from tzacher
-    { name = "buffer", priority = 1, group_index=2 },
+  sources = {
+    { name = "cmdline", priority = 2, group_index = 1 },
+    { name = "cmdline_history", priority = 2, group_index = 2 },
+    { name = "path", priority = 1, group_index = 2 }, -- from tzacher
+    { name = "buffer", priority = 1, group_index = 2 },
   },
 })
 cmp.setup.cmdline("/", {
-  sources = cmp.config.sources {
+  sources = {
     -- { name = 'buffer' },
     -- { name = 'rg'}, -- or 'rg'
     {
-      name = "fuzzy_buffer",
+      name = "buffer",
       option = {},
     },
   },
   sorting = {
     priority_weight = 1.0,
     comparators = {
-      require "cmp_fuzzy_buffer.compare",
       compare.recently_used,
       compare.offset,
       compare.score,
@@ -235,15 +227,17 @@ cmp.setup.cmdline("/", {
 -- /\vstring/search
 -- /\mstring/search
 
--- vim.cmd [[
--- augroup SetCmpColors
--- autocmd!
--- " gray
--- autocmd ColorScheme * highlight! CmpItemAbbrDeprecated guibg=NONE gui=strikethrough guifg=#808080
--- " blue
--- autocmd ColorScheme * highlight! CmpItemAbbrMatch guibg=NONE guifg=#569CD6
--- autocmd ColorScheme * highlight! CmpItemAbbrMatchFuzzy guibg=NONE guifg=#569CD6
--- " light blue
+vim.cmd [[
+augroup SetCmpColors
+autocmd!
+" gray
+autocmd ColorScheme * highlight! CmpItemAbbrDeprecated guibg=NONE gui=strikethrough guifg=#808080
+" blue
+autocmd ColorScheme * highlight! CmpItemAbbrMatch guibg=NONE guifg=#569CD6
+autocmd ColorScheme * highlight! CmpItemAbbrMatchFuzzy guibg=NONE guifg=#569CD6
+" light blue
+augroup END
+]]
 -- autocmd ColorScheme * highlight! CmpItemKindVariable guibg=NONE guifg=#9CDCFE
 -- autocmd ColorScheme * highlight! CmpItemKindInterface guibg=NONE guifg=#9CDCFE
 -- autocmd ColorScheme * highlight! CmpItemKindText guibg=NONE guifg=#9CDCFE
@@ -254,18 +248,16 @@ cmp.setup.cmdline("/", {
 -- autocmd ColorScheme * highlight! CmpItemKindKeyword guibg=NONE guifg=#D4D4D4
 -- autocmd ColorScheme * highlight! CmpItemKindProperty guibg=NONE guifg=#D4D4D4
 -- autocmd ColorScheme * highlight! CmpItemKindUnit guibg=NONE guifg=#D4D4D4
--- augroup END
--- ]]
 
 -- dict plugin
-require("cmp_dictionary").setup {
-  dic = {
-    ["markdown"] = { "/home/bartosz/american_english.dic" },
-  },
-  -- The following are default values, so you don't need to write them if you don't want to change them
-  exact = 2,
-  first_case_insensitive = false,
-  async = false,
-  capacity = 5,
-  debug = false,
-}
+-- require("cmp_dictionary").setup {
+--   dic = {
+--     ["markdown"] = { "/home/bartosz/american_english.dic" },
+--   },
+--   -- The following are default values, so you don't need to write them if you don't want to change them
+--   exact = 2,
+--   first_case_insensitive = false,
+--   async = false,
+--   capacity = 5,
+--   debug = false,
+-- }

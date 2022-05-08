@@ -101,3 +101,21 @@ vim.cmd [[
 	  autocmd CmdlineLeave * call SetShortmessF(0)
 	augroup END
 ]]
+
+-- TabMessage messages - will put output of :messages into buffer
+vim.cmd[[
+ function! MessagesBuffer(cmd)
+  redir => message
+  silent execute a:cmd
+  redir END
+  if empty(message)
+    echoerr "no output"
+  else
+    new
+    setlocal buftype=nofile bufhidden=wipe noswapfile nobuflisted nomodified
+    silent put=message
+  endif
+endfunction
+
+command! -nargs=+ -complete=command MessagesInBuffer call MessagesBuffer(<q-args>)
+]]
