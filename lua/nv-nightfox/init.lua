@@ -59,8 +59,10 @@ require("nightfox").setup({
     },
   },
   groups = {
-    Conditional = { link = "TSKeywordFunction" },
-    TSKeywordOperator = { link = "TSKeywordFunction" }, -- eg. for x `in` y
+		all = {
+			Conditional = { link = "TSKeywordFunction" },
+			TSKeywordOperator = { link = "TSKeywordFunction" }, -- eg. for x `in` y
+		}
   },
 })
 vim.cmd [[highlight LineNr guifg=#5081c0 | highlight CursorLineNR guifg=#FFba00 ]]

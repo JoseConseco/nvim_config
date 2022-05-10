@@ -9,6 +9,11 @@ require "keymappings"
 
 local init_group = vim.api.nvim_create_augroup("MyInitAuGroup", { clear = true })
 
+local function t(str)
+    -- Adjust boolean arguments as needed
+    return vim.api.nvim_replace_termcodes(str, true, true, true)
+end
+
 -- why it wont load indentline even odd correctly?
 local function theme_change_timeday(start_hour, end_hour)
   local time = tonumber(vim.fn.strftime "%H")
@@ -52,6 +57,13 @@ vim.api.nvim_create_autocmd({"BufEnter","InsertLeave","TextYankPost", "WinEnter"
   group = init_group,
 })
 
+
+ -- go to last loc when opening a buffer
+vim.api.nvim_create_autocmd( "BufReadPost", {
+		command = [[if line("'\"") > 1 && line("'\"") <= line("$") | execute "normal! g`\"" | endif]],
+		group = init_group,
+})
+
 -- NOTE: fix nvim not maximized in allacritty
 vim.cmd [[
 	autocmd VimEnter * :sleep 80m
@@ -81,6 +93,19 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   end,
   group = init_group,
 })
+
+-- create new text object for big Word
+local function get_big_word()
+	local cur_line = vim.api.nvim_win_get_cursor(0)[1]
+	-- local excluded_chars = [[(\s|\(|\)|"|'|[|]|^|$)]]
+	local search_expr = [==[\v[0-9A-Za-z\.\-*_]*]==]  -- \v magic
+	local after_search_line = vim.api.nvim_call_function("search", {search_expr, 'cb', cur_line})
+	vim.pretty_print(cur_line, after_search_line)
+	vim.cmd("normal! v")  -- (v)isual
+	vim.api.nvim_call_function("search", {search_expr, 'ce', cur_line})
+end
+vim.keymap.set("o", "W", get_big_word, {noremap = true, silent = true, desc = "Big Word alternative" }) -- <c-u> - clears '<, '> from input
+
 
 -- fix cmd line suppressed messages on echo (cmp fault?)
 -- see issue: https://github.com/gelguy/wilder.nvim/issues/41#issuecomment-860025867

@@ -60,6 +60,7 @@ return require("packer").startup(function(use)
   -- themes -------------------------------------------------------------------------------------------------------
   -- use 'joshdick/onedark.vim'
   use "nvim-lua/plenary.nvim"
+  use "rcarriga/nvim-notify"
   use "mvpopuk/inspired-github.vim"
   use "ful1e5/onedark.nvim"
   use {
@@ -93,6 +94,13 @@ return require("packer").startup(function(use)
       require "nv-nightfox"
     end,
   }
+	use {
+			"mcchrish/zenbones.nvim",
+			-- Optionally install Lush. Allows for more configuration or extending the colorscheme
+			-- If you don't want to install lush, make sure to set g:zenbones_compat = 1
+			-- In Vim, compat mode is turned on as Lush only works in Neovim.
+			requires = "rktjmp/lush.nvim"
+	}
   use {
     "m-demare/hlargs.nvim",
     after = "nightfox.nvim",
@@ -507,7 +515,8 @@ return require("packer").startup(function(use)
   }
   use {
     "jose-elias-alvarez/null-ls.nvim",
-		commit = "bd9dfc6015241334c140fb065445ba9443e6de14",
+		-- cond = false,
+		-- commit = "bd9dfc6015241334c140fb065445ba9443e6de14",
     config = function()
       require "nv-null"
     end,
@@ -556,6 +565,7 @@ return require("packer").startup(function(use)
   use {
     "folke/which-key.nvim",
 		branch = "pr/278",
+		after = "plenary.nvim",
     config = function()
       require "nv-which-key"
     end,

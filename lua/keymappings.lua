@@ -123,15 +123,15 @@ vim.api.nvim_set_keymap('v', 'C',  '"_C', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', 'C',  '"_C', {noremap = true, silent = true}) ]]
 
 -- paste without overriding register
-vim.api.nvim_set_keymap('v', 'p',  '"_dp`[v`]', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('v', 'P',  '"_dP', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('v', 'p',  '"_dp`[v`]', {noremap = true, silent = true, desc = "Paste Select"})
+vim.api.nvim_set_keymap('v', 'P',  '"_dP`[v`]', {noremap = true, silent = true, desc = "Paste Select"})
 
 -- <C-r> - paste from specified register
 vim.api.nvim_set_keymap("i", "<C-v>", '<C-r>+', { noremap = true } )
 vim.api.nvim_set_keymap("c", "<C-v>", '<C-r>+', { noremap = true } )
 
 -- paste fast over cursor word
-vim.api.nvim_set_keymap("n", " p", '<cmd>normal! viw"_dP<cr>', { noremap = true } )
+vim.api.nvim_set_keymap("n", " p", '<cmd>normal! viw"_dP<cr>', { noremap = true, desc = "Paste over word" } )
 -- vim.api.nvim_set_keymap("n", "gp", [==[`[v`]]==], { noremap = true } )
 
 
@@ -227,9 +227,9 @@ vim.api.nvim_set_keymap( "n", "J", "mzJ'z", { noremap = true } )
 vim.api.nvim_set_keymap( "n", "<c-J>", "mq:s/\\v,\\s+/,\\r/g<cr>V'q=", { noremap = true } )
 
 -- repeat last ciw - on next word
-vim.api.nvim_set_keymap( "n", "g.", "/\\V<C-r>\"<CR>cgn<C-a><Esc>", { noremap = true } )
-vim.api.nvim_set_keymap( "n", "cg*", '*N"_cgn', { noremap = true } )
-vim.api.nvim_set_keymap( "v", "cg*", "\"ay/\\V<C-R>=escape(@a,'/\')<CR><CR>N\"_cgn", { noremap = true } ) -- based on * visual remap
+vim.api.nvim_set_keymap( "n", "g.", "/\\V<C-r>\"<CR>cgn<C-a><Esc>", { noremap = true, desc = "Repeat ciw"} )
+vim.api.nvim_set_keymap( "n", "cg*", '*N"_cgn', { noremap = true, desc = "Change with repeat" } )
+vim.api.nvim_set_keymap( "v", "cg*", "\"ay/\\V<C-R>=escape(@a,'/\')<CR><CR>N\"_cgn", { noremap = true, desc = "Change with repeat" } ) -- based on * visual remap
 
 --add breakpoint for undo at space, . and ,
 vim.api.nvim_set_keymap( "i", " ", " <c-g>u", { noremap = true } )
@@ -257,6 +257,22 @@ vim.keymap.set( "n", "zO", open_sub_folds, { remap = true, expr = true } )
 -- vim.keymap.set( "n", "zO", close_sub_folds, { remap = true, expr = true } )
 -- vim.api.nvim_set_keymap('n', 'zC',  'zC:foldc!|normal! zo<cr>', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', 'zC',  ':execute "normal! zC" | foldc! | exe "normal! zv"<cr>', {noremap = true, silent = true }) -- close fold under cursor rec
+
+
+
+local async = require("plenary.async")
+local packer_sync = function ()
+    async.run(function ()
+        require("notify").async('Syncing packer.', 'info', {
+            title = 'Packer'
+        })
+    end)
+    local snap_shot_time = os.date("!%Y-%m-%dT%TZ")
+    vim.cmd('PackerSnapshot ' .. snap_shot_time)
+    vim.cmd('PackerSync')
+end
+vim.keymap.set('n', ' R', packer_sync, { remap = true, expr = true, desc = 'Packer Sync' } )
+
 
 --close all Folds remap
 

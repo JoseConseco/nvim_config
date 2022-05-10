@@ -27,9 +27,9 @@ local on_attach = function(client, bufnr)
 	buf_set_keymap('n', 'gr', ":lua require('telescope.builtin').lsp_references({initial_mode = 'normal'})<CR>", opts)
 
 	-- Set some keybinds conditional on server capabilities
-	if client.resolved_capabilities.document_formatting then
+	if client.server_capabilities.document_formatting then
 		buf_set_keymap("n", "<space>cf", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-	elseif client.resolved_capabilities.document_range_formatting then
+	elseif client.server_capabilities.document_range_formatting then
 		buf_set_keymap("v", "<space>cf", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
 	end
 
@@ -49,7 +49,7 @@ local on_attach = function(client, bufnr)
 			}
 		)
 	-- Set autocommands conditional on server_capabilities
-	if client.resolved_capabilities.document_highlight then  -- in 8.0 - server_capabilities
+	if client.server_capabilities.document_highlight then  -- in 8.0 - server_capabilities
 		vim.api.nvim_set_hl(0, 'LspReferenceRead', { reverse = true })
 		vim.api.nvim_set_hl(0, 'LspReferenceText', { reverse = true })
 		vim.api.nvim_set_hl(0, 'LspReferenceWrite', { reverse = true })
@@ -114,44 +114,45 @@ capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 local util = require 'lspconfig/util'
 
 
-nvim_lsp.pyright.setup{
-	capabilities = capabilities;
-	on_attach = on_attach;
-	cmd = { "pyright-langserver", "--stdio" };
-	filetypes = { "python" };
-	root_dir = function(filename)
-		local root_files = {
-			-- 'setup.py',
-			-- 'pyproject.toml',
-			-- 'setup.cfg',
-			-- 'requirements.txt',
-			'.git',
-		}
-		return util.root_pattern(unpack(root_files))(filename) or
-			util.find_git_ancestor(filename) or
-			nil -- forces to run in signle file mode
-			-- util.path.dirname(filename) -- this will point to root addons == very slow
-	end;
-	settings = {
-		pyright = {
-			disableOrganizeImports = false,
-		},
-		python = {
-			analysis = {
-				autoSearchPaths = true,
-				useLibraryCodeForTypes = true,
-				typeCheckingMode = 'off',  --  ["off", "basic", "strict"]:
-				diagnosticMode = 'workspace', -- ["openFilesOnly", "workspace"]
-				diagnosticSeverityOverrides = {  -- "error," "warning," "information," "true," "false," or "none"
-					reportDuplicateImport = 'warning',
-					reportImportCycles = 'warning',
-					reportMissingImports = 'error',
-					reportMissingModuleSource = 'error',
-				}
-			}
-		}
-	};
-}
+-- nvim_lsp.pyright.setup{
+-- 	capabilities = capabilities;
+-- 	on_attach = on_attach;
+-- 	cmd = { "pyright-langserver", "--stdio" };
+-- 	filetypes = { "python" };
+-- 	root_dir = function(filename)
+-- 		local root_files = {
+-- 			-- 'setup.py',
+-- 			-- 'pyproject.toml',
+-- 			-- 'setup.cfg',
+-- 			-- 'requirements.txt',
+-- 			'.git',
+-- 		}
+-- 		return util.root_pattern(unpack(root_files))(filename) or
+-- 			util.find_git_ancestor(filename) or
+-- 			nil -- forces to run in signle file mode
+-- 			-- util.path.dirname(filename) -- this will point to root addons == very slow
+-- 	end;
+-- 	settings = {
+-- 		pyright = {
+-- 			disableOrganizeImports = false,
+-- 		},
+-- 		python = {
+-- 			analysis = {
+-- 				extraPaths =  {'/home/bartosz/.local/lib/python3.10/site-packages/'},
+-- 				autoSearchPaths = true,
+-- 				useLibraryCodeForTypes = true,
+-- 				typeCheckingMode = 'off',  --  ["off", "basic", "strict"]:
+-- 				diagnosticMode = 'workspace', -- ["openFilesOnly", "workspace"]
+-- 				diagnosticSeverityOverrides = {  -- "error," "warning," "information," "true," "false," or "none"
+-- 					reportDuplicateImport = 'warning',
+-- 					reportImportCycles = 'warning',
+-- 					reportMissingImports = 'error',
+-- 					reportMissingModuleSource = 'error',
+-- 				}
+-- 			}
+-- 		}
+-- 	};
+-- }
 
 -- flake is great for showing eg. from where thing was imported... short messages
 -- F405 - shows from where thing was imported
@@ -209,21 +210,33 @@ nvim_lsp.pyright.setup{
 --     }
 --   }
 -- }
--- nvim_lsp.jedi_language_server.setup{
---	capabilities = capabilities;
---	on_attach = on_attach;
---   init_options = {
---     diagnostics = {
---       enable = true,
---     },
---     completion = {
---       disableSnippets = true,
---     },
---     jediSettings = {
---       autoImportModules = {'numpy', 'pandas'},
---     },
---   },
--- }
+nvim_lsp.jedi_language_server.setup{
+	capabilities = capabilities;
+	on_attah = on_attach;
+	-- cmd = { "jedi-language-server"};
+	filetypes = { "python" };
+	root_dir = function(filename)
+		local root_files = {
+			-- 'setup.py',
+			-- 'pyproject.toml',
+			-- 'setup.cfg',
+			-- 'requirements.txt',
+			'.git',
+		}
+		return util.root_pattern(unpack(root_files))(filename) or
+			util.find_git_ancestor(filename) or
+			nil -- forces to run in signle file mode
+			-- util.path.dirname(filename) -- this will point to root addons == very slow
+	end;
+  init_options = {
+    diagnostics = {
+      enable = true,
+    },
+    -- jediSettings = {
+    --   autoImportModules = {'numpy', 'pandas'},
+    -- },
+  },
+}
 
 -- local runtime_path = vim.split(package.path, ';')
 -- table.insert(runtime_path, "lua/?.lua")

@@ -57,7 +57,6 @@ wk.register({
 	['<leader>/'] = {":lua require'telescope.builtin'.live_grep{path_display = {'tail'}, word_match = '-w', only_sort_text = true, search = '' }<CR>",                           'Search Project'}     ,
 	['<leader>?'] = {':Grepper -cword  -noprompt -tool ag<cr>',                                             'Word to clist (Grepper)'},
 	['<leader><lt>'] = {':Telescope buffers<CR>',                                      'Switch Buffer' },
-	['<leader>>'] = {':ISwap<CR>',                                      'ISwap' },
 	['<leader>p'] = 'which_key_ignore',
 	['<leader>1'] = 'which_key_ignore',
 	['<leader>2'] = 'which_key_ignore',

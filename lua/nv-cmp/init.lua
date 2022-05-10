@@ -51,13 +51,13 @@ cmp.setup {
       -- border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
       border = "rounded",
       scrollbar = "║",
+			keyword_length = 0,
     },
   },
-  min_length = 0, -- allow for `from package import _` in Python
   -- You can set mappings if you want
   mapping = {
-    ["<C-p>"] = cmp.mapping.select_prev_item(),
-    ["<C-n>"] = cmp.mapping.select_next_item(),
+    ["<C-p>"] = cmp.mapping(cmp.mapping.select_prev_item(), { "i", "s", "c" }),
+    ["<C-n>"] = cmp.mapping(cmp.mapping.select_next_item(), { "i", "s", "c" }),
     ["<S-Tab>"] = cmp.mapping(function(fallback)
       if vim.fn["UltiSnips#CanJumpBackwards"]() == 1 then
         press "<C-R>=UltiSnips#JumpBackwards()<CR>"
@@ -87,7 +87,7 @@ cmp.setup {
     end, { "i", "s", "c" }),
     ["<C-d>"] = cmp.mapping.scroll_docs(-4),
     ["<C-f>"] = cmp.mapping.scroll_docs(4),
-    ["<C-e>"] = cmp.mapping.close(),
+    ["<C-e>"] = cmp.mapping(cmp.mapping.close(), { "i", "s", "c" }),
     -- ['<C-e>'] = cmp.mapping.abort(),
     ["<CR>"] = cmp.mapping.confirm { -- remapped at bottom by autopairs
       behavior = cmp.ConfirmBehavior.Replace,
@@ -143,8 +143,8 @@ cmp.setup {
     { name = "spell", priority = 5, keyword_pattern = [[\w\+]], keyword_length = 4, group_index = 2 },
     -- { name = "dictionary", keyword_length = 3, priority = 5, keyword_pattern = [[\w\+]] }, -- from uga-rosa/cmp-dictionary plug
     -- { name = 'rg'},
+		{ name = "calc", priority = 3, group_index = 2 },
     { name = 'path', priority = 1, group_index = 1 },
-    { name = "calc", priority = 3, group_index = 2 },
     -- { name = 'vsnip' },
   },
   sorting = {
