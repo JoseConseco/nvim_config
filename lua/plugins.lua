@@ -60,7 +60,6 @@ return require("packer").startup(function(use)
   -- themes -------------------------------------------------------------------------------------------------------
   -- use 'joshdick/onedark.vim'
   use "nvim-lua/plenary.nvim"
-  use "rcarriga/nvim-notify"
   use "mvpopuk/inspired-github.vim"
   use "ful1e5/onedark.nvim"
   use {
@@ -802,7 +801,6 @@ return require("packer").startup(function(use)
     end,
   }
 
-  -- use 'vim-scripts/RelOps' -- only show relative number wien in operator pending mode - breaks yank if set to register
   use {
     "MattesGroeger/vim-bookmarks",
     config = function()
@@ -836,18 +834,8 @@ return require("packer").startup(function(use)
   --   end,
   -- }
 
-  use {
-    "SmiteshP/nvim-gps", -- bread_crumbs
-    requires = "nvim-treesitter/nvim-treesitter",
-    config = function()
-      require("nvim-gps").setup {
-        icons = { ["class-name"] = "⛬ " },
-        separator = " ▶ ",
-      }
-    end,
-  }
 
-  --repls -------------------------------------------------------------------------------------------------------
+  --REPLS -------------------------------------------------------------------------------------------------------
   use "rafcamlet/nvim-luapad" -- :Luapad - open interactive scratch bufer with realtime eval
   use "metakirby5/codi.vim" -- repls for all other langs ...
 
@@ -861,5 +849,20 @@ return require("packer").startup(function(use)
   } -- lua + wont close () next to char finally good and simple +++
   --[[ use { "ahmedkhalf/project.nvim", -- does not store opened files in project
 		config = function() require("project_nvim").setup{} end } ]]
+
+  ---  TOOLS -------------------------------------------------------------------------------------------------------
+  use "rcarriga/nvim-notify"
+	use "tpope/vim-repeat"
+  use {
+    "SmiteshP/nvim-gps", -- bread_crumbs
+    requires = "nvim-treesitter/nvim-treesitter",
+    config = function()
+      require("nvim-gps").setup {
+        icons = { ["class-name"] = "⛬ " },
+        separator = " ▶ ",
+      }
+    end,
+  }
+
 end)
 --vim.cmd('packloadall!') -- fixes plugs not seeing config, and load order mess. Or else we need to: so $MYVIMRC

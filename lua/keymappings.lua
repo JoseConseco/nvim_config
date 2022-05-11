@@ -142,10 +142,8 @@ vim.api.nvim_set_keymap('n', 'gl', '$', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('v', 'gh', '^', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('v', 'gl', '$', {noremap = true, silent = true}) ]]
 
-vim.api.nvim_set_keymap('n', '<c-h>', '^', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('n', '<c-l>', '$', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('v', '<c-h>', '^', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('v', '<c-l>', '$', {noremap = true, silent = true})
+vim.keymap.set({'n','v','o'}, '<c-h>', '^', {noremap = true, silent = true})
+vim.keymap.set({'n','v','o'}, '<c-l>', '$', {noremap = true, silent = true})
 
 vim.api.nvim_set_keymap('n', '<m-h>', "<cmd>ISwapCursorNodeLeft<CR>", {noremap = true, silent = true}) -- move sel forward one word
 vim.api.nvim_set_keymap('n', '<m-l>', "<cmd>ISwapCursorNodeRight<CR>", {noremap = true, silent = true}) -- move sel backward one word
@@ -267,8 +265,9 @@ local packer_sync = function ()
             title = 'Packer'
         })
     end)
-    local snap_shot_time = os.date("!%Y-%m-%dT%TZ")
-    vim.cmd('PackerSnapshot ' .. snap_shot_time)
+    -- local snap_shot_time = os.date("!%Y-%m-%dT%TZ")
+    -- local snap_shot_time = os.date("!%Y-%m-%dT%TZ")
+    vim.cmd('PackerSnapshot ' .. 'Prev_Config')
     vim.cmd('PackerSync')
 end
 vim.keymap.set('n', ' R', packer_sync, { remap = true, expr = true, desc = 'Packer Sync' } )
