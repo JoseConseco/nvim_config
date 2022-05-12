@@ -1,9 +1,8 @@
-local P = function(x)
+_G.P = function(x)
   print(vim.inspect(x))
 end
 require "plugins"
 require "hl_manager"
--- vim.cmd('packloadall!') -- fixes plugs not seeing config, and load order mess. Or else we need to: so $MYVIMRC  but fucks up packer.sync...
 require "settings"
 require "keymappings"
 
@@ -69,21 +68,7 @@ vim.cmd [[
 	autocmd VimEnter * :silent exec "!kill -s SIGWINCH $PPID"
 ]]
 
--- vim.cmd [[
--- augroup folds
--- 	autocmd InsertLeave,WinLeave,TextYankPost * :normal zv
--- augroup END
--- ]] -- zx - reclaculate folds, zv - unfold cursor line
 
---[==[vim.cmd([[
-augroup folds
-	" Don't screw up folds when inserting text that might affect them, until
-	" leaving insert mode. Foldmethod is local to the window. Protect against
-	" screwing up folding when switching between windows.
-	autocmd InsertEnter * if !exists('w:last_fdm') | let w:last_fdm=&foldmethod | setlocal foldmethod=manual | endif
-	autocmd InsertLeave,WinLeave * if exists('w:last_fdm') | let &l:foldmethod=w:last_fdm | unlet w:last_fdm | endif
-augroup END
-]]) ]==]
 
 vim.api.nvim_create_autocmd("TextYankPost", {
   pattern = "*",
@@ -153,31 +138,32 @@ local function get_argument(mode)
 end
 
 -- repeatable_command('o', 'A', 'Argument', 'i')
-repeatable_command('o', 'A', 'FnArgument', get_argument, nil)
-repeatable_command('o', 'iA', 'FnInnerArgument', get_argument, 'i')
+repeatable_command('o', 'A', 'Argument', get_argument, nil)
+repeatable_command('o', 'iA', 'InnerArgument', get_argument, 'i')
 -- vim.keymap.set("o", "A", function() get_argument(nil) end, {noremap = true, silent = true, desc = "Argument" }) -- <c-u> - clears '<, '> from input
 -- vim.keymap.set("o", "iA", function() get_argument('i') end, {noremap = true, silent = true, desc = "Argument" }) -- <c-u> - clears '<, '> from input
 
 
--- fix cmd line suppressed messages on echo (cmp fault?)
--- see issue: https://github.com/gelguy/wilder.nvim/issues/41#issuecomment-860025867
-vim.cmd [[
-	function! SetShortmessF(on) abort
-	  if a:on
-	    set shortmess+=F
-	  else
-	    set shortmess-=F
-	  endif
-	  return ''
-	endfunction
 
-	nnoremap <expr> : SetShortmessF(1) . ':'
-
-	augroup WilderShortmessFix
-	  autocmd!
-	  autocmd CmdlineLeave * call SetShortmessF(0)
-	augroup END
-]]
+-- -- fix cmd line suppressed messages on echo (cmp fault?)
+-- -- see issue: https://github.com/gelguy/wilder.nvim/issues/41#issuecomment-860025867
+-- vim.cmd [[
+-- 	function! SetShortmessF(on) abort
+-- 	  if a:on
+-- 	    set shortmess+=F
+-- 	  else
+-- 	    set shortmess-=F
+-- 	  endif
+-- 	  return ''
+-- 	endfunction
+--
+-- 	nnoremap <expr> : SetShortmessF(1) . ':'
+--
+-- 	augroup WilderShortmessFix
+-- 	  autocmd!
+-- 	  autocmd CmdlineLeave * call SetShortmessF(0)
+-- 	augroup END
+-- ]]
 
 -- TabMessage messages - will put output of :messages into buffer
 vim.cmd[[

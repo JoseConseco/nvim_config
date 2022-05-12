@@ -1,23 +1,13 @@
 local cmp = require "cmp"
 local compare = require "cmp.config.compare"
-local cmp_buffer = require "cmp_buffer"
 local lspkind = require "lspkind"
 
 local t = function(str)
   return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
 
--- compare.score_offset = function(entry1, entry2)
---   local diff_offset_score = entry1:get_offset() * entry2.score - entry2:get_offset() * entry1.score
---   if diff_offset_score < 0 then
---     return true
---   elseif diff_offset_score > 0 then
---     return false
---   end
--- end
-
 local press = function(key)
-  vim.api.nvim_feedkeys(t(key, true, true, true), "n", true)
+  vim.api.nvim_feedkeys(t(key), "n", true)
 end
 
 vim.opt.completeopt = "menu,menuone,noselect,noinsert"
@@ -26,20 +16,18 @@ cmp.setup {
     format = lspkind.cmp_format {
       with_text = true,
       menu = {
-        cmp_tabnine = "[T9]",
-        nvim_lsp = "[LSP]",
-        ultisnips = "[USnip]",
-        -- dictionary = "[DICT]",
-        spell = "[SPELL]", -- from f3fora/cmp-spell (vim spell has to be enabled)
-        nvim_lua = "[LUA]",
-        rg = "[RG]",
-        -- vsnip = "[Vsnip]",
-        path = "[PATH]",
-        buffer = "[Buffer]",
-        -- path = "[Path]",
-        calc = "[Calc]",
+        cmp_tabnine   = "[T9]",
+        nvim_lsp      = "[LSP]",
+        ultisnips     = "[USnip]",
+        spell         = "[SPELL]", -- from f3fora/cmp-spell (vim spell has to be enabled)
+        nvim_lua      = "[LUA]",
+        rg            = "[RG]",
+        path          = "[PATH]",
+        buffer        = "[Buffer]",
+        calc          = "[Calc]",
+				-- dictionary = "[DICT]",
+				-- path       = "[Path]",
       },
-      -- print(vim.inspect(entry))
     },
   },
   window = {
@@ -48,7 +36,6 @@ cmp.setup {
       scrollbar = "║",
     },
     completion = {
-      -- border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
       border = "rounded",
       scrollbar = "║",
 			keyword_length = 0,
@@ -126,8 +113,6 @@ cmp.setup {
     end, { "i", "s" }),
   },
 
-  -- snippet = {expand = function(args) vim.fn["UltiSnips#Anon"](args.body) end},
-  -- You should specify your *installed* sources.
   snippet = {
     expand = function(args)
       vim.fn["UltiSnips#Anon"](args.body)
@@ -136,15 +121,15 @@ cmp.setup {
   sources = {
     -- { name = "nvim_lsp_signature_help" },
     { name = "cmp_tabnine", priority = 8, group_index = 1 },
-    { name = "nvim_lsp", priority = 8, group_index = 1 },
-    { name = "ultisnips", priority = 7, group_index = 1 },
-    { name = "nvim_lua", priority = 5, group_index = 1 },
-    { name = "buffer", priority = 5, max_item_count = 3, keyword_length = 4, group_index = 2 }, -- first for locality sorting?
-    { name = "spell", priority = 5, keyword_pattern = [[\w\+]], keyword_length = 4, group_index = 2 },
+    { name = "nvim_lsp",    priority = 8, group_index = 1 },
+    { name = "ultisnips",   priority = 7, group_index = 1 },
+    { name = "nvim_lua",    priority = 5, group_index = 1 },
+    { name = "buffer",      priority = 5, max_item_count = 3, keyword_length = 4, group_index = 2 }, -- first for locality sorting?
+    { name = "spell",       priority = 5, keyword_pattern = [[\w\+]], keyword_length = 4, group_index = 2 },
     -- { name = "dictionary", keyword_length = 3, priority = 5, keyword_pattern = [[\w\+]] }, -- from uga-rosa/cmp-dictionary plug
     -- { name = 'rg'},
-		{ name = "calc", priority = 3, group_index = 2 },
-    { name = 'path', priority = 1, group_index = 1 },
+		{ name = "calc",        priority = 3, group_index = 2 },
+    { name = 'path',        priority = 1, group_index = 1 },
     -- { name = 'vsnip' },
   },
   sorting = {
@@ -186,18 +171,18 @@ cmp.setup.cmdline(":", {
       vim_item.abbr = vim.fn.strcharpart(vim_item.abbr, 0, 50) -- hack to clamp cmp-cmdline-history len
       vim_item.menu = ({
         cmdline_history = "[HIST]",
-        cmdline = "[CMD]",
-        path = "[PATH]",
-        buffer = "[BUFF]",
+        cmdline         = "[CMD]",
+        path            = "[PATH]",
+        buffer          = "[BUFF]",
       })[entry.source.name]
       return vim_item
     end,
   },
   sources = {
-    { name = "cmdline", priority = 2, group_index = 1 },
+    { name = "cmdline",         priority = 2, group_index = 1 },
     { name = "cmdline_history", priority = 2, group_index = 2 },
-    { name = "path", priority = 1, group_index = 2 }, -- from tzacher
-    { name = "buffer", priority = 1, group_index = 2 },
+    { name = "path",            priority = 1, group_index = 2 }, -- from tzacher
+    { name = "buffer",          priority = 1, group_index = 2 },
   },
 })
 cmp.setup.cmdline("/", {
@@ -223,9 +208,6 @@ cmp.setup.cmdline("/", {
   },
 })
 
--- be_string
--- /\vstring/search
--- /\mstring/search
 
 vim.cmd [[
 augroup SetCmpColors
