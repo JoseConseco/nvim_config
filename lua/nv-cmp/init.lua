@@ -12,11 +12,26 @@ end
 
 vim.opt.completeopt = "menu,menuone,noselect,noinsert"
 cmp.setup {
-  formatting = {
+  sources = {
+    -- { name = "nvim_lsp_signature_help" },
+		{ name = "nvim_lsp",    priority = 8, group_index = 1, keyword_length = 0, max_item_count = 5 },
+    { name = "cmp_tabnine", priority = 8, group_index = 1, keyword_length = 2, },
+    { name = "cmp_dap",     priority = 7, group_index = 1 },
+    { name = "ultisnips",   priority = 7, group_index = 1 },
+    { name = "nvim_lua",    priority = 5, group_index = 1 },
+    { name = "buffer",      priority = 5, group_index = 1, keyword_length = 3, max_item_count = 3 }, -- actually nicer than RG
+		-- { name = 'rg',          priority = 5, group_index = 1, keyword_length = 3, max_item_count = 3 }, -- first for locality sorting?
+    { name = "spell",       priority = 5, group_index = 1, keyword_length = 4, keyword_pattern = [[\w\+]] },
+		{ name = "calc",        priority = 3, group_index = 1, keyword_pattern = [[\d\+\W\{-\}\d]] },
+    { name = 'path',        priority = 1, group_index = 1 },
+    -- { name = 'vsnip' },
+  },
+	formatting = {
     format = lspkind.cmp_format {
       with_text = true,
       menu = {
         cmp_tabnine   = "[T9]",
+        cmp_dap       = "[DAP]",
         nvim_lsp      = "[LSP]",
         ultisnips     = "[USnip]",
         spell         = "[SPELL]", -- from f3fora/cmp-spell (vim spell has to be enabled)
@@ -25,26 +40,32 @@ cmp.setup {
         path          = "[PATH]",
         buffer        = "[Buffer]",
         calc          = "[Calc]",
-				-- dictionary = "[DICT]",
-				-- path       = "[Path]",
       },
     },
   },
+  enabled = function ()  -- for cmp dap
+    return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
+      or require("cmp_dap").is_dap_buffer()
+  end,
+  -- You can set mappings if you want
   window = {
     documentation = {
       border = "rounded",
       scrollbar = "║",
     },
-    completion = {
-      border = "rounded",
-      scrollbar = "║",
-			keyword_length = 0,
-    },
   },
-  -- You can set mappings if you want
+
+	completion = {
+		border = "rounded",
+		scrollbar = "║",
+		keyword_length = 3,
+	},
+
   mapping = {
     ["<C-p>"] = cmp.mapping(cmp.mapping.select_prev_item(), { "i", "s", "c" }),
     ["<C-n>"] = cmp.mapping(cmp.mapping.select_next_item(), { "i", "s", "c" }),
+    ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+    ["<C-f>"] = cmp.mapping.scroll_docs(4),
     ["<S-Tab>"] = cmp.mapping(function(fallback)
       if vim.fn["UltiSnips#CanJumpBackwards"]() == 1 then
         press "<C-R>=UltiSnips#JumpBackwards()<CR>"
@@ -72,8 +93,6 @@ cmp.setup {
         fallback()
       end
     end, { "i", "s", "c" }),
-    ["<C-d>"] = cmp.mapping.scroll_docs(-4),
-    ["<C-f>"] = cmp.mapping.scroll_docs(4),
     ["<C-e>"] = cmp.mapping(cmp.mapping.close(), { "i", "s", "c" }),
     -- ['<C-e>'] = cmp.mapping.abort(),
     ["<CR>"] = cmp.mapping.confirm { -- remapped at bottom by autopairs
@@ -112,35 +131,15 @@ cmp.setup {
       end
     end, { "i", "s" }),
   },
-
   snippet = {
     expand = function(args)
       vim.fn["UltiSnips#Anon"](args.body)
     end,
   },
-  sources = {
-    -- { name = "nvim_lsp_signature_help" },
-    { name = "cmp_tabnine", priority = 8, group_index = 1 },
-    { name = "nvim_lsp",    priority = 8, group_index = 1 },
-    { name = "ultisnips",   priority = 7, group_index = 1 },
-    { name = "nvim_lua",    priority = 5, group_index = 1 },
-    { name = "buffer",      priority = 5, max_item_count = 3, keyword_length = 4, group_index = 2 }, -- first for locality sorting?
-    { name = "spell",       priority = 5, keyword_pattern = [[\w\+]], keyword_length = 4, group_index = 2 },
-    -- { name = "dictionary", keyword_length = 3, priority = 5, keyword_pattern = [[\w\+]] }, -- from uga-rosa/cmp-dictionary plug
-    -- { name = 'rg'},
-		{ name = "calc",        priority = 3, group_index = 2 },
-    { name = 'path',        priority = 1, group_index = 1 },
-    -- { name = 'vsnip' },
-  },
   sorting = {
     priority_weight = 1.0,
     comparators = {
       -- compare.score_offset, -- not good at all
-      -- function(...)
-      --   if vim.api.nvim_get_mode().mode:sub(1, 1) ~= "c" then
-      --     return cmp_buffer:compare_locality(...)
-      --   end
-      -- end,
       compare.locality,
       compare.recently_used,
       compare.score, -- based on :  score = score + ((#sources - (source_index - 1)) * sorting.priority_weight)
@@ -155,12 +154,6 @@ cmp.setup {
   },
 }
 
--- windwp/nvim-autopairs -  you need setup cmp first put this after cmp.setup()
---[[ require("nvim-autopairs.completion.cmp").setup({
-	map_cr = true, --  map <CR> on insert mode
-	map_complete = true, -- it will auto insert `(` after select function or method item
-	auto_select = false -- automatically select the first item
-}) ]]
 local cmp_autopairs = require "nvim-autopairs.completion.cmp"
 cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done { map_char = { tex = "" } })
 
@@ -180,19 +173,19 @@ cmp.setup.cmdline(":", {
   },
   sources = {
     { name = "cmdline",         priority = 2, group_index = 1 },
-    { name = "cmdline_history", priority = 2, group_index = 2 },
+    { name = "cmdline_history", priority = 1, group_index = 1, max_item_count = 3 },
     { name = "path",            priority = 1, group_index = 2 }, -- from tzacher
-    { name = "buffer",          priority = 1, group_index = 2 },
+    -- { name = "buffer",          priority = 1, group_index = 1 },
   },
 })
 cmp.setup.cmdline("/", {
   sources = {
     -- { name = 'buffer' },
-    -- { name = 'rg'}, -- or 'rg'
-    {
-      name = "buffer",
-      option = {},
-    },
+    { name = 'rg'}, -- or 'rg'
+    -- {
+    --   name = "buffer",
+    --   option = {},
+    -- },
   },
   sorting = {
     priority_weight = 1.0,

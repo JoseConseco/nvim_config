@@ -398,9 +398,7 @@ return require("packer").startup(function(use)
   use "nvim-treesitter/playground"
   use {
     "lewis6991/spellsitter.nvim", -- nicer highlights for spellcheck
-    config = function()
-      require("spellsitter").setup()
-    end,
+    config = function() require("spellsitter").setup() end,
   }
 
   -- lsp -------------------------------------------------------------------------------------------------------
@@ -427,11 +425,8 @@ return require("packer").startup(function(use)
     end,
   }
   use {
-    "stevearc/aerial.nvim",
-    disable = false, -- basically better outliner with objects type filter
-    config = function()
-      require "nv-aerial"
-    end,
+    "stevearc/aerial.nvim",  -- basically better outliner with objects type filter
+    config = function() require "nv-aerial" end,
   }
   use { "ray-x/lsp_signature.nvim" } -- used for funct() signature hint
   use {
@@ -445,7 +440,6 @@ return require("packer").startup(function(use)
   use {
     "jose-elias-alvarez/null-ls.nvim",
     -- cond = false,
-    -- commit = "bd9dfc6015241334c140fb065445ba9443e6de14",
     config = function()
       require "nv-null"
     end,
@@ -473,6 +467,7 @@ return require("packer").startup(function(use)
       "quangnguyen30192/cmp-nvim-ultisnips",
       "hrsh7th/cmp-calc",
       "lukas-reineke/cmp-rg",
+			"rcarriga/cmp-dap",
       -- "hrsh7th/cmp-nvim-lsp-signature-help", - x ray better
       -- "uga-rosa/cmp-dictionary", -- based on custom dict
       "f3fora/cmp-spell", -- vim spell hast to be enabled
@@ -596,7 +591,6 @@ return require("packer").startup(function(use)
   }
   use "mbbill/undotree" -- undo history  :UndotreeToggle to toggle the undo-tree panel.
   use "mg979/vim-localhistory" -- local history LHLoad, LHWrite
-  use "tpope/vim-repeat"
 
   --CODE/FORMAT -------------------------------------------------------------------------------------------------------
   use "wellle/targets.vim" -- eg ci,  ci_ etc
