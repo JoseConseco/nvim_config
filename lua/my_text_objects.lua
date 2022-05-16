@@ -4,27 +4,44 @@ local function t(str)
 end
 
 -- create new text object for BIG_WORD '''
-local function get_big_word(mode)
+local function get_big_word(word_type)
   -- local excluded_chars = [[(\s|\(|\)|"|'|[|]|^|$)]]
   local cur_line = vim.api.nvim_win_get_cursor(0)[1]
   local search_expr = [==[\v[0-9A-Za-z\.\-*_]*]==] -- \v magic
-	print(vim.fn.mode())
-  if mode == "a" then
-    search_expr = [==[\v[0-9A-Za-z\.\-*_ ]*]==] -- add \s
+	local mode = vim.api.nvim_get_mode()['mode']  -- "no" -> operator pening, 'n' -> normal, 'v' -> visual
+	-- vim.pretty_print(vim.api.nvim_get_mode())
+  if word_type == "a" or mode == 'v' or mode == 'n' then -- visual, normal, and around mode
+    search_expr = [==[\v\s*[0-9A-Za-z\.\-*_\s]*\s*]==] -- add \s* - any whitespaces before and after and inside []
   end
-  if mode == "i" or mode == "a" then
-    vim.api.nvim_call_function("search", { search_expr, "cb", cur_line }) --  c-include cursor char when search, b- backward
+	local o_switch = false
+
+	-- search backward
+  if word_type == "i" or word_type == "a" then -- inside or around WORD
+		if mode == 'v' then -- deal with wrong select range if already in visual mode
+			vim.cmd "normal! o" -- switch selection side
+			o_switch = true
+		end
+    vim.api.nvim_call_function("search", { search_expr, "cb", cur_line}) --  c-include cursor char when search, b- backward
   end
-  vim.cmd "normal! v" -- (v)isual
-  vim.api.nvim_call_function("search", { search_expr, "ce", cur_line }) -- e - move cursor to last matched char
+
+	-- deal with selection
+	if mode == 'no' then -- operator pending mode
+		vim.cmd "normal! v" -- (v)isual
+	end
+	if o_switch then
+		vim.cmd "normal! o" -- switch back selection side
+	end
+
+	-- search forward
+  vim.api.nvim_call_function("search", { search_expr, "e" }) -- e - move cursor to last matched char
 end
 
 local function repeatable_command(key, command_name, lua_fn, fn_args)
   vim.api.nvim_create_user_command(command_name, function()
     lua_fn(fn_args)
   end, {})
-  vim.keymap.set('o', key, ":" .. command_name .. t "<CR>") -- operator pending mode
-  vim.keymap.set('x', key, ":<C-U>" .. command_name .. t "<CR>")  -- for vis mode <c-u> - clears '<'>
+  vim.keymap.set('o', key, "<cmd>" .. command_name .. t "<CR>") -- operator pending mode
+  vim.keymap.set('x', key, "<cmd>" .. command_name .. t "<CR>")  -- for vis mode <c-u> - clears '<'>
 end
 
 -- repeatable_command("o", "iW", "BigInnerWord", get_big_word, "i")
@@ -33,6 +50,7 @@ end
 repeatable_command("iW", "BigInnerWord", get_big_word, "i")
 repeatable_command("aW", "BigAroundWord", get_big_word, "a")
 repeatable_command("W", "BigWord", get_big_word, nil)
+vim.keymap.set('n', 'W', "<cmd>BigWord"..t "<CR>")  -- for vis mode <c-u> - clears '<'>
 
 -- text object for function arguments '''
 local function get_argument(mode)
