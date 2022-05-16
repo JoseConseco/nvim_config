@@ -5,6 +5,9 @@ local opts = { noremap=true, silent=true }
 vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
 vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
 -- vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
+
+local lsp_doc_hi = vim.api.nvim_create_augroup("lsp_document_highlight", {})
+
 local on_attach = function(client, bufnr)
 	local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
 	local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
@@ -49,7 +52,9 @@ local on_attach = function(client, bufnr)
 			}
 		)
 	-- Set autocommands conditional on server_capabilities
-	if client.server_capabilities.document_highlight then  -- in 8.0 - server_capabilities
+	-- vim.pretty_print(client.server_capabilities)
+	-- if client.server_capabilities.document_highlight then  -- in 8.0 - server_capabilities
+	if client.server_capabilities.hoverProvider then  -- in 8.0 - server_capabilities
 		vim.api.nvim_set_hl(0, 'LspReferenceRead', { reverse = true })
 		vim.api.nvim_set_hl(0, 'LspReferenceText', { reverse = true })
 		vim.api.nvim_set_hl(0, 'LspReferenceWrite', { reverse = true })
@@ -61,20 +66,17 @@ local on_attach = function(client, bufnr)
 		-- hl_manager.highlight_from_src('LspReferenceWrite', 'Search',{})
 
 
-		local lsp_doc_hi = vim.api.nvim_create_augroup("lsp_document_highlight", {clear = true})
 		vim.api.nvim_create_autocmd("CursorHold", {
-			pattern = "<buffer>",
-			callback = function()
-				vim.lsp.buf.document_highlight()
-			end,
-			group = lsp_doc_hi,
+			-- pattern = "*",
+			buffer = bufnr,
+			callback =  vim.lsp.buf.document_highlight,
+			group = "lsp_document_highlight",
 		})
 		vim.api.nvim_create_autocmd("CursorMoved", {
-			pattern = "<buffer>",
-			callback = function()
-				vim.lsp.buf.clear_references()
-			end,
-			group = lsp_doc_hi,
+			-- pattern = "*",
+			buffer = bufnr,
+			callback = vim.lsp.buf.clear_references,
+			group = "lsp_document_highlight",
 		})
 	end
 
@@ -212,8 +214,8 @@ local util = require 'lspconfig/util'
 -- }
 nvim_lsp.jedi_language_server.setup{
 	capabilities = capabilities;
-	on_attah = on_attach;
-	-- cmd = { "jedi-language-server"};
+	on_attach = on_attach;
+	cmd = { "jedi-language-server"};
 	filetypes = { "python" };
 	root_dir = function(filename)
 		local root_files = {
@@ -228,7 +230,7 @@ nvim_lsp.jedi_language_server.setup{
 			nil -- forces to run in signle file mode
 			-- util.path.dirname(filename) -- this will point to root addons == very slow
 	end;
-  init_options = {
+  initializationOptions = {
     diagnostics = {
       enable = true,
     },

@@ -8,6 +8,7 @@ local function get_big_word(mode)
   -- local excluded_chars = [[(\s|\(|\)|"|'|[|]|^|$)]]
   local cur_line = vim.api.nvim_win_get_cursor(0)[1]
   local search_expr = [==[\v[0-9A-Za-z\.\-*_]*]==] -- \v magic
+	print(vim.fn.mode())
   if mode == "a" then
     search_expr = [==[\v[0-9A-Za-z\.\-*_ ]*]==] -- add \s
   end
@@ -18,16 +19,20 @@ local function get_big_word(mode)
   vim.api.nvim_call_function("search", { search_expr, "ce", cur_line }) -- e - move cursor to last matched char
 end
 
-local function repeatable_command(mode, key, command_name, lua_fn, fn_args)
+local function repeatable_command(key, command_name, lua_fn, fn_args)
   vim.api.nvim_create_user_command(command_name, function()
     lua_fn(fn_args)
   end, {})
-  vim.keymap.set(mode, key, ":" .. command_name .. t "<CR>")
+  vim.keymap.set('o', key, ":" .. command_name .. t "<CR>") -- operator pending mode
+  vim.keymap.set('x', key, ":<C-U>" .. command_name .. t "<CR>")  -- for vis mode <c-u> - clears '<'>
 end
 
-repeatable_command("o", "iW", "BigInnerWord", get_big_word, "i")
-repeatable_command("o", "aW", "BigAroundWord", get_big_word, "a")
-repeatable_command("o", "W", "BigWord", get_big_word, nil)
+-- repeatable_command("o", "iW", "BigInnerWord", get_big_word, "i")
+-- repeatable_command("o", "aW", "BigAroundWord", get_big_word, "a")
+-- repeatable_command("o", "W", "BigWord", get_big_word, nil)
+repeatable_command("iW", "BigInnerWord", get_big_word, "i")
+repeatable_command("aW", "BigAroundWord", get_big_word, "a")
+repeatable_command("W", "BigWord", get_big_word, nil)
 
 -- text object for function arguments '''
 local function get_argument(mode)
@@ -82,8 +87,8 @@ local function get_argument(mode)
 	end
 end
 
-repeatable_command("o", "A", "Argument", get_argument, nil)
-repeatable_command("o", "aA", "AroundArgument", get_argument, 'a')
-repeatable_command("o", "iA", "InnerArgument", get_argument, "i")
+repeatable_command("A", "Argument", get_argument, nil)
+repeatable_command("aA", "AroundArgument", get_argument, 'a')
+repeatable_command("iA", "InnerArgument", get_argument, "i")
 -- vim.keymap.set("o", "A", function() get_argument(nil) end, {noremap = true, silent = true, desc = "Argument" }) -- <c-u> - clears '<, '> from input
 -- vim.keymap.set("o", "iA", function() get_argument('i') end, {noremap = true, silent = true, desc = "Argument" }) -- <c-u> - clears '<, '> from input

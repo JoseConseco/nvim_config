@@ -457,7 +457,7 @@ return require("packer").startup(function(use)
   }
   use {
     "hrsh7th/nvim-cmp",
-    disable = false,
+    cond = true,
     requires = {
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-nvim-lsp",

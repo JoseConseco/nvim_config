@@ -10,18 +10,19 @@ local press = function(key)
   vim.api.nvim_feedkeys(t(key), "n", true)
 end
 
-vim.opt.completeopt = "menu,menuone,noselect,noinsert"
+-- vim.opt.completeopt = "menu,menuone,noselect,noinsert" -- not needed anymore
 cmp.setup {
   sources = {
     -- { name = "nvim_lsp_signature_help" },
-		{ name = "nvim_lsp",    priority = 8, group_index = 1, keyword_length = 0, max_item_count = 5 },
+		{ name = "nvim_lsp",    priority = 8, group_index = 1, keyword_length = 2, max_item_count = 5 },
+		-- { name = "copilot",     priority = 8, group_index = 1, keyword_length = 0 },
     { name = "cmp_tabnine", priority = 8, group_index = 1, keyword_length = 2, },
     { name = "cmp_dap",     priority = 7, group_index = 1 },
     { name = "ultisnips",   priority = 7, group_index = 1 },
     { name = "nvim_lua",    priority = 5, group_index = 1 },
-    { name = "buffer",      priority = 5, group_index = 1, keyword_length = 3, max_item_count = 3 }, -- actually nicer than RG
+    { name = "buffer",      priority = 5, group_index = 1, keyword_length = 2, max_item_count = 3 }, -- actually nicer than RG
 		-- { name = 'rg',          priority = 5, group_index = 1, keyword_length = 3, max_item_count = 3 }, -- first for locality sorting?
-    { name = "spell",       priority = 5, group_index = 1, keyword_length = 4, keyword_pattern = [[\w\+]] },
+    { name = "spell",       priority = 5, group_index = 1, keyword_length = 3, keyword_pattern = [[\w\+]] },
 		{ name = "calc",        priority = 3, group_index = 1, keyword_pattern = [[\d\+\W\{-\}\d]] },
     { name = 'path',        priority = 1, group_index = 1 },
     -- { name = 'vsnip' },
@@ -31,6 +32,7 @@ cmp.setup {
       with_text = true,
       menu = {
         cmp_tabnine   = "[T9]",
+        copilot       = "[CPL]",
         cmp_dap       = "[DAP]",
         nvim_lsp      = "[LSP]",
         ultisnips     = "[USnip]",
@@ -43,10 +45,10 @@ cmp.setup {
       },
     },
   },
-  enabled = function ()  -- for cmp dap
-    return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
-      or require("cmp_dap").is_dap_buffer()
-  end,
+  -- enabled = function ()  -- for cmp dap
+  --   return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
+  --     or require("cmp_dap").is_dap_buffer()
+  -- end,
   -- You can set mappings if you want
   window = {
     documentation = {
@@ -58,7 +60,7 @@ cmp.setup {
 	completion = {
 		border = "rounded",
 		scrollbar = "║",
-		keyword_length = 3,
+		keyword_length = 2,
 	},
 
   mapping = {
