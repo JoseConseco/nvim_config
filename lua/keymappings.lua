@@ -185,6 +185,7 @@ vim.api.nvim_set_keymap( "n", "<F1>",  ":Telescope sessions_picker<CR>",  {norem
 
 -- File find under F2
 vim.api.nvim_set_keymap( "n", "<F2>",  ':Telescope find_files<CR>',  {noremap = true, silent = true } )
+-- vim.api.nvim_set_keymap( "n", "<F2>",  '::FzfLua files<CR>',  {noremap = true, silent = true } )
 --switch to last buffer
 vim.api.nvim_set_keymap( "n", "<F10>",  '<c-^>',  {noremap = true, silent = true } )
 

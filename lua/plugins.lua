@@ -247,9 +247,12 @@ return require("packer").startup(function(use)
   -- WINDOWS MANAGE  -------------------------------------------------------------------------------------------------------
   use {
     "beauwilliams/focus.nvim",
-    disable = false, -- autoresize windows to gold ration - brokens with scroll
+    cond = true, -- autoresize windows to gold ration - brokens with scroll
     config = function()
-      require("focus").setup { enable = true }
+      require("focus").setup {
+				enable = true,
+				excluded_filetypes = {"fzf"},
+			}
     end,
   }
   use {
@@ -356,7 +359,7 @@ return require("packer").startup(function(use)
     end,
   }
   use {
-    "romgrk/nvim-treesitter-context",
+    "nvim-treesitter/nvim-treesitter-context",
     cond = true, -- cool but gives orror on compe-popup - https://github.com/romgrk/nvim-treesitter-context/issues/49
     config = function()
       require "nv-treesittercontext"
@@ -521,6 +524,10 @@ return require("packer").startup(function(use)
     requires = { "tami5/sqlite.lua" },
   }
   use { "nvim-telescope/telescope-fzf-native.nvim", run = "make" }
+	use { 'ibhagwan/fzf-lua',
+  -- optional for icon support
+  requires = { 'kyazdani42/nvim-web-devicons' }
+}
 
   -- Explorer  -------------------------------------------------------------------------------------------------------
   use { "elihunter173/dirbuf.nvim" } -- edit dir as buffer text
