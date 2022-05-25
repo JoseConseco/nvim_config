@@ -240,16 +240,30 @@ local function t(str)
 end
 local function open_sub_folds()
 	local line_data = vim.api.nvim_win_get_cursor(0) -- returns {row, col}
-	local fold_closed = vim.fn.foldclosed(line_data[1])
-	if fold_closed == -1 then -- not folded
-		return ":normal! zczO"..t('<cr>') -- normal - prevets flicker
+	vim.cmd[[IndentBlanklineRefresh]]   -- from lukas-reineke/indent-blankline.nvim
+	if vim.fn.foldclosed(line_data[1]) == -1 then -- not folded
+		-- open sub folds
+		return ":normal! zczO"..t('<cr>').."|<cmd>IndentBlanklineRefresh<cr>" -- normal - prevets flicker
 		-- return "zczO"
 	else -- if fold - then open normall
-		return ":normal! zO"..t('<cr>')  -- normal - prevets flicker
+		return ":normal! zO"..t('<cr>').."|<cmd>IndentBlanklineRefresh<cr>"  -- normal - prevets flicker
 		-- return "zO"
 	end
 end
 
+local function override_l_with_indent_refresh()
+	local line_data = vim.api.nvim_win_get_cursor(0) -- returns {row, col}
+	if vim.fn.foldclosed(line_data[1]) ~= -1 then --  folded
+		print("folded")
+		vim.cmd[[normal! zo^]]   -- from lukas-reineke/indent-blankline.nvim
+		vim.cmd[[IndentBlanklineRefresh]]   -- from lukas-reineke/indent-blankline.nvim
+	else
+		vim.cmd "normal! l"
+	end
+end
+
+vim.keymap.set( "n", "l", override_l_with_indent_refresh, { remap = false} )
+vim.keymap.set( "n", "zo", 'zo:IndentBlanklineRefresh<cr>', { remap = false,  desc = 'zo with indentline refresh'} )
 vim.keymap.set( "n", "zO", open_sub_folds, { remap = true, expr = true } )
 
 -- better subfodls
@@ -263,7 +277,8 @@ local async = require("plenary.async")
 local packer_sync = function ()
     async.run(function ()
         require("notify").async('Syncing packer.', 'info', {
-            title = 'Packer'
+            title = 'Packer',
+						timeout = 1000,
         })
     end)
     -- local snap_shot_time = os.date("!%Y-%m-%dT%TZ")

@@ -7,7 +7,7 @@ end
 local function get_big_word(word_type)
   -- local excluded_chars = [[(\s|\(|\)|"|'|[|]|^|$)]]
   local cur_line = vim.api.nvim_win_get_cursor(0)[1]
-  local search_expr = [==[\v[0-9A-Za-z\.\-*_]*]==] -- \v magic
+  local search_expr = [==[\v[0-9A-Za-z\.\-\\/*_]*]==] -- \v magic
 	local mode = vim.api.nvim_get_mode()['mode']  -- "no" -> operator pening, 'n' -> normal, 'v' -> visual
 	-- vim.pretty_print(vim.api.nvim_get_mode())
   if word_type == "a" or mode == 'v' or mode == 'n' then -- visual, normal, and around mode

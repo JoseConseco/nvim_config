@@ -99,13 +99,23 @@ function _G.compare_to_clipboard()
 end
 -- b for buffers  - for nvim-bufferline<Plug>
 -- ['s'] = {':BLines',                              'Search lines fzf'},
+local function pick_filetype()
+	vim.ui.select({ 'python', 'lua', 'text'}, { prompt = 'Select file type:', },
+		function(choice)
+			vim.cmd [[enew]]
+			vim.bo.filetype = choice -- not working
+		end
+	)
+end
+
 wk.register({
 	['<leader>b'] = { name = '+Buffers' },
 	['<leader>b/'] = {":lua require('telescope.builtin').current_buffer_fuzzy_find({ sorter = require('telescope.sorters').get_substr_matcher({})})<CR>", 'Search'},
 	['<leader>b?'] = {':Telescope current_buffer_fuzzy_find<CR>',                                                                                         'Search fuzzy'},
 	['<leader>b<'] = {':Telescope buffers<CR>',                                                                                                           'Get buffer' } ,
 	['<leader>bb'] = {'<c-^>',                                                                                                                            'Cycle with Previous'},
-	['<leader>bn'] = {':enew<CR>',                                                                                                                        'New'},
+	-- ['<leader>bn'] = {':enew<CR>',                                                                                                                        'New'},
+	['<leader>bn'] = { pick_filetype,                                                                                                                        'New'},
 	['<leader>b]'] = {':BufferLineCycleNext<CR>',                                                                                                         'Next'},
 	['<leader>b['] = {':BufferLineCyclePrev<CR>',                                                                                                         'Previous'},
 	['<leader>bc'] = {':confirm bd<CR>',                                                                                                                  'Close'},   -- fixes error on buffer close

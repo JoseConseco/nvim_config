@@ -6,7 +6,7 @@ vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', op
 vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
 -- vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
 
-local lsp_doc_hi = vim.api.nvim_create_augroup("lsp_document_highlight", {})
+local lsp_doc_hl_au_idx = vim.api.nvim_create_augroup("lsp_document_highlight", {})
 
 local on_attach = function(client, bufnr)
 	local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
@@ -30,11 +30,11 @@ local on_attach = function(client, bufnr)
 	buf_set_keymap('n', 'gr', ":lua require('telescope.builtin').lsp_references({initial_mode = 'normal'})<CR>", opts)
 
 	-- Set some keybinds conditional on server capabilities
-	if client.server_capabilities.document_formatting then
-		buf_set_keymap("n", "<space>cf", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-	elseif client.server_capabilities.document_range_formatting then
-		buf_set_keymap("v", "<space>cf", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
-	end
+	-- if client.server_capabilities.document_formatting then
+	buf_set_keymap("n", "<space>cf", "<cmd>lua vim.lsp.buf.format()<CR>", opts)
+	-- elseif client.server_capabilities.document_range_formatting then
+	buf_set_keymap("v", "<space>cf", "<ESC><cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
+	-- end
 
 	-- adding borders
 	vim.lsp.handlers["textDocument/hover"] =
@@ -70,13 +70,13 @@ local on_attach = function(client, bufnr)
 			-- pattern = "*",
 			buffer = bufnr,
 			callback =  vim.lsp.buf.document_highlight,
-			group = "lsp_document_highlight",
+			group = lsp_doc_hl_au_idx,
 		})
 		vim.api.nvim_create_autocmd("CursorMoved", {
 			-- pattern = "*",
 			buffer = bufnr,
 			callback = vim.lsp.buf.clear_references,
-			group = "lsp_document_highlight",
+			group = lsp_doc_hl_au_idx,
 		})
 	end
 
