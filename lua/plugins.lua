@@ -154,6 +154,7 @@ return require("packer").startup(function(use)
       require("colorizer").setup()
     end,
   } --color highlighter
+	use 'azabiong/vim-highlighter' -- highlight selection and occurrences
   use "kyazdani42/nvim-web-devicons"
   use {
     "ryanoasis/vim-devicons",
@@ -172,7 +173,7 @@ return require("packer").startup(function(use)
     "akinsho/nvim-bufferline.lua",
     requires = "kyazdani42/nvim-web-devicons",
     config = function()
-      require("bufferline").setup()
+      require("bufferline").setup{}
       require "nv-bufferline"
     end,
   }
@@ -549,6 +550,12 @@ return require("packer").startup(function(use)
   -- Git  -------------------------------------------------------------------------------------------------------
   use {
     "tpope/vim-fugitive", -- add :Gitxx commands
+  }
+  use {
+    "tpope/vim-surround",
+  }
+  use {
+    "tpope/vim-repeat",
   }
   use {
     "lewis6991/gitsigns.nvim",

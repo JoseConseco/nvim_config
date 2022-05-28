@@ -1,15 +1,15 @@
-require('mini.surround').setup({
-	n_lines = 10,
-	mappings = {
-		add = ' sa',           -- Add surrounding
-		delete = ' sd',        -- Delete surrounding
-		find = '',          -- Find surrounding (to the right)
-		find_left = '',     -- Find surrounding (to the left)
-		highlight = '',     -- Highlight surrounding  <Leader>ssh
-		replace = ' sr',       -- Replace surrounding
-		update_n_lines = ' ssn' -- Update `n_lines`
-	}
-})
+-- require('mini.surround').setup({
+-- 	n_lines = 10,
+-- 	mappings = {
+-- 		add = ' sa',           -- Add surrounding
+-- 		delete = ' sd',        -- Delete surrounding
+-- 		find = '',          -- Find surrounding (to the right)
+-- 		find_left = '',     -- Find surrounding (to the left)
+-- 		highlight = '',     -- Highlight surrounding  <Leader>ssh
+-- 		replace = ' sr',       -- Replace surrounding
+-- 		update_n_lines = ' ssn' -- Update `n_lines`
+-- 	}
+-- })
 
 require('mini.comment').setup({
 	-- Toggle comment (like `gcip` - comment inner paragraph) for both

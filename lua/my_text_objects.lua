@@ -52,6 +52,9 @@ repeatable_command("aW", "BigAroundWord", get_big_word, "a")
 repeatable_command("W", "BigWord", get_big_word, nil)
 vim.keymap.set('n', 'W', "<cmd>BigWord"..t "<CR>")  -- for vis mode <c-u> - clears '<'>
 
+
+
+
 -- text object for function arguments '''
 local function get_argument(mode)
   -- local bufnr = vim.api.nvim_get_current_buf()
@@ -60,19 +63,34 @@ local function get_argument(mode)
   local is_coma = { [","] = true }
   local line_text = vim.api.nvim_get_current_line()
   local cur_line = vim.api.nvim_win_get_cursor(0)[1]
+	local cursor_node = ts_utils.get_node_at_cursor(winid)
 
+	-- we need to make sure we select outside cursor node, to avoid selecting node inner brackets
+	local cn_row, cn_start = cursor_node:start() -- the row, column and total byte count
+	local cn_end = select(2, cursor_node:end_())
+
+	-- find outer cursor node - and grow cn_end
+	local parent = cursor_node:parent()
+	while select(2, parent:start()) == cn_start and select(1, parent:start()) == cn_row do
+		cursor_node = parent
+		cn_end = select(2, cursor_node:end_())
+		parent = cursor_node:parent()
+	end
+
+
+	-- print(cn_start, cn_end)
   -- search  left
   local l_hit_char
   repeat
     vim.api.nvim_call_function("search", { [==[\v[\[({\,].{-}]==], "b", cur_line }) --  c-include cursor char when search, b- backward
-    local cursor_node = ts_utils.get_node_at_cursor(winid)
     local l_hit_col = vim.api.nvim_win_get_cursor(0)[2]
-    l_hit_char = line_text:sub(l_hit_col + 1, l_hit_col + 1) -- get char after cursor
-  until cursor_node:type() ~= "string" -- while we are in string continue searching
+    l_hit_char = line_text:sub(l_hit_col+1, l_hit_col+1) -- get char after cursor
+		-- print(l_hit_char)
+		-- print("left: ",l_hit_col)
+  until l_hit_col <= cn_start -- until cursor is on the left of the node
 
 	if not (is_bracket[l_hit_char] or is_coma[l_hit_char]) then
-		-- not in  list it seems
-		return
+		return -- not in  list it seems
 	end
 
   if is_bracket[l_hit_char] then -- skip brackets and move right
@@ -89,17 +107,18 @@ local function get_argument(mode)
   local r_hit_char
   repeat
     vim.api.nvim_call_function("search", { [==[\v.{-}[\])}\,]]==], "e", cur_line }) -- e - move cursor to last matched char
-    local cursor_node = ts_utils.get_node_at_cursor(winid)
     local r_hit_col = vim.api.nvim_win_get_cursor(0)[2]
-    r_hit_char = line_text:sub(r_hit_col + 1, r_hit_col + 1) -- get char after cursor
-  until cursor_node:type() ~= "string" -- while we are in string continue searching
+    r_hit_char = line_text:sub(r_hit_col+1, r_hit_col+1) -- get char after cursor
+		-- print(r_hit_char)
+		-- print("right: ", r_hit_col)
+	until r_hit_col >= cn_end -- until we go after the cursor node
 
   if is_bracket[r_hit_char] then
     vim.cmd "normal! h" -- skip and move left
 	else -- we hit coma
-		if mode == 'a' and  is_bracket[l_hit_char] then -- remo white spaces, only if 'a' mode and left is bracket
-			vim.api.nvim_call_function("search", { [==[\v[^\s]{-}]==], "", cur_line }) --  c-include cursor char when search, b- backward
-		elseif mode == "i" or is_coma[l_hit_char] then -- skip right comma
+		if mode ~= 'i' and is_bracket[l_hit_char] then -- remo white spaces, only if 'a' mode and left is bracket
+			vim.api.nvim_call_function("search", { [==[\v\s.{-}]==], "ce", cur_line }) --  c-include cursor char when search, e- backward
+		elseif mode ~= "a" or is_coma[l_hit_char] then -- skip right comma
 			vim.cmd "normal! h" -- skip and move left
 		end
 	end
