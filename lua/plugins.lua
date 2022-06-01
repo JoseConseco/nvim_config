@@ -171,9 +171,9 @@ return require("packer").startup(function(use)
   }
   use {
     "akinsho/nvim-bufferline.lua",
+    after = "nightfox.nvim",
     requires = "kyazdani42/nvim-web-devicons",
     config = function()
-      require("bufferline").setup{}
       require "nv-bufferline"
     end,
   }
@@ -182,7 +182,7 @@ return require("packer").startup(function(use)
     after = "nightfox.nvim",
     config = function()
       local hl_manager = require "hl_manager"
-      hl_manager.highlight_from_src("IndentEven", "Normal", { action = "contrast", factor = -6 }) -- reduce contrast by default by -5
+      hl_manager.highlight_from_src("IndentEven", "Normal", {bg = -6 }) -- reduce contrast by default by -5
       vim.cmd [[highlight IndentOdd guifg=NONE guibg=NONE gui=nocombine]]
       -- hl_manager.highlight_from_src("IndentBlanklineContextChar", "Normal", {action='contrast', factor=-10}) -- reduce contrast by default by -5
       -- vim.cmd [[highlight! link IndentBlanklineContextChar Comment]]
@@ -404,13 +404,13 @@ return require("packer").startup(function(use)
     config = function()
       -- add colorscheme change hook
       local hl_manager = require "hl_manager"
-      hl_manager.match_color_to_highlight("#ebcb8b", "TSPunctBracket", "rainbowcol1", "fg")
-      hl_manager.match_color_to_highlight("#a3be8c", "TSPunctBracket", "rainbowcol2", "fg")
-      hl_manager.match_color_to_highlight("#88c0d0", "TSPunctBracket", "rainbowcol3", "fg")
-      hl_manager.match_color_to_highlight("#6ea1ec", "TSPunctBracket", "rainbowcol4", "fg")
-      hl_manager.match_color_to_highlight("#b48ead", "TSPunctBracket", "rainbowcol5", "fg")
-      hl_manager.match_color_to_highlight("#df717a", "TSPunctBracket", "rainbowcol6", "fg")
-      hl_manager.match_color_to_highlight("#d08770", "TSPunctBracket", "rainbowcol7", "fg")
+      hl_manager.match_color_to_highlight("#ebcb8b", "TSPunctBracket", "rainbowcol1", "foreground")
+      hl_manager.match_color_to_highlight("#a3be8c", "TSPunctBracket", "rainbowcol2", "foreground")
+      hl_manager.match_color_to_highlight("#88c0d0", "TSPunctBracket", "rainbowcol3", "foreground")
+      hl_manager.match_color_to_highlight("#6ea1ec", "TSPunctBracket", "rainbowcol4", "foreground")
+      hl_manager.match_color_to_highlight("#b48ead", "TSPunctBracket", "rainbowcol5", "foreground")
+      hl_manager.match_color_to_highlight("#df717a", "TSPunctBracket", "rainbowcol6", "foreground")
+      hl_manager.match_color_to_highlight("#d08770", "TSPunctBracket", "rainbowcol7", "foreground")
     end,
   }
   use "nvim-treesitter/playground"

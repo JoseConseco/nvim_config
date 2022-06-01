@@ -20,7 +20,7 @@ require("null-ls").setup {
 			filetypes = { "html", "txt", "json", "markdown", "python"}
 		},
 		require("null-ls").builtins.diagnostics.pylint.with {
-			extra_args = { "--disable=W,C,R", "--jobs=3" },
+			extra_args = { "--disable=W,C,R", "--jobs=4" },
 		},
   },
   -- on_attach =  function(client, bufnr)

@@ -193,10 +193,10 @@ wk.register({
 	['<leader>db']  = { ":lua require'dap'.toggle_breakpoint()<CR>",                                    'Toggle breakpoint'},
 	-- ['<leader>dc']  = { ":lua require'dap'.goto_()<CR>",                                             'Run to Cursor'},
 	['<leader>du']  = { ":lua require('dapui').setup()<CR>",                                            'UI Start'} ,
-	['<leader>dC']  = { ":lua require('dapui').close()<cr>:DapVirtualTextForceRefresh<CR>",                      'UI Close'},
+	['<leader>dC']  = { ":lua require('dapui').close()<cr>:DapVirtualTextForceRefresh<CR>",             'UI Close'},
 	['<leader>dbc'] = { ":lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>", 'Conditional breakpoint'},
 	['<leader>dk']  = { ":lua require('dap.ui.widgets').hover()<CR>",                                   'Eval popup'},
-	['<leader>dK']  = { ":lua require('dapui').eval()<CR>",                                             'Eval window'},
+	['<leader>dK']  = { ":lua require('dapui').eval()<CR><Cmd>lua require('dapui').eval()<CR>",         'Eval window'}, -- call 2x to jump to window
 	['<leader>dn']  = { ":lua require'dap'.step_over()<CR>",                                            'Step Over'},
 	['<leader>dc']  = { ":lua require'dap'.run_to_cursor()<CR>",                                        'Run to Cursor'},
 	['<leader>dr']  = { ":lua require'dap'.repl.toggle()<CR>",                                          'Repl Toggle'},

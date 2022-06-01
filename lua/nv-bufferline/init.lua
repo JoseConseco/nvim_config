@@ -2,11 +2,12 @@ require'bufferline'.setup{
   options = {
     view = "multiwindow",
     numbers = "none",
+		themable = false,
     buffer_close_icon= '',
     modified_icon = '●',
     close_icon = '',
-    left_trunc_marker = '',
-    right_trunc_marker = '',
+    left_trunc_marker = '<',
+    right_trunc_marker = '>',
     max_name_length = 18,
     max_prefix_length = 15, -- prefix used when a buffer is deduplicated
     tab_size = 20,
@@ -36,6 +37,26 @@ require'bufferline'.setup{
     separator_style = "thin",
     enforce_regular_tabs = false,
     always_show_bufferline = true,
+		highlights = {
+			fill = {
+					guibg = {
+							attribute = "bg",
+							highlight = "NormalNC"
+					}
+				},
+			background = {
+					guibg = {
+							attribute = "bg",
+							highlight = "NormalNC"
+					}
+				},
+			tab = {
+					guibg = {
+							attribute = "bg",
+							highlight = "NormalNC"
+					}
+				},
+		},
   }
 }
 

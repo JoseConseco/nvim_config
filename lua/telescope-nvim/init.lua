@@ -65,6 +65,8 @@ require("telescope").setup {
         ["<C-Up>"] = fix_prev,
       },
 			n = {
+				["<C-n>"] = actions.move_selection_next,
+				["<C-p>"] = actions.move_selection_previous,
 				}
     },
     file_sorter = require("telescope.sorters").get_fuzzy_file,
@@ -138,7 +140,7 @@ require("telescope").setup {
 }
 local hl_manager = require "hl_manager"
 
-hl_manager.highlight_from_src("TelescopePromptNormal", "Normal", { action = "contrast", factor = 4 })
+hl_manager.highlight_from_src("TelescopePromptNormal", "Normal", {bg = 4 })
 hl_manager.highlight_link("TelescopePromptBorder", "TelescopePromptNormal")
 hl_manager.highlight_link("TelescopePromptPrefix", "TelescopePromptNormal")
 

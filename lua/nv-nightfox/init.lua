@@ -1,7 +1,7 @@
 require("nightfox").setup({
   options = {
     transparent = false,
-    dim_inactive = true,
+    -- dim_inactive = true,
     styles = { -- Style to be applied to different syntax groups
       functions = "bold",
       keywords = "bold",
@@ -67,16 +67,21 @@ require("nightfox").setup({
 })
 vim.cmd [[highlight LineNr guifg=#5081c0 | highlight CursorLineNR guifg=#FFba00 ]]
 local hl_manager = require "hl_manager"
-hl_manager.highlight_from_src("NormalNC", "Normal", { action = "contrast", factor = -5 })
+hl_manager.highlight_from_src("NormalNC", "Normal", {bg = -5})
+hl_manager.match_hl_to_highlight("VertSplit", "Normal", {bg = -5}) -- just use bg colr from normal
+hl_manager.match_hl_to_highlight("WinBarNC", "Normal", {fg = -14, bg = -5})
+hl_manager.match_hl_to_highlight("WinBar", "Normal", {fg = -14, bg = -5})
+
 -- local theme_change_au = vim.api.nvim_create_augroup("MyThemeChangeAu", { clear = true })
 
-vim.api.nvim_create_autocmd("ColorScheme", {
-  pattern = "*",
-  callback = function()
-    vim.cmd [[set winhighlight=Normal:Normal,NormalNC:NormalNC]]
-  end,
-  -- group = theme_change_au,
-})
+-- vim.api.nvim_create_autocmd("ColorScheme", {
+--   pattern = "*",
+--   callback = function()
+--     vim.cmd [[set winhighlight=Normal:Normal,NormalNC:NormalNC]]
+--   end,
+--   -- group = theme_change_au,
+-- })
+
 
 -- hlgroups = { HopNextKey = {}, HopNextKey1 = {}, HopNextKey2 = { fg = "${blue}" }, HopUnmatched = {} },
 

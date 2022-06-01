@@ -56,7 +56,7 @@ vim.keymap.set('n', 'W', "<cmd>BigWord"..t "<CR>")  -- for vis mode <c-u> - clea
 
 
 -- text object for function arguments '''
-local function get_argument(mode)
+local function get_argument(word_type)
   -- local bufnr = vim.api.nvim_get_current_buf()
   local winid = vim.api.nvim_get_current_win()
   local is_bracket = { ["("] = true, [")"] = true, ["["] = true, ["]"] = true, ["{"] = true, ["}"] = true }
@@ -64,6 +64,8 @@ local function get_argument(mode)
   local line_text = vim.api.nvim_get_current_line()
   local cur_line = vim.api.nvim_win_get_cursor(0)[1]
 	local cursor_node = ts_utils.get_node_at_cursor(winid)
+	local mode = vim.api.nvim_get_mode()['mode']  -- "no" -> operator pening, 'n' -> normal, 'v' -> visual
+	local o_switch = false
 
 	-- we need to make sure we select outside cursor node, to avoid selecting node inner brackets
 	local cn_row, cn_start = cursor_node:start() -- the row, column and total byte count
@@ -81,6 +83,12 @@ local function get_argument(mode)
 	-- print(cn_start, cn_end)
   -- search  left
   local l_hit_char
+
+
+	if mode == 'v' then -- deal with wrong select range if already in visual mode
+		vim.cmd "normal! o" -- switch selection side
+		o_switch = true
+	end
   repeat
     vim.api.nvim_call_function("search", { [==[\v[\[({\,].{-}]==], "b", cur_line }) --  c-include cursor char when search, b- backward
     local l_hit_col = vim.api.nvim_win_get_cursor(0)[2]
@@ -96,12 +104,17 @@ local function get_argument(mode)
   if is_bracket[l_hit_char] then -- skip brackets and move right
     vim.cmd "normal! l"
   end
-  if mode == "i" and is_coma[l_hit_char] then
+  if word_type == "i" and is_coma[l_hit_char] then
     vim.cmd "normal! l" -- skip and move right
   end
 
-	-- (v)isual
-  vim.cmd "normal! v"
+
+	if mode == 'no' then -- operator pending mode
+		vim.cmd "normal! v" -- (v)isual
+	end
+	if o_switch then
+		vim.cmd "normal! o" -- switch back selection side
+	end
 
   -- search right
   local r_hit_char
@@ -116,9 +129,9 @@ local function get_argument(mode)
   if is_bracket[r_hit_char] then
     vim.cmd "normal! h" -- skip and move left
 	else -- we hit coma
-		if mode ~= 'i' and is_bracket[l_hit_char] then -- remo white spaces, only if 'a' mode and left is bracket
+		if word_type ~= 'i' and is_bracket[l_hit_char] then -- remo white spaces, only if 'a' mode and left is bracket
 			vim.api.nvim_call_function("search", { [==[\v\s.{-}]==], "ce", cur_line }) --  c-include cursor char when search, e- backward
-		elseif mode ~= "a" or is_coma[l_hit_char] then -- skip right comma
+		elseif word_type ~= "a" or is_coma[l_hit_char] then -- skip right comma
 			vim.cmd "normal! h" -- skip and move left
 		end
 	end

@@ -15,8 +15,8 @@ vim.api.nvim_set_keymap('v', 'G', 'gg', {noremap = true, silent = true})
 
 -- I hate escape
 vim.api.nvim_set_keymap('i', 'jk', '<ESC>zv', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('i', 'jj', '<ESC>zv', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('i', 'kk', '<ESC>zv', {noremap = true, silent = true})
+-- vim.api.nvim_set_keymap('i', 'jj', '<ESC>zv', {noremap = true, silent = true})
+-- vim.api.nvim_set_keymap('i', 'kk', '<ESC>zv', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('i', '<ESC>', '<ESC>zv', {noremap = true, silent = true})
 
 -- when no wrap - move by visual lines
@@ -157,8 +157,9 @@ vim.api.nvim_set_keymap('c', 's/', 's/\\v', {noremap = true})
 vim.api.nvim_set_keymap('c', 'g/', 'g/\\v', {noremap = true}) ]]
 
 -- search for selection whithout jump  -- with "kevinhwang91/nvim-hlslens" support
-vim.api.nvim_set_keymap('n', '*', "*zzzv<Cmd>lua require('hlslens').start()<CR>", {noremap = true}) -- zv open fold; zz center on search result
-vim.api.nvim_set_keymap('n', '#', "#zzzv<Cmd>lua require('hlslens').start()<CR>", {noremap = true}) --bacwards,  zv open fold; zz center on search result
+-- [[ /\<<C-R>=expand('<cword>')<CR>\>\C<CR> ]] - makes * case sensitive always
+vim.api.nvim_set_keymap('n', '*', [[/\<<C-R>=expand('<cword>')<CR>\>\C<CR>zzzv<Cmd>lua require('hlslens').start()<CR>]], {noremap = true}) -- zv open fold; zz center on search result
+vim.api.nvim_set_keymap('n', '#', [[?\<<C-R>=expand('<cword>')<CR>\>\C<CR>zzzv<Cmd>lua require('hlslens').start()<CR>]], {noremap = true}) --bacwards,  zv open fold; zz center on search result
 vim.api.nvim_set_keymap('v', '*', "y/\\V<C-R>=escape(@\",'/\')<CR><CR>zzzv<Cmd>lua require('hlslens').start()<CR>", {noremap = true})
 vim.api.nvim_set_keymap('v', '#', "y?\\V<C-R>=escape(@\",'/\')<CR><CR>zzzv<Cmd>lua require('hlslens').start()<CR>", {noremap = true}) -- backward
 -- vim.api.nvim_set_keymap('n', '*', ":keepjumps normal! mi*`i<CR>", {noremap = true})   -- wont affect jump list

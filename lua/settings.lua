@@ -53,7 +53,9 @@ vim.opt.virtualedit='all'      -- makes cursor not jump,
 vim.opt.winwidth=60
 vim.opt.winminwidth=50
 
-vim.g.paste = true --? format pasted str - does it work? seems broken right now..
+vim.opt.paste = false --? format pasted str - does it work? seems broken right now.. - breaks telescope
+
+-- vim.opt.fileformats = 'unix' -- read and write files as unix
 
 -- vim.o.guifont = "JetBrainsMonoNL Nerd Font Mono, Medium:h8"     -- icons ok, but ugly
 vim.o.guifont = "Source Code Pro:h9"  -- icons missng
@@ -76,4 +78,14 @@ vim.opt.foldtext = 'v:lua.custom_fold_text()'
 vim.opt.foldminlines = 1  -- fold only if more than 2 lines in code block
 vim.opt.foldnestmax = 4  -- create max 4 folds (avoids too many fold levels)
 vim.opt.foldopen:append({'jump', 'insert'})  -- default: "block,hor,mark,percent,quickfix, search,tag,undo"
+
+vim.opt.laststatus = 3 -- show line and column number
+
+-- local file_changed = '[-]'
+-- if vim.api.nvim_eval('&mod') == 1 then
+-- 	file_changed = '[+] '
+-- end
+vim.opt.winbar = "%m  [%t]"
+
+
 

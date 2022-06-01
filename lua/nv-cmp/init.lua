@@ -156,6 +156,19 @@ cmp.setup {
   },
 }
 
+-- form "rcarriga/cmp-dap",
+-- enable cmp-dap - only for dap-repl - or else cmp will throw error
+require'cmp'.setup.filetype("dap-repl", {
+  -- nvim-cmp by defaults disables autocomplete for prompt buffers
+  enabled = function ()
+    return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
+      or require("cmp_dap").is_dap_buffer()
+  end,
+  sources = {
+    { name = 'dap', priority = 8, group_index = 1, keyword_length = 1 },
+  }
+})
+
 local cmp_autopairs = require "nvim-autopairs.completion.cmp"
 cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done { map_char = { tex = "" } })
 
