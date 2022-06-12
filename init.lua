@@ -12,15 +12,22 @@ local init_group = vim.api.nvim_create_augroup("MyInitAuGroup", { clear = true }
 -- why it wont load indentline even odd correctly?
 local function theme_change_timeday(start_hour, end_hour)
   local time = tonumber(vim.fn.strftime "%H")
+	local current_theme = vim.g.colors_name
   if time < start_hour or time > end_hour then
-    vim.cmd [[colorscheme nightfox]]
+		if current_theme ~= "nightfox" then
+			-- print("Changing theme to nightfox")
+			vim.cmd [[colorscheme nightfox]]
+		end
   else
-    vim.cmd [[colorscheme dayfox]]
+		if current_theme ~= "dayfox" then
+			-- print("Changing theme to dayfox")
+			vim.cmd [[colorscheme dayfox]]
+		end
   end
   vim.cmd [[doautoall ColorScheme]]
 end
 
-vim.api.nvim_create_autocmd("VimEnter", { --FocusGained
+vim.api.nvim_create_autocmd({"VimEnter","FocusLost"}, { --FocusGained
   pattern = "*",
   callback = function()
     theme_change_timeday(9, 15)

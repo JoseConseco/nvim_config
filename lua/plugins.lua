@@ -154,7 +154,46 @@ return require("packer").startup(function(use)
       require("colorizer").setup()
     end,
   } --color highlighter
-	use 'azabiong/vim-highlighter' -- highlight selection and occurrences
+	use {'azabiong/vim-highlighter', -- highlight selection and occurrences
+		config = function()
+			vim.cmd [[let HiClearUsingOneTime = 1]]
+		end,
+	}
+	use {
+		-- "folke/twilight.nvim",
+		"mkonig/twilight.nvim",
+		branch = "pr/1", -- my fix for expand props
+		config = function()
+			require("twilight").setup {
+				dimming = {
+					alpha = 0.4, -- amount of dimming
+					-- color = { "Normal", "#ffffff" }, -- we try to get the foreground from the highlight groups or fallback color
+					inactive = false, -- when true, other windows will be fully dimmed (unless they contain the same buffer)
+				},
+				context = 0, -- amount of lines we will try to show around the current line
+				node_context = 0,
+				treesitter = true, -- use treesitter when available for the filetype
+				-- treesitter is used to automatically expand the visible text,
+				-- but you can further control the types of nodes that should always be fully expanded
+				expand = {
+					-- "function",
+					-- "if_expression",
+					-- python/pyright
+					-- "while_statement",
+					-- "if_statement",
+					-- "for_statement",
+					-- "block",
+					"function_definition",
+					"method_definition",
+					"class_definition",
+					-- yml
+					-- "document",
+					-- lua
+					-- "function_declaration",
+					},
+			}
+		  end
+	}
   use "kyazdani42/nvim-web-devicons"
   use {
     "ryanoasis/vim-devicons",
@@ -192,7 +231,7 @@ return require("packer").startup(function(use)
   }
   use {
     "Xuyuanp/scrollbar.nvim",
-    disable = true, -- side scrollbar  -fucks up session load often :/ - but at least wont break tele
+    disable = false, -- side scrollbar  -fucks up session load often :/ - but at least wont break tele
     config = function()
       vim.cmd [[
 				augroup ScrollbarInit
@@ -207,7 +246,8 @@ return require("packer").startup(function(use)
   }
 
   use {
-    "petertriho/nvim-scrollbar",
+    "petertriho/nvim-scrollbar", -- scrollbar with marked errors and search results
+		disable = true,
     cond = true, -- scrollbar which shows search resutls   and errors
     config = function()
       require("scrollbar").setup {
@@ -229,9 +269,9 @@ return require("packer").startup(function(use)
   }
   use {
     "kevinhwang91/nvim-hlslens",
-    after = "nvim-scrollbar",
+    -- after = "nvim-scrollbar",
     config = function()
-      require("scrollbar.handlers.search").setup {
+      require("hlslens").setup {
         nearest_only = true,
         calm_down = false,
         -- override_lens = function() end,
@@ -351,17 +391,7 @@ return require("packer").startup(function(use)
     "rcarriga/nvim-dap-ui",
     requires = { "mfussenegger/nvim-dap" },
     config = function()
-      require("dapui").setup()
-      local dap, dapui = require "dap", require "dapui"
-      dap.listeners.after.event_initialized["dapui_config"] = function()
-        dapui.open()
-      end
-      dap.listeners.before.event_terminated["dapui_config"] = function()
-        dapui.close()
-      end
-      dap.listeners.before.event_exited["dapui_config"] = function()
-        dapui.close()
-      end
+			require("nv-dapui")
     end,
   }
 
@@ -655,13 +685,6 @@ return require("packer").startup(function(use)
     "mg979/vim-visual-multi", --multi cursor support like vscode...
     config = function()
       vim.g.VM_mouse_mappings = 1
-      vim.cmd [[
-				aug VMlens
-						au!
-						au User visual_multi_start lua require('vmlens').start()
-						au User visual_multi_exit lua require('vmlens').exit()
-				aug END
-			]]
     end,
   }
   use {

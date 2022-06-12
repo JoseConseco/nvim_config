@@ -187,16 +187,16 @@ wk.register({
 	['<leader>dX']  = { ":lua require'dap'.close()<CR>",                                                'Close'} ,
 	['<leader>dU']  = { ":lua require'dap'.up()<CR>",                                                   'Stack Up'} ,
 	['<leader>dD']  = { ":lua require'dap'.down()<CR>",                                                 'Stack Down'} ,
-	['<leader>da']  = { ":lua require'dap'.run({type='python', request='attach', host='127.0.0.1', port=5678})<CR>",    'Attach (localhost, 5678)'} ,
+	['<leader>da']  = { ":lua require'dap'.set_breakpoint() require'dap'.run({type='python', request='attach', host='127.0.0.1', port=5678})<CR>",    'Attach (localhost, 5678)'} ,
 	-- ['<leader>da']  = { ":lua require'dap'.attach('0.0.0.0', 5678)<CR>",                                'Attach (localhost, 5678)'} ,
 	['<leader>dl']  = { ":lua require'dap'.run_last()<CR>",                                             'Re-run Last'},
-	['<leader>db']  = { ":lua require'dap'.toggle_breakpoint()<CR>",                                    'Toggle breakpoint'},
+	['<leader>db']  = { ":lua lua require'dap'.toggle_breakpoint()<CR>",                                    'Toggle breakpoint'},
 	-- ['<leader>dc']  = { ":lua require'dap'.goto_()<CR>",                                             'Run to Cursor'},
 	['<leader>du']  = { ":lua require('dapui').setup()<CR>",                                            'UI Start'} ,
 	['<leader>dC']  = { ":lua require('dapui').close()<cr>:DapVirtualTextForceRefresh<CR>",             'UI Close'},
 	['<leader>dbc'] = { ":lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>", 'Conditional breakpoint'},
 	['<leader>dk']  = { ":lua require('dap.ui.widgets').hover()<CR>",                                   'Eval popup'},
-	['<leader>dK']  = { ":lua require('dapui').eval()<CR><Cmd>lua require('dapui').eval()<CR>",         'Eval window'}, -- call 2x to jump to window
+	['<leader>dK']  = { ":lua require('dapui').eval(nil, {enter=true})<CR>",                             'Eval window'}, -- call 2x to jump to window
 	['<leader>dn']  = { ":lua require'dap'.step_over()<CR>",                                            'Step Over'},
 	['<leader>dc']  = { ":lua require'dap'.run_to_cursor()<CR>",                                        'Run to Cursor'},
 	['<leader>dr']  = { ":lua require'dap'.repl.toggle()<CR>",                                          'Repl Toggle'},
@@ -417,10 +417,12 @@ wk.register({
 
 wk.register({
 	['<leader>u'] = { name = '+UI' },
-	['<leader>uw'] = {':call v:lua.conditional_width()<CR>', 'Auto width'},
+	['<leader>ua'] = {':call v:lua.conditional_width()<CR>', 'Auto width'},
+	['<leader>uw'] = {':set wrap!<CR>',                  'Toggle Wrap'},
 	['<leader>uc'] = {':Telescope colorscheme<CR>',          'Colorscheme'},
 	['<leader>uh'] = {':set hlsearch!<CR>',                  'Search highlight'},
-	['<leader>uf'] = {':FocusToggle',                        'Focus Toggle'},
+	['<leader>uf'] = {':FocusToggle<cr>',                        'Focus Toggle'},
+	['<leader>ut'] = {':Twilight<cr>',                           'Twilight'},
 })
 
 

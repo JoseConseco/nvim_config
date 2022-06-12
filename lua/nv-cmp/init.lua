@@ -10,7 +10,7 @@ local press = function(key)
   vim.api.nvim_feedkeys(t(key), "n", true)
 end
 
--- vim.opt.completeopt = "menu,menuone,noselect,noinsert" -- not needed anymore
+vim.opt.completeopt = "menu,menuone,noselect,noinsert" -- not needed anymore - actually needed for cmp-dap...
 cmp.setup {
   sources = {
     -- { name = "nvim_lsp_signature_help" },

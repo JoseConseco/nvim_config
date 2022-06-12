@@ -1,3 +1,4 @@
+-- integrate hlens with vim visual multi
 local M = {}
 local hlslens = require('hlslens')
 local config
@@ -34,4 +35,13 @@ function M.exit()
     end
 end
 
+vim.cmd [[
+	aug VMlens
+				au!
+			au User visual_multi_start lua require('vmlens').start()
+			au User visual_multi_exit lua require('vmlens').exit()
+	aug END
+	]]
 return M
+
+

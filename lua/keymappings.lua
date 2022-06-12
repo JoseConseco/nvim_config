@@ -283,7 +283,6 @@ local packer_sync = function ()
         })
     end)
     -- local snap_shot_time = os.date("!%Y-%m-%dT%TZ")
-    -- local snap_shot_time = os.date("!%Y-%m-%dT%TZ")
     vim.cmd('PackerSnapshot ' .. 'Prev_Config')
     vim.cmd('PackerSync')
 end
