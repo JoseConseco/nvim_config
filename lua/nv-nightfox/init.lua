@@ -16,6 +16,7 @@ require("nightfox").setup({
   palettes = {
     nightfox = {
       red = { base = "#df6959", bright = "#df6959", dim = "#df6959" },
+      sel0 = "#284263", -- Popup bg, visual selection bg
       orange_br = "#e49464",
     },
     nordfox = {
@@ -30,7 +31,7 @@ require("nightfox").setup({
       bg3 = "#DbEAfB", -- Lighter bg (cursor line)
       bg4 = "#dcdcdc", -- Conceal, border fg
 
-      sel0 = "#eeefef", -- Popup bg, visual selection bg
+      sel0 = "#D8E7fB", -- Popup bg, visual selection bg
       sel1 = "#dcdcdc", -- Popup sel bg, search bg
       cyan = { base = "#208990", bright = "#259495", dim = "#107980" }, -- darken
     },

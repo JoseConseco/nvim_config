@@ -14,6 +14,12 @@ vim.cmd('set noswapfile') -- move to next line with theses keys
 -- vim.cmd("set diffopt+=iwhite") --avoid comparing whitespaces  - but breaks diff obtain?
 vim.opt.pumheight = 10 -- Makes popup menu smaller
 vim.opt.fileencoding = "utf-8" -- The encoding written to file
+
+-- XXX: not sure why this is needed
+-- vim.api.nvim_create_autocmd("SessionLoadPost", {
+-- 	pattern = "*",
+-- 	command = "set cmdheight=0",
+-- })
 vim.opt.cmdheight = 1 -- More space for displaying messages
 vim.opt.mouse = "a" -- Enable your mouse
 vim.opt.linespace = 0 -- spacing between lines

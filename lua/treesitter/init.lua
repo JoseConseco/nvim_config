@@ -58,9 +58,9 @@ ts_config.setup {
     enable = true, -- mandatory, false will disable the whole extension
     disable = { "ruby" }, -- optional, list of language that will be disabled
   },
-  --[[ textobjects = { -- uses 'nvim-treesitter/nvim-treesitter-refactor'
+  textobjects = { -- uses 'nvim-treesitter/nvim-treesitter-refactor'
 		select = {
-			enable = true,
+			enable = false,
 			keymaps = {
 				-- You can use the capture groups defined in textobjects.scm
 				["af"] = "@function.outer",
@@ -85,20 +85,20 @@ ts_config.setup {
 				["]m"] = "@function.outer",
 				["]c"] = "@class.outer",
 			},
-			goto_next_end = {
-				["]M"] = "@function.outer",
-				["]C"] = "@class.outer",
-			},
 			goto_previous_start = {
 				["[m"] = "@function.outer",
 				["[c"] = "@class.outer",
+			},
+			goto_next_end = {
+				["]M"] = "@function.outer",
+				["]C"] = "@class.outer",
 			},
 			goto_previous_end = {
 				["[M"] = "@function.outer",
 				["[C"] = "@class.outer",
 			},
 		},
-	}, ]]
+	},
 }
 
 -- vim.treesitter.query.set_query('python', 'folds', "(function_definition (block) @fold)")

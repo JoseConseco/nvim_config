@@ -158,6 +158,7 @@ cmp.setup {
 
 -- form "rcarriga/cmp-dap",
 -- enable cmp-dap - only for dap-repl - or else cmp will throw error
+
 require'cmp'.setup.filetype("dap-repl", {
   -- nvim-cmp by defaults disables autocomplete for prompt buffers
   enabled = function ()
@@ -165,7 +166,7 @@ require'cmp'.setup.filetype("dap-repl", {
       or require("cmp_dap").is_dap_buffer()
   end,
   sources = {
-    { name = 'dap', priority = 8, group_index = 1, keyword_length = 1 },
+    { name = 'dap' },
   }
 })
 

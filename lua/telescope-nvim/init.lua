@@ -8,20 +8,6 @@ local press = function(key)
   vim.api.nvim_feedkeys(t(key, true, true, true), "i", true)
 end
 
--- prevets cycle_history_prev form appending more and more spaces
-local function fix_prev(prompt_bufnr, map)
-  press "<C-o>cc" -- <c-o> execute normal cmd in inset mode
-  require("telescope.actions").cycle_history_prev(prompt_bufnr)
-  return true
-end
-
-local function fix_next(prompt_bufnr, map)
-  press "<C-o>cc" -- <c-o> execute normal cmd in inset mode
-  require("telescope.actions").cycle_history_next(prompt_bufnr)
-  return true
-end
-
-
 require("telescope").setup {
   defaults = {
     vimgrep_arguments = {
@@ -61,8 +47,8 @@ require("telescope").setup {
         -- e.g. git_{create, delete, ...}_branch for the git_branches picker
         -- ["<C-h>"] = "which_key"
         -- ["<C-Down>"] = actions.cycle_history_next,
-        ["<C-Down>"] = fix_next,
-        ["<C-Up>"] = fix_prev,
+        ["<C-Down>"] = require("telescope.actions").cycle_history_next,
+        ["<C-Up>"] = require("telescope.actions").cycle_history_prev,
       },
 			n = {
 				["<C-n>"] = actions.move_selection_next,

@@ -22,6 +22,8 @@ vim.api.nvim_set_keymap('i', '<ESC>', '<ESC>zv', {noremap = true, silent = true}
 -- when no wrap - move by visual lines
 vim.api.nvim_set_keymap('n', 'j', 'gj', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', 'k', 'gk', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('v', 'j', 'gj', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('v', 'k', 'gk', {noremap = true, silent = true})
 
 -- map ctrl + j,k,l,h - in inser move
 vim.api.nvim_set_keymap('i', '<c-h>', '<left>', {noremap = true, silent = true})
@@ -103,7 +105,6 @@ vim.api.nvim_set_keymap('n', 'x', '"_x', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('v', 'd', '"_d', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', 'd', '"_d', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', 'dd', 'dd', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('v', 'D', '"_D', {noremap = true, silent = true})
 
 -- delete without overriding register
 vim.api.nvim_set_keymap('v', '<Del>',  '"_d', {noremap = true, silent = true})

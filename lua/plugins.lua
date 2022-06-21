@@ -404,6 +404,9 @@ return require("packer").startup(function(use)
     end,
   }
   use {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+  } -- fixes plug  }
+  use {
     "nvim-treesitter/nvim-treesitter-context",
     cond = true, -- cool but gives orror on compe-popup - https://github.com/romgrk/nvim-treesitter-context/issues/49
     config = function()
@@ -501,6 +504,7 @@ return require("packer").startup(function(use)
       vim.g.copilot_no_tab_map = true
       vim.g.copilot_assume_mapped = true
       vim.g.copilot_tab_fallback = ""
+			vim.g.copilot_filetypes = { ['dap-repl'] = false,  }
     end,
   }
   use {
@@ -634,7 +638,8 @@ return require("packer").startup(function(use)
   --find and replace ? -------------------------------------------------------------------------------------------------------
   use "kevinhwang91/nvim-bqf" --better quickfix  (with preview and complicated mapping)
   use "brooth/far.vim" --use: Far(r) from to **/*.py   > then :Fardo
-  use "dyng/ctrlsf.vim" --Run :CtrlSF [pattern]
+  -- use "dyng/ctrlsf.vim" --Run :CtrlSF [pattern]
+  use "JoseConseco/ctrlsf.vim" --Run :CtrlSF [pattern] - fixes dow \r escape
   use "mhinz/vim-grepper" -- Grepper
   use "eugen0329/vim-esearch" -- Grepper
   use { "windwp/nvim-spectre", requires = { { "nvim-lua/popup.nvim" }, { "nvim-lua/plenary.nvim" } } }
@@ -718,9 +723,9 @@ return require("packer").startup(function(use)
 			debug = false,
 		},
     config = function()
-      vim.api.nvim_set_keymap("n", "  ", ":Pounce<cr>", { noremap = true, desc = "Pounce" })
-      vim.api.nvim_set_keymap("v", "  ", "<cmd>Pounce<cr>", { noremap = true, desc = "Pounce" })
-      vim.api.nvim_set_keymap("o", "  ", "<cmd>Pounce<cr>", { noremap = true, desc = "Pounce" })
+      vim.api.nvim_set_keymap("n", "  ", ":Pounce<cr>", { noremap = true, desc = "Pounce", silent = true })
+      vim.api.nvim_set_keymap("v", "  ", "<cmd>Pounce<cr>", { noremap = true, desc = "Pounce", silent = true })
+      vim.api.nvim_set_keymap("o", "  ", "<cmd>Pounce<cr>", { noremap = true, desc = "Pounce", silent = true })
 		end
 
 	}

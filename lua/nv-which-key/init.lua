@@ -137,7 +137,7 @@ wk.register({
 	['<leader>c'] = { name = '+Code' },
 	['<leader>c.'] = {':Telescope filetypes<CR>',    'filetypes'},
 	-- ['<leader>cF'] = {':Autoformat<CR>',             'Autoformat lines'},
-	['<leader>cc'] = {':Neogen<CR>',             'Generate annotations'},
+	['<leader>cc'] = {':Neogen<CR>',             'Annotation (Neogen)'},
 	['<leader>ca'] = {':lua vim.lsp.buf.code_action()<CR>',                                    'Code Action'} ,
 	-- ['<leader>cc'] = {':TSContextToggle<CR>',             'Context toggle'}, --from treesitter-context plug
 	-- ['<leader>ca'] = {":lua require('nvim-autopairs').disable()<CR>",             'Auto-pairs disable'}, --from treesitter-context plug
