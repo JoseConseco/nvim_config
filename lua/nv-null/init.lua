@@ -5,23 +5,25 @@ require("null-ls").setup {
       filetypes = { "html", "css", "javascript", "javascriptreact", "markdown", "json", "yaml" },
     }, -- support range format
     require("null-ls").builtins.formatting.stylua.with {
+			filetypes = { "lua" },
       extra_args = { "--config-path", "/home/bartosz/.config/nvim/lua/.stylua.toml" },
     }, -- support range format
     -- require("null-ls").builtins.formatting.yapf.with({
     -- 		extra_args = { "--style","{based_on_style: pep8, column_limit: 129}" }, -- To add more arguments to a source's defaults
     -- }), -- support range format
     require("null-ls").builtins.formatting.autopep8.with {
-      -- filetypes = { "html", "json", "yaml", "markdown" },
+			filetypes = { "python" },
       -- args = {},
       extra_args = { "--max-line-length=230", "--ignore=E226,E24,W50,W690" }, -- To add more arguments to a source's defaults
     }, -- support range format
     -- require("null-ls").builtins.completion.spell,
     require("null-ls").builtins.diagnostics.misspell.with{
-			filetypes = { "html", "txt", "json", "markdown", "python"}
+			filetypes = { "html", "txt", "json", "markdown", "python", "lua"}
 		},
-		require("null-ls").builtins.diagnostics.pylint.with {
-			extra_args = { "--disable=W,C,R", "--jobs=4" },
-		},
+		-- require("null-ls").builtins.diagnostics.pylint.with { -- for jedi only
+		--     filetypes = { "python"},
+		-- 	extra_args = { "--disable=C,R,attribute-defined-outside-init", "--jobs=4" }, -- F fatal, E error, W warning, R refactor, C convention (line too long etc),
+		-- },
   },
   -- on_attach =  function(client, bufnr)
   --   local opts =   { noremap = true, silent = true }

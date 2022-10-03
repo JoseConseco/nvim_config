@@ -138,6 +138,8 @@ return require("packer").startup(function(use)
     end,
   }
 
+	-- use 'David-Kunz/markid' -- kind of cool but too much random color for all vars, fun, etc
+
   use {
     "folke/tokyonight.nvim",
     setup = function()
@@ -149,7 +151,8 @@ return require("packer").startup(function(use)
 
   -- UI -------------------------------------------------------------------------------------------------------
   use {
-    "norcalli/nvim-colorizer.lua",
+    -- "norcalli/nvim-colorizer.lua",  -- original repo - not maintained
+    "NvChad/nvim-colorizer.lua",
     config = function()
       require("colorizer").setup()
     end,
@@ -203,7 +206,7 @@ return require("packer").startup(function(use)
   } -- lua + wont close () next to char finally good and simple +++
   use {
     "nvim-lualine/lualine.nvim",
-    requires = { "kyazdani42/nvim-web-devicons" },
+    requires = { "kyazdani42/nvim-web-devicons", 'arkav/lualine-lsp-progress' },
     config = function()
       require "nv-lualine"
     end, -- lua + wont close () next to char finally good and simple +++
@@ -211,6 +214,7 @@ return require("packer").startup(function(use)
   use {
     "akinsho/nvim-bufferline.lua",
     after = "nightfox.nvim",
+		cond = false,
     requires = "kyazdani42/nvim-web-devicons",
     config = function()
       require "nv-bufferline"
@@ -296,13 +300,40 @@ return require("packer").startup(function(use)
       vim.g.scrollview_hide_on_intersect = true
     end,
   }
+  use {
+    "karb94/neoscroll.nvim", -- smooth scroll
+    config = function()
+      require("neoscroll").setup { hide_cursor = false }
+    end,
+  } -- lua + wont close () next to char finally good and simple +++
+	use { 'gen740/SmoothCursor.nvim', -- fancy pointer animation on left side
+		config = function()
+		require('smoothcursor').setup{
+			autostart = true,
+			cursor = "",
+			fancy = {
+				enable = true,       -- enable fancy mode
+				head = { cursor = "►", texthl = "LineNr", linehl = nil },
+				body = {
+					{ cursor = "", texthl = "LineNr" },
+					{ cursor = "", texthl = "LineNr" },
+					{ cursor = "●", texthl = "LineNr" },
+					{ cursor = "●", texthl = "LineNr" },
+					{ cursor = "•", texthl = "LineNr" },
+					{ cursor = ".", texthl = "LineNr" },
+					{ cursor = ".", texthl = "LineNr" },
+				},
+			}
+		}
+		end
+	}
   -- use {'machakann/vim-highlightedyank',
   --	config=function() vim.g.highlightedyank_highlight_duration = 100 end}
 
-  -- WINDOWS MANAGE  -------------------------------------------------------------------------------------------------------
+  -- WINDOWS MANAGER  -------------------------------------------------------------------------------------------------------
   use {
     "beauwilliams/focus.nvim",
-    cond = true, -- autoresize windows to gold ration - brokens with scroll
+    cond = false, -- autoresize windows to gold ration - replaced with "anuvyklack/windows.nvim"
     config = function()
       require("focus").setup {
 				enable = true,
@@ -310,12 +341,43 @@ return require("packer").startup(function(use)
 			}
     end,
   }
+	use { "anuvyklack/windows.nvim",
+		cond=true,
+		 requires = {
+				"anuvyklack/middleclass",
+				"anuvyklack/animation.nvim"
+		 },
+		 config = function()
+			vim.o.winminwidth = 5
+			vim.o.winwidth = 15
+			vim.o.equalalways = false
+			require('windows').setup({
+				autowidth = {
+					winwidth = 0.62,
+				},
+				animation = {
+					duration = 200, -- ms
+			  }
+
+			})
+		 end
+	}
   use {
     "https://gitlab.com/yorickpeterse/nvim-window.git", -- pick window quickly
     config = function()
       vim.api.nvim_set_keymap("n", "<c-w>w", ":lua require('nvim-window').pick()<CR>", { noremap = true, silent = true })
     end,
   }
+	use {
+		'sindrets/winshift.nvim',
+		config = function()
+			require("winshift").setup({
+				keymaps = {
+					disable_defaults = true,
+				}
+			})
+		end,
+	}
 
   -- DEBUGGING  -------------------------------------------------------------------------------------------------------
   use {
@@ -374,6 +436,7 @@ return require("packer").startup(function(use)
         -- experimental features:
         virt_text_pos = "right_align", -- position of virtual text, see :h nvim_buf_set_extmark() - 'right_align', 'eol', 'overlay'
         all_frames = false, -- show virtual text for all stack frames not only current. Only works for debugpy on my machine.
+				all_references = true, -- show virtual text for all references not only current. Only works for debugpy on my machine.
         virt_lines = false, -- show virtual lines instead of virtual text (will flicker!)
         virt_text_win_col = 85, -- position the virtual text at a fixed window column (starting from the first text column) ,
         -- e.g. 80 to position at column 80 see :h nvim_buf_set_extmark()
@@ -425,10 +488,10 @@ return require("packer").startup(function(use)
     end,
   }
   use {
-    "mfussenegger/nvim-ts-hint-textobject",
+    "mfussenegger/nvim-treehopper",
     config = function()
-      vim.api.nvim_set_keymap("o", "u", ":<C-U>lua require('tsht').nodes()<CR>", { noremap = false, silent = true })
-      vim.api.nvim_set_keymap("v", "u", ":lua require('tsht').nodes()<CR>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap("o", "u", ":<C-U>lua require('tsht').nodes()<CR>", { noremap = false, silent = true , desc='TSNode (nvim-treehopper' })
+      vim.api.nvim_set_keymap("v", "u", ":lua require('tsht').nodes()<CR>", { noremap = true, silent = true, desc='TSNode (nvim-treehopper' })
     end,
   }
   use {
@@ -455,21 +518,14 @@ return require("packer").startup(function(use)
   -- lsp -------------------------------------------------------------------------------------------------------
   use "onsails/lspkind-nvim" -- icons for completion popup
   use {
-    "rmagatti/goto-preview", -- eg show preview directly in editable popup
-    disable = true,
-    config = function()
-      require("goto-preview").setup { default_mappings = true }
-    end,
-  }
-  use {
     "neovim/nvim-lspconfig",
     config = function()
       require "lsp"
     end,
   } -- lua + wont close () next to char finally good and simple +++
+	use { "williamboman/mason.nvim" }
   use {
     "SirVer/ultisnips",
-    disable = false, --  requires='honza/vim-snippets'
     config = function()
       vim.g.UltiSnipsRemoveSelectModeMappings = 0
       vim.cmd [[autocmd BufWritePost *.snippets :CmpUltisnipsReloadSnippets]]
@@ -533,6 +589,7 @@ return require("packer").startup(function(use)
   -- use { "tzachar/cmp-fuzzy-buffer", requires = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" } }
   use {
     "tzachar/cmp-tabnine",
+		cond = false,
     requires = "hrsh7th/nvim-cmp",
     run = "./install.sh",
     disable = false,
@@ -585,9 +642,22 @@ return require("packer").startup(function(use)
   use {
     "tpope/vim-fugitive", -- add :Gitxx commands
   }
-  use {
-    "tpope/vim-surround",
-  }
+  -- use {
+  --   "tpope/vim-surround",
+  -- }
+	use({
+			"kylechui/nvim-surround",
+			config = function()
+					require("nvim-surround").setup({
+						keymaps = { -- vim-surround style keymaps
+										-- insert = "ys",
+										visual = "S",
+										delete = "ds",
+										change = "cs",
+								},
+					})
+			end
+	})
   use {
     "tpope/vim-repeat",
   }
@@ -600,22 +670,32 @@ return require("packer").startup(function(use)
   } -- lua + wont close () next to char finally good and simple +++
   use {
     "sindrets/diffview.nvim",
+		after="nightfox.nvim",
     config = function()
-      require("diffview").setup {}
+      require("diffview").setup {
+				enhanced_diff_hl = true,
+			}
     end,
   }
 
   -- general  -------------------------------------------------------------------------------------------------------
   use {
     "folke/which-key.nvim",
-    branch = "pr/278",
+    -- branch = "pr/278", -- visual multi fix
     after = "plenary.nvim",
     config = function()
       require "nv-which-key"
     end,
   }
+	use {
+		'anuvyklack/hydra.nvim',
+		requires = 'anuvyklack/keymap-layer.nvim', -- needed only for pink hydras
+		config = function()
+			require "nv-hydra"
+		end
+	}
   use {
-    "folke/todo-comments.nvim",
+		"folke/todo-comments.nvim", -- orignal
     config = function()
       require "nv-todo"
     end,
@@ -636,10 +716,28 @@ return require("packer").startup(function(use)
   }
 
   --find and replace ? -------------------------------------------------------------------------------------------------------
-  use "kevinhwang91/nvim-bqf" --better quickfix  (with preview and complicated mapping)
+  use {"kevinhwang91/nvim-bqf", --better quickfix  (with preview and complicated mapping)
+		config = function()
+			require('bqf').setup({
+				auto_enable = true,
+				auto_resize_height = true, -- highly recommended enable
+				preview = {  -- stefandtw/quickfix-reflector.vim breaks this
+						auto_preview = false,
+				},
+
+
+		})
+		end,
+	}
+	use 'stefandtw/quickfix-reflector.vim' -- edit quickfix list as text - :w to save to multi files
+	-- use 'gabrielpoca/replacer.nvim'   -- edit quick fis list - in lua
   use "brooth/far.vim" --use: Far(r) from to **/*.py   > then :Fardo
-  -- use "dyng/ctrlsf.vim" --Run :CtrlSF [pattern]
-  use "JoseConseco/ctrlsf.vim" --Run :CtrlSF [pattern] - fixes dow \r escape
+  use "dyng/ctrlsf.vim" --Run :CtrlSF [pattern]
+	--  use {"JoseConseco/ctrlsf.vim", --Run :CtrlSF [pattern] - fixes dow \r escape
+	-- 	-- config = function()
+	-- 	-- 	-- vim.g.ctrlsf_debug_mode=1
+	-- 	-- end,
+	-- }
   use "mhinz/vim-grepper" -- Grepper
   use "eugen0329/vim-esearch" -- Grepper
   use { "windwp/nvim-spectre", requires = { { "nvim-lua/popup.nvim" }, { "nvim-lua/plenary.nvim" } } }
@@ -656,10 +754,31 @@ return require("packer").startup(function(use)
   use "mg979/vim-localhistory" -- local history LHLoad, LHWrite
 
   --CODE/FORMAT -------------------------------------------------------------------------------------------------------
-  use "wellle/targets.vim" -- eg ci,  ci_ etc
+  use "wellle/targets.vim" -- eg ci,  ci_ etc replaced by mini.ai
+	-- use({ -- select indent lua
+	-- 	"arsham/indent-tools.nvim",
+	-- 	requires = { "arsham/arshlib.nvim" },
+	-- 	config = function() require("indent-tools").config({}) end,
+	-- })
+  use {
+    "urxvtcd/vim-indent-object",
+    setup = function()
+
+			local modes = { "x", "o" }
+			for _, mode in ipairs(modes) do
+				vim.api.nvim_set_keymap(mode, "ii", "<Plug>(indent-object_linewise-none)", { noremap = true })
+				vim.api.nvim_set_keymap(mode, "ai", "<Plug>(indent-object_linewise-start)", { noremap = true })
+				vim.api.nvim_set_keymap(mode, "iI", "<Plug>(indent-object_linewise-end)", { noremap = true })
+				vim.api.nvim_set_keymap(mode, "aI", "<Plug>(indent-object_linewise-both)", { noremap = true })
+        -- one way expand
+				vim.api.nvim_set_keymap(mode, "ik", "<Plug>(indent-object_linewise-none-keep-end)", { noremap = true })
+				vim.api.nvim_set_keymap(mode, "ij", "<Plug>(indent-object_linewise-none-keep-start)", { noremap = true })
+			end
+    end,
+  }
   use {
     "andymass/vim-matchup",
-    disable = true, -- increase power of % - slow as hell (not any more?) higlights fun, if etc. ranges
+    disable = false, -- increase power of % - slow as hell (not any more?) higlights fun, if etc. ranges
     setup = function()
       vim.g.matchup_matchparen_deferred = 1
     end,
@@ -692,6 +811,30 @@ return require("packer").startup(function(use)
       vim.g.VM_mouse_mappings = 1
     end,
   }
+	use { 'otavioschwanck/cool-substitute.nvim',
+		disable = true,
+		config = function()
+			require'cool-substitute'.setup({
+				setup_keybindings = true,
+			-- mappings = {
+			--   start = 'gm', -- Mark word / region
+			--   start_and_edit = 'gM', -- Mark word / region and also edit
+			--   start_and_edit_word = 'g!M', -- Mark word / region and also edit.  Edit only full word.
+			--   start_word = 'g!m', -- Mark word / region. Edit only full word
+			--   apply_substitute_and_next = 'M', -- Start substitution / Go to next substitution
+			--   apply_substitute_and_prev = '<C-b>', -- same as M but backwards
+			--   apply_substitute_all = 'ga', -- Substitute all
+			--   force_terminate_substitute = 'g!!' -- Terminate macro (if some bug happens)
+			-- },
+			-- reg_char = 'o', -- letter to save macro (Dont use number or uppercase here)
+			-- mark_char = 't', -- mark the position at start of macro
+			-- writing_substitution_color = "#ECBE7B", -- for status line
+			-- applying_substitution_color = "#98be65", -- for status line
+			-- edit_word_when_starting_with_substitute_key = true (press M to mark and edit when not executing anything anything)
+			})
+		end,
+	}
+
   use {
     "echasnovski/mini.nvim",
     config = function()
@@ -731,38 +874,27 @@ return require("packer").startup(function(use)
 	}
   use {
     "phaazon/hop.nvim",
+		-- branch = "fix-pending-operation-col-increment",
     config = function()
       require("hop").setup {}
       vim.api.nvim_set_keymap("o", "h", ":HopChar1<cr>", { noremap = true })
       -- vim.api.nvim_set_keymap("n", "  ", ":HopWord<cr>", { noremap = true })
       -- vim.api.nvim_set_keymap("v", "  ", "<cmd>HopWord<cr>", { noremap = true })
       vim.api.nvim_set_keymap("n", "gl", ":HopLineStart<cr>", { noremap = true })
-      vim.api.nvim_set_keymap("n", "gw", ":HopWord<cr>", { noremap = true })
+      -- vim.api.nvim_set_keymap("n", "gw", ":HopWord<cr>", { noremap = true })
       vim.api.nvim_set_keymap("v", "gl", "<cmd>HopLineStart<cr>", { noremap = true })
-      vim.api.nvim_set_keymap("v", "gw", "<cmd>HopWord<cr>", { noremap = true })
+      -- vim.api.nvim_set_keymap("v", "gw", "<cmd>HopWord<cr>", { noremap = true })
 
-      vim.api.nvim_set_keymap("n", "f", "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = true, inclusive_jump = true })<cr>", {})
-      vim.api.nvim_set_keymap("n", "F", "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true, inclusive_jump = true })<cr>", {})
-      vim.api.nvim_set_keymap("n", "t", "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = true })<cr>", {})
-      vim.api.nvim_set_keymap("n", "T", "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true })<cr>", {})
+			local modes = { "n", "v", "o" }
+			for _, mode in ipairs(modes) do
+				vim.api.nvim_set_keymap(mode, "f", "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = true, hint_offset=0})<cr>", {})
+				vim.api.nvim_set_keymap(mode, "F", "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true, hint_offset=0})<cr>", {})
+				vim.api.nvim_set_keymap(mode, "t", "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = true, hint_offset = -1 })<cr>", {})
+				vim.api.nvim_set_keymap(mode, "T", "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true, hint_offset = 1 })<cr>", {})
+			end
 
-      vim.api.nvim_set_keymap("v", "f", "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = true, inclusive_jump = true })<cr>", {})
-      vim.api.nvim_set_keymap("v", "F", "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true, inclusive_jump = true })<cr>", {})
-      vim.api.nvim_set_keymap("v", "t", "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = true })<cr>", {})
-      vim.api.nvim_set_keymap("v", "T", "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true })<cr>", {})
-
-      vim.api.nvim_set_keymap("o", "f", "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = true, inclusive_jump = true })<cr>", {})
-      vim.api.nvim_set_keymap("o", "F", "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true, inclusive_jump = true })<cr>", {})
-      vim.api.nvim_set_keymap("o", "t", "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = true })<cr>", {})
-      vim.api.nvim_set_keymap("o", "T", "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true })<cr>", {})
     end,
   }
-  use {
-    "karb94/neoscroll.nvim", -- smooth scroll
-    config = function()
-      require("neoscroll").setup { hide_cursor = false }
-    end,
-  } -- lua + wont close () next to char finally good and simple +++
   use {
     "nacro90/numb.nvim",
     config = function()
@@ -819,6 +951,10 @@ return require("packer").startup(function(use)
 
 
   ---  TOOLS -------------------------------------------------------------------------------------------------------
+	use {
+		  'AckslD/messages.nvim',  -- :Messages messages
+		  config = 'require("messages").setup()',
+	}
   use "rcarriga/nvim-notify"
   use {
     "SmiteshP/nvim-gps", -- bread_crumbs

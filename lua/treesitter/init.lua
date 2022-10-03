@@ -58,6 +58,7 @@ ts_config.setup {
     enable = true, -- mandatory, false will disable the whole extension
     disable = { "ruby" }, -- optional, list of language that will be disabled
   },
+	-- markid = { enable = true }, -- for		use 'David-Kunz/markid'
   textobjects = { -- uses 'nvim-treesitter/nvim-treesitter-refactor'
 		select = {
 			enable = false,

@@ -90,7 +90,7 @@ local function get_argument(word_type)
 		o_switch = true
 	end
   repeat
-    vim.api.nvim_call_function("search", { [==[\v[\[({\,].{-}]==], "b", cur_line }) --  c-include cursor char when search, b- backward
+    vim.api.nvim_call_function("search", { [==[\v[\[(\{\,].{-}]==], "b", cur_line }) --  c-include cursor char when search, b- backward
     local l_hit_col = vim.api.nvim_win_get_cursor(0)[2]
     l_hit_char = line_text:sub(l_hit_col+1, l_hit_col+1) -- get char after cursor
 		-- print(l_hit_char)
@@ -119,7 +119,7 @@ local function get_argument(word_type)
   -- search right
   local r_hit_char
   repeat
-    vim.api.nvim_call_function("search", { [==[\v.{-}[\])}\,]]==], "e", cur_line }) -- e - move cursor to last matched char
+    vim.api.nvim_call_function("search", { [==[\v.{-}[\])\}\,]]==], "e", cur_line }) -- e - move cursor to last matched char
     local r_hit_col = vim.api.nvim_win_get_cursor(0)[2]
     r_hit_char = line_text:sub(r_hit_col+1, r_hit_col+1) -- get char after cursor
 		-- print(r_hit_char)

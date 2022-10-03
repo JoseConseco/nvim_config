@@ -1,4 +1,4 @@
-vim.api.nvim_set_keymap('n', '<F3>', ':AerialOpen float<CR> | :AerialTreeCloseAll<cr>', { noremap = true})
+-- vim.api.nvim_set_keymap('n', '<F3>', ':AerialOpen float<CR> | :AerialTreeCloseAll<cr>', { noremap = true})
 
 -- Call the setup function to change the default behavior
 require("aerial").setup({
@@ -12,7 +12,8 @@ require("aerial").setup({
   --   auto    - aerial window will stay open as long as there is a visible
   --             buffer to attach to
   --   global  - same as 'persist', and will always show symbols for the current buffer
-  close_behavior = "auto",
+  -- close_behavior = "auto",
+	close_automatic_events = { "unsupported" }, -- see :help aerial-close-behavior
 
   -- Set to false to remove the default keybindings for the aerial buffer
   default_bindings = true,

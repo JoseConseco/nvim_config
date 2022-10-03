@@ -5,7 +5,7 @@ require "plugins"
 require "hl_manager"
 require "settings"
 require "keymappings"
-require "my_text_objects"
+require "my_text_objects" -- repalced with mini.ai ...
 
 local init_group = vim.api.nvim_create_augroup("MyInitAuGroup", { clear = true })
 
@@ -16,12 +16,12 @@ local function theme_change_timeday(start_hour, end_hour)
   if time < start_hour or time > end_hour then
 		if current_theme ~= "nightfox" then
 			-- print("Changing theme to nightfox")
-			vim.cmd [[colorscheme nightfox]]
+			vim.cmd.colorscheme('nightfox')
 		end
   else
 		if current_theme ~= "dayfox" then
 			-- print("Changing theme to dayfox")
-			vim.cmd [[colorscheme dayfox]]
+			vim.cmd.colorscheme('dayfox')
 		end
   end
   vim.cmd [[doautoall ColorScheme]]
@@ -30,7 +30,7 @@ end
 vim.api.nvim_create_autocmd({"VimEnter","FocusLost"}, { --FocusGained
   pattern = "*",
   callback = function()
-    theme_change_timeday(9, 15)
+    theme_change_timeday(9, 14)
   end,
   group = init_group,
   -- nested = true, -- dow notwork in this case
@@ -41,6 +41,19 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = "*",
   command = [[let save_pos = getpos(".") | %s/\s\+$//e | call setpos(".", save_pos)]],
   group = init_group,
+})
+
+local cursor_group = vim.api.nvim_create_augroup("MyCursorHideInactive", { clear = true })
+
+vim.api.nvim_create_autocmd({"VimEnter","WinEnter","BufWinEnter"}, {
+  pattern = "*",
+  callback = function() vim.o.cursorline = true end,
+  group = cursor_group,
+})
+vim.api.nvim_create_autocmd("WinLeave", {
+  pattern = "*",
+  callback = function() vim.o.cursorline = false end,
+  group = cursor_group,
 })
 
 
@@ -101,21 +114,3 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- 	  autocmd CmdlineLeave * call SetShortmessF(0)
 -- 	augroup END
 -- ]]
-
--- TabMessage messages - will put output of :messages into buffer
-vim.cmd[[
- function! MessagesBuffer(cmd)
-  redir => message
-  silent execute a:cmd
-  redir END
-  if empty(message)
-    echoerr "no output"
-  else
-    new
-    setlocal buftype=nofile bufhidden=wipe noswapfile nobuflisted nomodified
-    silent put=message
-  endif
-endfunction
-
-command! -nargs=+ -complete=command MessagesInBuffer call MessagesBuffer(<q-args>)
-]]

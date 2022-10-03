@@ -2,26 +2,28 @@
 -- vim.bo -- Get or set buffer-scoped |local-options|
 -- vim.wo -- Get or set window-scoped local options (:set)
 
-vim.cmd('set iskeyword+=-') -- treat dash separated words as a word text object"
+vim.opt.iskeyword:append('-') -- treat dash separated words as a word text object"
 --vim.cmd('set shortmess+=c') -- Don't pass messages to |ins-completion-menu|.
 -- vim.opt.hidden = true -- Required to keep multiple buffers open multiple buffers- defaut true since ver 6.0
 vim.wo.wrap = false -- Display long lines as just one line
 vim.opt.listchars=""   -- hide listchars -> whitespaces chars
-vim.cmd([[setlocal nolist]]) -- wont work
+vim.cmd.setlocal('nolist') -- wont work
 
-vim.cmd('set whichwrap+=<,>,[,],h,l') -- move to next line with theses keys
-vim.cmd('set noswapfile') -- move to next line with theses keys
+-- vim.cmd('set whichwrap+=<,>,[,],h,l') -- move to next line with theses keys
+vim.opt.whichwrap:append("<,>,[,],h,l") -- move to next line with theses keys
+vim.cmd.set('noswapfile') -- move to next line with theses keys
 -- vim.cmd("set diffopt+=iwhite") --avoid comparing whitespaces  - but breaks diff obtain?
 vim.opt.pumheight = 10 -- Makes popup menu smaller
 vim.opt.fileencoding = "utf-8" -- The encoding written to file
+vim.g.mapleader = " " -- The key used to prefix mappings
 
 -- XXX: not sure why this is needed
 -- vim.api.nvim_create_autocmd("SessionLoadPost", {
 -- 	pattern = "*",
 -- 	command = "set cmdheight=0",
 -- })
-vim.opt.cmdheight = 1 -- More space for displaying messages
-vim.opt.mouse = "a" -- Enable your mouse
+vim.opt.cmdheight = 0 -- More space for displaying messages
+-- vim.opt.mouse = "a" -- Enable your mouse
 vim.opt.linespace = 0 -- spacing between lines
 vim.opt.splitbelow = true -- Horizontal splits will automatically be below
 vim.opt.termguicolors = true -- set term giu colors most terminals support this
@@ -56,19 +58,24 @@ vim.opt.timeoutlen = 500 -- By default timeoutlen is 1000 ms
 vim.opt.clipboard = "unnamedplus" -- Copy paste between vim and everything else
 vim.opt.virtualedit='all'      -- makes cursor not jump,
 
-vim.opt.winwidth=60
-vim.opt.winminwidth=50
+vim.opt.winwidth=20
+vim.opt.winminwidth=20
+-- vim.g.sessionoptions = "blank,buffers,curdir"
+-- vim.o.sessionoptions = "blank,buffers,curdir"
 
 vim.opt.paste = false --? format pasted str - does it work? seems broken right now.. - breaks telescope
 
 -- vim.opt.fileformats = 'unix' -- read and write files as unix
 
--- vim.o.guifont = "JetBrainsMonoNL Nerd Font Mono, Medium:h8"     -- icons ok, but ugly
-vim.o.guifont = "Source Code Pro:h9"  -- icons missng
--- vim.o.guifont = "FiraCode Nerd Font:h11"   --acutally OK
--- vim.o.guifont = "NotoSansMono Nerd Font Medium:h12" -- missing icons
-vim.g.neovide_refresh_rate = 30
-vim.g.neovide_transparency=1.0
+if vim.g.neovide then -- does not workk...
+
+	-- vim.o.guifont = "JetBrainsMonoNL Nerd Font Mono, Medium:h8"     -- icons ok, but ugly
+	vim.o.guifont = "Source Code Pro:h9"  -- also ok
+	-- vim.o.guifont = "FiraCode Nerd Font Medium:h9"   -- asd
+	-- vim.o.guifont = "NotoSansMono Nerd Font Medium:h9" -- missing icons
+	vim.g.neovide_refresh_rate = 30
+	vim.g.neovide_transparency=1.0
+end
 
 
 function _G.custom_fold_text()
@@ -80,18 +87,15 @@ function _G.custom_fold_text()
 end
 
 vim.opt.foldtext = 'v:lua.custom_fold_text()'
+vim.opt.fillchars = { diff = "/"}
 -- vim.opt.fillchars = { eob = "-", fold = "=" }
 vim.opt.foldminlines = 1  -- fold only if more than 2 lines in code block
 vim.opt.foldnestmax = 4  -- create max 4 folds (avoids too many fold levels)
 vim.opt.foldopen:append({'jump', 'insert'})  -- default: "block,hor,mark,percent,quickfix, search,tag,undo"
 
 vim.opt.laststatus = 3 -- show line and column number
-
--- local file_changed = '[-]'
--- if vim.api.nvim_eval('&mod') == 1 then
--- 	file_changed = '[+] '
--- end
-vim.opt.winbar = "%m  [%t]"
+-- vim.opt.winbar = "%m  [%t]"
+vim.opt.spelloptions:append("camel") -- spell check camel case words
 
 
 

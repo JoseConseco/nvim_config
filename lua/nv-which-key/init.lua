@@ -45,6 +45,14 @@ function _G.CmdInput(cmd)
 	vim.cmd( full_cmd)
 end
 
+local function search_unfolded()
+	-- skip folded lines (wont work with nN remaps and hlslens)
+	vim.opt.foldopen:remove('search')  -- default: "block,hor,mark,percent,quickfix, search,tag,undo"
+	local search = vim.fn.input('Search: ')
+	vim.cmd("/"..search)
+	-- vim.opt.foldopen:append('search')  -- default: "block,hor,mark,percent,quickfix, search,tag,undo"
+
+end
 -- Hide status line
 -- autocmd! FileType which_key
 -- autocmd  FileType which_key set laststatus=0 noshowmode noruler
@@ -56,6 +64,7 @@ wk.register({
 	['<leader>*'] = { ":lua require'telescope.builtin'.grep_string({path_display = {'shorten'},word_match = '-w', only_sort_text = true, initial_mode = 'normal', })<CR>",       'Find * Project' },
 	['<leader>/'] = {":lua require'telescope.builtin'.live_grep{path_display = {'tail'}, word_match = '-w', only_sort_text = true, search = '' }<CR>",                           'Search Project'}     ,
 	['<leader>?'] = {':Grepper -cword  -noprompt -tool ag<cr>',                                             'Word to clist (Grepper)'},
+	-- ['<leader>?'] = { search_unfolded,                                             'Word to clist (Grepper)'},
 	['<leader><lt>'] = {':Telescope buffers<CR>',                                      'Switch Buffer' },
 	['<leader>p'] = 'which_key_ignore',
 	['<leader>1'] = 'which_key_ignore',
@@ -83,7 +92,7 @@ wk.register({  --ignore magic s and g in cmd mode
 -- wk.register('which_key_ignore'
 -- wk.register('which_key_ignore'
 
-function _G.compare_to_clipboard()
+local function compare_to_clipboard()
 	local ftype = vim.api.nvim_eval("&filetype")
 	vim.cmd(string.format([[
     vsplit
@@ -108,17 +117,29 @@ local function pick_filetype()
 	)
 end
 
+local showDocumentSymbols = function ()
+    local opts= {
+        symbols = {
+            "class",
+            "function",
+            -- "method",
+        }
+    }
+    require('telescope.builtin').lsp_document_symbols(opts)
+end
 wk.register({
 	['<leader>b'] = { name = '+Buffers' },
 	['<leader>b/'] = {":lua require('telescope.builtin').current_buffer_fuzzy_find({ sorter = require('telescope.sorters').get_substr_matcher({})})<CR>", 'Search'},
 	['<leader>b?'] = {':Telescope current_buffer_fuzzy_find<CR>',                                                                                         'Search fuzzy'},
+	['<leader>bs'] = {showDocumentSymbols,             'Tele Buffer Symbols'},
 	['<leader>b<'] = {':Telescope buffers<CR>',                                                                                                           'Get buffer' } ,
 	['<leader>bb'] = {'<c-^>',                                                                                                                            'Cycle with Previous'},
 	-- ['<leader>bn'] = {':enew<CR>',                                                                                                                        'New'},
 	['<leader>bn'] = { pick_filetype,                                                                                                                        'New'},
 	['<leader>b]'] = {':BufferLineCycleNext<CR>',                                                                                                         'Next'},
 	['<leader>b['] = {':BufferLineCyclePrev<CR>',                                                                                                         'Previous'},
-	['<leader>bc'] = {':confirm bd<CR>',                                                                                                                  'Close'},   -- fixes error on buffer close
+	-- ['<leader>bc'] = {':confirm bd<CR>',                                                                                                                  'Close'},   -- fixes error on buffer close
+	['<leader>bc'] = {':lua MiniBufremove.delete()<CR>',                                                                                                  'Close'},   -- wont change layout From mini plug
 	['<leader>bo'] = {':%bd|e#|bd#<CR>',                                                                                                                  'Close all but current'},
 	['<leader>bp'] = {':BufferLinePick<CR>',                                                                                                              'Pick (gb)'},
 	['<leader>br'] = {':confirm e<CR>',                                                                                                                   'Reload File(e!)'},
@@ -133,6 +154,7 @@ wk.register({
 --		['d'] = {':CD',    'Local Changes Diff'},
 --		['f'] = {':CF',    'Fold non-changed lines'},
 --		},
+
 wk.register({
 	['<leader>c'] = { name = '+Code' },
 	['<leader>c.'] = {':Telescope filetypes<CR>',    'filetypes'},
@@ -143,6 +165,7 @@ wk.register({
 	-- ['<leader>ca'] = {":lua require('nvim-autopairs').disable()<CR>",             'Auto-pairs disable'}, --from treesitter-context plug
 	-- ['<leader>cA'] = {":lua require('nvim-autopairs').enable()<CR>",             'Auto-pairs enable'}, --from treesitter-context plug
 	['<leader>cl'] = {":CreateCompletionLine<CR>",             'Create Completion'}, --from treesitter-context plug
+	['<leader>co'] = {":AerialOpen float<CR> | :AerialTreeCloseAll<cr>",             'Open Outliner'}, --from treesitter-context plug
 
 	['<leader>cs'] = { name = '+Spell' },
 	['<leader>css'] = {':setlocal spell! spelllang=en_us<CR>', 'Toggle Spellcheck'},
@@ -168,15 +191,16 @@ wk.register({
 
 wk.register({
 	['<leader>D'] = { name = '+Diff' },
-	['<leader>Dc'] = {':call v:lua.compare_to_clipboard()<CR>', 'Compare to clipboard'},   -- fixes error on buffer close
-	['<leader>D['] =  { '[c<CR>',                               'Prev change [c'},
-	['<leader>D]'] =  { ']c<CR>',                               'Next change ]c'},
-	['<leader>Do'] =  { ':diffget<CR>',                         'Obtain(do)'},
-	['<leader>Dp'] =  { ':diffput<CR>',                         'Put(dp)'},
-	['<leader>Dt'] =  { ':diffthis',                            'Diff This'},
-	['<leader>Du'] =  { ':diffupdate',                          'Update changes'},
-	['<leader>Dv'] =  { ':DiffviewOpen',                        'Diffview Open'},
-	['<leader>Dw'] =  { ':windo diffthis<cr>',                  'Diff visible windows'}, --broken from scrollbar
+	['<leader>Dc'] = {  compare_to_clipboard,     'Compare to clipboard'},   -- fixes error on buffer close
+	['<leader>D['] =  { '[c<CR>',                                   'Prev change [c'},
+	['<leader>D]'] =  { ']c<CR>',                                   'Next change ]c'},
+	['<leader>Do'] =  { ':diffget<CR>',                             'Obtain(do)'},
+	['<leader>Dp'] =  { ':diffput<CR>',                             'Put(dp)'},
+	['<leader>Dt'] =  { ':diffthis<CR>',                            'Diff This'},
+	['<leader>Du'] =  { ':diffupdate<CR>',                          'Update changes'},
+	['<leader>Dd'] =  { ':DiffviewOpen<CR>',                        'Diffview Open'},
+	['<leader>Dh'] =  { ':DiffviewFileHistory %<CR>',               'Diffview File History'},
+	['<leader>Dw'] =  { ':windo diffthis<cr>',                      'Diff visible windows'}, --broken from scrollbar
 })
 
 
@@ -187,7 +211,12 @@ wk.register({
 	['<leader>dX']  = { ":lua require'dap'.close()<CR>",                                                'Close'} ,
 	['<leader>dU']  = { ":lua require'dap'.up()<CR>",                                                   'Stack Up'} ,
 	['<leader>dD']  = { ":lua require'dap'.down()<CR>",                                                 'Stack Down'} ,
-	['<leader>da']  = { ":lua require'dap'.set_breakpoint() require'dap'.run({type='python', request='attach', host='127.0.0.1', port=5678})<CR>",    'Attach (localhost, 5678)'} ,
+	['<leader>da']  = {
+		function()
+			require'dap'.set_breakpoint()
+			require'dap'.run({type='python', request='attach', host='127.0.0.1', port=5678})
+			require'hydra'.spawn('dap-hydra')
+		end,    'Attach (localhost, 5678)'} ,
 	-- ['<leader>da']  = { ":lua require'dap'.attach('0.0.0.0', 5678)<CR>",                                'Attach (localhost, 5678)'} ,
 	['<leader>dl']  = { ":lua require'dap'.run_last()<CR>",                                             'Re-run Last'},
 	['<leader>db']  = { ":lua lua require'dap'.toggle_breakpoint()<CR>",                                    'Toggle breakpoint'},
@@ -259,6 +288,14 @@ wk.register({
 })
 
 wk.register({
+	['<leader>j'] = { name = '+Jump' },
+	['<leader>ju'] = {':lua require("tsht").move({ side = "start" })<cr>',   'Jump Node'} , -- (nvim-treehopper' })
+	['<leader>jl'] = {':HopLineStart<cr>',                                   'HopLineStart'},
+	['<leader>jc'] = {':HopChar1<cr>',                    'HopChar1'},
+	['<leader>jw'] = {':HopWord<cr>',                    'HopWord'},
+})
+
+wk.register({
 	['<leader>l'] = { name = '+LSP' },
 	['<leader>lD'] = {':lua vim.lsp.buf.declaration()<CR>',                                    'Declaration (gD)'},
 	-- ['<leader>ld'] = {':lua vim.lsp.buf.definition()<CR>',                                     'Definition (gd)'},
@@ -304,7 +341,7 @@ function _G.conditional_width()
 	if wwidth > 10 then
 		vim.cmd(':set winwidth=1') -- disable
 	else
-		vim.cmd(':set winwidth=92')
+		vim.cmd(':set winwidth=90')
 	end
 end
 -- below is required or else which key wont work !!
@@ -341,7 +378,7 @@ wk.register({
 	['<leader>spf'] = {':Farr<CR>',                                 'File Farr'},
 	['<leader>spe'] = {'<plug>(operator-esearch-prefill)<CR>',      'Esearch'},   -- seems to be maintained
 	['<leader>spc'] = {'<Plug>CtrlSFPrompt -R {regex} -G *.py',     'CtrlSF'},
-	['<leader>spw'] = {'<Plug>CtrlSFCCwordPath<CR>',                'CtrlSF Word'},
+	['<leader>sp*'] = {'<Plug>CtrlSFCCwordPath<CR>',                'CtrlSF Word'},
 	['<leader>sps'] = {":lua require('spectre').open()<CR>",        'Spectre'},
 	-- ['<leader>r*'] = {":let @/=expand('<cword>')<cr>cgn",        'Replace word with yank'},
 	-- ['<leader>s*'] = {":.,$s/\\<<C-r><C-w>\\>/<C-r>+/gc|1,''-&&<CR>",  'Replace word with yank', mode='n'},       -- \<word\>  -adds whitespace  word limit (sub only whole words)
@@ -358,16 +395,21 @@ local function t(str)
 end
 
 wk.register({  -- second one for visual mode
-	['<leader>s'] = { name = '+Replace'},
-	-- ['<leader>s*'] = {"\"ay:.,$s/<C-r>a/<C-r>+/gc|1,''-&&<CR>",					 'Replace word with yank'},    -- \<word\>  -adds whitespace  word limit (sub only whole words)
-	-- ['<leader>s/'] = {[["ay<esc>:lua require('searchbox').replace({confirm = 'menu'})<CR><C-r>=getreg('a')<CR>]], 'Find and Replace word'},       -- write to reg z (@a) then use it for replacign * word
-	-- ['<leader>s*'] = {[["ay<esc>:lua require('searchbox').replace({confirm='menu'})<CR><C-r>=getreg('a')<CR><CR>:sl m<CR><C-r>=getreg('a')<CR>]], 'Replace word'},       -- write to reg z (@a) then use it for replacign * word
-	-- ['<leader>s/'] = {
-	-- function()
-	-- 	vim.cmd("normal! \"ay")
-	-- 	local name = vim.fn.input('To: ', vim.fn.getreg('a'))
-	-- 	vim.cmd(":.,$s/"..vim.fn.getreg('a').."/"..name.."/gc|1,''-&&")
-	-- end ,		                                                            			 'Replace word'},    -- \<word\>  -adds whitespace  word limit (sub only whole words)
+	['<leader>sp'] = { name = '+Project'},
+	['<leader>spc'] = {'<Plug>CtrlSFPrompt -R {regex} -G *.py',     'CtrlSF'},
+	['<leader>sp*'] = {'<Plug>CtrlSFVwordPath<CR>',                 'CtrlSF Word'},
+	['<leader>sp/'] = {"\"ay:lua require('spectre').open()<cr>\"aPa",        'Spectre'},
+}, {mode = "v", prefix = ""})
+
+wk.register({  -- second one for visual mode
+	['<leader>s'] = { name = '+Substitute'},
+	['<leader>s*'] = {"\"ay:.,$s/<C-r>a/<C-r>+/gc|1,''-&&<CR>",					 'Replace word with yank'},    -- \<word\>  -adds whitespace  word limit (sub only whole words)
+	['<leader>s/'] = {
+	function()
+		vim.cmd("normal! \"ay")
+		local name = vim.fn.input('To: ', vim.fn.getreg('a'))
+		vim.cmd(":.,$s/"..vim.fn.getreg('a').."/"..name.."/gc|1,''-&&")
+	end ,		                                                            			 'Replace word'},    -- \<word\>  -adds whitespace  word limit (sub only whole words)
 }, {mode = "v", prefix = ""})
 
 -- MiniSessions.write(nil, {force = true})
@@ -438,9 +480,11 @@ wk.register({
 	['<leader>wO'] = {':only<CR>',                                      'Close All other splits(o)'},
 	['<leader>wo'] = {'<C-w>o<CR>',                                     'Close All but current(o)'},
 	['<leader>ww'] = {':call v:lua.CmdInput(":set winwidth=")<CR>',     'Set width'},
-	['<leader>wm'] = {':call v:lua.CmdInput(":set winminwidth=")<CR>',  'Set min width'},
+	-- ['<leader>wm'] = {':call v:lua.CmdInput(":set winminwidth=")<CR>',  'Set min width'},
+	-- ['<leader>wm'] = {':WindowsMaximize<CR>',  'Maximize'},  -- anuvyklack/windows.nvim  plug
 	['<leader>wa'] = {':call v:lua.conditional_width()<CR>',            'Auto width'},
 })
+
 
 
 -- TSContextDisable - if srm treesitter-context
@@ -455,8 +499,16 @@ wk.register({  -- second one for visual mode
 	['<leader>qq'] = {':<ESC>|:TSContextDisable<cr>|:call v:lua.Save_current_session()<CR>|:confirm qa<CR>',        'Quit Confirm (qa)'},
 }, {mode = "v", prefix = ""})
 
-
--- Register which key map
+-- TEMP fix for https://github.com/folke/which-key.nvim/issues/273  -- window closed immediately error when using Telescope
+local show = wk.show
+wk.show = function(keys, opts)
+		if vim.bo.filetype == "TelescopePrompt" then
+				local map = "<c-r>"
+				local key = vim.api.nvim_replace_termcodes(map, true, false, true)
+				vim.api.nvim_feedkeys(key, "i", true)
+		end
+		show(keys, opts)
+end-- Register which key map
 
 -- function! s=DiffWithSaved()
 --	let filetype=&ft

@@ -8,7 +8,16 @@ local press = function(key)
   vim.api.nvim_feedkeys(t(key, true, true, true), "i", true)
 end
 
-require("telescope").setup {
+local telescope = require "telescope"
+local fzf_opts = {
+  fuzzy = true, -- false will only do exact matching
+  override_generic_sorter = true, -- override the generic sorter
+  override_file_sorter = true, -- override the file sorter
+  case_mode = "smart_case", -- or "ignore_case" or "respect_case"
+  -- the default case_mode is "smart_case"
+}
+
+telescope.setup {
   defaults = {
     vimgrep_arguments = {
       "rg",
@@ -21,6 +30,7 @@ require("telescope").setup {
     },
     -- prompt_position = "top",
     prompt_prefix = " ",
+    dynamic_preview_title = true, -- show file path in preview area
     selection_caret = " ",
     entry_prefix = "  ",
     initial_mode = "insert",
@@ -50,10 +60,10 @@ require("telescope").setup {
         ["<C-Down>"] = require("telescope.actions").cycle_history_next,
         ["<C-Up>"] = require("telescope.actions").cycle_history_prev,
       },
-			n = {
-				["<C-n>"] = actions.move_selection_next,
-				["<C-p>"] = actions.move_selection_previous,
-				}
+      n = {
+        ["<C-n>"] = actions.move_selection_next,
+        ["<C-p>"] = actions.move_selection_previous,
+      },
     },
     file_sorter = require("telescope.sorters").get_fuzzy_file,
     file_ignore_patterns = { "__cache__/.*", "%.pyc" },
@@ -81,6 +91,9 @@ require("telescope").setup {
         return { prompt = prompt:gsub("%s", ".*") }
       end,
     },
+    lsp_dynamic_workspace_symbols = {
+      sorter = telescope.extensions.fzf.native_fzf_sorter(fzf_opts),
+    },
   },
   extensions = {
     media_files = {
@@ -90,13 +103,7 @@ require("telescope").setup {
     sessions_picker = {
       sessions_dir = vim.fn.stdpath "data" .. "/session/",
     },
-    fzf = {
-      fuzzy = true, -- false will only do exact matching
-      override_generic_sorter = true, -- override the generic sorter
-      override_file_sorter = true, -- override the file sorter
-      case_mode = "smart_case", -- or "ignore_case" or "respect_case"
-      -- the default case_mode is "smart_case"
-    },
+    fzf = fzf_opts,
     file_browser = {
       grouped = true,
       sorting_strategy = "ascending",
@@ -126,7 +133,7 @@ require("telescope").setup {
 }
 local hl_manager = require "hl_manager"
 
-hl_manager.highlight_from_src("TelescopePromptNormal", "Normal", {bg = 4 })
+hl_manager.highlight_from_src("TelescopePromptNormal", "Normal", { bg = 4 })
 hl_manager.highlight_link("TelescopePromptBorder", "TelescopePromptNormal")
 hl_manager.highlight_link("TelescopePromptPrefix", "TelescopePromptNormal")
 
@@ -152,14 +159,14 @@ hl_manager.highlight_link("TelescopeMatching", "Search")
 -- TelescopeResultsTitle = { fg = "${bg_popup}", bg = "${green}" },
 -- TelescopeMatching = { fg = "${error}", bg = "${NONE}" },
 
-require("telescope").load_extension "fzf" -- from 'nvim-telescope/telescope-fzf-native.nvim'
-require("telescope").load_extension "media_files"
-require("telescope").load_extension "vim_bookmarks"
-require("telescope").load_extension "aerial"
-require("telescope").load_extension "file_browser"
-require("telescope").load_extension "sessions_picker"
+telescope.load_extension "fzf" -- from 'nvim-telescope/telescope-fzf-native.nvim'
+telescope.load_extension "media_files"
+telescope.load_extension "vim_bookmarks"
+telescope.load_extension "aerial"
+telescope.load_extension "file_browser"
+telescope.load_extension "sessions_picker"
 -- require('telescope').load_extension('projects')
-require("telescope").load_extension "smart_history" -- somethign wrong with reading history
+telescope.load_extension "smart_history" -- somethign wrong with reading history
 
 -- local opt = {noremap = true, silent = true}
 -- mappings
@@ -168,3 +175,46 @@ require("telescope").load_extension "smart_history" -- somethign wrong with read
 -- vim.api.nvim_set_keymap("n", "<Leader>fb", [[<Cmd>lua require('telescope.builtin').buffers()<CR>]], opt)
 -- vim.api.nvim_set_keymap("n", "<Leader>fh", [[<Cmd>lua require('telescope.builtin').help_tags()<CR>]], opt)
 -- vim.api.nvim_set_keymap("n", "<Leader>fo", [[<Cmd>lua require('telescope.builtin').oldfiles()<CR>]], opt)
+
+local showWorkspaceSymbols = function()
+  local opts = {
+    symbols = {
+      "class",
+      "function",
+      -- "method",
+    },
+  }
+  if vim.bo.filetype == "vim" then
+    opts.symbols = { "function" }
+  end
+  require("telescope.builtin").lsp_dynamic_workspace_symbols(opts) -- build in tele
+end
+local showDocumentSymbols = function()
+  local opts = {
+    symbols = {
+      "class",
+      "function",
+      -- "method",
+    },
+  }
+  require("telescope.builtin").lsp_document_symbols(opts)
+end
+vim.keymap.set("n", "<F3>", showWorkspaceSymbols, { noremap = true, silent = true, desc = "Show Workspace Symbols" })
+-- vim.keymap.set( "n", "<F3>", showDocumentSymbols, { noremap = true, silent = true, desc="Show Workspace Symbols" } )
+
+
+local function buffers(opts)
+  opts = opts or {}
+  opts.previewer = false
+  -- opts.sort_lastused = true
+  -- opts.show_all_buffers = true
+  -- opts.shorten_path = false
+  opts.attach_mappings = function(prompt_bufnr, map)
+		map("i", "D", actions.delete_buffer)
+		return true
+  end
+	require("telescope.builtin").buffers(require("telescope.themes").get_dropdown(opts))
+end
+
+vim.keymap.set("n", "gb", buffers, { noremap = true, silent = true, desc = "Show Buffers List" })
+vim.opt.showtabline = 0

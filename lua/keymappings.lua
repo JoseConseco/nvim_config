@@ -83,10 +83,11 @@ vim.api.nvim_set_keymap('n', '<Down>', 'gj',{noremap = true})
 vim.api.nvim_set_keymap('n', '<Up>', 'gk',{noremap = true})
 
 --  Fast saving like normal humans with ctrl+s  :w - always, :up - only when file was changed
-vim.api.nvim_set_keymap('n', '<C-s>', ':up<CR>', {noremap = true})
-vim.api.nvim_set_keymap('v', '<C-s>', '<esc>:up | normal gv<cr>', {noremap = true})
-vim.api.nvim_set_keymap('c', '<C-s>', ':uw<CR>', {noremap = true})
-vim.api.nvim_set_keymap('i', '<C-s>', '<Esc>:up<CR>', {noremap = true})
+vim.api.nvim_set_keymap('n', '<C-s>', ':up!<CR>', {noremap = true})
+vim.api.nvim_set_keymap('v', '<C-s>', '<esc>:up! | normal gv<cr>', {noremap = true})
+vim.api.nvim_set_keymap('c', '<C-s>', ':uw!<CR>', {noremap = true})
+vim.api.nvim_set_keymap('i', '<C-s>', '<Esc>:up!<CR>', {noremap = true})
+
 
 -- disable ctrl+z == suspend
 vim.api.nvim_set_keymap('n', '<C-z>', 'u', {noremap = true})
@@ -101,10 +102,22 @@ vim.api.nvim_set_keymap('v', '<BS>', '"_x', {noremap = true})
 vim.api.nvim_set_keymap('n', 'X', '"_X', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', 'x', '"_x', {noremap = true, silent = true})
 
+-- do not override yank when deleting empty lines
+local function delete_special()
+	-- local line_data = vim.api.nvim_win_get_cursor(0) -- returns {row, col}
+	-- vim.pretty_print(line_data)
+	-- local current_line = vim.api.nvim_buf_get_lines(0, line_data[1]-1, line_data[1], false)
+	if vim.api.nvim_get_current_line() == "" then -- only white chars?
+		return '"_dd'
+	else
+		return 'dd'
+	end
+end
 -- D and d wont affect clipboard in visual
 vim.api.nvim_set_keymap('v', 'd', '"_d', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', 'd', '"_d', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('n', 'dd', 'dd', {noremap = true, silent = true})
+-- vim.api.nvim_set_keymap('n', 'dd', 'dd', {noremap = true, silent = true})
+vim.keymap.set( "n", "dd", delete_special, { noremap = true, expr = true } )
 
 -- delete without overriding register
 vim.api.nvim_set_keymap('v', '<Del>',  '"_d', {noremap = true, silent = true})
@@ -159,10 +172,11 @@ vim.api.nvim_set_keymap('c', 'g/', 'g/\\v', {noremap = true}) ]]
 
 -- search for selection whithout jump  -- with "kevinhwang91/nvim-hlslens" support
 -- [[ /\<<C-R>=expand('<cword>')<CR>\>\C<CR> ]] - makes * case sensitive always
-vim.api.nvim_set_keymap('n', '*', [[/\<<C-R>=expand('<cword>')<CR>\>\C<CR>zzzv<Cmd>lua require('hlslens').start()<CR>]], {noremap = true}) -- zv open fold; zz center on search result
-vim.api.nvim_set_keymap('n', '#', [[?\<<C-R>=expand('<cword>')<CR>\>\C<CR>zzzv<Cmd>lua require('hlslens').start()<CR>]], {noremap = true}) --bacwards,  zv open fold; zz center on search result
-vim.api.nvim_set_keymap('v', '*', "y/\\V<C-R>=escape(@\",'/\')<CR><CR>zzzv<Cmd>lua require('hlslens').start()<CR>", {noremap = true})
-vim.api.nvim_set_keymap('v', '#', "y?\\V<C-R>=escape(@\",'/\')<CR><CR>zzzv<Cmd>lua require('hlslens').start()<CR>", {noremap = true}) -- backward
+vim.api.nvim_set_keymap('n', '*', [[<cmd>set hlsearch<cr>*zzzv]], {noremap = true}) -- zv open fold; zz center on search result
+vim.api.nvim_set_keymap('n', '#', [[<cmd>set hlsearch<cr>#zzzv]], {noremap = true}) --bacwards,  zv open fold; zz center on search result
+-- included in nvim since 8.0
+vim.api.nvim_set_keymap('v', '*', [[<cmd>set hlsearch<cr>y/\V<C-R>=escape(@+,'/\')<CR><CR>zzzv]], {noremap = true})
+vim.api.nvim_set_keymap('v', '#', [[<cmd>set hlsearch<cr>y?\V<C-R>=escape(@+,'/\')<CR><CR>zzzv]], {noremap = true}) -- backward
 -- vim.api.nvim_set_keymap('n', '*', ":keepjumps normal! mi*`i<CR>", {noremap = true})   -- wont affect jump list
 
 -- substitute word under cursor with yanked text (+ register )
@@ -183,6 +197,13 @@ vim.api.nvim_set_keymap('v', '#', "y?\\V<C-R>=escape(@\",'/\')<CR><CR>zzzv<Cmd>l
 -- vim.api.nvim_set_keymap( "n", "<Leader>ff",  'v:lua.conditional_fold()',  { expr = true, noremap = true, silent = true } )
 
 
+--- use { "anuvyklack/windows.nvim",
+vim.api.nvim_set_keymap( "n", "<c-w>m", ":WindowsMaximize<CR>", { noremap = true, desc = "Maximize"} )
+vim.api.nvim_set_keymap( "n", "<c-w>=", ":WindowsEqualize<CR>", { noremap = true, desc = "Equalize"} )
+vim.api.nvim_set_keymap( "n", "<c-w>_", ":WindowsMaximizeVertically<CR>", { noremap = true, desc = "Maximize height"} )
+vim.api.nvim_set_keymap( "n", "<c-w>|", ":WindowsMaximizeHorizontally<CR>", { noremap = true, desc = "Maximize width"} )
+
+
 vim.api.nvim_set_keymap( "n", "<F1>",  ":Telescope sessions_picker<CR>",  {noremap = true, silent = true } )
 
 -- File find under F2
@@ -198,7 +219,6 @@ vim.api.nvim_set_keymap( "n", "<F10>",  '<c-^>',  {noremap = true, silent = true
 -- NTree replacement
 -- vim.api.nvim_set_keymap( "n", "<F4>", ":Fern . -drawer -reveal=% -toggle -width=35<CR>", { noremap = true, silent = true} )
 -- vim.api.nvim_set_keymap( "n", "<F4>", "<Cmd>NnnPicker %:p:h<CR>", { noremap = true, silent = true} ) -- randomly wont work
--- vim.cmd([[nnoremap <F4> <cmd>NnnPicker %:p:h<CR>]])
 vim.api.nvim_set_keymap( "n", "<F4>",  ':FloatermNew ranger<CR>',  {noremap = true, silent = true } )
 
 
@@ -229,8 +249,9 @@ vim.api.nvim_set_keymap( "n", "<c-J>", "mq:s/\\v,\\s+/,\\r/g<cr>V'q=", { noremap
 
 -- repeat last ciw - on next word
 vim.api.nvim_set_keymap( "n", "g.", "/\\V<C-r>\"<CR>cgn<C-a><Esc>", { noremap = true, desc = "Repeat ciw"} )
-vim.api.nvim_set_keymap( "n", "cg*", '*N"_cgn', { noremap = true, desc = "Change with repeat" } )
-vim.api.nvim_set_keymap( "v", "cg*", "\"ay/\\V<C-R>=escape(@a,'/\')<CR><CR>N\"_cgn", { noremap = true, desc = "Change with repeat" } ) -- based on * visual remap
+vim.api.nvim_set_keymap( "n", "cg*", '"zyiw*N"_cgn<C-R>z', { noremap = true, desc = "Change with repeat" } ) -- with yank into z, and paste in insert mode
+-- vim.api.nvim_set_keymap( "v", "cg*", "\"ay/\\V<C-R>=escape(@a,'/\')<CR><CR>N\"_cgn", { noremap = true, desc = "Change with repeat" } ) -- based on * visual remap
+vim.api.nvim_set_keymap( "v", "cg*", "\"ay/\\V<C-R>=escape(@a,'/\')<CR><CR>N\"_cgn<C-R>=escape(@a,'/\')<CR>", { noremap = true, desc = "Change with repeat" } ) -- based on * visual remap
 
 --add breakpoint for undo at space, . and ,
 vim.api.nvim_set_keymap( "i", " ", " <c-g>u", { noremap = true } )
@@ -266,6 +287,8 @@ end
 
 vim.keymap.set( "n", "l", override_l_with_indent_refresh, { remap = false} )
 vim.keymap.set( "n", "zo", 'zo:IndentBlanklineRefresh<cr>', { remap = false,  desc = 'zo with indentline refresh'} )
+vim.keymap.set( "n", "zi", 'zi:IndentBlanklineRefresh<cr>', { remap = false,  desc = 'zi with indentline refresh'} )
+vim.keymap.set( "n", "zx", 'zxzM:IndentBlanklineRefresh<cr>', { remap = false,  desc = 'zi with indentline refresh'} )
 vim.keymap.set( "n", "zO", open_sub_folds, { remap = true, expr = true } )
 
 -- better subfodls
@@ -274,18 +297,9 @@ vim.keymap.set( "n", "zO", open_sub_folds, { remap = true, expr = true } )
 vim.api.nvim_set_keymap('n', 'zC',  ':execute "normal! zC" | foldc! | exe "normal! zv"<cr>', {noremap = true, silent = true }) -- close fold under cursor rec
 
 
-
-local async = require("plenary.async")
 local packer_sync = function ()
-    async.run(function ()
-        require("notify").async('Syncing packer.', 'info', {
-            title = 'Packer',
-						timeout = 1000,
-        })
-    end)
-    -- local snap_shot_time = os.date("!%Y-%m-%dT%TZ")
-    vim.cmd('PackerSnapshot ' .. 'Prev_Config')
-    vim.cmd('PackerSync')
+    vim.cmd.PackerSnapshot('"Prev_Config"')
+    vim.cmd.PackerSync()
 end
 vim.keymap.set('n', ' R', packer_sync, { remap = true, expr = true, desc = 'Packer Sync' } )
 

@@ -2,17 +2,17 @@ local cmp = require "cmp"
 local compare = require "cmp.config.compare"
 local lspkind = require "lspkind"
 
-local t = function(str)
+local replace_keycodes = function(str)
   return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
 
 local press = function(key)
-  vim.api.nvim_feedkeys(t(key), "n", true)
+  vim.api.nvim_feedkeys(replace_keycodes(key), "m", true)
 end
 
 vim.opt.completeopt = "menu,menuone,noselect,noinsert" -- not needed anymore - actually needed for cmp-dap...
 cmp.setup {
-  sources = {
+  sources = cmp.config.sources({
     -- { name = "nvim_lsp_signature_help" },
 		{ name = "nvim_lsp",    priority = 8, group_index = 1, keyword_length = 2, max_item_count = 5 },
 		-- { name = "copilot",     priority = 8, group_index = 1, keyword_length = 0 },
@@ -26,7 +26,7 @@ cmp.setup {
 		{ name = "calc",        priority = 3, group_index = 1, keyword_pattern = [[\d\+\W\{-\}\d]] },
     { name = 'path',        priority = 1, group_index = 1 },
     -- { name = 'vsnip' },
-  },
+  }),
 	formatting = {
     format = lspkind.cmp_format {
       with_text = true,
@@ -139,7 +139,7 @@ cmp.setup {
     end,
   },
   sorting = {
-    priority_weight = 1.0,
+    priority_weight = 0.7,
     comparators = {
       -- compare.score_offset, -- not good at all
       compare.locality,

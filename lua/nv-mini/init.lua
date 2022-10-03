@@ -56,49 +56,50 @@ local my_items = {
 	{ name = 'NvimPlugs', action = ':Explore ~/.local/share/nvim/site/pack/packer/start', section = 'Bookmarks' },
 
 }
-if vim.fn.exists('g:started_by_firenvim') ~= 1 then
-	starter.setup({
-		-- Whether to open starter buffer on VimEnter. Not opened if Neovim was
-		-- started with intent to show something else.
-		autoopen = true,
+starter.setup({
+	-- Whether to open starter buffer on VimEnter. Not opened if Neovim was
+	-- started with intent to show something else.
+	autoopen = true,
 
-		-- Whether to evaluate action of single active item
-		evaluate_single = true,
+	-- Whether to evaluate action of single active item
+	evaluate_single = true,
 
-		-- Items to be displayed. Should be an array with the following elements:
-		-- - Item: table with <action>, <name>, and <section> keys.
-		-- - Function: should return one of these three categories.
-		-- - Array: elements of these three types (i.e. item, array, function).
-		-- If `nil` (default), default items will be used (see |mini.starter|).
-		items = my_items,
+	-- Items to be displayed. Should be an array with the following elements:
+	-- - Item: table with <action>, <name>, and <section> keys.
+	-- - Function: should return one of these three categories.
+	-- - Array: elements of these three types (i.e. item, array, function).
+	-- If `nil` (default), default items will be used (see |mini.starter|).
+	items = my_items,
 
-		-- Header to be displayed before items. Should be a string or function
-		-- evaluating to single string (use `\n` for new lines).
-		-- If `nil` (default), polite greeting will be used.
-		header = nil,
+	-- Header to be displayed before items. Should be a string or function
+	-- evaluating to single string (use `\n` for new lines).
+	-- If `nil` (default), polite greeting will be used.
+	header = nil,
 
-		-- Footer to be displayed after items. Should be a string or function
-		-- evaluating to string. If `nil`, default usage help will be shown.
-		footer = nil,
+	-- Footer to be displayed after items. Should be a string or function
+	-- evaluating to string. If `nil`, default usage help will be shown.
+	footer = nil,
 
 
-		-- Array  of functions to be applied consecutively to initial content.
-		-- Each function should take and return content for 'Starter' buffer (see
-		-- |mini.starter| for more details).
-		content_hooks = {
-			starter.gen_hook.adding_bullet(),
-			starter.gen_hook.indexing('all', { 'Builtin actions', 'Telescope', 'Bookmarks'}),
-			starter.gen_hook.padding(5, 2),
-			starter.gen_hook.aligning('left', 'top'),
-		},
+	-- Array  of functions to be applied consecutively to initial content.
+	-- Each function should take and return content for 'Starter' buffer (see
+	-- |mini.starter| for more details).
+	content_hooks = {
+		starter.gen_hook.adding_bullet(),
+		starter.gen_hook.indexing('all', { 'Builtin actions', 'Telescope', 'Bookmarks'}),
+		starter.gen_hook.padding(5, 2),
+		starter.gen_hook.aligning('left', 'top'),
+	},
 
-		-- Characters to update query. Each character will have special buffer
-		-- mapping overriding your global ones. Be careful to not add `:` as it
-		-- allows you to go into command mode.
-		query_updaters = [[abcdefghijklmnopqrstuvwxyz0123456789_-.]],
-	})
-end
+	-- Characters to update query. Each character will have special buffer
+	-- mapping overriding your global ones. Be careful to not add `:` as it
+	-- allows you to go into command mode.
+	query_updaters = [[abcdefghijklmnopqrstuvwxyz0123456789_-.]],
+})
 
+require('mini.bufremove').setup({})  -- ge delete buffer witout changing layout
+
+-- require('mini.ai').setup({}) -- kind of ok, but does not handle spaces in args nice?
 -- require('mini.jump').setup({
 -- 	  mappings = {
 -- 		    forward = 'f',
@@ -155,3 +156,5 @@ end
 --   allowed_lines = { cursor_after = false },
 --   hooks = { after_jump = function() vim.api.nvim_input('<Right>') end },
 -- })
+-- vim.api.nvim_set_keymap('x', 'A', 'aa', { noremap = false }) -- remap around functin to A
+-- vim.api.nvim_set_keymap('o', 'A', 'aa', { noremap = false })
