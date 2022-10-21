@@ -23,7 +23,7 @@ require('mini.sessions').setup({
 	autoread = false,
 
 	-- Whether to write current session before quitting Neovim
-	autowrite = false,
+	autowrite = false,  -- done manually in my config
 
 	-- Directory where global sessions are stored (use `''` to disable)
 	directory = '/home/bartosz/.local/share/nvim/session',--<"session" subdir of user data directory from |stdpath()|>,

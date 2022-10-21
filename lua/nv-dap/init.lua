@@ -1,5 +1,5 @@
 vim.fn.sign_define("DapBreakpoint", { text = "⭘", texthl = "DiagnosticsHint", linehl = "", numhl = "" })
-vim.fn.sign_define("DapStopped", { text = "🔴", texthl = "DiagnosticsError", linehl = "StatusLine", numhl = "" })
+vim.fn.sign_define("DapStopped", { text = "🔴", texthl = "DiagnosticsError", linehl = "PmenuSel", numhl = "" })
 -- vim.fn.sign_define("DapStopped", { text = "●", texthl = "DiagnosticsError", linehl = "DiagnosticsError", numhl = "" })
 vim.fn.sign_define("DapLogPoint", { text = "﮿", texthl = "DiagnosticsHint", linehl = "", numhl = "" })
 -- require('dap-python').setup('~/.local/lib/python3.9/site-packages/') -- from vim-dap-python

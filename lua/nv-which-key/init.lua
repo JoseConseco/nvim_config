@@ -51,8 +51,21 @@ local function search_unfolded()
 	local search = vim.fn.input('Search: ')
 	vim.cmd("/"..search)
 	-- vim.opt.foldopen:append('search')  -- default: "block,hor,mark,percent,quickfix, search,tag,undo"
-
 end
+
+function vim.getVisualSelection()
+	vim.cmd('noau normal! "vy"')
+	local text = vim.fn.getreg('v')
+	vim.fn.setreg('v', {})
+
+	text = string.gsub(text, "\n", "")
+	if #text > 0 then
+		return text
+	else
+		return ''
+	end
+end
+
 -- Hide status line
 -- autocmd! FileType which_key
 -- autocmd  FileType which_key set laststatus=0 noshowmode noruler
@@ -77,6 +90,18 @@ wk.register({
 	['<leader>8'] = 'which_key_ignore',
 	['<leader>9'] = 'which_key_ignore',
 })
+
+wk.register({
+	['<leader>*'] = { function()
+		local text = vim.getVisualSelection()
+		require"telescope.builtin".live_grep({ default_text = text })
+	end,       'Find * Project' },
+	['<leader>/'] = { function()
+		local text = vim.getVisualSelection()
+		require"telescope.builtin".live_grep({ default_text = text })
+	end,       'Find / Project' },
+	-- ['<leader>/'] = {":lua require'telescope.builtin'.live_grep{path_display = {'tail'}, word_match = '-w', only_sort_text = true, search = '' }<CR>",                           'Search Project'}     ,
+}, {mode = "v", prefix = ""})
 
 wk.register({  --ignore magic s and g in cmd mode
 	['s/'] = 'which_key_ignore',
@@ -127,13 +152,34 @@ local showDocumentSymbols = function ()
     }
     require('telescope.builtin').lsp_document_symbols(opts)
 end
+
+local function buffers(opts)
+  opts = opts or {}
+  opts.previewer = false
+  -- opts.sort_lastused = true
+  -- opts.show_all_buffers = true
+  -- opts.shorten_path = false
+  opts.attach_mappings = function(prompt_bufnr, map)
+		map("i", "D", require "telescope.actions".delete_buffer)
+		return true
+  end
+	require("telescope.builtin").buffers(require("telescope.themes").get_dropdown(opts))
+end
+
+vim.keymap.set("n", "gb", buffers, { noremap = true, silent = true, desc = "Show Buffers List" })
+
+
 wk.register({
 	['<leader>b'] = { name = '+Buffers' },
-	['<leader>b/'] = {":lua require('telescope.builtin').current_buffer_fuzzy_find({ sorter = require('telescope.sorters').get_substr_matcher({})})<CR>", 'Search'},
-	['<leader>b?'] = {':Telescope current_buffer_fuzzy_find<CR>',                                                                                         'Search fuzzy'},
+	-- ['<leader>b/'] = {":lua require('telescope.builtin').current_buffer_fuzzy_find({ sorter = require('telescope.sorters').get_substr_matcher({})})<CR>", 'Search'},
+	-- ['<leader>b/'] = {[[:lua require'telescope.builtin'.live_grep({search_dirs = {vim.fn.expand('%')},  default_text = vim.fn.expand('<cword>') })<cr>]], 'Search *'},
+	['<leader>b/'] = {[[:lua require'telescope.builtin'.live_grep({search_dirs = {vim.fn.expand('%')}, path_display = {'hidden'} })<cr>]], 'Search /'},
+	['<leader>b*'] = {[[:lua require'telescope.builtin'.live_grep({search_dirs = {vim.fn.expand('%')}, path_display = {'hidden'}, default_text = vim.fn.expand('<cword>')})<cr>]], 'Search *'},
+	['<leader>b?'] = {[[:lua require'telescope.builtin'.current_buffer_fuzzy_find({path_display = {'hidden'} })<cr>]],                     'Search FZy *'},
+	-- ['<leader>b?'] = {':Telescope current_buffer_fuzzy_find<CR>',                                                                                         'Search fuzzy'},
 	['<leader>bs'] = {showDocumentSymbols,             'Tele Buffer Symbols'},
-	['<leader>b<'] = {':Telescope buffers<CR>',                                                                                                           'Get buffer' } ,
-	['<leader>bb'] = {'<c-^>',                                                                                                                            'Cycle with Previous'},
+	['<leader>bb'] = {buffers,                                                                                                           'Get buffer' } ,
+	-- ['<leader>bb'] = {'<c-^>',                                                                                                                            'Cycle with Previous'},
 	-- ['<leader>bn'] = {':enew<CR>',                                                                                                                        'New'},
 	['<leader>bn'] = { pick_filetype,                                                                                                                        'New'},
 	['<leader>b]'] = {':BufferLineCycleNext<CR>',                                                                                                         'Next'},
@@ -305,7 +351,7 @@ wk.register({
 	['<leader>lh'] = {':lua vim.lsp.buf.signature_help()<CR>',                                 'Signature Help'},
 	['<leader>ls'] = {':lua vim.lsp.buf.rename()<CR>',                                         'Rename'}  ,
 	['<leader>lr'] = {':lua vim.lsp.buf.references()<CR>',                                     'References (gr)'} ,
-	['<leader>lf'] = {':lua vim.lsp.buf.formatting()<CR>',                                     'Formatting'} ,
+	['<leader>lf'] = {':lua vim.lsp.buf.format()<CR>',                                     'Formatting'} ,
 	['<leader>la'] = {':lua vim.lsp.buf.code_action()<CR>',                                    'Code Action'} ,
 	['<leader>lA'] = {':lua vim.lsp.buf.add_workspace_folder()<CR>',                           'Add Workspace Folder'} ,
 	['<leader>lR'] = {':lua vim.lsp.buf.remove_workspace_folder()<CR>',                        'Remove Workspace Folder'} ,
@@ -384,7 +430,7 @@ wk.register({
 	-- ['<leader>s*'] = {":.,$s/\\<<C-r><C-w>\\>/<C-r>+/gc|1,''-&&<CR>",  'Replace word with yank', mode='n'},       -- \<word\>  -adds whitespace  word limit (sub only whole words)
 	['<leader>s/'] = {
 	function()
-		local name = vim.fn.input('To: ', vim.fn.expand('<cword>'));
+		local name = vim.fn.input('To: ', vim.fn.expand('<cword>'))
 		vim.cmd(":.,$s/\\<"..vim.fn.expand('<cword>').."\\>/"..name.."/gc|1,''-&&")
 	end,                                                                                  'Replace word'},       -- write to reg z (@a) then use it for replacign * word
 	-- ['<leader>s/'] = {":lua require('searchbox').replace({default_value = vim.fn.expand('<cword>'), confirm = 'menu'})<CR>", 'Find and Replace word'},       -- write to reg z (@a) then use it for replacign * word
@@ -437,10 +483,11 @@ wk.register({
 	['<leader>SS'] = { StarterOpen,                                                 'MiniStarter' },
 	-- ['<leader>P*'] = {":lua require'telescope.builtin'.grep_string{path_display = {'shorten'},word_match = '-w', only_sort_text = true, initial_mode = 'normal', }<CR>", 'Find Word'}    ,
 	-- ['<leader>P/'] = {':Grepper-cword<CR>',                                             'Word to clist (Grepper)'},
-	['<leader>Ss'] = { Save_current_session,    'Save Current'}  ,
-	['<leader>Sa'] = {':call v:lua.CmdInput("lua MiniSessions.write(\'%s\')")<CR>',              'Save as'}  ,
+	['<leader>Ss'] = { Save_current_session,                                                'Save Current'}  ,
+	['<leader>Sa'] = {':call v:lua.CmdInput("lua MiniSessions.write(\'%s\')")<CR>',          'Save as'}  ,
 	['<leader>Sc'] = {':SClose<CR>',                                                    'Sesion Close'} ,
 	['<leader>Sd'] = {':SDelete<CR>',                                                   'Sesion Delete'},
+	['<leader>Sd'] = {':so /home/bartosz/.config/nvim/lua/settings.lua<CR>',            'Source Defaults'},
 	-- Startify
 	-- ['<leader>Ps'] = {':SSave<CR>',                                                     'Sesion Save'}  ,
 	-- ['<leader>Pl'] = {':SLoad<CR>',                                                     'Sesion Load'}  ,
@@ -461,6 +508,7 @@ wk.register({
 	['<leader>u'] = { name = '+UI' },
 	['<leader>ua'] = {':call v:lua.conditional_width()<CR>', 'Auto width'},
 	['<leader>uw'] = {':set wrap!<CR>',                  'Toggle Wrap'},
+	['<leader>ul'] = {':set list!<CR>',                  'Toggle List Chars'},
 	['<leader>uc'] = {':Telescope colorscheme<CR>',          'Colorscheme'},
 	['<leader>uh'] = {':set hlsearch!<CR>',                  'Search highlight'},
 	['<leader>uf'] = {':FocusToggle<cr>',                        'Focus Toggle'},

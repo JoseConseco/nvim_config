@@ -59,10 +59,14 @@ telescope.setup {
         -- ["<C-Down>"] = actions.cycle_history_next,
         ["<C-Down>"] = require("telescope.actions").cycle_history_next,
         ["<C-Up>"] = require("telescope.actions").cycle_history_prev,
+        ["<C-s>"] = actions.file_split,
+        ["<C-v>"] = actions.file_vsplit,
       },
       n = {
         ["<C-n>"] = actions.move_selection_next,
         ["<C-p>"] = actions.move_selection_previous,
+        ["<C-s>"] = actions.file_split,
+        ["<C-v>"] = actions.file_vsplit,
       },
     },
     file_sorter = require("telescope.sorters").get_fuzzy_file,
@@ -203,18 +207,3 @@ vim.keymap.set("n", "<F3>", showWorkspaceSymbols, { noremap = true, silent = tru
 -- vim.keymap.set( "n", "<F3>", showDocumentSymbols, { noremap = true, silent = true, desc="Show Workspace Symbols" } )
 
 
-local function buffers(opts)
-  opts = opts or {}
-  opts.previewer = false
-  -- opts.sort_lastused = true
-  -- opts.show_all_buffers = true
-  -- opts.shorten_path = false
-  opts.attach_mappings = function(prompt_bufnr, map)
-		map("i", "D", actions.delete_buffer)
-		return true
-  end
-	require("telescope.builtin").buffers(require("telescope.themes").get_dropdown(opts))
-end
-
-vim.keymap.set("n", "gb", buffers, { noremap = true, silent = true, desc = "Show Buffers List" })
-vim.opt.showtabline = 0

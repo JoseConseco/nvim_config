@@ -8,7 +8,7 @@ Hydra({
  _h_ ^ ^ _l_   _H_ ^ ^ _L_    _v_: vertically      _>_ _<_: width
  ^ ^ _j_ ^ ^   ^ ^ _J_ ^ ^                         ^ _=_ ^: equalize
  focus ^^^^^^  window
- ^ ^ ^ ^ ^ ^   ^ ^ ^ ^ ^ ^    _b_: choose buffer   ^ ^ ^ ^    _q_
+ ^ ^ ^ ^ ^ ^   ^ ^ ^ ^ ^ ^    _S_: Swap   ^ ^ ^ ^    _q_
 ]],
    config = {
 			invoke_on_body = true,
@@ -40,7 +40,8 @@ Hydra({
       { '<', '2<C-w><', { desc = 'decrease width' } },
       { '=', '<C-w>=', { desc = 'equalize'} },
       --
-      { 'b', '<Cmd>Telescope buffers<CR>', { exit = true, desc = 'choose buffer' } },
+      -- { 'b', '<Cmd>Telescope buffers<CR>', { exit = true, desc = 'choose buffer' } },
+      { 'S', '<Cmd>WinShift swap<CR>', { exit = true, desc = 'Swap buffer' } },
 		  { 'q', nil,  { exit = true }},
       -- { '<Esc>', nil,  { exit = true }}
    }

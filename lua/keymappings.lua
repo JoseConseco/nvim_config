@@ -159,8 +159,8 @@ vim.api.nvim_set_keymap('v', 'gl', '$', {noremap = true, silent = true}) ]]
 vim.keymap.set({'n','v','o'}, '<c-h>', '^', {noremap = true, silent = true})
 vim.keymap.set({'n','v','o'}, '<c-l>', '$', {noremap = true, silent = true})
 
-vim.api.nvim_set_keymap('n', '<m-h>', "<cmd>ISwapCursorNodeLeft<CR>", {noremap = true, silent = true}) -- move sel forward one word
-vim.api.nvim_set_keymap('n', '<m-l>', "<cmd>ISwapCursorNodeRight<CR>", {noremap = true, silent = true}) -- move sel backward one word
+vim.api.nvim_set_keymap('n', '<m-h>', "<cmd>ISwapNodeWithLeft<CR>", {noremap = true, silent = true}) -- move sel forward one word
+vim.api.nvim_set_keymap('n', '<m-l>', "<cmd>ISwapNodeWithRight<CR>", {noremap = true, silent = true}) -- move sel backward one word
 -- vim.api.nvim_set_keymap('v', '<m-h>', "<cmd>normal xbP`[v`]'<cr>", {noremap = true, silent = true}) -- move sel forward one word
 -- vim.api.nvim_set_keymap('v', '<m-l>', "<cmd>normal xep`]v`['<cr>", {noremap = true, silent = true}) -- move sel backward one word
 
@@ -285,7 +285,7 @@ local function override_l_with_indent_refresh()
 	end
 end
 
-vim.keymap.set( "n", "l", override_l_with_indent_refresh, { remap = false} )
+vim.keymap.set( "n", "l", override_l_with_indent_refresh, { remap = true} )
 vim.keymap.set( "n", "zo", 'zo:IndentBlanklineRefresh<cr>', { remap = false,  desc = 'zo with indentline refresh'} )
 vim.keymap.set( "n", "zi", 'zi:IndentBlanklineRefresh<cr>', { remap = false,  desc = 'zi with indentline refresh'} )
 vim.keymap.set( "n", "zx", 'zxzM:IndentBlanklineRefresh<cr>', { remap = false,  desc = 'zi with indentline refresh'} )
@@ -297,34 +297,30 @@ vim.keymap.set( "n", "zO", open_sub_folds, { remap = true, expr = true } )
 vim.api.nvim_set_keymap('n', 'zC',  ':execute "normal! zC" | foldc! | exe "normal! zv"<cr>', {noremap = true, silent = true }) -- close fold under cursor rec
 
 
-local packer_sync = function ()
-    vim.cmd.PackerSnapshot('"Prev_Config"')
-    vim.cmd.PackerSync()
-end
-vim.keymap.set('n', ' R', packer_sync, { remap = true, expr = true, desc = 'Packer Sync' } )
+vim.keymap.set('n', ' R', [[:PackerSync<cr>]], { remap = true, desc = 'Packer Sync' } )
 
 
 --close all Folds remap
 
 -- Saner behavior of n and N - plus added hlslens
-vim.cmd([[
-nnoremap <expr> n  'Nn'[v:searchforward].'zzzv<Cmd>lua require("hlslens").start()<CR>'
-xnoremap <expr> n  'Nn'[v:searchforward].'zzzv<Cmd>lua require("hlslens").start()<CR>'
-onoremap <expr> n  'Nn'[v:searchforward].'<Cmd>lua require("hlslens").start()<CR>'
-
-nnoremap <expr> N  'nN'[v:searchforward].'zzzv<Cmd>lua require("hlslens").start()<CR>'
-xnoremap <expr> N  'nN'[v:searchforward].'zzzv<Cmd>lua require("hlslens").start()<CR>'
-onoremap <expr> N  'nN'[v:searchforward].'<Cmd>lua require("hlslens").start()<CR>'
-]])
-
 -- vim.cmd([[
--- nnoremap <expr> n  'Nn'[v:searchforward].'zzzv'
--- xnoremap <expr> n  'Nn'[v:searchforward].'zzzv'
--- onoremap <expr> n  'Nn'[v:searchforward]
+-- nnoremap <expr> n  'Nn'[v:searchforward].'zzzv<Cmd>lua require("hlslens").start()<CR>'
+-- xnoremap <expr> n  'Nn'[v:searchforward].'zzzv<Cmd>lua require("hlslens").start()<CR>'
+-- onoremap <expr> n  'Nn'[v:searchforward].'<Cmd>lua require("hlslens").start()<CR>'
 --
--- nnoremap <expr> N  'nN'[v:searchforward].'zzzv'
--- xnoremap <expr> N  'nN'[v:searchforward].'zzzv'
--- onoremap <expr> N  'nN'[v:searchforward]
+-- nnoremap <expr> N  'nN'[v:searchforward].'zzzv<Cmd>lua require("hlslens").start()<CR>'
+-- xnoremap <expr> N  'nN'[v:searchforward].'zzzv<Cmd>lua require("hlslens").start()<CR>'
+-- onoremap <expr> N  'nN'[v:searchforward].'<Cmd>lua require("hlslens").start()<CR>'
 -- ]])
+
+vim.cmd([[
+nnoremap <expr> n  'Nn'[v:searchforward].'zzzv'
+xnoremap <expr> n  'Nn'[v:searchforward].'zzzv'
+onoremap <expr> n  'Nn'[v:searchforward]
+
+nnoremap <expr> N  'nN'[v:searchforward].'zzzv'
+xnoremap <expr> N  'nN'[v:searchforward].'zzzv'
+onoremap <expr> N  'nN'[v:searchforward]
+]])
 --
 --

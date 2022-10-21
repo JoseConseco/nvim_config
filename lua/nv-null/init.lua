@@ -17,7 +17,7 @@ require("null-ls").setup {
       extra_args = { "--max-line-length=230", "--ignore=E226,E24,W50,W690" }, -- To add more arguments to a source's defaults
     }, -- support range format
     -- require("null-ls").builtins.completion.spell,
-    require("null-ls").builtins.diagnostics.misspell.with{
+		require("null-ls").builtins.diagnostics.codespell.with{
 			filetypes = { "html", "txt", "json", "markdown", "python", "lua"}
 		},
 		-- require("null-ls").builtins.diagnostics.pylint.with { -- for jedi only
@@ -32,7 +32,7 @@ require("null-ls").setup {
   --     vim.api.nvim_buf_set_keymap(bufnr, ...)
   --   end
   --   -- if client.resolved_capabilities.document_formatting then
-  --   buf_set_keymap("n", "<space>cf", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+  --   buf_set_keymap("n", "<space>cf", "<cmd>lua vim.lsp.buf.format()<CR>", opts)
   --   -- elseif client.resolved_capabilities.document_range_formatting then
   --   buf_set_keymap("v", "<space>cf", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
   --   -- end

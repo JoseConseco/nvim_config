@@ -19,9 +19,9 @@ end
 require("packer").init {
   git = {
     clone_timeout = 20,
-		subcommands = { -- Format strings for git subcommands
-			-- update         = 'pull --ff-only --progress --rebase=false',
-      update         = 'pull  --progress --rebase=true',
+    subcommands = { -- Format strings for git subcommands
+      -- update         = 'pull --ff-only --progress --rebase=false',
+      update = "pull  --progress --rebase=true",
       -- install        = 'clone --depth %i --no-single-branch --progress',
       -- fetch          = 'fetch --depth 999999 --progress',
       -- checkout       = 'checkout %s --',
@@ -75,7 +75,6 @@ return require("packer").startup(function(use)
 
   -- THEMES -------------------------------------------------------------------------------------------------------
   use "mvpopuk/inspired-github.vim"
-  use "ful1e5/onedark.nvim"
   use {
     "rmehri01/onenord.nvim",
     disable = true,
@@ -120,7 +119,7 @@ return require("packer").startup(function(use)
     config = function()
       local palette = require("nightfox.palette").load "nightfox"
       require("hlargs").setup {
-        color = palette.cyan.bright, -- color of 'ident' - how ot make it work for all themes?
+        color = palette.cyan.bright, -- color of 'ident' - how to make it work for all themes?
         paint_arg_declarations = false,
         excluded_argnames = {
           declarations = {
@@ -134,12 +133,9 @@ return require("packer").startup(function(use)
         },
       }
       local hl_manager = require "hl_manager"
-      hl_manager.highlight_link("Hlargs", "TSParameter")
+      hl_manager.highlight_link("Hlargs", "@parameter")
     end,
   }
-
-	-- use 'David-Kunz/markid' -- kind of cool but too much random color for all vars, fun, etc
-
   use {
     "folke/tokyonight.nvim",
     setup = function()
@@ -157,67 +153,103 @@ return require("packer").startup(function(use)
       require("colorizer").setup()
     end,
   } --color highlighter
-	use {'azabiong/vim-highlighter', -- highlight selection and occurrences
-		config = function()
-			vim.cmd [[let HiClearUsingOneTime = 1]]
-		end,
-	}
-	use {
-		-- "folke/twilight.nvim",
-		"mkonig/twilight.nvim",
-		branch = "pr/1", -- my fix for expand props
-		config = function()
-			require("twilight").setup {
-				dimming = {
-					alpha = 0.4, -- amount of dimming
-					-- color = { "Normal", "#ffffff" }, -- we try to get the foreground from the highlight groups or fallback color
-					inactive = false, -- when true, other windows will be fully dimmed (unless they contain the same buffer)
-				},
-				context = 0, -- amount of lines we will try to show around the current line
-				node_context = 0,
-				treesitter = true, -- use treesitter when available for the filetype
-				-- treesitter is used to automatically expand the visible text,
-				-- but you can further control the types of nodes that should always be fully expanded
-				expand = {
-					-- "function",
-					-- "if_expression",
-					-- python/pyright
-					-- "while_statement",
-					-- "if_statement",
-					-- "for_statement",
-					-- "block",
-					"function_definition",
-					"method_definition",
-					"class_definition",
-					-- yml
-					-- "document",
-					-- lua
-					-- "function_declaration",
-					},
-			}
-		  end
-	}
+  use {
+    "azabiong/vim-highlighter", -- highlight selection and occurrences
+    config = function()
+      vim.cmd [[let HiClearUsingOneTime = 1]]
+    end,
+  }
+  use {
+    -- "folke/twilight.nvim",
+    "mkonig/twilight.nvim",
+    branch = "pr/1", -- my fix for expand props
+    config = function()
+      require("twilight").setup {
+        dimming = {
+          alpha = 0.4, -- amount of dimming
+          -- color = { "Normal", "#ffffff" }, -- we try to get the foreground from the highlight groups or fallback color
+          inactive = false, -- when true, other windows will be fully dimmed (unless they contain the same buffer)
+        },
+        context = 0, -- amount of lines we will try to show around the current line
+        node_context = 0,
+        treesitter = true, -- use treesitter when available for the filetype
+        -- treesitter is used to automatically expand the visible text,
+        -- but you can further control the types of nodes that should always be fully expanded
+        expand = {
+          -- "function",
+          -- "if_expression",
+          -- python/pyright
+          -- "while_statement",
+          -- "if_statement",
+          -- "for_statement",
+          -- "block",
+          "function_definition",
+          "method_definition",
+          "class_definition",
+          -- yml
+          -- "document",
+          -- lua
+          -- "function_declaration",
+        },
+      }
+    end,
+  }
   use "kyazdani42/nvim-web-devicons"
   use {
     "ryanoasis/vim-devicons",
     config = function()
       require "web-devicons"
     end,
-  } -- lua + wont close () next to char finally good and simple +++
+  }
   use {
     "nvim-lualine/lualine.nvim",
-    requires = { "kyazdani42/nvim-web-devicons", 'arkav/lualine-lsp-progress' },
+    requires = { "kyazdani42/nvim-web-devicons", "arkav/lualine-lsp-progress" },
     config = function()
       require "nv-lualine"
-    end, -- lua + wont close () next to char finally good and simple +++
+    end,
   }
   use {
     "akinsho/nvim-bufferline.lua",
     after = "nightfox.nvim",
-		cond = false,
+    cond = false,
     requires = "kyazdani42/nvim-web-devicons",
     config = function()
       require "nv-bufferline"
+    end,
+  }
+  use { -- cmd line replacer
+    "folke/noice.nvim",
+    event = "VimEnter",
+    config = function()
+      require "nv-noice"
+    end,
+    requires = {
+      -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+      "MunifTanjim/nui.nvim",
+      "rcarriga/nvim-notify",
+    },
+  }
+  use {
+    "smjonas/live-command.nvim",
+    -- live-command supports semantic versioning via tags
+    -- tag = "1.*",
+    config = function()
+      require("live-command").setup {
+        commands = {
+          Norm = { cmd = "norm" },
+          G = { cmd = "g" },
+        },
+      }
+    end,
+  }
+  use {
+    "anuvyklack/fold-preview.nvim", --on n key.
+    cond = false,
+    requires = "anuvyklack/keymap-amend.nvim",
+    config = function()
+      require("fold-preview").setup {
+        border = "single",
+      }
     end,
   }
   use {
@@ -225,7 +257,7 @@ return require("packer").startup(function(use)
     after = "nightfox.nvim",
     config = function()
       local hl_manager = require "hl_manager"
-      hl_manager.highlight_from_src("IndentEven", "Normal", {bg = -6 }) -- reduce contrast by default by -5
+      hl_manager.highlight_from_src("IndentEven", "Normal", { bg = -6 }) -- reduce contrast by default by -5
       vim.cmd [[highlight IndentOdd guifg=NONE guibg=NONE gui=nocombine]]
       -- hl_manager.highlight_from_src("IndentBlanklineContextChar", "Normal", {action='contrast', factor=-10}) -- reduce contrast by default by -5
       -- vim.cmd [[highlight! link IndentBlanklineContextChar Comment]]
@@ -235,7 +267,7 @@ return require("packer").startup(function(use)
   }
   use {
     "Xuyuanp/scrollbar.nvim",
-    disable = false, -- side scrollbar  -fucks up session load often :/ - but at least wont break tele
+    disable = false,
     config = function()
       vim.cmd [[
 				augroup ScrollbarInit
@@ -250,30 +282,8 @@ return require("packer").startup(function(use)
   }
 
   use {
-    "petertriho/nvim-scrollbar", -- scrollbar with marked errors and search results
-		disable = true,
-    cond = true, -- scrollbar which shows search resutls   and errors
-    config = function()
-      require("scrollbar").setup {
-        handle = {
-          text = " ",
-          color = "#507990",
-          hide_if_all_visible = true, -- Hides handle if all lines are visible
-        },
-        marks = {
-          Search = { text = { "━", "𝝣" }, priority = 0, color = "orange" },
-          Error = { text = { "━", "𝝣" }, priority = 1, color = "red" },
-          Warn = { text = { "━", "𝝣" }, priority = 2, color = "yellow" },
-          Info = { text = { "-", "=" }, priority = 3, color = "blue" },
-          Hint = { text = { "-", "=" }, priority = 4, color = "green" },
-          Misc = { text = { "-", "=" }, priority = 5, color = "purple" },
-        },
-      }
-    end,
-  }
-  use {
     "kevinhwang91/nvim-hlslens",
-    -- after = "nvim-scrollbar",
+    cond = false,
     config = function()
       require("hlslens").setup {
         nearest_only = true,
@@ -289,46 +299,34 @@ return require("packer").startup(function(use)
     end,
   }
 
-  --	config=function() require("nv-scrollbar")  end } -- preview line whe using goto :xyz
-  use {
-    "dstein64/nvim-scrollview",
-    disable = true, -- broken since one or two weeks- box covers in tele input
-    config = function()
-      vim.api.nvim_exec("highlight link ScrollView Normal", false)
-      vim.g.scrollview_character = "▎"
-      vim.g.scrollview_excluded_filetypes = { "telescope" }
-      vim.g.scrollview_hide_on_intersect = true
-    end,
-  }
   use {
     "karb94/neoscroll.nvim", -- smooth scroll
     config = function()
       require("neoscroll").setup { hide_cursor = false }
     end,
-  } -- lua + wont close () next to char finally good and simple +++
-	use { 'gen740/SmoothCursor.nvim', -- fancy pointer animation on left side
-		config = function()
-		require('smoothcursor').setup{
-			autostart = true,
-			cursor = "",
-			fancy = {
-				enable = true,       -- enable fancy mode
-				head = { cursor = "►", texthl = "LineNr", linehl = nil },
-				body = {
-					{ cursor = "", texthl = "LineNr" },
-					{ cursor = "", texthl = "LineNr" },
-					{ cursor = "●", texthl = "LineNr" },
-					{ cursor = "●", texthl = "LineNr" },
-					{ cursor = "•", texthl = "LineNr" },
-					{ cursor = ".", texthl = "LineNr" },
-					{ cursor = ".", texthl = "LineNr" },
-				},
-			}
-		}
-		end
-	}
-  -- use {'machakann/vim-highlightedyank',
-  --	config=function() vim.g.highlightedyank_highlight_duration = 100 end}
+  }
+  use {
+    "gen740/SmoothCursor.nvim", -- fancy pointer animation on left side
+    config = function()
+      require("smoothcursor").setup {
+        autostart = true,
+        cursor = "",
+        fancy = {
+          enable = true, -- enable fancy mode
+          head = { cursor = "►", texthl = "LineNr", linehl = nil },
+          body = {
+            { cursor = "", texthl = "LineNr" },
+            { cursor = "", texthl = "LineNr" },
+            { cursor = "●", texthl = "LineNr" },
+            { cursor = "●", texthl = "LineNr" },
+            { cursor = "•", texthl = "LineNr" },
+            { cursor = ".", texthl = "LineNr" },
+            { cursor = ".", texthl = "LineNr" },
+          },
+        },
+      }
+    end,
+  }
 
   -- WINDOWS MANAGER  -------------------------------------------------------------------------------------------------------
   use {
@@ -336,48 +334,48 @@ return require("packer").startup(function(use)
     cond = false, -- autoresize windows to gold ration - replaced with "anuvyklack/windows.nvim"
     config = function()
       require("focus").setup {
-				enable = true,
-				excluded_filetypes = {"fzf"},
-			}
+        enable = true,
+        excluded_filetypes = { "fzf" },
+      }
     end,
   }
-	use { "anuvyklack/windows.nvim",
-		cond=true,
-		 requires = {
-				"anuvyklack/middleclass",
-				"anuvyklack/animation.nvim"
-		 },
-		 config = function()
-			vim.o.winminwidth = 5
-			vim.o.winwidth = 15
-			vim.o.equalalways = false
-			require('windows').setup({
-				autowidth = {
-					winwidth = 0.62,
-				},
-				animation = {
-					duration = 200, -- ms
-			  }
-
-			})
-		 end
-	}
+  use {
+    "anuvyklack/windows.nvim",
+    cond = true,
+    requires = {
+      "anuvyklack/middleclass",
+      "anuvyklack/animation.nvim",
+    },
+    config = function()
+      vim.o.winminwidth = 5
+      vim.o.winwidth = 15
+      vim.o.equalalways = false
+      require("windows").setup {
+        autowidth = {
+          winwidth = 0.62,
+        },
+        animation = {
+          duration = 200, -- ms
+        },
+      }
+    end,
+  }
   use {
     "https://gitlab.com/yorickpeterse/nvim-window.git", -- pick window quickly
     config = function()
       vim.api.nvim_set_keymap("n", "<c-w>w", ":lua require('nvim-window').pick()<CR>", { noremap = true, silent = true })
     end,
   }
-	use {
-		'sindrets/winshift.nvim',
-		config = function()
-			require("winshift").setup({
-				keymaps = {
-					disable_defaults = true,
-				}
-			})
-		end,
-	}
+  use {
+    "sindrets/winshift.nvim",
+    config = function()
+      require("winshift").setup {
+        keymaps = {
+          disable_defaults = true,
+        },
+      }
+    end,
+  }
 
   -- DEBUGGING  -------------------------------------------------------------------------------------------------------
   use {
@@ -436,7 +434,7 @@ return require("packer").startup(function(use)
         -- experimental features:
         virt_text_pos = "right_align", -- position of virtual text, see :h nvim_buf_set_extmark() - 'right_align', 'eol', 'overlay'
         all_frames = false, -- show virtual text for all stack frames not only current. Only works for debugpy on my machine.
-				all_references = true, -- show virtual text for all references not only current. Only works for debugpy on my machine.
+        all_references = true, -- show virtual text for all references not only current. Only works for debugpy on my machine.
         virt_lines = false, -- show virtual lines instead of virtual text (will flicker!)
         virt_text_win_col = 85, -- position the virtual text at a fixed window column (starting from the first text column) ,
         -- e.g. 80 to position at column 80 see :h nvim_buf_set_extmark()
@@ -454,7 +452,7 @@ return require("packer").startup(function(use)
     "rcarriga/nvim-dap-ui",
     requires = { "mfussenegger/nvim-dap" },
     config = function()
-			require("nv-dapui")
+      require "nv-dapui"
     end,
   }
 
@@ -466,23 +464,25 @@ return require("packer").startup(function(use)
       require "treesitter"
     end,
   }
-  use {
+  use { -- for incremental selection only...
     "nvim-treesitter/nvim-treesitter-textobjects",
-  } -- fixes plug  }
+  }
   use {
     "nvim-treesitter/nvim-treesitter-context",
     cond = true, -- cool but gives orror on compe-popup - https://github.com/romgrk/nvim-treesitter-context/issues/49
     config = function()
       require "nv-treesittercontext"
     end,
-  } -- fixes plug  }
-  -- use {"mizlan/iswap.nvim",
+  }
   use {
+    -- "mizlan/iswap.nvim",
     "JoseConseco/iswap.nvim",
     config = function()
       require("iswap").setup {
         hl_snipe = "ErrorMsg",
         autoswap = true,
+        move_cursor = true,
+        flash_style = false,
         hl_selection = "",
       }
     end,
@@ -490,8 +490,8 @@ return require("packer").startup(function(use)
   use {
     "mfussenegger/nvim-treehopper",
     config = function()
-      vim.api.nvim_set_keymap("o", "u", ":<C-U>lua require('tsht').nodes()<CR>", { noremap = false, silent = true , desc='TSNode (nvim-treehopper' })
-      vim.api.nvim_set_keymap("v", "u", ":lua require('tsht').nodes()<CR>", { noremap = true, silent = true, desc='TSNode (nvim-treehopper' })
+      vim.api.nvim_set_keymap("o", "u", ":<C-U>lua require('tsht').nodes()<CR>", { noremap = false, silent = true, desc = "TSNode (nvim-treehopper" })
+      vim.api.nvim_set_keymap("v", "u", ":lua require('tsht').nodes()<CR>", { noremap = true, silent = true, desc = "TSNode (nvim-treehopper" })
     end,
   }
   use {
@@ -500,19 +500,21 @@ return require("packer").startup(function(use)
     config = function()
       -- add colorscheme change hook
       local hl_manager = require "hl_manager"
-      hl_manager.match_color_to_highlight("#ebcb8b", "TSPunctBracket", "rainbowcol1", "foreground")
-      hl_manager.match_color_to_highlight("#a3be8c", "TSPunctBracket", "rainbowcol2", "foreground")
-      hl_manager.match_color_to_highlight("#88c0d0", "TSPunctBracket", "rainbowcol3", "foreground")
-      hl_manager.match_color_to_highlight("#6ea1ec", "TSPunctBracket", "rainbowcol4", "foreground")
-      hl_manager.match_color_to_highlight("#b48ead", "TSPunctBracket", "rainbowcol5", "foreground")
-      hl_manager.match_color_to_highlight("#df717a", "TSPunctBracket", "rainbowcol6", "foreground")
-      hl_manager.match_color_to_highlight("#d08770", "TSPunctBracket", "rainbowcol7", "foreground")
+      hl_manager.match_color_to_highlight("#ebcb8b", "@punct.bracket", "rainbowcol1", "foreground")
+      hl_manager.match_color_to_highlight("#a3be8c", "@punct.bracket", "rainbowcol2", "foreground")
+      hl_manager.match_color_to_highlight("#88c0d0", "@punct.bracket", "rainbowcol3", "foreground")
+      hl_manager.match_color_to_highlight("#6ea1ec", "@punct.bracket", "rainbowcol4", "foreground")
+      hl_manager.match_color_to_highlight("#b48ead", "@punct.bracket", "rainbowcol5", "foreground")
+      hl_manager.match_color_to_highlight("#df717a", "@punct.bracket", "rainbowcol6", "foreground")
+      hl_manager.match_color_to_highlight("#d08770", "@punct.bracket", "rainbowcol7", "foreground")
     end,
   }
   use "nvim-treesitter/playground"
   use {
     "lewis6991/spellsitter.nvim", -- nicer highlights for spellcheck
-    config = function() require("spellsitter").setup() end,
+    config = function()
+      require("spellsitter").setup()
+    end,
   }
 
   -- lsp -------------------------------------------------------------------------------------------------------
@@ -523,7 +525,13 @@ return require("packer").startup(function(use)
       require "lsp"
     end,
   } -- lua + wont close () next to char finally good and simple +++
-	use { "williamboman/mason.nvim" }
+  use {
+    "rmagatti/goto-preview",
+    config = function()
+      require "nv-goto-preview"
+    end,
+  }
+  use { "williamboman/mason.nvim" }
   use {
     "SirVer/ultisnips",
     config = function()
@@ -532,8 +540,10 @@ return require("packer").startup(function(use)
     end,
   }
   use {
-    "stevearc/aerial.nvim",  -- basically better outliner with objects type filter
-    config = function() require "nv-aerial" end,
+    "stevearc/aerial.nvim", -- basically better outliner with objects type filter
+    config = function()
+      require "nv-aerial"
+    end,
   }
   use { "ray-x/lsp_signature.nvim" } -- used for funct() signature hint
   use {
@@ -560,7 +570,7 @@ return require("packer").startup(function(use)
       vim.g.copilot_no_tab_map = true
       vim.g.copilot_assume_mapped = true
       vim.g.copilot_tab_fallback = ""
-			vim.g.copilot_filetypes = { ['dap-repl'] = false,  }
+      vim.g.copilot_filetypes = { ["dap-repl"] = false }
     end,
   }
   use {
@@ -575,7 +585,7 @@ return require("packer").startup(function(use)
       "quangnguyen30192/cmp-nvim-ultisnips",
       "hrsh7th/cmp-calc",
       "lukas-reineke/cmp-rg",
-			"rcarriga/cmp-dap",
+      "rcarriga/cmp-dap",
       -- "hrsh7th/cmp-nvim-lsp-signature-help", - x ray better
       -- "uga-rosa/cmp-dictionary", -- based on custom dict
       "f3fora/cmp-spell", -- vim spell hast to be enabled
@@ -589,7 +599,7 @@ return require("packer").startup(function(use)
   -- use { "tzachar/cmp-fuzzy-buffer", requires = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" } }
   use {
     "tzachar/cmp-tabnine",
-		cond = false,
+    cond = false,
     requires = "hrsh7th/nvim-cmp",
     run = "./install.sh",
     disable = false,
@@ -630,10 +640,11 @@ return require("packer").startup(function(use)
     requires = { "tami5/sqlite.lua" },
   }
   use { "nvim-telescope/telescope-fzf-native.nvim", run = "make" }
-	use { 'ibhagwan/fzf-lua',
-  -- optional for icon support
-  requires = { 'kyazdani42/nvim-web-devicons' }
-}
+  use {
+    "ibhagwan/fzf-lua",
+    -- optional for icon support
+    requires = { "kyazdani42/nvim-web-devicons" },
+  }
 
   -- Explorer  -------------------------------------------------------------------------------------------------------
   use { "elihunter173/dirbuf.nvim" } -- edit dir as buffer text
@@ -642,22 +653,19 @@ return require("packer").startup(function(use)
   use {
     "tpope/vim-fugitive", -- add :Gitxx commands
   }
-  -- use {
-  --   "tpope/vim-surround",
-  -- }
-	use({
-			"kylechui/nvim-surround",
-			config = function()
-					require("nvim-surround").setup({
-						keymaps = { -- vim-surround style keymaps
-										-- insert = "ys",
-										visual = "S",
-										delete = "ds",
-										change = "cs",
-								},
-					})
-			end
-	})
+  use {
+    "kylechui/nvim-surround",
+    config = function()
+      require("nvim-surround").setup {
+        keymaps = { -- vim-surround style keymaps
+          -- insert = "ys",
+          visual = "S",
+          delete = "ds",
+          change = "cs",
+        },
+      }
+    end,
+  }
   use {
     "tpope/vim-repeat",
   }
@@ -670,11 +678,11 @@ return require("packer").startup(function(use)
   } -- lua + wont close () next to char finally good and simple +++
   use {
     "sindrets/diffview.nvim",
-		after="nightfox.nvim",
+    after = "nightfox.nvim",
     config = function()
       require("diffview").setup {
-				enhanced_diff_hl = true,
-			}
+        enhanced_diff_hl = true,
+      }
     end,
   }
 
@@ -687,15 +695,15 @@ return require("packer").startup(function(use)
       require "nv-which-key"
     end,
   }
-	use {
-		'anuvyklack/hydra.nvim',
-		requires = 'anuvyklack/keymap-layer.nvim', -- needed only for pink hydras
-		config = function()
-			require "nv-hydra"
-		end
-	}
   use {
-		"folke/todo-comments.nvim", -- orignal
+    "anuvyklack/hydra.nvim",
+    requires = "anuvyklack/keymap-layer.nvim", -- needed only for pink hydras
+    config = function()
+      require "nv-hydra"
+    end,
+  }
+  use {
+    "folke/todo-comments.nvim", -- original
     config = function()
       require "nv-todo"
     end,
@@ -716,28 +724,27 @@ return require("packer").startup(function(use)
   }
 
   --find and replace ? -------------------------------------------------------------------------------------------------------
-  use {"kevinhwang91/nvim-bqf", --better quickfix  (with preview and complicated mapping)
-		config = function()
-			require('bqf').setup({
-				auto_enable = true,
-				auto_resize_height = true, -- highly recommended enable
-				preview = {  -- stefandtw/quickfix-reflector.vim breaks this
-						auto_preview = false,
-				},
-
-
-		})
-		end,
-	}
-	use 'stefandtw/quickfix-reflector.vim' -- edit quickfix list as text - :w to save to multi files
-	-- use 'gabrielpoca/replacer.nvim'   -- edit quick fis list - in lua
+  use {
+    "kevinhwang91/nvim-bqf", --better quickfix  (with preview and complicated mapping)
+    config = function()
+      require("bqf").setup {
+        auto_enable = true,
+        auto_resize_height = true, -- highly recommended enable
+        preview = { -- stefandtw/quickfix-reflector.vim breaks this
+          auto_preview = false,
+        },
+      }
+    end,
+  }
+  use "stefandtw/quickfix-reflector.vim" -- edit quickfix list as text - :w to save to multi files
+  -- use 'gabrielpoca/replacer.nvim'   -- edit quick fis list - in lua
   use "brooth/far.vim" --use: Far(r) from to **/*.py   > then :Fardo
   use "dyng/ctrlsf.vim" --Run :CtrlSF [pattern]
-	--  use {"JoseConseco/ctrlsf.vim", --Run :CtrlSF [pattern] - fixes dow \r escape
-	-- 	-- config = function()
-	-- 	-- 	-- vim.g.ctrlsf_debug_mode=1
-	-- 	-- end,
-	-- }
+  --  use {"JoseConseco/ctrlsf.vim", --Run :CtrlSF [pattern] - fixes dow \r escape
+  -- 	-- config = function()
+  -- 	-- 	-- vim.g.ctrlsf_debug_mode=1
+  -- 	-- end,
+  -- }
   use "mhinz/vim-grepper" -- Grepper
   use "eugen0329/vim-esearch" -- Grepper
   use { "windwp/nvim-spectre", requires = { { "nvim-lua/popup.nvim" }, { "nvim-lua/plenary.nvim" } } }
@@ -755,25 +762,24 @@ return require("packer").startup(function(use)
 
   --CODE/FORMAT -------------------------------------------------------------------------------------------------------
   use "wellle/targets.vim" -- eg ci,  ci_ etc replaced by mini.ai
-	-- use({ -- select indent lua
-	-- 	"arsham/indent-tools.nvim",
-	-- 	requires = { "arsham/arshlib.nvim" },
-	-- 	config = function() require("indent-tools").config({}) end,
-	-- })
+  -- use({ -- select indent lua
+  -- 	"arsham/indent-tools.nvim",
+  -- 	requires = { "arsham/arshlib.nvim" },
+  -- 	config = function() require("indent-tools").config({}) end,
+  -- })
   use {
     "urxvtcd/vim-indent-object",
     setup = function()
-
-			local modes = { "x", "o" }
-			for _, mode in ipairs(modes) do
-				vim.api.nvim_set_keymap(mode, "ii", "<Plug>(indent-object_linewise-none)", { noremap = true })
-				vim.api.nvim_set_keymap(mode, "ai", "<Plug>(indent-object_linewise-start)", { noremap = true })
-				vim.api.nvim_set_keymap(mode, "iI", "<Plug>(indent-object_linewise-end)", { noremap = true })
-				vim.api.nvim_set_keymap(mode, "aI", "<Plug>(indent-object_linewise-both)", { noremap = true })
+      local modes = { "x", "o" }
+      for _, mode in ipairs(modes) do
+        vim.api.nvim_set_keymap(mode, "ii", "<Plug>(indent-object_linewise-none)", { noremap = true })
+        vim.api.nvim_set_keymap(mode, "ai", "<Plug>(indent-object_linewise-start)", { noremap = true })
+        vim.api.nvim_set_keymap(mode, "iI", "<Plug>(indent-object_linewise-end)", { noremap = true })
+        vim.api.nvim_set_keymap(mode, "aI", "<Plug>(indent-object_linewise-both)", { noremap = true })
         -- one way expand
-				vim.api.nvim_set_keymap(mode, "ik", "<Plug>(indent-object_linewise-none-keep-end)", { noremap = true })
-				vim.api.nvim_set_keymap(mode, "ij", "<Plug>(indent-object_linewise-none-keep-start)", { noremap = true })
-			end
+        vim.api.nvim_set_keymap(mode, "ik", "<Plug>(indent-object_linewise-none-keep-end)", { noremap = true })
+        vim.api.nvim_set_keymap(mode, "ij", "<Plug>(indent-object_linewise-none-keep-start)", { noremap = true })
+      end
     end,
   }
   use {
@@ -794,9 +800,6 @@ return require("packer").startup(function(use)
       require("matchparen").setup()
     end,
   }
-
-  -- use {'Chiel92/vim-autoformat', -- replaced by null-ls
-  -- 	config=function() require('nv-autoformat') end }
   use {
     "windwp/nvim-autopairs", -- lua + wont close () next to char finally good and simple +++
     config = function()
@@ -811,30 +814,6 @@ return require("packer").startup(function(use)
       vim.g.VM_mouse_mappings = 1
     end,
   }
-	use { 'otavioschwanck/cool-substitute.nvim',
-		disable = true,
-		config = function()
-			require'cool-substitute'.setup({
-				setup_keybindings = true,
-			-- mappings = {
-			--   start = 'gm', -- Mark word / region
-			--   start_and_edit = 'gM', -- Mark word / region and also edit
-			--   start_and_edit_word = 'g!M', -- Mark word / region and also edit.  Edit only full word.
-			--   start_word = 'g!m', -- Mark word / region. Edit only full word
-			--   apply_substitute_and_next = 'M', -- Start substitution / Go to next substitution
-			--   apply_substitute_and_prev = '<C-b>', -- same as M but backwards
-			--   apply_substitute_all = 'ga', -- Substitute all
-			--   force_terminate_substitute = 'g!!' -- Terminate macro (if some bug happens)
-			-- },
-			-- reg_char = 'o', -- letter to save macro (Dont use number or uppercase here)
-			-- mark_char = 't', -- mark the position at start of macro
-			-- writing_substitution_color = "#ECBE7B", -- for status line
-			-- applying_substitution_color = "#98be65", -- for status line
-			-- edit_word_when_starting_with_substitute_key = true (press M to mark and edit when not executing anything anything)
-			})
-		end,
-	}
-
   use {
     "echasnovski/mini.nvim",
     config = function()
@@ -853,28 +832,28 @@ return require("packer").startup(function(use)
   use { -- increse decrease numbers but also datas, true to false etc
     "monaqa/dial.nvim",
     config = function()
-			require "nv-dial"
+      require "nv-dial"
     end,
   }
 
   -- navigation  -------------------------------------------------------------------------------------------------------
-	use {'rlane/pounce.nvim',
-		 require'pounce'.setup{
-			accept_keys = "JFKDLSAHGNUVRBYTMICEOXWPQZ",
-			accept_best_key = "<enter>",
-			multi_window = false,
-			debug = false,
-		},
+  use {
+    "rlane/pounce.nvim",
+    require("pounce").setup {
+      accept_keys = "JFKDLSAHGNUVRBYTMICEOXWPQZ",
+      accept_best_key = "<enter>",
+      multi_window = false,
+      debug = false,
+    },
     config = function()
       vim.api.nvim_set_keymap("n", "  ", ":Pounce<cr>", { noremap = true, desc = "Pounce", silent = true })
       vim.api.nvim_set_keymap("v", "  ", "<cmd>Pounce<cr>", { noremap = true, desc = "Pounce", silent = true })
       vim.api.nvim_set_keymap("o", "  ", "<cmd>Pounce<cr>", { noremap = true, desc = "Pounce", silent = true })
-		end
-
-	}
+    end,
+  }
   use {
     "phaazon/hop.nvim",
-		-- branch = "fix-pending-operation-col-increment",
+    -- branch = "fix-pending-operation-col-increment",
     config = function()
       require("hop").setup {}
       vim.api.nvim_set_keymap("o", "h", ":HopChar1<cr>", { noremap = true })
@@ -885,22 +864,21 @@ return require("packer").startup(function(use)
       vim.api.nvim_set_keymap("v", "gl", "<cmd>HopLineStart<cr>", { noremap = true })
       -- vim.api.nvim_set_keymap("v", "gw", "<cmd>HopWord<cr>", { noremap = true })
 
-			local modes = { "n", "v", "o" }
-			for _, mode in ipairs(modes) do
-				vim.api.nvim_set_keymap(mode, "f", "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = true, hint_offset=0})<cr>", {})
-				vim.api.nvim_set_keymap(mode, "F", "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true, hint_offset=0})<cr>", {})
-				vim.api.nvim_set_keymap(mode, "t", "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = true, hint_offset = -1 })<cr>", {})
-				vim.api.nvim_set_keymap(mode, "T", "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true, hint_offset = 1 })<cr>", {})
-			end
-
+      local modes = { "n", "v", "o" }
+      for _, mode in ipairs(modes) do
+        vim.api.nvim_set_keymap(mode, "f", "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = true, hint_offset=0})<cr>", {})
+        vim.api.nvim_set_keymap(mode, "F", "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true, hint_offset=0})<cr>", {})
+        vim.api.nvim_set_keymap(mode, "t", "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = true, hint_offset = -1 })<cr>", {})
+        vim.api.nvim_set_keymap(mode, "T", "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true, hint_offset = 1 })<cr>", {})
+      end
     end,
   }
-  use {
+  use { -- preview line when using goto :xyz
     "nacro90/numb.nvim",
     config = function()
       require("numb").setup()
     end,
-  } -- preview line whe using goto :xyz
+  }
   use {
     "axlebedev/footprints",
     config = function()
@@ -932,30 +910,16 @@ return require("packer").startup(function(use)
       hl_manager.highlight_link("FloatermBorder", "Normal")
     end,
   }
-  -- use {
-  --   "akinsho/nvim-toggleterm.lua", -- in lua but doew not work with ranger
-  --   config = function()
-  --     require("toggleterm").setup {}
-  --     local Terminal = require("toggleterm.terminal").Terminal
-  --     local lazygit = Terminal:new { cmd = "lazygit", hidden = true, direction = "float" }
-  --
-  --     function _G.lazygit_toggle()
-  --       lazygit:toggle()
-  --     end
-  --   end,
-  -- }
 
   --REPLS -------------------------------------------------------------------------------------------------------
   use "rafcamlet/nvim-luapad" -- :Luapad - open interactive scratch bufer with realtime eval
   use "metakirby5/codi.vim" -- repls for all other langs ...
 
-
   ---  TOOLS -------------------------------------------------------------------------------------------------------
-	use {
-		  'AckslD/messages.nvim',  -- :Messages messages
-		  config = 'require("messages").setup()',
-	}
-  use "rcarriga/nvim-notify"
+  use {
+    "AckslD/messages.nvim", -- :Messages messages
+    config = 'require("messages").setup()',
+  }
   use {
     "SmiteshP/nvim-gps", -- bread_crumbs
     requires = "nvim-treesitter/nvim-treesitter",
