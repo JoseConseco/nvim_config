@@ -203,7 +203,7 @@ return require("packer").startup(function(use)
   }
   use {
     "nvim-lualine/lualine.nvim",
-    requires = { "kyazdani42/nvim-web-devicons", "arkav/lualine-lsp-progress" },
+    requires = { "kyazdani42/nvim-web-devicons"},
     config = function()
       require "nv-lualine"
     end,
@@ -243,16 +243,6 @@ return require("packer").startup(function(use)
     end,
   }
   use {
-    "anuvyklack/fold-preview.nvim", --on n key.
-    cond = false,
-    requires = "anuvyklack/keymap-amend.nvim",
-    config = function()
-      require("fold-preview").setup {
-        border = "single",
-      }
-    end,
-  }
-  use {
     "lukas-reineke/indent-blankline.nvim",
     after = "nightfox.nvim",
     config = function()
@@ -267,7 +257,7 @@ return require("packer").startup(function(use)
   }
   use {
     "Xuyuanp/scrollbar.nvim",
-    disable = false,
+    disable = true,
     config = function()
       vim.cmd [[
 				augroup ScrollbarInit
@@ -281,6 +271,13 @@ return require("packer").startup(function(use)
     end,
   }
 
+  use {
+    "petertriho/nvim-scrollbar", -- scrollbar with marked errors and search results
+    cond = true, -- scrollbar which shows search resutls   and errors
+    config = function()
+      require "nv-nvim-scrollbar"
+    end,
+  }
   use {
     "kevinhwang91/nvim-hlslens",
     cond = false,
@@ -475,8 +472,8 @@ return require("packer").startup(function(use)
     end,
   }
   use {
-    -- "mizlan/iswap.nvim",
-    "JoseConseco/iswap.nvim",
+    "mizlan/iswap.nvim",
+    -- "JoseConseco/iswap.nvim",
     config = function()
       require("iswap").setup {
         hl_snipe = "ErrorMsg",
@@ -510,12 +507,7 @@ return require("packer").startup(function(use)
     end,
   }
   use "nvim-treesitter/playground"
-  use {
-    "lewis6991/spellsitter.nvim", -- nicer highlights for spellcheck
-    config = function()
-      require("spellsitter").setup()
-    end,
-  }
+
 
   -- lsp -------------------------------------------------------------------------------------------------------
   use "onsails/lspkind-nvim" -- icons for completion popup
@@ -545,7 +537,9 @@ return require("packer").startup(function(use)
       require "nv-aerial"
     end,
   }
-  use { "ray-x/lsp_signature.nvim" } -- used for funct() signature hint
+  use {disable=true,
+    "ray-x/lsp_signature.nvim" } -- used for funct() signature hint
+
   use {
     "ThePrimeagen/refactoring.nvim",
     disable = false,
@@ -636,8 +630,11 @@ return require("packer").startup(function(use)
   } -- lua + wont lose () next to char finally good and simple +++
   use "nvim-telescope/telescope-media-files.nvim"
   use {
-    "nvim-telescope/telescope-smart-history.nvim", -- per project history
-    requires = { "tami5/sqlite.lua" },
+    "nvim-telescope/telescope-frecency.nvim",
+    config = function()
+      require"telescope".load_extension("frecency")
+    end,
+    requires = {"kkharji/sqlite.lua"}
   }
   use { "nvim-telescope/telescope-fzf-native.nvim", run = "make" }
   use {
@@ -722,6 +719,13 @@ return require("packer").startup(function(use)
       }
     end,
   }
+  use {
+    "max397574/better-escape.nvim", -- faster jk escae
+    config = function()
+      require("better_escape").setup()
+    end,
+  }
+  use "nullchilly/fsread.nvim"
 
   --find and replace ? -------------------------------------------------------------------------------------------------------
   use {
@@ -783,8 +787,8 @@ return require("packer").startup(function(use)
     end,
   }
   use {
-    "andymass/vim-matchup",
-    disable = false, -- increase power of % - slow as hell (not any more?) higlights fun, if etc. ranges
+    "andymass/vim-matchup",  -- slow as hell
+    disable = true, -- increase power of % - slow as hell (not any more?) higlights fun, if etc. ranges
     setup = function()
       vim.g.matchup_matchparen_deferred = 1
     end,
@@ -839,13 +843,13 @@ return require("packer").startup(function(use)
   -- navigation  -------------------------------------------------------------------------------------------------------
   use {
     "rlane/pounce.nvim",
-    require("pounce").setup {
-      accept_keys = "JFKDLSAHGNUVRBYTMICEOXWPQZ",
-      accept_best_key = "<enter>",
-      multi_window = false,
-      debug = false,
-    },
     config = function()
+      require("pounce").setup {
+        accept_keys = "JFKDLSAHGNUVRBYTMICEOXWPQZ",
+        accept_best_key = "<enter>",
+        multi_window = false,
+        debug = false,
+      }
       vim.api.nvim_set_keymap("n", "  ", ":Pounce<cr>", { noremap = true, desc = "Pounce", silent = true })
       vim.api.nvim_set_keymap("v", "  ", "<cmd>Pounce<cr>", { noremap = true, desc = "Pounce", silent = true })
       vim.api.nvim_set_keymap("o", "  ", "<cmd>Pounce<cr>", { noremap = true, desc = "Pounce", silent = true })

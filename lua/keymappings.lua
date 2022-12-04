@@ -114,8 +114,8 @@ local function delete_special()
 	end
 end
 -- D and d wont affect clipboard in visual
-vim.api.nvim_set_keymap('v', 'd', '"_d', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('n', 'd', '"_d', {noremap = true, silent = true})
+-- vim.api.nvim_set_keymap('v', 'd', '"_d', {noremap = true, silent = true})
+-- vim.api.nvim_set_keymap('n', 'd', '"_d', {noremap = true, silent = true})
 -- vim.api.nvim_set_keymap('n', 'dd', 'dd', {noremap = true, silent = true})
 vim.keymap.set( "n", "dd", delete_special, { noremap = true, expr = true } )
 
@@ -125,10 +125,10 @@ vim.api.nvim_set_keymap('n', '<Del>',  '"_x', {noremap = true, silent = true})
 
 
 -- substitute without overriding register
-vim.api.nvim_set_keymap('v', 's',  '"_s', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('n', 's',  '"_s', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('v', 'S',  '"_S', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('n', 'S',  '"_S', {noremap = true, silent = true})
+-- vim.api.nvim_set_keymap('v', 's',  '"_s', {noremap = true, silent = true})
+-- vim.api.nvim_set_keymap('n', 's',  '"_s', {noremap = true, silent = true})
+-- vim.api.nvim_set_keymap('v', 'S',  '"_S', {noremap = true, silent = true})
+-- vim.api.nvim_set_keymap('n', 'S',  '"_S', {noremap = true, silent = true})
 
 -- change without overriding register - meh - cool as vim surround emulation
 --[[ vim.api.nvim_set_keymap('v', 'c',  '"_c', {noremap = true, silent = true})
@@ -137,16 +137,17 @@ vim.api.nvim_set_keymap('v', 'C',  '"_C', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', 'C',  '"_C', {noremap = true, silent = true}) ]]
 
 -- paste without overriding register
-vim.api.nvim_set_keymap('v', 'p',  '"_dp`[v`]', {noremap = true, silent = true, desc = "Paste Select"})
-vim.api.nvim_set_keymap('v', 'P',  '"_dP`[v`]', {noremap = true, silent = true, desc = "Paste Select"})
+vim.api.nvim_set_keymap('v', 'p',  'p`[v`]', {noremap = true, silent = true, desc = "Paste Select"})
+vim.api.nvim_set_keymap('v', 'P',  'P`[v`]', {noremap = true, silent = true, desc = "Paste Select"})
 
 -- <C-r> - paste from specified register
 vim.api.nvim_set_keymap("i", "<C-v>", '<C-r>+', { noremap = true } )
 vim.api.nvim_set_keymap("c", "<C-v>", '<C-r>+', { noremap = true } )
 
 -- paste fast over cursor word
+-- vim.api.nvim_set_keymap("n", " p", '<cmd>normal! viw"_d"0P<cr>', { noremap = true, desc = "Paste over word" } )
 vim.api.nvim_set_keymap("n", " p", '<cmd>normal! viw"_dP<cr>', { noremap = true, desc = "Paste over word" } )
--- vim.api.nvim_set_keymap("n", "gp", [==[`[v`]]==], { noremap = true } )
+vim.api.nvim_set_keymap("n", "gp", [==[`[v`]]==], { noremap = true } )
 
 
 -- no highlight
@@ -295,10 +296,6 @@ vim.keymap.set( "n", "zO", open_sub_folds, { remap = true, expr = true } )
 -- vim.keymap.set( "n", "zO", close_sub_folds, { remap = true, expr = true } )
 -- vim.api.nvim_set_keymap('n', 'zC',  'zC:foldc!|normal! zo<cr>', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', 'zC',  ':execute "normal! zC" | foldc! | exe "normal! zv"<cr>', {noremap = true, silent = true }) -- close fold under cursor rec
-
-
-vim.keymap.set('n', ' R', [[:PackerSync<cr>]], { remap = true, desc = 'Packer Sync' } )
-
 
 --close all Folds remap
 

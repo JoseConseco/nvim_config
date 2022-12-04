@@ -170,7 +170,7 @@ telescope.load_extension "aerial"
 telescope.load_extension "file_browser"
 telescope.load_extension "sessions_picker"
 -- require('telescope').load_extension('projects')
-telescope.load_extension "smart_history" -- somethign wrong with reading history
+-- telescope.load_extension "smart_history" -- somethign wrong with reading history
 
 -- local opt = {noremap = true, silent = true}
 -- mappings

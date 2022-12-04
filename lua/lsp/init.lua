@@ -42,15 +42,15 @@ local on_attach = function(client, bufnr)
   -- end
 
   -- adding borders
-  vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-    border = "single",
-  })
-  vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-    border = "single",
-  })
+  -- vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+  --   border = "single",
+  -- })
+  -- vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+  --   border = "single",
+  -- })
   -- Set autocommands conditional on server_capabilities
   -- vim.pretty_print(client.server_capabilities)
-  -- if client.server_capabilities.document_highlight then  -- in 8.0 - server_capabilities
+
   if client.server_capabilities.hoverProvider then -- in 8.0 - server_capabilities
     vim.api.nvim_set_hl(0, "LspReferenceRead", { reverse = true })
     vim.api.nvim_set_hl(0, "LspReferenceText", { reverse = true })
@@ -86,7 +86,7 @@ local on_attach = function(client, bufnr)
     auto_close_after = 4,
     handler_opts = { border = "single" }, -- double, single, shadow, none
   }
-  require("lsp_signature").on_attach(cfg) -- from ray-x/lsp_signature.nvim
+  -- require("lsp_signature").on_attach(cfg) -- from ray-x/lsp_signature.nvim
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()

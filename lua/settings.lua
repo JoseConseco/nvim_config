@@ -33,7 +33,7 @@ vim.g.mapleader = " " -- The key used to prefix mappings
 -- 	pattern = "*",
 -- 	command = "set cmdheight=0",
 -- })
-vim.opt.cmdheight = 0 -- More space for displaying messages
+vim.opt.cmdheight = 1 -- More space for displaying messages
 -- vim.opt.mouse = "a" -- Enable your mouse
 vim.opt.linespace = 0 -- spacing between lines
 vim.opt.splitbelow = true -- Horizontal splits will automatically be below
@@ -75,6 +75,7 @@ vim.opt.winminwidth = 20
 vim.opt.showtabline = 0
 -- vim.g.sessionoptions = "blank,buffers,curdir"
 -- vim.o.sessionoptions = "blank,buffers,curdir"
+vim.o.sessionoptions = "buffers,curdir,folds,tabpages,winsize,"
 
 vim.opt.paste = false --? format pasted str - does it work? seems broken right now.. - breaks telescope
 vim.o.splitkeep = "screen" -- prevent ssplit from jumping lines effect...

@@ -80,6 +80,8 @@ wk.register({
 	-- ['<leader>?'] = { search_unfolded,                                             'Word to clist (Grepper)'},
 	['<leader><lt>'] = {':Telescope buffers<CR>',                                      'Switch Buffer' },
 	['<leader>p'] = 'which_key_ignore',
+	['<leader>R'] = {':PackerSync<cr>', 'Packer Sync'},
+	['<leader>r'] = {':Telescope frecency<cr>', 'Frecency'},
 	['<leader>1'] = 'which_key_ignore',
 	['<leader>2'] = 'which_key_ignore',
 	['<leader>3'] = 'which_key_ignore',
@@ -211,7 +213,7 @@ wk.register({
 	-- ['<leader>ca'] = {":lua require('nvim-autopairs').disable()<CR>",             'Auto-pairs disable'}, --from treesitter-context plug
 	-- ['<leader>cA'] = {":lua require('nvim-autopairs').enable()<CR>",             'Auto-pairs enable'}, --from treesitter-context plug
 	['<leader>cl'] = {":CreateCompletionLine<CR>",             'Create Completion'}, --from treesitter-context plug
-	['<leader>co'] = {":AerialOpen float<CR> | :AerialTreeCloseAll<cr>",             'Open Outliner'}, --from treesitter-context plug
+	['<leader>co'] = {":AerialOpen float<CR> | :lua require'aerial'.tree_close_all()<cr>",             'Open Outliner (Aerial)'}, --from treesitter-context plug
 
 	['<leader>cs'] = { name = '+Spell' },
 	['<leader>css'] = {':setlocal spell! spelllang=en_us<CR>', 'Toggle Spellcheck'},
@@ -265,7 +267,7 @@ wk.register({
 		end,    'Attach (localhost, 5678)'} ,
 	-- ['<leader>da']  = { ":lua require'dap'.attach('0.0.0.0', 5678)<CR>",                                'Attach (localhost, 5678)'} ,
 	['<leader>dl']  = { ":lua require'dap'.run_last()<CR>",                                             'Re-run Last'},
-	['<leader>db']  = { ":lua lua require'dap'.toggle_breakpoint()<CR>",                                    'Toggle breakpoint'},
+	['<leader>db']  = { ":lua require'dap'.toggle_breakpoint()<CR>",                                    'Toggle breakpoint'},
 	-- ['<leader>dc']  = { ":lua require'dap'.goto_()<CR>",                                             'Run to Cursor'},
 	['<leader>du']  = { ":lua require('dapui').setup()<CR>",                                            'UI Start'} ,
 	['<leader>dC']  = { ":lua require('dapui').close()<cr>:DapVirtualTextForceRefresh<CR>",             'UI Close'},
@@ -540,11 +542,11 @@ wk.register({
 	['<leader>q'] = { name = '+Quit' }       ,
 	['<leader>qf'] = {':q!<CR>'                , 'Force Quit (q!)'}      ,
 	['<leader>qs'] = {':bufdo update | q!<CR>' , 'Quit Save all (wqa!)'} ,
-	['<leader>qq'] = {':TSContextDisable<cr>|:call v:lua.Save_current_session()<CR>|:confirm qa<CR>',        'Quit Confirm (qa)'},
+	['<leader>qq'] = {':TSContextDisable<cr>|:call v:lua.Save_current_session()<CR>|:confirm qa<cr>',        'Quit Confirm (qa)'},
 })
 wk.register({  -- second one for visual mode
 	['<leader>q'] = { name = '+Quit'},
-	['<leader>qq'] = {':<ESC>|:TSContextDisable<cr>|:call v:lua.Save_current_session()<CR>|:confirm qa<CR>',        'Quit Confirm (qa)'},
+	['<leader>qq'] = {':<ESC>|:TSContextDisable<cr>|:call v:lua.Save_current_session()<CR>|:confirm qa<cr>',        'Quit Confirm (qa)'},
 }, {mode = "v", prefix = ""})
 
 -- TEMP fix for https://github.com/folke/which-key.nvim/issues/273  -- window closed immediately error when using Telescope

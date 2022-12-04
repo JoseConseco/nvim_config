@@ -157,16 +157,6 @@ require("lualine").setup {
     },
     lualine_x = {}, -- 'encoding'
     lualine_y = {
-      {
-        "lsp_progress",
-        display_components = { "spinner" },
-        -- {'lsp_progress', display_components = {'lsp_client_name', 'spinner', { 'title', 'percentage', 'message' }},
-        -- timer = { progress_enddelay = 500, spinner = 1000, lsp_client_name_enddelay = -1},
-        spinner_symbols = { "🌑 ", "🌒 ", "🌓 ", "🌔 ", "🌕 ", "🌖 ", "🌗 ", "🌘 " },
-      },
-      {"branch", symbols = {added = '+', modified = '~', removed = '-'}},
-      -- {"diff", symbols = {added = '+', modified = '~', removed = '-'}},
-      -- {'diagnostics', sources={'nvim_lsp'}}},
       { "diagnostics", sources = { "nvim_diagnostic" } },
     },
     lualine_z = {
