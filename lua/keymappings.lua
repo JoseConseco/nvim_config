@@ -300,15 +300,6 @@ vim.api.nvim_set_keymap('n', 'zC',  ':execute "normal! zC" | foldc! | exe "norma
 --close all Folds remap
 
 -- Saner behavior of n and N - plus added hlslens
--- vim.cmd([[
--- nnoremap <expr> n  'Nn'[v:searchforward].'zzzv<Cmd>lua require("hlslens").start()<CR>'
--- xnoremap <expr> n  'Nn'[v:searchforward].'zzzv<Cmd>lua require("hlslens").start()<CR>'
--- onoremap <expr> n  'Nn'[v:searchforward].'<Cmd>lua require("hlslens").start()<CR>'
---
--- nnoremap <expr> N  'nN'[v:searchforward].'zzzv<Cmd>lua require("hlslens").start()<CR>'
--- xnoremap <expr> N  'nN'[v:searchforward].'zzzv<Cmd>lua require("hlslens").start()<CR>'
--- onoremap <expr> N  'nN'[v:searchforward].'<Cmd>lua require("hlslens").start()<CR>'
--- ]])
 
 vim.cmd([[
 nnoremap <expr> n  'Nn'[v:searchforward].'zzzv'

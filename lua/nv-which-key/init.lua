@@ -119,20 +119,6 @@ wk.register({  --ignore magic s and g in cmd mode
 -- wk.register('which_key_ignore'
 -- wk.register('which_key_ignore'
 
-local function compare_to_clipboard()
-	local ftype = vim.api.nvim_eval("&filetype")
-	vim.cmd(string.format([[
-    vsplit
-    enew
-    normal! P
-    setlocal buftype=nowrite
-    set filetype=%s
-    diffthis
-    bprevious
-    execute "normal! \<C-w>\<C-w>"
-    diffthis
-  ]], ftype))
-end
 -- b for buffers  - for nvim-bufferline<Plug>
 -- ['s'] = {':BLines',                              'Search lines fzf'},
 local function pick_filetype()
@@ -237,20 +223,6 @@ wk.register({
 	['<leader>ce'] = {":lua require('refactoring').refactor('Extract Function')<CR>",            'Extract Function'},
 }, {mode = "v", prefix = ""})
 
-wk.register({
-	['<leader>D'] = { name = '+Diff' },
-	['<leader>Dc'] = {  compare_to_clipboard,     'Compare to clipboard'},   -- fixes error on buffer close
-	['<leader>D['] =  { '[c<CR>',                                   'Prev change [c'},
-	['<leader>D]'] =  { ']c<CR>',                                   'Next change ]c'},
-	['<leader>Do'] =  { ':diffget<CR>',                             'Obtain(do)'},
-	['<leader>Dp'] =  { ':diffput<CR>',                             'Put(dp)'},
-	['<leader>Dt'] =  { ':diffthis<CR>',                            'Diff This'},
-	['<leader>Du'] =  { ':diffupdate<CR>',                          'Update changes'},
-	['<leader>Dd'] =  { ':DiffviewOpen<CR>',                        'Diffview Open'},
-	['<leader>Dh'] =  { ':DiffviewFileHistory %<CR>',               'Diffview File History'},
-	['<leader>Dw'] =  { ':windo diffthis<cr>',                      'Diff visible windows'}, --broken from scrollbar
-})
-
 
 wk.register({
 	['<leader>d']   = { name = '+Debugger' },
@@ -298,25 +270,64 @@ wk.register({
 	['<leader>fC'] = {':cd %:p:h<CR>',                                     'cd %'},
 })
 
+local function diffWithSaved()
+    local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
+	vim.cmd.diffthis()
+	vim.cmd[[vnew | r # | normal! 1Gdd]]
+	vim.cmd.diffthis()
+	vim.cmd.execute([["setlocal bt=nofile bh=wipe nobl noswf ro"]])
+    vim.bo.filetype = buf_ft
+end
+
+local function compare_to_clipboard()
+	local ftype = vim.api.nvim_eval("&filetype")
+	vim.cmd(string.format([[
+    vsplit
+    enew
+    normal! P
+    setlocal buftype=nowrite
+    set filetype=%s
+    diffthis
+    bprevious
+    execute "normal! \<C-w>\<C-w>"
+    diffthis
+  ]], ftype))
+end
 
 -- g is for git
 wk.register({
 	['<leader>g'] = { name = '+GIT' },
-	['<leader>ga'] = {':Git add .<CR>'                        , 'add all'},
-	['<leader>gc'] = {':Git commit<CR>'                       , 'commit'},
-	['<leader>gd'] = {':Git diff<CR>'                         , 'diff'},
-	['<leader>gD'] = {':Gdiffsplit<CR>'                       , 'diff split'},
-	['<leader>gH'] = {':Gdiffsplit HEAD~1'                    , 'diff split to Head~1'},
-	['<leader>gR'] = {':Ggrep<CR>'                            , 'git grep'},
 	['<leader>gg'] = {':FloatermNew lazygit<CR>'             , 'LazyGit'},  -- defined in  nvim-toggleterm.lua plug
-	['<leader>gs'] = {':Git<CR>'                              , 'status'}, -- old Gitstatus  - deprecated
-	['<leader>gL'] = {':Gclog<CR>'                            , 'log files revisions'},
-	['<leader>gl'] = {':0Gclog<CR>'                           , 'log current file revisions'},
-	['<leader>gp'] = {':!git push<CR>'                        , 'push'},
-	['<leader>gP'] = {':Git pull<CR>'                         , 'pull'},
-	['<leader>gr'] = {':GRemove<CR>'                          , 'remove'},
-	['<leader>gv'] = {':GV<CR>'                               , 'view commits'},
-	['<leader>gV'] = {':GV!<CR>'                              , 'view buffer commits'},
+	['<leader>g['] =  { '[c<CR>',                                   'Prev change [c'},
+	['<leader>g]'] =  { ']c<CR>',                                   'Next change ]c'},
+	['<leader>go'] =  { ':diffget<CR>',                             'Obtain(do)'},
+	['<leader>gp'] =  { ':diffput<CR>',                             'Put(dp)'},
+	['<leader>gt'] =  { ':diffthis<CR>',                            'Diff This'},
+	['<leader>gu'] =  { ':diffupdate<CR>',                          'Update changes'},
+	['<leader>gw'] =  { ':windo diffthis<cr>',                      'Diff visible windows'},
+
+    ['<leader>gf'] = { name = '+Fugitive' },
+	['<leader>gfR'] = {':Ggrep<CR>'                            , 'git grep'},
+	['<leader>gfa'] = {':Git add .<CR>'                        , 'add all'},
+	['<leader>gfc'] = {':Git commit<CR>'                       , 'commit'},
+	['<leader>gfd'] = {':Git diff<CR>'                         , 'diff'},
+	['<leader>gfD'] = {':Gdiffsplit<CR>'                       , 'diff split'},
+	['<leader>gfH'] = {':Gdiffsplit HEAD~1'                    , 'diff split to Head~1'},
+	['<leader>gfs'] = {':Git<CR>'                              , 'status'}, -- old Gitstatus  - deprecated
+	['<leader>gfL'] = {':Gclog<CR>'                            , 'log files revisions'},
+	['<leader>gfl'] = {':0Gclog<CR>'                           , 'log current file revisions'},
+	['<leader>gfp'] = {':!git push<CR>'                        , 'push'},
+	['<leader>gfP'] = {':Git pull<CR>'                         , 'pull'},
+	['<leader>gfr'] = {':GRemove<CR>'                          , 'remove'},
+	['<leader>gfv'] = {':GV<CR>'                               , 'view commits'},
+	['<leader>gfV'] = {':GV!<CR>'                              , 'view buffer commits'},
+
+	['<leader>gd'] = { name = '+DiffView' },
+	['<leader>gdc'] = {  compare_to_clipboard,                      'Diff with clipboard'},   -- fixes error on buffer close
+	['<leader>gds'] = {  diffWithSaved,                              'Diff with saved'},   -- fixes error on buffer close
+	['<leader>gdd'] =  { ':DiffviewOpen<CR>',                        'Diffview Open'},
+	['<leader>gdh'] =  { ':DiffviewFileHistory %<CR>',               'Diffview File History'},
+
 })
 -- ['h'] - taken by git_sign - hunk oper
 -- ['A'] = {':Git add %'                        , 'add current'},
@@ -332,7 +343,7 @@ wk.register({
 	['<leader>hx'] = {':LHDelete<CR>',                  'Local History Delete'},
 	['<leader>hd'] = {':LHDiff<CR>',                    'Local History Diff'},
 	['<leader>hD'] = {':DiffSaved<CR>',                 'Diff with saved'},
-	['<leader>hh'] = {':Gclog<CR>',                     'File rev history (fugitive)'},
+	['<leader>hh'] = {':Gclog<CR>',                     'File rev history'},
 })
 
 wk.register({
@@ -560,11 +571,4 @@ wk.show = function(keys, opts)
 		show(keys, opts)
 end-- Register which key map
 
--- function! s=DiffWithSaved()
---	let filetype=&ft
---	diffthis
---	vnew | r # | normal! 1Gdd
---	diffthis
---	exe "setlocal bt=nofile bh=wipe nobl noswf ro ft=-- . filetype
--- end
--- com! DiffSaved call s=DiffWithSaved()
+

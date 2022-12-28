@@ -150,7 +150,9 @@ return require("packer").startup(function(use)
     -- "norcalli/nvim-colorizer.lua",  -- original repo - not maintained
     "NvChad/nvim-colorizer.lua",
     config = function()
-      require("colorizer").setup()
+      require("colorizer").setup({
+        filetypes = { "css","lua","html" }
+      })
     end,
   } --color highlighter
   use {
@@ -278,50 +280,11 @@ return require("packer").startup(function(use)
       require "nv-nvim-scrollbar"
     end,
   }
-  use {
-    "kevinhwang91/nvim-hlslens",
-    cond = false,
-    config = function()
-      require("hlslens").setup {
-        nearest_only = true,
-        calm_down = false,
-        -- override_lens = function() end,
-      }
-      -- set at bottom of keymaps
-      -- local kopts = {noremap = true, silent = true}
-      -- vim.api.nvim_set_keymap('n', 'n',
-      -- 		[[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]], kopts)
-      -- vim.api.nvim_set_keymap('n', 'N',
-      -- 		[[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]], kopts)
-    end,
-  }
 
   use {
     "karb94/neoscroll.nvim", -- smooth scroll
     config = function()
       require("neoscroll").setup { hide_cursor = false }
-    end,
-  }
-  use {
-    "gen740/SmoothCursor.nvim", -- fancy pointer animation on left side
-    config = function()
-      require("smoothcursor").setup {
-        autostart = true,
-        cursor = "",
-        fancy = {
-          enable = true, -- enable fancy mode
-          head = { cursor = "►", texthl = "LineNr", linehl = nil },
-          body = {
-            { cursor = "", texthl = "LineNr" },
-            { cursor = "", texthl = "LineNr" },
-            { cursor = "●", texthl = "LineNr" },
-            { cursor = "●", texthl = "LineNr" },
-            { cursor = "•", texthl = "LineNr" },
-            { cursor = ".", texthl = "LineNr" },
-            { cursor = ".", texthl = "LineNr" },
-          },
-        },
-      }
     end,
   }
 
@@ -537,8 +500,8 @@ return require("packer").startup(function(use)
       require "nv-aerial"
     end,
   }
-  use {disable=true,
-    "ray-x/lsp_signature.nvim" } -- used for funct() signature hint
+  -- use {disable=true,
+  --   "ray-x/lsp_signature.nvim" } -- used for funct() signature hint - replaced with noice
 
   use {
     "ThePrimeagen/refactoring.nvim",
@@ -701,6 +664,7 @@ return require("packer").startup(function(use)
   }
   use {
     "folke/todo-comments.nvim", -- original
+    conf=false,
     config = function()
       require "nv-todo"
     end,
@@ -719,12 +683,12 @@ return require("packer").startup(function(use)
       }
     end,
   }
-  use {
-    "max397574/better-escape.nvim", -- faster jk escae
-    config = function()
-      require("better_escape").setup()
-    end,
-  }
+  -- use {
+  --   "max397574/better-escape.nvim", -- faster jk escae
+  --   config = function()
+  --     require("better_escape").setup()
+  --   end,
+  -- }
   use "nullchilly/fsread.nvim"
 
   --find and replace ? -------------------------------------------------------------------------------------------------------
@@ -918,6 +882,19 @@ return require("packer").startup(function(use)
   --REPLS -------------------------------------------------------------------------------------------------------
   use "rafcamlet/nvim-luapad" -- :Luapad - open interactive scratch bufer with realtime eval
   use "metakirby5/codi.vim" -- repls for all other langs ...
+  use({
+    "jackMort/ChatGPT.nvim",
+      config = function()
+        require("chatgpt").setup({
+          -- optional configuration
+        })
+      end,
+      requires = {
+        "MunifTanjim/nui.nvim",
+        "nvim-lua/plenary.nvim",
+        "nvim-telescope/telescope.nvim"
+      }
+  })
 
   ---  TOOLS -------------------------------------------------------------------------------------------------------
   use {
