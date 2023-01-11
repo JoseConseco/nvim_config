@@ -102,6 +102,7 @@ return require("packer").startup(function(use)
   use {
     "EdenEast/nightfox.nvim",
     -- branch = "feat/interactive",
+    -- commit = "c88664b18e593319aea1ded731dd252d4f9e0f9a", -- before day-fox refactor, not looking goodd
     config = function()
       require "nv-nightfox"
     end,
@@ -222,6 +223,7 @@ return require("packer").startup(function(use)
   use { -- cmd line replacer
     "folke/noice.nvim",
     event = "VimEnter",
+    cond=false,
     config = function()
       require "nv-noice"
     end,
@@ -455,7 +457,8 @@ return require("packer").startup(function(use)
     end,
   }
   use {
-    "p00f/nvim-ts-rainbow",
+    -- "p00f/nvim-ts-rainbow", -- archived
+    "mrjones2014/nvim-ts-rainbow",
     after = "nightfox.nvim",
     config = function()
       -- add colorscheme change hook
@@ -599,6 +602,12 @@ return require("packer").startup(function(use)
     end,
     requires = {"kkharji/sqlite.lua"}
   }
+  use {
+    "debugloop/telescope-undo.nvim",
+    config = function()
+      require"telescope".load_extension("undo")
+    end,
+  }
   use { "nvim-telescope/telescope-fzf-native.nvim", run = "make" }
   use {
     "ibhagwan/fzf-lua",
@@ -607,7 +616,11 @@ return require("packer").startup(function(use)
   }
 
   -- Explorer  -------------------------------------------------------------------------------------------------------
-  use { "elihunter173/dirbuf.nvim" } -- edit dir as buffer text
+  -- use { "elihunter173/dirbuf.nvim" } -- edit dir as buffer text
+  use {
+    'stevearc/oil.nvim',
+    config = function() require('oil').setup() end
+  }
 
   -- Git  -------------------------------------------------------------------------------------------------------
   use {

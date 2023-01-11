@@ -56,7 +56,7 @@ vim.opt.breakindent = true
 
 vim.opt.incsearch = true --  show partially typed result for searc
 vim.opt.inccommand = "nosplit" --  show partially substituted results "split"	 : Also shows partial off-screen results
-vim.opt.ignorecase = true -- ignore case of searched term
+vim.opt.ignorecase = false -- ignore case of searched term
 vim.opt.smartcase = true -- disable ignorecase if typed in command has Upper case letter
 
 vim.opt.number = true -- set numbered lines

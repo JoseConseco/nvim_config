@@ -5,7 +5,7 @@ P = function(v)
   return v
 end
 
-local Color = require "nightfox.lib.color"
+local Color = require"hl_manager.color"
 
 local fmt = string.format
 

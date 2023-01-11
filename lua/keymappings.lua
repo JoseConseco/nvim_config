@@ -221,6 +221,7 @@ vim.api.nvim_set_keymap( "n", "<F10>",  '<c-^>',  {noremap = true, silent = true
 -- vim.api.nvim_set_keymap( "n", "<F4>", ":Fern . -drawer -reveal=% -toggle -width=35<CR>", { noremap = true, silent = true} )
 -- vim.api.nvim_set_keymap( "n", "<F4>", "<Cmd>NnnPicker %:p:h<CR>", { noremap = true, silent = true} ) -- randomly wont work
 vim.api.nvim_set_keymap( "n", "<F4>",  ':FloatermNew ranger<CR>',  {noremap = true, silent = true } )
+vim.api.nvim_set_keymap( "n", "-",  ':Oil --float<cr>',  {noremap = true, silent = true } )
 
 
 --MM click to toggle folds under cursor(zA)
