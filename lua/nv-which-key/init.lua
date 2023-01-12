@@ -80,7 +80,7 @@ wk.register({
 	-- ['<leader>?'] = { search_unfolded,                                             'Word to clist (Grepper)'},
 	['<leader><lt>'] = {':Telescope buffers<CR>',                                      'Switch Buffer' },
 	['<leader>p'] = 'which_key_ignore',
-	['<leader>R'] = {':PackerSync<cr>', 'Packer Sync'},
+	['<leader>R'] = {':Lazy sync<cr>', 'Lazy Sync'},
 	['<leader>r'] = {':Telescope frecency<cr>', 'Frecency'},
 	['<leader>1'] = 'which_key_ignore',
 	['<leader>2'] = 'which_key_ignore',

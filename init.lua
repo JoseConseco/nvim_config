@@ -1,6 +1,8 @@
 _G.P = function(x)
   print(vim.inspect(x))
 end
+
+
 require "plugins"
 require "hl_manager"
 require "settings"

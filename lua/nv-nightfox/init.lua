@@ -89,7 +89,8 @@ require("nightfox").setup({
 		}
   },
 })
-vim.cmd [[highlight LineNr guifg=#5081c0 | highlight CursorLineNR guifg=#FFba00 ]]
+-- vim.cmd [[highlight LineNr guifg=#5081C0]]
+-- vim.cmd [[highlight CursorLineNR guifg=#FFba00 ]]
 local hl_manager = require "hl_manager"
 hl_manager.highlight_from_src("NormalNC", "Normal", {bg = -5})
 hl_manager.match_hl_to_highlight("VertSplit", "Normal", {bg = -5}) -- just use bg colr from normal
