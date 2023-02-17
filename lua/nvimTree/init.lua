@@ -71,10 +71,7 @@ require("nvim-tree").setup {
     },
 }
 
-
-
 -- auto show hydra on nvimtree focus
-
 local function change_root_to_global_cwd()
   local global_cwd = vim.fn.getcwd()
   -- local global_cwd = vim.fn.getcwd(-1, -1)
