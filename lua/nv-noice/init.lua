@@ -59,6 +59,18 @@ require("noice").setup {
       ---@type NoiceViewOptions
       opts = {}, -- merged with defaults from documentation
     },
+    signature = { -- does not seem to work
+      enabled = true,
+      auto_open = {
+        enabled = true,
+        trigger = true, -- Automatically show signature help when typing a trigger character from the LSP
+        luasnip = true, -- Will open signature help when jumping to Luasnip insert nodes
+        throttle = 50, -- Debounce lsp signature help request by 50ms
+      },
+      view = nil, -- when nil, use defaults from documentation
+      ---@type NoiceViewOptions
+      opts = {}, -- merged with defaults from documentation
+    },
   },
   presets = {
     -- you can enable a preset by setting it to true, or a table that will override the preset config

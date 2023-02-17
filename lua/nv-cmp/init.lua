@@ -10,38 +10,38 @@ local press = function(key)
   vim.api.nvim_feedkeys(replace_keycodes(key), "m", true)
 end
 
-vim.opt.completeopt = "menu,menuone,noselect,noinsert" -- not needed anymore - actually needed for cmp-dap...
+-- vim.opt.completeopt = "menu,menuone,noselect,noinsert" -- not needed anymore - actually needed for cmp-dap...
 cmp.setup {
-  sources = cmp.config.sources({
+  sources = cmp.config.sources {
     -- { name = "nvim_lsp_signature_help" },
-		{ name = "nvim_lsp",    priority = 8, group_index = 1, keyword_length = 2, max_item_count = 5 },
-    -- { name = "copilot",     priority = 8, group_index = 1, keyword_length = 0 },
-    { name = "cmp_tabnine", priority = 8, group_index = 1, keyword_length = 2, },
-    { name = "cmp_dap",     priority = 7, group_index = 1 },
-    { name = "ultisnips",   priority = 7, group_index = 1 },
-    { name = "nvim_lua",    priority = 5, group_index = 1 },
+    { name = "copilot",     priority = 9, group_index = 1, keyword_length = 0 },
+    { name = "nvim_lsp", priority = 8, group_index = 1, keyword_length = 2, max_item_count = 5 },
+    { name = "cmp_tabnine", priority = 8, group_index = 1, keyword_length = 2 },
+    { name = "cmp_dap", priority = 7, group_index = 1 },
+    { name = "ultisnips", priority = 7, group_index = 1 },
+    { name = "nvim_lua", priority = 5, group_index = 1 },
     -- { name = "buffer",      priority = 5, group_index = 1, keyword_length = 2, max_item_count = 5 }, -- actually nicer than RG
-    { name = 'rg',          priority = 5, group_index = 1, keyword_length = 2, max_item_count = 4 }, -- first for locality sorting?
-    { name = "spell",       priority = 5, group_index = 1, keyword_length = 3, keyword_pattern = [[\w\+]] },
-    { name = "calc",        priority = 3, group_index = 1, keyword_pattern = [[\d\+\W\{-\}\d]] },
-    { name = 'path',        priority = 1, group_index = 1 },
+    { name = "rg", priority = 5, group_index = 1, keyword_length = 2, max_item_count = 4 }, -- first for locality sorting?
+    { name = "spell", priority = 5, group_index = 1, keyword_length = 3, keyword_pattern = [[\w\+]] },
+    { name = "calc", priority = 3, group_index = 1, keyword_pattern = [[\d\+\W\{-\}\d]] },
+    { name = "path", priority = 1, group_index = 1 },
     -- { name = 'vsnip' },
-  }),
-	formatting = {
+  },
+  formatting = {
     format = lspkind.cmp_format {
       with_text = true,
       menu = {
-        cmp_tabnine   = "[T9]",
-        copilot       = "[CPL]",
-        cmp_dap       = "[DAP]",
-        nvim_lsp      = "[LSP]",
-        ultisnips     = "[USnip]",
-        spell         = "[SPELL]", -- from f3fora/cmp-spell (vim spell has to be enabled)
-        nvim_lua      = "[LUA]",
-        rg            = "[RG]",
-        path          = "[PATH]",
-        buffer        = "[Buffer]",
-        calc          = "[Calc]",
+        cmp_tabnine = "[T9]",
+        copilot = "[COP]",
+        cmp_dap = "[DAP]",
+        nvim_lsp = "[LSP]",
+        ultisnips = "[USnip]",
+        spell = "[SPELL]", -- from f3fora/cmp-spell (vim spell has to be enabled)
+        nvim_lua = "[LUA]",
+        rg = "[RG]",
+        path = "[PATH]",
+        buffer = "[Buffer]",
+        calc = "[Calc]",
       },
     },
   },
@@ -56,12 +56,18 @@ cmp.setup {
       scrollbar = "║",
     },
   },
+  matching = {
+    disallow_fuzzy_matching = false,
+    disallow_partial_matching = false,
+    disallow_prefix_unmatching = false,
+    disallow_partial_fuzzy_matching = false,
+  },
 
-	completion = {
-		border = "rounded",
-		scrollbar = "║",
-		keyword_length = 2,
-	},
+  completion = {
+    border = "rounded",
+    scrollbar = "║",
+    keyword_length = 0,
+  },
 
   mapping = {
     ["<C-p>"] = cmp.mapping(cmp.mapping.select_prev_item(), { "i", "s", "c" }),
@@ -112,18 +118,21 @@ cmp.setup {
             cmp.complete()
           end
         else -- no selected entry
-          local copilot_keys = vim.fn["copilot#Accept"]()
+          local copilot_keys = require("copilot.suggestion").is_visible()
           if copilot_keys ~= "" then
-            vim.api.nvim_feedkeys(copilot_keys, "i", true)
+            require("copilot.suggestion").accept()
+            -- vim.api.nvim_feedkeys(copilot_keys, "i", true)
           else
             press "<C-e>" -- close if no entry selecte
             -- cmp.complete()  -- force invoke popup
           end
         end
       else -- no popup
-        local copilot_keys = vim.fn["copilot#Accept"]()
+        -- local copilot_keys = vim.fn["copilot#Accept"]()
+        local copilot_keys = require("copilot.suggestion").is_visible()
         if copilot_keys ~= "" then
-          vim.api.nvim_feedkeys(copilot_keys, "i", true)
+          -- vim.api.nvim_feedkeys(copilot_keys, "i", true)
+          require("copilot.suggestion").accept()
         else
           -- fallback()
           cmp.complete() -- force invoke popup
@@ -160,15 +169,14 @@ cmp.setup {
 -- form "rcarriga/cmp-dap",
 -- enable cmp-dap - only for dap-repl - or else cmp will throw error
 
-require'cmp'.setup.filetype("dap-repl", {
+require("cmp").setup.filetype("dap-repl", {
   -- nvim-cmp by defaults disables autocomplete for prompt buffers
-  enabled = function ()
-    return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
-      or require("cmp_dap").is_dap_buffer()
+  enabled = function()
+    return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt" or require("cmp_dap").is_dap_buffer()
   end,
   sources = {
-    { name = 'dap' },
-  }
+    { name = "dap" },
+  },
 })
 
 local cmp_autopairs = require "nvim-autopairs.completion.cmp"
@@ -181,24 +189,24 @@ cmp.setup.cmdline(":", {
       vim_item.abbr = vim.fn.strcharpart(vim_item.abbr, 0, 50) -- hack to clamp cmp-cmdline-history len
       vim_item.menu = ({
         cmdline_history = "[HIST]",
-        cmdline         = "[CMD]",
-        path            = "[PATH]",
-        buffer          = "[BUFF]",
+        cmdline = "[CMD]",
+        path = "[PATH]",
+        buffer = "[BUFF]",
       })[entry.source.name]
       return vim_item
     end,
   },
   sources = {
-    { name = "cmdline",         priority = 2, group_index = 1 },
+    { name = "cmdline", priority = 2, group_index = 1 },
     { name = "cmdline_history", priority = 1, group_index = 1, max_item_count = 3 },
-    { name = "path",            priority = 1, group_index = 2 }, -- from tzacher
+    { name = "path", priority = 1, group_index = 2 }, -- from tzacher
     -- { name = "buffer",          priority = 1, group_index = 1 },
   },
 })
 cmp.setup.cmdline({ "/", "?" }, {
   sources = {
     -- { name = 'buffer' },
-    { name = 'rg'}, -- or 'rg'
+    { name = "rg" }, -- or 'rg'
     -- {
     --   name = "buffer",
     --   option = {},
@@ -217,7 +225,6 @@ cmp.setup.cmdline({ "/", "?" }, {
     },
   },
 })
-
 
 vim.cmd [[
 augroup SetCmpColors

@@ -29,7 +29,7 @@ local function theme_change_timeday(start_hour, end_hour)
   vim.cmd [[doautoall ColorScheme]]
 end
 
-vim.api.nvim_create_autocmd({"VimEnter","FocusLost"}, { --FocusGained
+vim.api.nvim_create_autocmd({"VimEnter"}, { --FocusGained ,"FocusLost"
   pattern = "*",
   callback = function()
     theme_change_timeday(9, 14)
@@ -106,7 +106,7 @@ local root_cache = {}
 
 local set_root = function()
   -- Get directory path to start search from
-  local path = vim.api.nvim_buf_get_name(0) -- path
+  local path = vim.api.nvim_buf_get_name(0) -- file name
   if path == '' then return end
   path = vim.fs.dirname(path) -- directory
 
@@ -114,16 +114,18 @@ local set_root = function()
   local root = root_cache[path]
   if root == nil then
     local root_file = vim.fs.find(root_names, { path = path, upward = true })[1]
-    if root_file == nil then
-      root = path
-    else
+    if root_file ~= nil then
       root = vim.fs.dirname(root_file)
-    root_cache[path] = root
+      root_cache[path] = root
+    -- else
+    --   root = path
     end
   end
   -- Set current directory
   if vim.fn.isdirectory(root) == 1 then -- is valid?
-    vim.fn.chdir(root)
+    -- vim.fn.chdir(root)  -- sometimes changs window working dir, sometimes global...
+    vim.cmd.cd(root) -- always change global working dir
+    -- return true -- clear autocmd
   end
 end
 
@@ -152,3 +154,4 @@ vim.api.nvim_create_autocmd('BufEnter', { group = root_augroup, callback = set_r
 -- 	  autocmd CmdlineLeave * call SetShortmessF(0)
 -- 	augroup END
 -- ]]
+-- vim.cmd[[lua MiniStarter.open()]]  -- not sure why autoopen wont work... on hyprland

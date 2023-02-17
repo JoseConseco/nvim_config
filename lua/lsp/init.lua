@@ -1,3 +1,6 @@
+require("neodev").setup({
+  -- add any options here, or leave empty to use the default settings
+})
 local nvim_lsp = require "lspconfig"
 
 local opts = { noremap = true, silent = true }
@@ -25,7 +28,7 @@ local on_attach = function(client, bufnr)
   buf_set_keymap("n", "gd", ":lua require('telescope.builtin').lsp_definitions({initial_mode = 'normal'})<CR>", opts) --zv - open fold at line
   buf_set_keymap("n", "K", "<Cmd>lua vim.lsp.buf.hover()<CR>", opts)
   -- buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  -- buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
   -- buf_set_keymap('n', '<space>la', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
   -- buf_set_keymap('n', '<space>lr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
   -- buf_set_keymap('n', '<space>ll', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
@@ -233,7 +236,7 @@ nvim_lsp.pyright.setup {
 --   },
 -- }
 
-nvim_lsp.sumneko_lua.setup {
+nvim_lsp.lua_ls.setup {
   cmd = { "lua-language-server", "-E", "/usr/share/lua-language-server/main.lua" },
   on_attach = on_attach,
   capabilities = capabilities,
@@ -251,6 +254,7 @@ nvim_lsp.sumneko_lua.setup {
         globals = { "vim" },
       },
       workspace = {
+        checkThirdParty = false,
         -- Make the server aware of Neovim runtime files
         library = vim.api.nvim_get_runtime_file("", true),
         -- library = {

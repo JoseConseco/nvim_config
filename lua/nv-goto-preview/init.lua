@@ -30,6 +30,7 @@ local function unload_keys()
   vim.api.nvim_buf_del_keymap(buffer, "n", "<CR>")
   vim.api.nvim_buf_del_keymap(buffer, "n", "<C-s>")
   vim.api.nvim_buf_del_keymap(buffer, "n", "<C-t>")
+  vim.api.nvim_buf_del_keymap(buffer, "n", "<C-w>q")
   vim.api.nvim_buf_del_keymap(buffer, "n", "q")
   for _, key in ipairs(move_keys) do
     vim.api.nvim_buf_del_keymap(buffer, "n", key)
@@ -37,7 +38,9 @@ local function unload_keys()
 end
 
 local function open_preview(preview_win, type)
+  print("open_preview")
   return function()
+    print(preview_win, type)
     unload_keys()
     local command = select_to_edit_map[type]
     local orig_window = vim.api.nvim_win_get_config(preview_win).win
@@ -50,7 +53,9 @@ local function open_preview(preview_win, type)
 end
 
 local function close_preview(preview_win)
+  print("close_preview")
   return function()
+    print(preview_win)
     unload_keys()
     vim.api.nvim_win_close(preview_win, gtp.conf.force_close)
   end
@@ -77,6 +82,7 @@ local function move_preview(preview_win, key)
 end
 
 local function post_open_hook(buf, win)
+  print("post_open_hook")
   vim.keymap.set("n", "<C-v>", open_preview(win, "vertical"), { buffer = buf })
   vim.keymap.set("n", "<CR>", open_preview(win, "default"), { buffer = buf })
   vim.keymap.set("n", "<C-s>", open_preview(win, "horizontal"), { buffer = buf })

@@ -18,7 +18,7 @@ require("dapui").setup {
 				'repl',
 				'console',
 			},
-			size = 10,
+			size = 20,
 			position = "bottom", -- Can be "left", "right", "top", "bottom"
 		},
   },

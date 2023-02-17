@@ -235,7 +235,7 @@ wk.register({
 		function()
 			require'dap'.set_breakpoint()
 			require'dap'.run({type='python', request='attach', host='127.0.0.1', port=5678})
-			require'hydra'.spawn('dap-hydra')
+			require'hydra'.spawn['dap-hydra']()
 		end,    'Attach (localhost, 5678)'} ,
 	-- ['<leader>da']  = { ":lua require'dap'.attach('0.0.0.0', 5678)<CR>",                                'Attach (localhost, 5678)'} ,
 	['<leader>dl']  = { ":lua require'dap'.run_last()<CR>",                                             'Re-run Last'},
@@ -267,7 +267,7 @@ wk.register({
 	['<leader>fy'] = { ":call v:lua.yankpath()<CR>",                       'Yank file location<CR>'},
 	['<leader>fo'] = { ':!xdg-open "%:p:h"<CR>',                           'Open containing folder'},
 	['<leader>ft'] = { ':!alacritty --working-directory "%:p:h"<CR>',      'Open at terminal'},
-	['<leader>fC'] = {':cd %:p:h<CR>',                                     'cd %'},
+	['<leader>fc'] = {':cd %:p:h<CR>',                                     'cd %'},
 })
 
 local function diffWithSaved()

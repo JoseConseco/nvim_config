@@ -41,7 +41,6 @@ require('mini.sessions').setup({
 
 
 
-
 local starter = require('mini.starter')
 local my_items = {
 	starter.sections.builtin_actions(),
@@ -52,8 +51,8 @@ local my_items = {
 	-- starter.sections.recent_files(10, true),
 	-- Use this if you set up 'mini.sessions'
 	starter.sections.sessions(9, true),
-	{ name = 'Addons', action = ':Explore ~/.config/blender/2.82/scripts/addons', section = 'Bookmarks' },
-	{ name = 'NvimPlugs', action = ':Explore ~/.local/share/nvim/site/pack/packer/start', section = 'Bookmarks' },
+	{ name = 'Addons', action = ':Oil ~/.config/blender/2.82/scripts/addons', section = 'Bookmarks' },
+	{ name = 'NvimPlugs', action = ':Oil ~/.local/share/nvim/site/pack/packer/start', section = 'Bookmarks' },
 
 }
 starter.setup({
@@ -96,6 +95,38 @@ starter.setup({
 	-- allows you to go into command mode.
 	query_updaters = [[abcdefghijklmnopqrstuvwxyz0123456789_-.]],
 })
+
+
+-- require('mini.animate').setup()
+-- local animate = require('mini.animate')
+-- animate.setup({
+-- -- Cursor path
+--   cursor = {
+--     -- Whether to enable this animation
+--     enable = true,
+--     timing = animate.gen_timing.linear({ duration = 80, unit = 'total' })
+--   },
+--   -- scroll = {
+--   --   -- Animate for 200 milliseconds with linear easing
+--   --   timing = animate.gen_timing.linear({ duration = 200, unit = 'total' }),
+--   --   -- Animate equally but with at most 120 steps instead of default 60
+--   --   subscroll = animate.gen_subscroll.equal({ max_output_steps = 120 }),
+--   -- }
+-- })
+local function sizes()
+  vim.go.winwidth = math.max(120, math.floor(vim.go.columns * 0.61))
+  vim.go.winminwidth = 10
+  vim.go.winheight = math.max(30, math.floor(vim.go.lines * 0.61))
+  vim.go.winminheight = 5
+end
+
+-- sizes()
+-- vim.api.nvim_create_autocmd("VimResized", { callback = sizes })
+
+-- vim.cmd[[set mousescroll=ver:25,hor:6]] -- compensate for slow the scroll animation
+
+
+
 
 require('mini.bufremove').setup({})  -- ge delete buffer witout changing layout
 

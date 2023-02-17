@@ -41,7 +41,13 @@ return require("lazy").setup {
     end,
   },
   {
+    "JoseConseco/hl_manager.nvim",
+    -- dev = true,
+    -- dir = '/home/bartosz/.local/share/nvim/lazy/hl_manager.nvim/',
+  },
+  {
     "EdenEast/nightfox.nvim",
+    lazy = false, -- loads immediately
     -- branch = "feat/interactive",
     -- commit = "c88664b18e593319aea1ded731dd252d4f9e0f9a", -- before day-fox refactor, not looking goodd
     config = function()
@@ -106,7 +112,7 @@ return require("lazy").setup {
   {
     -- "folke/twilight.nvim",
     "mkonig/twilight.nvim",
-    branch = "pr/1", -- my fix for expand props
+    -- branch = "pr/1", -- my fix for expand props
     config = function()
       require("twilight").setup {
         dimming = {
@@ -165,7 +171,7 @@ return require("lazy").setup {
   { -- cmd line replacer
     "folke/noice.nvim",
     event = "VimEnter",
-    cond = false,
+    cond = true,
     config = function()
       require "nv-noice"
     end,
@@ -227,6 +233,7 @@ return require("lazy").setup {
 
   {
     "karb94/neoscroll.nvim", -- smooth scroll
+    -- cond = false,
     config = function()
       require("neoscroll").setup { hide_cursor = false }
     end,
@@ -239,7 +246,7 @@ return require("lazy").setup {
     config = function()
       require("focus").setup {
         enabled = true,
-        excluded_filetypes = { "fzf" },
+        excluded_filetypes = { "fzf"},
       }
     end,
   },
@@ -294,6 +301,9 @@ return require("lazy").setup {
     config = function()
       require("dap-python").setup "/usr/bin/python"
     end,
+  },
+  {
+    "folke/neodev.nvim"
   },
   {
     "jbyuki/one-small-step-for-vimkind",
@@ -355,6 +365,7 @@ return require("lazy").setup {
   {
     "rcarriga/nvim-dap-ui",
     dependencies = { "mfussenegger/nvim-dap" },
+    -- commit = "6b6081ad244ae5aa1358775cc3c08502b04368f9", -- till fix is merged
     config = function()
       require "nv-dapui"
     end,
@@ -447,7 +458,7 @@ return require("lazy").setup {
     end,
   },
   --  {disable=true,
-  --   "ray-x/lsp_signature.nvim" }, --  for funct(), signature hint - replaced with noice
+  -- {"ray-x/lsp_signature.nvim" }, --  for funct(), signature hint - replaced with noice
 
   {
     "ThePrimeagen/refactoring.nvim",
@@ -469,6 +480,8 @@ return require("lazy").setup {
   -- AUTO-COMPLETE -------------------------------------------------------------------------------------------------------
   {
     "github/copilot.vim",
+    cond=false,
+    event = "InsertEnter",
     config = function()
       vim.g.copilot_no_tab_map = true
       vim.g.copilot_assume_mapped = true
@@ -479,6 +492,7 @@ return require("lazy").setup {
   {
     "hrsh7th/nvim-cmp",
     cond = true,
+    event = "InsertEnter",
     dependencies = {
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-nvim-lsp",
@@ -502,10 +516,9 @@ return require("lazy").setup {
   -- use { "tzachar/cmp-fuzzy-buffer", dependencies = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" } }
   {
     "tzachar/cmp-tabnine",
-    cond = false,
+    cond = true,
     dependencies = "hrsh7th/nvim-cmp",
     build = "./install.sh",
-    enabled = true,
     config = function()
       require("cmp_tabnine.config"):setup {
         max_lines = 100,
@@ -514,19 +527,24 @@ return require("lazy").setup {
       }
     end,
   },
-  --  use{
-  -- 	"zbirenbaum/copilot.lua", -- alternative in lua
-  -- 	event = {"VimEnter"},
-  -- 	config = function()
-  -- 		vim.defer_fn(function()
-  -- 			require("copilot").setup()
-  -- 		end, 100)
-  -- 	end,
-  -- }
-  -- use {
-  --    "zbirenbaum/copilot-cmp",
-  --    after = {"copilot.lua", "nvim-cmp"},
-  -- }
+   {
+  	"zbirenbaum/copilot.lua", -- alternative in lua
+  	event = "InsertEnter",
+    cmd = "Copilot",
+  	config = function()
+      require("copilot").setup({
+        suggestion = { enabled = true, auto_trigger=true },
+        panel = { enabled = false },
+      })
+    end,
+  },
+  {
+     "zbirenbaum/copilot-cmp",
+     dependencies = {"copilot.lua", "nvim-cmp"},
+    config = function ()
+      require("copilot_cmp").setup()
+    end
+  },
 
   -- Telescope   -------------------------------------------------------------------------------------------------------
   {
@@ -566,10 +584,19 @@ return require("lazy").setup {
   {
     "stevearc/oil.nvim",
     config = function()
-      require("oil").setup()
+      require("oil").setup({
+
+      })
     end,
   },
-
+  {
+    'nvim-tree/nvim-tree.lua',
+    dependencies = { 'nvim-tree/nvim-web-devicons'}, -- optional, for file icons },
+    config = function()
+      require("nvimTree")
+    end,
+    tag = 'nightly', -- optional, updated every week. (see issue #1193)
+  },
   -- Git  -------------------------------------------------------------------------------------------------------
   {
     "tpope/vim-fugitive", -- add :Gitxx commands
@@ -599,10 +626,11 @@ return require("lazy").setup {
   }, -- lua + wont close () next to char finally good and simple +++
   {
     "sindrets/diffview.nvim",
-    -- after = "nightfox.nvim",
+    -- dependencies = "nightfox.nvim",
+    cmd = {"DiffviewOpen", "DiffviewFileHistory"},
     config = function()
       require("diffview").setup {
-        enhanced_diff_hl = true,
+        -- enhanced_diff_hl = true,
       }
     end,
   },
@@ -820,7 +848,7 @@ return require("lazy").setup {
       -- vim.g.footprintsColor = '#512c4f'
       vim.g.footprintsColor = "#00c0f0"
       vim.g.footprintsOnCurrentLine = 0
-      vim.g.footprintsEasingFunction = "linear"
+      vim.g.footprintsEasingFunction = "easeinout"
       vim.g.footprintsHistoryDepth = 27
     end,
   },

@@ -12,7 +12,8 @@ vim.api.nvim_set_keymap("n", "<F5>", ":lua require'dap'.continue()<CR>", { norem
 -- vim.api.nvim_set_keymap('n','<S-F5>', ":call vimspector#Stop()<CR>", {noremap = true})
 
 vim.api.nvim_set_keymap("n", "<F6>", ":lua require'dap'.toggle_breakpoint()<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<S-F6>", ":lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<S-F6>", ":lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>",
+    { noremap = true })
 
 vim.api.nvim_set_keymap("n", "<F8>", ":lua require'dap'.step_over()<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<F7>", ":lua require'dap'.step_into()<CR>", { noremap = true })
@@ -34,52 +35,50 @@ local hint = [[
 ]]
 
 local dap_hydra = Hydra {
-  hint = hint,
-  config = {
-    color = "pink",
-    invoke_on_body = true,
-    -- buffer = 0,  -- only for active buffer
-    hint = {
-      position = "bottom",
-      border = "rounded",
-    },
-  },
-  name = "dap",
-  mode = { "n", "x" },
-  body = "<leader>dh",
-  heads = {
-    { "n", dap.step_over, { silent = true } },
-    { ">", dap.step_into, { silent = true } },
-    { "o", dap.step_out, { silent = true } },
-    { "c", dap.run_to_cursor, { silent = true } },
-    { "s", dap.continue, { silent = true } },
-    { "x", ":lua require'dap'.disconnect({ terminateDebuggee = false })<CR>", { exit = true, silent = true } },
-    { "X", dap.close, { silent = true } },
-    { "C", ":lua require('dapui').close()<cr>:DapVirtualTextForceRefresh<CR>", { silent = true } },
-    { "b", dap.toggle_breakpoint, { silent = true } },
-    { "K", ":lua require('dap.ui.widgets').hover()<CR>", { silent = true } },
-    -- { 'K', ":lua require('dapui').eval(nil, {enter=true})<CR>", { silent = true } },
-    -- { 'B', function() gitsigns.blame_line{ full = true } end },
-    { "q", nil, { exit = true, nowait = true } },
-  },
-}
+        hint = hint,
+        config = {
+            color = "pink",
+            invoke_on_body = true,
+            -- buffer = 0,  -- only for active buffer
+            hint = {
+                position = "bottom",
+                border = "rounded",
+            },
+        },
+        name = "dap",
+        mode = { "n", "x" },
+        body = "<leader>dh",
+        heads = {
+            { "n", dap.step_over,                                                      { silent = true } },
+            { ">", dap.step_into,                                                      { silent = true } },
+            { "o", dap.step_out,                                                       { silent = true } },
+            { "c", dap.run_to_cursor,                                                  { silent = true } },
+            { "s", dap.continue,                                                       { silent = true } },
+            { "x", ":lua require'dap'.disconnect({ terminateDebuggee = false })<CR>",  { exit = true, silent = true } },
+            { "X", dap.close,                                                          { silent = true } },
+            { "C", ":lua require('dapui').close()<cr>:DapVirtualTextForceRefresh<CR>", { silent = true } },
+            { "b", dap.toggle_breakpoint,                                              { silent = true } },
+            { "K", ":lua require('dap.ui.widgets').hover()<CR>",                       { silent = true } },
+            -- { 'K', ":lua require('dapui').eval(nil, {enter=true})<CR>", { silent = true } },
+            -- { 'B', function() gitsigns.blame_line{ full = true } end },
+            { "q", nil,                                                                { exit = true, nowait = true } },
+        },
+    }
 -- local dap_group = vim.api.nvim_create_augroup("DapHydrawAuGroup", { clear = true })
 
-Hydra.spawn = function(head)
-  if head == "dap-hydra" then
-    -- vim.api.nvim_create_autocmd({ "FileType" }, { --FocusGained
-    --   pattern = "*",
-    --   callback = function()
-    --     if vim.bo.filetype == "python" then
-    --       print "Dap activate"
-    --       dap_hydra:activate()
-    --     else
-    --       print "Dap deactivate"
-    --       dap_hydra:exit()
-    --     end
-    --   end,
-    --   group = dap_group,
-    -- })
-    dap_hydra:activate()
-  end
+Hydra.spawn["dap-hydra"] = function()
+  -- vim.api.nvim_create_autocmd({ "FileType" }, { --FocusGained
+  --   pattern = "*",
+  --   callback = function()
+  --     if vim.bo.filetype == "python" then
+  --       print "Dap activate"
+  --       dap_hydra:activate()
+  --     else
+  --       print "Dap deactivate"
+  --       dap_hydra:exit()
+  --     end
+  --   end,
+  --   group = dap_group,
+  -- })
+  dap_hydra:activate()
 end
