@@ -39,13 +39,6 @@ local function vsplit_preview()
   view.focus()
 end
 
-local function change_root_to_global_cwd()
-  local global_cwd = vim.fn.getcwd()
-  -- local global_cwd = vim.fn.getcwd(-1, -1)
-  api.tree.change_root(global_cwd)
-end
-
-local Hydra = require "hydra"
 
 require("nvim-tree").setup {
     reload_on_bufenter = true,
@@ -78,6 +71,16 @@ require("nvim-tree").setup {
     },
 }
 
+
+
+-- auto show hydra on nvimtree focus
+
+local function change_root_to_global_cwd()
+  local global_cwd = vim.fn.getcwd()
+  -- local global_cwd = vim.fn.getcwd(-1, -1)
+  api.tree.change_root(global_cwd)
+end
+
 local hint = [[
  _w_: cd CWD   _c_: Path yank           _/_: Filter
  _y_: Copy     _x_: Cut                 _p_: Paste
@@ -88,18 +91,10 @@ local hint = [[
 -- ^ ^           _q_: exit
 
 local nvim_tree_hydra = nil
-local nt_au_group = vim.api.nvim_create_augroup("NvimTreeHydraAU", { clear = true })
+local nt_au_group = vim.api.nvim_create_augroup("NvimTreeHydraAu", { clear = true })
 
-local function close_nvim_tree_hydra()
-  if nvim_tree_hydra then
-    nvim_tree_hydra:exit()
-  end
-end
-
-Hydra.spawn = {}
-Hydra.spawn["nvim_tree_hydra"] = function()
-  -- print("spawning")
-  -- print("spawn.hydra")
+local Hydra = require "hydra"
+local function spawn_nvim_tree_hydra()
   nvim_tree_hydra = Hydra {
           name = "NvimTree",
           hint = hint,
@@ -129,28 +124,7 @@ Hydra.spawn["nvim_tree_hydra"] = function()
               -- { "q", nil, { exit = true, nowait = true } },
           },
       }
-
   nvim_tree_hydra:activate()
-  vim.api.nvim_create_autocmd("BufLeave", {
-      pattern = "*",
-      callback = function(opts)
-        -- print("closing: ft "..vim.bo[opts.buf].filetype)
-        if vim.bo[opts.buf].filetype == "NvimTree" then
-          -- print("au close hydra")
-          close_nvim_tree_hydra() -- does not unload the keys - but hiding hydra ok...
-          -- vim.api.nvim_remove_autocmd("BufEnter", )
-          return true -- removes autocmd
-        end
-      end,
-      group = nt_au_group,
-  })
-end
-
-local clock = os.clock
-local function sleep(n) -- seconds
-  local t0 = clock()
-  while clock() - t0 <= n do
-  end
 end
 
 vim.api.nvim_create_autocmd({ "BufEnter" }, {
@@ -158,40 +132,16 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
     callback = function(opts)
       -- print("leave: ft "..vim.bo[opts.buf].filetype)
       if vim.bo[opts.buf].filetype == "NvimTree" then
-        -- vim.pretty_print("au: hydra - init !") -- print or sleep fixes the spawn not working
-        sleep(0.28)
-        -- nvim_tree_hydra:activate()
-        Hydra.spawn["nvim_tree_hydra"]()
+        spawn_nvim_tree_hydra()
+      else
+        -- print("au close hydra")
+        if nvim_tree_hydra then
+          nvim_tree_hydra:exit()
+        end
+        -- return true -- removes autocmd
       end
-      -- return true
     end,
     group = nt_au_group,
 })
 
 vim.api.nvim_set_keymap("n", "<F11>", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
-
--- example of spawning hydra hotkey for give filetype...
--- vim.api.nvim_create_autocmd({ "FileType" }, {
--- 	pattern = "markdown" ,
--- 	callback = function(args)
---         vim.pretty_print("init!")
--- 		Hydra({
--- 			name = "Test",
---             hint = [[ _h_: hell]],
--- 			mode = "n",
--- 			body = ",",
--- 			config = {
---                 color="pink",
---                 invoke_on_body = true,
---                 hint = {type ='window'},
--- 				buffer = args.buf,
--- 			},
--- 			desc = "TRACING FROM SF",
--- 			heads = {
--- 				{ "h", function() vim.pretty_print("Hello!") end, },
--- 				{ "l", function() vim.pretty_print("TTTTT!") end, },
--- 			},
--- 		})
--- 	end,
--- })
---
