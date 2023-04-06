@@ -142,7 +142,8 @@ if require("nvim-treesitter.parsers").has_parser "python" then
 ] @fold
 
   ]]
-  require("vim.treesitter.query").set_query("python", "folds", folds_query)
+  -- require("vim.treesitter.query").set_query("python", "folds", folds_query)
+  require("vim.treesitter.query").set("python", "folds", folds_query)
 end
 
 if require("nvim-treesitter.parsers").has_parser "lua" then
@@ -152,5 +153,6 @@ if require("nvim-treesitter.parsers").has_parser "lua" then
 (if_statement (block) @fold)
 (function_declaration (block) @fold)
   ]]
-  require("vim.treesitter.query").set_query("lua", "folds", folds_query)
+  -- require("vim.treesitter.query").set_query("lua", "folds", folds_query)
+  require("vim.treesitter.query").set("lua", "folds", folds_query)
 end

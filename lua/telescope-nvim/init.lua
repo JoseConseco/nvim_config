@@ -1,4 +1,4 @@
-local fb_actions = require "telescope._extensions.file_browser.actions"
+-- local fb_actions = require "telescope._extensions.file_browser.actions"
 local actions = require "telescope.actions"
 
 local t = function(str)
@@ -108,31 +108,6 @@ telescope.setup {
       sessions_dir = vim.fn.stdpath "data" .. "/session/",
     },
     fzf = fzf_opts,
-    file_browser = {
-      grouped = true,
-      sorting_strategy = "ascending",
-      mappings = {
-        ["n"] = {
-          ["a"] = fb_actions.create,
-          ["c"] = fb_actions.create,
-          ["r"] = fb_actions.rename,
-          ["m"] = fb_actions.move,
-          ["y"] = fb_actions.copy,
-          ["d"] = fb_actions.remove,
-          ["x"] = fb_actions.remove,
-          ["o"] = fb_actions.open,
-          ["h"] = fb_actions.goto_parent_dir,
-          ["e"] = fb_actions.goto_home_dir,
-          ["w"] = fb_actions.goto_cwd,
-          ["t"] = fb_actions.change_cwd,
-          ["b"] = fb_actions.toggle_browser,
-          ["H"] = fb_actions.toggle_hidden,
-          ["s"] = fb_actions.toggle_all,
-          -- ["l"] = vim.api.nvim_feedkeys('<CR>'),
-          ["l"] = actions.select_default,
-        },
-      },
-    },
   },
 }
 local hl_manager = require "hl_manager"
@@ -167,7 +142,7 @@ telescope.load_extension "fzf" -- from 'nvim-telescope/telescope-fzf-native.nvim
 telescope.load_extension "media_files"
 telescope.load_extension "vim_bookmarks"
 telescope.load_extension "aerial"
-telescope.load_extension "file_browser"
+-- telescope.load_extension "file_browser"
 telescope.load_extension "sessions_picker"
 -- require('telescope').load_extension('projects')
 -- telescope.load_extension "smart_history" -- somethign wrong with reading history

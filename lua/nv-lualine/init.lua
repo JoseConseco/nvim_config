@@ -1,4 +1,4 @@
-local gps = require "nvim-gps"
+local gps = require "nvim-navic"
 
 local colors = {
   bg = "#282c34",
@@ -34,12 +34,12 @@ local function get_cwd()
   if #project_dir > 15 then
     local cut_idx = #project_dir - project_dir:reverse():find "/" + 1
     if cut_idx then
-      project_dir = "." .. project_dir:sub(cut_idx, -1) .. "//" -- show only last 25 digits
+      project_dir = "[" .. project_dir:sub(cut_idx+1, -1) .. "] /" -- show only last 25 digits
     else
-      project_dir = "." .. project_dir:sub(-10, -1) .. "//"
+      project_dir = "[" .. project_dir:sub(-10, -1) .. "] /"
     end
   else
-    project_dir = project_dir .. "/"
+    project_dir = project_dir .. "]"
   end
 
   return project_dir .. rel_file_dir .. " "
@@ -148,8 +148,8 @@ require("lualine").setup {
     lualine_a = { { "mode", color = { gui = "bold" } } },
     lualine_b = {},
     lualine_c = {
-      { "filetype", icon_only = true },
-      get_cwd,
+      -- { "filetype", icon_only = true },
+      -- get_cwd,
       -- {'filename', path=1},
       -- { gps.get_location, cond = gps.is_available, color = get_hl_fg },
       "%=",
@@ -179,15 +179,17 @@ require("lualine").setup {
       -- {"%m  [%t]", separator=" ▶ "},
       -- {'filename', path=1, padding={right=0, left=5}, separator=" ▶ "},
       { modified, color = "WinBar" },
-      { file_name, separator = " ▶ ", color = "WinBar" },
-      { gps.get_location, cond = gps.is_available, color = get_hl_fg },
+      { get_cwd, separator = " ▶ ", color = "WinBar" },
+      -- { file_name, separator = " ▶ ", color = "WinBar" },
+      { function() return gps.get_location() end, cond = gps.is_available, color = get_hl_fg },
     },
   },
   inactive_winbar = {
     lualine_c = {
       { modified, color = "WinBarNC" },
-      { file_name, color = "WinBarNC" },
-      { gps.get_location, cond = gps.is_available, color = "WinBarNC" },
+      { get_cwd, color = "WinBarNC" },
+      -- { file_name, color = "WinBarNC" },
+      { function() return gps.get_location() end, cond = gps.is_available, color = "WinBarNC" },
     },
   },
   extensions = {},

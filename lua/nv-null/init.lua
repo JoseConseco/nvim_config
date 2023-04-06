@@ -1,4 +1,4 @@
-local null_ls = require("null-ls")
+local null_ls = require "null-ls"
 null_ls.setup {
   -- debug = true,
   sources = {
@@ -6,25 +6,25 @@ null_ls.setup {
       filetypes = { "html", "css", "javascript", "javascriptreact", "markdown", "json", "yaml" },
     }, -- support range format
     null_ls.builtins.formatting.stylua.with {
-			filetypes = { "lua" },
+      filetypes = { "lua" },
       extra_args = { "--config-path", "/home/bartosz/.config/nvim/lua/.stylua.toml" },
     }, -- support range format
     -- null_ls.builtins.formatting.yapf.with({
     -- 		extra_args = { "--style","{based_on_style: pep8, column_limit: 129}" }, -- To add more arguments to a source's defaults
     -- }), -- support range format
     null_ls.builtins.formatting.autopep8.with {
-			filetypes = { "python" },
+      filetypes = { "python" },
       -- args = {},
       extra_args = { "--max-line-length=230", "--ignore=E226,E24,W50,W690" }, -- To add more arguments to a source's defaults
     }, -- support range format
     -- null_ls.builtins.completion.spell,
-		null_ls.builtins.diagnostics.codespell.with{
-			filetypes = { "html", "txt", "json", "markdown", "python", "lua"}
-		},
-		-- null_ls.builtins.diagnostics.pylint.with { -- for jedi only
-		--     filetypes = { "python"},
-		-- 	extra_args = { "--disable=C,R,attribute-defined-outside-init", "--jobs=4" }, -- F fatal, E error, W warning, R refactor, C convention (line too long etc),
-		-- },
+    null_ls.builtins.diagnostics.codespell.with {
+      filetypes = { "html", "txt", "json", "markdown", "python", "lua" },
+    },
+    -- null_ls.builtins.diagnostics.pylint.with { -- for jedi only
+    --     filetypes = { "python"},
+    -- 	extra_args = { "--disable=C,R,attribute-defined-outside-init", "--jobs=4" }, -- F fatal, E error, W warning, R refactor, C convention (line too long etc),
+    -- },
   },
   -- on_attach =  function(client, bufnr)
   --   local opts =   { noremap = true, silent = true }

@@ -29,7 +29,7 @@ vim.cmd("set diffopt+=internal,algorithm:patience,linematch:60") --new diff mode
 vim.opt.pumheight = 10 -- Makes popup menu smaller
 vim.opt.fileencoding = "utf-8" -- The encoding written to file
 vim.g.mapleader = " " -- The key used to prefix mappings
-vim.g.loaded_netrw       = 0
+-- vim.g.loaded_netrw       = 0
 
 -- XXX: not sure why this is needed
 -- vim.api.nvim_create_autocmd("SessionLoadPost", {

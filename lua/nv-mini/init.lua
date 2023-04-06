@@ -47,7 +47,7 @@ local my_items = {
 	{ name = 'Sessions', action = ":Telescope sessions_picker", section = 'Telescope' },
 	{ name = 'Recent Files', action = ':Telescope frecency', section = 'Telescope' },
 	{ name = 'Old Files', action = ':Telescope oldfiles', section = 'Telescope' },
-	{ name = 'File Brower', action = ':Telescope file_browser', section = 'Telescope' },
+	-- { name = 'File Brower', action = ':Telescope file_browser', section = 'Telescope' },
 	-- starter.sections.recent_files(10, false),
 	-- starter.sections.recent_files(10, true),
 	-- Use this if you set up 'mini.sessions'

@@ -265,6 +265,10 @@ return require("lazy").setup {
         autowidth = {
           winwidth = 0.62,
         },
+        ignore = {				--			  |windows.ignore|
+              buftype = { "quickfix" },
+              filetype = { "NvimTree", "neo-tree", "undotree", "gundo", "DiffviewFiles" }
+           },
         animation = {
           duration = 200, -- ms
         },
@@ -414,17 +418,17 @@ return require("lazy").setup {
   {
     -- "p00f/nvim-ts-rainbow", -- archived
     "mrjones2014/nvim-ts-rainbow",
-    -- after = "nightfox.nvim",
+    -- dependencies = {"nightfox.nvim", "nvim-treesitter/nvim-treesitter"},
     config = function()
       -- add colorscheme change hook
       local hl_manager = require "hl_manager"
-      hl_manager.match_color_to_highlight("#ebcb8b", "@punct.bracket", "rainbowcol1", "foreground")
-      hl_manager.match_color_to_highlight("#a3be8c", "@punct.bracket", "rainbowcol2", "foreground")
-      hl_manager.match_color_to_highlight("#88c0d0", "@punct.bracket", "rainbowcol3", "foreground")
-      hl_manager.match_color_to_highlight("#6ea1ec", "@punct.bracket", "rainbowcol4", "foreground")
-      hl_manager.match_color_to_highlight("#b48ead", "@punct.bracket", "rainbowcol5", "foreground")
-      hl_manager.match_color_to_highlight("#df717a", "@punct.bracket", "rainbowcol6", "foreground")
-      hl_manager.match_color_to_highlight("#d08770", "@punct.bracket", "rainbowcol7", "foreground")
+      hl_manager.match_color_to_highlight("#df717a", "@keyword", "rainbowcol1", "foreground")
+      hl_manager.match_color_to_highlight("#a3be8c", "@keyword", "rainbowcol2", "foreground")
+      hl_manager.match_color_to_highlight("#b48ead", "@keyword", "rainbowcol3", "foreground")
+      hl_manager.match_color_to_highlight("#88c0d0", "@keyword", "rainbowcol4", "foreground")
+      hl_manager.match_color_to_highlight("#d08770", "@keyword", "rainbowcol5", "foreground")
+      hl_manager.match_color_to_highlight("#6ea1ec", "@keyword", "rainbowcol6", "foreground")
+      hl_manager.match_color_to_highlight("#ebcb8b", "@keyword", "rainbowcol7", "foreground")
     end,
   },
   "nvim-treesitter/playground",
@@ -455,6 +459,22 @@ return require("lazy").setup {
     "stevearc/aerial.nvim", -- basically better outliner with objects type filter
     config = function()
       require "nv-aerial"
+    end,
+  },
+  {
+    "SmiteshP/nvim-navbuddy",
+    dependencies = { "neovim/nvim-lspconfig", "SmiteshP/nvim-navic", "MunifTanjim/nui.nvim" },
+    config = function()
+      require("nvim-navbuddy").setup {
+        lsp = {
+            auto_attach = true,  -- If set to true, you don't need to manually use attach function
+            preference = nil  -- list of lsp server names in order of preference
+        },
+        source_buffer = {
+            follow_node = false,   -- Keep the current node in focus on the source buffer
+            highlight = false      -- Highlight the currently focused node
+        }
+      }
     end,
   },
   --  {disable=true,
@@ -551,7 +571,7 @@ return require("lazy").setup {
     "nvim-telescope/telescope.nvim",
     -- branch = "fix/another_teardown_issue",
     dependencies = { "nvim-tree/nvim-web-devicons", "nvim-lua/popup.nvim" ,  "nvim-lua/plenary.nvim" , "tom-anders/telescope-vim-bookmarks.nvim",
-      "nvim-telescope/telescope-file-browser.nvim", "JoseConseco/telescope_sessions_picker.nvim" },
+      "JoseConseco/telescope_sessions_picker.nvim" },
     config = function()
       require "telescope-nvim"
     end,
@@ -573,11 +593,11 @@ return require("lazy").setup {
   {
     "nvim-telescope/telescope-fzf-native.nvim", build = "make"
   },
-  {
-    "ibhagwan/fzf-lua",
-    -- optional for icon support
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-  },
+  -- {
+  --   "ibhagwan/fzf-lua",
+  --   -- optional for icon support
+  --   dependencies = { "nvim-tree/nvim-web-devicons" },
+  -- },
 
   -- Explorer  -------------------------------------------------------------------------------------------------------
   --  { "elihunter173/dirbuf.nvim" }, -- edit dir as buffer text
@@ -596,6 +616,15 @@ return require("lazy").setup {
       require("nvimTree")
     end,
     tag = 'nightly', -- optional, updated every week. (see issue #1193)
+  },
+  {
+    "nvim-neo-tree/neo-tree.nvim",  -- nice buffers preview...
+    cond = true,
+    branch = "v2.x",
+    dependencies = { "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons", "MunifTanjim/nui.nvim", },
+    config = function()
+      require "nv_neotree"
+    end
   },
   -- Git  -------------------------------------------------------------------------------------------------------
   {
@@ -630,7 +659,7 @@ return require("lazy").setup {
     cmd = {"DiffviewOpen", "DiffviewFileHistory"},
     config = function()
       require("diffview").setup {
-        -- enhanced_diff_hl = true,
+        enhanced_diff_hl = true,
       }
     end,
   },
@@ -686,9 +715,12 @@ return require("lazy").setup {
         auto_enable = true,
         auto_resize_height = true, -- highly recommended enable
         preview = { -- stefandtw/quickfix-reflector.vim breaks this
-          auto_preview = false,
+          auto_preview = true,
         },
+        -- create autocmd for 'qf' filetype. It will create 2 buffer levels mappings: for j and k keys.
+        -- These keys will send 'pp' keys to refresh the preview window.
       }
+
     end,
   },
   "stefandtw/quickfix-reflector.vim", -- edit quickfix list as text - :w to save to multi files
@@ -812,12 +844,12 @@ return require("lazy").setup {
     config = function()
       require("hop").setup {}
       vim.api.nvim_set_keymap("o", "h", ":HopChar1<cr>", { noremap = true })
-      -- vim.api.nvim_set_keymap("n", "  ", ":HopWord<cr>", { noremap = true })
+      -- vim.api.nvim_set_keymap("n", "  ", ":HopChar2<cr>", { noremap = true })
       -- vim.api.nvim_set_keymap("v", "  ", "<cmd>HopWord<cr>", { noremap = true })
       vim.api.nvim_set_keymap("n", "gl", ":HopLineStart<cr>", { noremap = true })
-      -- vim.api.nvim_set_keymap("n", "gw", ":HopWord<cr>", { noremap = true })
+      vim.api.nvim_set_keymap("n", "gw", ":HopChar2<cr>", { noremap = true })
       vim.api.nvim_set_keymap("v", "gl", "<cmd>HopLineStart<cr>", { noremap = true })
-      -- vim.api.nvim_set_keymap("v", "gw", "<cmd>HopWord<cr>", { noremap = true })
+      vim.api.nvim_set_keymap("v", "gw", "<cmd>HopChar2<cr>", { noremap = true })
 
       local modes = { "n", "v", "o" }
       for _, mode in ipairs(modes) do
@@ -876,20 +908,23 @@ return require("lazy").setup {
 
   --REPLS -------------------------------------------------------------------------------------------------------
   "rafcamlet/nvim-luapad", -- :Luapad - open interactive scratch bufer with realtime eval
-  "metakirby5/codi.vim", -- repls for all other langs ...
   {
-    "jackMort/ChatGPT.nvim",
-    config = function()
-      require("chatgpt").setup {
-        -- optional configuration
-      }
-    end,
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-      "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim",
-    },
+    "metakirby5/codi.vim", -- repls for all other langs ...
+    config = function() require("nv-codi") end,
   },
+  -- {
+  --   "jackMort/ChatGPT.nvim",
+  --   config = function()
+  --     require("chatgpt").setup {
+  --       -- optional configuration
+  --     }
+  --   end,
+  --   dependencies = {
+  --     "MunifTanjim/nui.nvim",
+  --     "nvim-lua/plenary.nvim",
+  --     "nvim-telescope/telescope.nvim",
+  --   },
+  -- },
 
   ---  TOOLS -------------------------------------------------------------------------------------------------------
   {
@@ -899,11 +934,11 @@ return require("lazy").setup {
 	end,
   },
   {
-    "SmiteshP/nvim-gps", -- bread_crumbs
-    dependencies = "nvim-treesitter/nvim-treesitter",
+    "SmiteshP/nvim-navic", -- bread_crumbs
+    dependencies = "neovim/nvim-lspconfig",
     config = function()
-      require("nvim-gps").setup {
-        icons = { ["class-name"] = "⛬ " },
+      require("nvim-navic").setup {
+        icons = { Class = "⛬ " },
         separator = " ▶ ",
       }
     end,

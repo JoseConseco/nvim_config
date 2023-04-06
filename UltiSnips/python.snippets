@@ -5,10 +5,43 @@ def upper_case(s):   # TEST_SAMPLE
 def title_case(s):   # TEST_SAMPLE
 	return s.title().replace(' ', '_')
 
+def insert_before_unique(snip,name):
+	# vim.command(':normal! O' + name + ' = ')
+	# vim.command('<C-r>+')
+	# snip.buffer[snip.snippet_start[0]:snip.snippet_start[0]] = [name + ' = ' + vim.command(":call getreg('+')")]
+	print(snip.buffer[snip.line])
+	vim.command(":echo '111-"+snip.buffer[snip.line]+"'")
+	placeholders_string = snip.buffer[snip.line].strip()
+	vim.command(":echo '111-"+placeholders_string+"'")
+	vim.command(":call append(line('.')-1,   '"+ name + " = '.getreg('+'))")
+	# snip.expand_anon(name + ' =  ($VISUAL)')
+
 from re import sub
 def capitalize_case(s):  # Test sample
 	return sub(r"[^a-zA-Z]", ' ', s).capitalize()
 endglobal
+
+post_jump "if snip.tabstop == 0: insert_before_unique(snip, snip.tabstops[1].current_text)"
+snippet trigger "Extract selection as variable"
+$1
+endsnippet
+
+post_jump "if snip.tabstop == 0: snip.buffer[snip.snippet_start[0]:snip.snippet_start[0]] = [snip.tabstops[1].current_text + ' = ' ]; vim.command('k$p')"
+snippet ddd "Extract selection as variable" i
+def $1
+endsnippet
+
+
+global !p
+def insert_method_call(name, visual):
+	vim.command('normal G')
+	snip.expand_anon(name + '($1) ${VISUAL}\n'+visual)
+endglobal
+post_jump "if snip.tabstop == 0: insert_method_call(snip.tabstops[1].current_text, snip.visual_text)"
+snippet zzzz "method declaration" b
+def $1():
+	$2
+endsnippet
 
 
 snippet forc "for with comprehension"
@@ -29,6 +62,7 @@ endsnippet
 snippet print_debug "print debug"
 print(f"\{${1:`!v @+`}=\}")$0
 endsnippet
+
 
 snippet ipdb_import "Import ipdb into sys path"
 import sys
@@ -239,6 +273,79 @@ class VIEW3D_PT_`!p snip.rv = title_case(t[1])`(bpy.types.Panel):
 
 	def draw(self, context):
 		layout = self.layout$0
+
+endsnippet
+
+snippet ul_list "create ul list panel"
+class HT_UL_${1:List}(bpy.types.UIList):
+    def draw_item(self, context, layout, data, item, icon, active_data, active_propname):
+        some_props = data
+        ${2:coll_prop_item} = item
+        # draw_item must handle the three layout types... Usually 'DEFAULT' and 'COMPACT' can share the same code.
+        if self.layout_type in {'DEFAULT', 'COMPACT'}:
+            # start your row layout by a label (icon + text), or a non-embossed text field, to make it selectable
+            row = layout.row(align=True)
+            row.label(text="name", icon='GROUP_VERTEX')
+            row.prop_search($2, "name", context.object, "vertex_groups", text="")
+            row.prop_menu_enum($2, "uv_regions", text="UV Regions")
+        # 'GRID' layout type should be as compact as possible (typically a single icon!).
+        elif self.layout_type == 'GRID':
+            layout.alignment = 'CENTER'
+            layout.label(text="", icon_value=icon)
+
+
+class HTOOL_PT_ShortHair(bpy.types.Panel):
+    bl_label = "Short Hair"
+    bl_idname = "HTOOL_PT_ShortHair"
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'UI'
+    bl_category = 'Hair Tool'
+    # bl_context = 'objectmode'
+    # bl_options = {'HIDE_HEADER'}
+
+    @classmethod
+    def poll(cls, context):
+        return context.active_object
+
+    def draw(self, context):
+        layout = self.layout
+        obj = context.active_object
+        some_props = obj.data.${3:some_prop}
+        row = layout.row(align=True)
+        row.template_list("HT_UL_$1", "", some_props, "$2s", some_props, "active_index", rows=2)$0
+        col = row.column(align=True)
+        col.operator('some_props.add_item', icon='ADD', text='')
+        col.operator('some_props.delete_item', icon='REMOVE', text='')
+
+
+# implement add_item operator for short hair
+class HTOOL_OT_CreateProp(bpy.types.Operator):
+    bl_idname = 'some_props.add_item'
+    bl_label = 'Create Vg To Uv'
+    bl_description = 'Create Vg To Uv'
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        obj = context.active_object
+        some_props = obj.data.$3
+        some_props.$2s.add()
+        some_props.active_index = len(some_props.$2s)-1
+        return {'FINISHED'}
+
+# implement delete_item operator for short hair
+class HTOOL_OT_DeleteProp(bpy.types.Operator):
+    bl_idname = 'some_props.delete_item'
+    bl_label = 'Delete Vg To Uv'
+    bl_description = 'Delete Vg To Uv'
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        obj = context.active_object
+        some_props = obj.data.$3
+        some_props.$2s.remove(some_props.active_index)
+        cnt = len(some_props.$2s)
+        some_props.active_index = some_props.active_index if some_props.active_index < cnt else cnt-1
+        return {'FINISHED'}
 
 endsnippet
 

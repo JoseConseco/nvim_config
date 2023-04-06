@@ -78,7 +78,6 @@ wk.register({
 	['<leader>/'] = {":lua require'telescope.builtin'.live_grep{path_display = {'tail'}, word_match = '-w', only_sort_text = true, search = '' }<CR>",                           'Search Project'}     ,
 	['<leader>?'] = {':Grepper -cword  -noprompt -tool ag<cr>',                                             'Word to clist (Grepper)'},
 	-- ['<leader>?'] = { search_unfolded,                                             'Word to clist (Grepper)'},
-	['<leader><lt>'] = {':Telescope buffers<CR>',                                      'Switch Buffer' },
 	['<leader>p'] = 'which_key_ignore',
 	['<leader>R'] = {':Lazy sync<cr>', 'Lazy Sync'},
 	['<leader>r'] = {':Telescope frecency<cr>', 'Frecency'},
@@ -121,6 +120,13 @@ wk.register({  --ignore magic s and g in cmd mode
 
 -- b for buffers  - for nvim-bufferline<Plug>
 -- ['s'] = {':BLines',                              'Search lines fzf'},
+local function set_filetype()
+	vim.ui.select({ 'python', 'lua', 'text'}, { prompt = 'Select file type:', },
+		function(choice)
+			vim.bo.filetype = choice -- not working
+		end
+	)
+end
 local function pick_filetype()
 	vim.ui.select({ 'python', 'lua', 'text'}, { prompt = 'Select file type:', },
 		function(choice)
@@ -166,10 +172,12 @@ wk.register({
 	['<leader>b?'] = {[[:lua require'telescope.builtin'.current_buffer_fuzzy_find({path_display = {'hidden'} })<cr>]],                     'Search FZy *'},
 	-- ['<leader>b?'] = {':Telescope current_buffer_fuzzy_find<CR>',                                                                                         'Search fuzzy'},
 	['<leader>bs'] = {showDocumentSymbols,             'Tele Buffer Symbols'},
-	['<leader>bb'] = {buffers,                                                                                                           'Get buffer' } ,
+	-- ['<leader>bb'] = {buffers,                                                                                                           'Get buffer' } ,
+	['<leader>bb'] = { [[:NeoTreeFloat buffers<cr>]],                                                                                                           'Get buffer' } ,
 	-- ['<leader>bb'] = {'<c-^>',                                                                                                                            'Cycle with Previous'},
 	-- ['<leader>bn'] = {':enew<CR>',                                                                                                                        'New'},
 	['<leader>bn'] = { pick_filetype,                                                                                                                        'New'},
+	['<leader>bt'] = { set_filetype,                                                                                                                        'Set Filetype'},
 	['<leader>b]'] = {':BufferLineCycleNext<CR>',                                                                                                         'Next'},
 	['<leader>b['] = {':BufferLineCyclePrev<CR>',                                                                                                         'Previous'},
 	-- ['<leader>bc'] = {':confirm bd<CR>',                                                                                                                  'Close'},   -- fixes error on buffer close
@@ -199,7 +207,9 @@ wk.register({
 	-- ['<leader>ca'] = {":lua require('nvim-autopairs').disable()<CR>",             'Auto-pairs disable'}, --from treesitter-context plug
 	-- ['<leader>cA'] = {":lua require('nvim-autopairs').enable()<CR>",             'Auto-pairs enable'}, --from treesitter-context plug
 	['<leader>cl'] = {":CreateCompletionLine<CR>",             'Create Completion'}, --from treesitter-context plug
-	['<leader>co'] = {":AerialOpen float<CR> | :lua require'aerial'.tree_close_all()<cr>",             'Open Outliner (Aerial)'}, --from treesitter-context plug
+	['<leader>co'] = {":AerialNavToggle<cr>",             'Open Outliner (Aerial)'}, --from treesitter-context plug
+	-- ['<leader>co'] = {":AerialOpen float<cr>",             'Open Outliner (Aerial)'}, --from treesitter-context plug
+	-- ['<leader>co'] = {":AerialOpen float<CR> | :lua require'aerial'.tree_close_all()<cr>",             'Open Outliner (Aerial)'}, --from treesitter-context plug
 
 	['<leader>cs'] = { name = '+Spell' },
 	['<leader>css'] = {':setlocal spell! spelllang=en_us<CR>', 'Toggle Spellcheck'},
@@ -221,6 +231,7 @@ wk.register({
 wk.register({
 	['<leader>c'] = { name = '+Code'},
 	['<leader>ce'] = {":lua require('refactoring').refactor('Extract Function')<CR>",            'Extract Function'},
+	['<leader>cv'] = {":lua require('refactoring').refactor('Extract Variable')<CR>",            'Extract Variable'},
 }, {mode = "v", prefix = ""})
 
 
@@ -233,9 +244,9 @@ wk.register({
 	['<leader>dD']  = { ":lua require'dap'.down()<CR>",                                                 'Stack Down'} ,
 	['<leader>da']  = {
 		function()
-			require'dap'.set_breakpoint()
+			-- require'dap'.set_breakpoint() -- moved to dap start handler
 			require'dap'.run({type='python', request='attach', host='127.0.0.1', port=5678})
-			require'hydra'.spawn['dap_hydra']()
+			-- require'hydra'.spawn['dap_hydra']()
 		end,    'Attach (localhost, 5678)'} ,
 	-- ['<leader>da']  = { ":lua require'dap'.attach('0.0.0.0', 5678)<CR>",                                'Attach (localhost, 5678)'} ,
 	['<leader>dl']  = { ":lua require'dap'.run_last()<CR>",                                             'Re-run Last'},
@@ -263,7 +274,7 @@ wk.register({
 	['<leader>fe'] = { ':luafile%<CR>',                                    'Source %'},
 	['<leader>fd'] = { ':call delete(expand("%")) | bdelete!<CR>',         'Delete!'},
 	['<leader>fr'] = {':confirm e<CR>',                                    'Reload File(e!)'},
-	['<leader>ff'] = {':Telescope file_browser<CR>',                       'File Browser (fuzzy)'},
+	-- ['<leader>ff'] = {':Telescope file_browser<CR>',                       'File Browser (fuzzy)'},
 	['<leader>fy'] = { ":call v:lua.yankpath()<CR>",                       'Yank file location<CR>'},
 	['<leader>fo'] = { ':!xdg-open "%:p:h"<CR>',                           'Open containing folder'},
 	['<leader>ft'] = { ':!alacritty --working-directory "%:p:h"<CR>',      'Open at terminal'},
@@ -323,10 +334,11 @@ wk.register({
 	['<leader>gfV'] = {':GV!<CR>'                              , 'view buffer commits'},
 
 	['<leader>gd'] = { name = '+DiffView' },
-	['<leader>gdc'] = {  compare_to_clipboard,                      'Diff with clipboard'},   -- fixes error on buffer close
+	['<leader>gdc'] = {  compare_to_clipboard,                       'Diff with clipboard'},   -- fixes error on buffer close
 	['<leader>gds'] = {  diffWithSaved,                              'Diff with saved'},   -- fixes error on buffer close
 	['<leader>gdd'] =  { ':DiffviewOpen<CR>',                        'Diffview Open'},
-	['<leader>gdh'] =  { ':DiffviewFileHistory %<CR>',               'Diffview File History'},
+	['<leader>gdh'] =  { ':DiffviewFileHistory --base=LOCAL %<CR>',  'Diffview File History (LOCAL)'},
+	['<leader>gdf'] =  { ':DiffviewFileHistory %<CR>',               'Diffview File History'},
 
 })
 -- ['h'] - taken by git_sign - hunk oper
@@ -411,8 +423,7 @@ wk.register({
 	['<leader>o'] = { name = '+Open' },
 	['<leader>o/'] = {'q/',                                          'Search History (q/)'},
 	-- ['<leader>o.'] = {':Fern . -reveal=%<CR>',                    'File Browse (Fern)'},
-	-- ['<leader>of'] = {':Telescope file_browser<CR><ESC>',            'File Browser (fuzzy)'},
-	['<leader>of'] = {":lua require('telescope').extensions.file_browser.file_browser({initial_mode = 'normal'})<CR><ESC>",            'File Browser (fuzzy)'},
+	-- ['<leader>of'] = {":lua require('telescope').extensions.file_browser.file_browser({initial_mode = 'normal'})<CR><ESC>",            'File Browser (fuzzy)'},
 	['<leader>od'] = {':Dirbuf<CR>',                                 'Dirbuf'},
 	['<leader>oE'] = {':Ex<CR>',                                     'Open Explorer(Ex)'} ,
 	['<leader>oU'] = {':UndotreeToggle<CR>',                         'Undo Tree'} ,
@@ -422,7 +433,13 @@ wk.register({
 	['<leader>oO'] = {':SymbolsOutline<CR>',                         'Outliner (lsp)'},
 	['<leader>ol'] = {':Luapad<CR>',                                 'Luapad Repl On'},
 	['<leader>oL'] = {":lua.require('luapad').detach()<CR>",         'Luapad Repl Off'},
-	['<leader>oc'] = {':Codi<CR>',                                   'Codi Start (multi lang REPL)'},
+	['<leader>oa'] = {":AerialOpen float<cr>",                       'Open Outliner (Aerial)'}, --from treesitter-context plug
+	-- ['<leader>oc'] = {':Codi<CR>',                                   'Codi Start (multi lang REPL)'},
+	['<leader>oc']  = {
+		function()
+            vim.cmd[[Codi]]
+			require'hydra'.spawn['codi']()
+		end, 'Codi Start (multi lang REPL)'},
 	['<leader>oC'] = {':Codi!<CR>',                                  'Codi Stop'},
 	['<leader>ot'] = {':FloatermNew<CR>', 'Term'},
 })
@@ -513,7 +530,12 @@ wk.register({
 
 
 wk.register({
-	['<leader>t'] = {':Telescope<CR>'                     , 'Telescope builtins'},
+	['<leader>t'] = { name = '+Telescope' },
+	['<leader>tt'] = {':Telescope<CR>'                     , 'Telescope'},
+	['<leader>tb'] = {':Telescope buffers<CR>'             , 'Buffers'},
+	['<leader>to'] = {':Telescope oldfiles<CR>'            , 'Oldfiles'},
+	['<leader>tc'] = {':Telescope colorscheme<CR>'         , 'colorscheme'},
+	['<leader>th'] = {':Telescope help_tags<CR>'           , 'Help'},
 })
 
 
@@ -553,7 +575,7 @@ wk.register({
 	['<leader>q'] = { name = '+Quit' }       ,
 	['<leader>qf'] = {':q!<CR>'                , 'Force Quit (q!)'}      ,
 	['<leader>qs'] = {':bufdo update | q!<CR>' , 'Quit Save all (wqa!)'} ,
-	['<leader>qq'] = {':TSContextDisable<cr>|:call v:lua.Save_current_session()<CR>|:confirm qa<cr>',        'Quit Confirm (qa)'},
+	['<leader>qq'] = {':TSContextDisable<cr>|:call v:lua.Save_current_session()<CR>|:confirm qa',        'Quit Confirm (qa)'},
 })
 wk.register({  -- second one for visual mode
 	['<leader>q'] = { name = '+Quit'},

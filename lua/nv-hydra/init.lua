@@ -47,6 +47,10 @@ Hydra({
    }
 })
 
+-- local hl_manager = require "hl_manager"
+-- vim.cmd [[ hi! link HydraHint Normal ]]
+vim.api.nvim_set_hl(0, "HydraHint", { link = "Normal" })
+
 
 Hydra({
    name = 'Side scroll',

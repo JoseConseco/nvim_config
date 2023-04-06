@@ -1,6 +1,7 @@
 -- vim.api.nvim_set_keymap('n', '<F3>', ':AerialOpen float<CR> | :AerialTreeCloseAll<cr>', { noremap = true})
 
 -- Call the setup function to change the default behavior
+aerial = require("aerial")
 require("aerial").setup({
   -- Priority list of preferred backends for aerial.
   -- This can be a filetype map (see :help aerial-filetype-map)
@@ -15,8 +16,42 @@ require("aerial").setup({
   -- close_behavior = "auto",
 	close_automatic_events = { "unsupported" }, -- see :help aerial-close-behavior
 
-  -- Set to false to remove the default keybindings for the aerial buffer
-  default_bindings = true,
+  keymaps = {
+    ["?"] = "actions.show_help",
+    ["g?"] = "actions.show_help",
+    ["<CR>"] = "actions.jump",
+    -- ["<CR>"] = { callback = function() aerial.select(); aerial.close() end, desc = "", nowait = true },
+    ["<2-LeftMouse>"] = "actions.jump",
+    ["<C-v>"] = "actions.jump_vsplit",
+    ["<C-s>"] = "actions.jump_split",
+    ["p"] = "actions.scroll",
+    ["<C-j>"] = "actions.down_and_scroll",
+    ["<C-k>"] = "actions.up_and_scroll",
+    ["{"] = "actions.prev",
+    ["}"] = "actions.next",
+    ["[["] = "actions.prev_up",
+    ["]]"] = "actions.next_up",
+    ["q"] = "actions.close",
+    ["o"] = "actions.tree_toggle",
+    ["za"] = "actions.tree_toggle",
+    ["O"] = "actions.tree_toggle_recursive",
+    ["zA"] = "actions.tree_toggle_recursive",
+    -- ["l"] = "actions.tree_open",
+    ["l"] = { callback = function() local current_line_str = vim.api.nvim_get_current_line(); aerial.tree_close_all(); vim.fn.search(current_line_str); aerial.tree_open() end, desc = "", nowait = true },
+    ["zo"] = "actions.tree_open",
+    ["L"] = "actions.tree_open_recursive",
+    ["zO"] = "actions.tree_open_recursive",
+    ["h"] = "actions.tree_close",
+    ["zc"] = "actions.tree_close",
+    ["H"] = "actions.tree_close_recursive",
+    ["zC"] = "actions.tree_close_recursive",
+    ["zr"] = "actions.tree_increase_fold_level",
+    ["zR"] = "actions.tree_open_all",
+    ["zm"] = "actions.tree_decrease_fold_level",
+    ["zM"] = "actions.tree_close_all",
+    ["zx"] = "actions.tree_sync_folds",
+    ["zX"] = "actions.tree_sync_folds",
+  },
 
 
   -- Disable aerial on files with this many lines
@@ -116,7 +151,7 @@ require("aerial").setup({
   },
 
   -- When true, aerial will automatically close after jumping to a symbol
-  close_on_select = false,
+  close_on_select = true,
 
   -- Show box drawing characters for the tree hierarchy
   show_guides = true,

@@ -2,10 +2,6 @@ local api = require "nvim-tree.api"
 local lib = require "nvim-tree.lib"
 local view = require "nvim-tree.view"
 
-local function collapse_all()
-  require("nvim-tree.actions.tree-modifiers.collapse-all").fn()
-end
-
 local function edit_or_open()
   -- open as vsplit on current node
   local action = "edit"
@@ -39,7 +35,6 @@ local function vsplit_preview()
   view.focus()
 end
 
-
 require("nvim-tree").setup {
     reload_on_bufenter = true,
     renderer = { highlight_opened_files = "all" },
@@ -52,6 +47,7 @@ require("nvim-tree").setup {
     },
     filters = { dotfiles = true },
     view = {
+        cursorline = true,
         preserve_window_proportions = true,
         mappings = {
             custom_only = false,
@@ -59,7 +55,7 @@ require("nvim-tree").setup {
                 { key = "l", action = "edit",           action_cb = edit_or_open },
                 { key = "L", action = "vsplit_preview", action_cb = vsplit_preview },
                 { key = "h", action = "close_node" },
-                { key = "H", action = "collapse_all",   action_cb = collapse_all },
+                { key = "H", action = "collapse_all"}, -- hydra overrides it..
                 -- { key = "H", action = "call_hydra", action_cb = function() Hydra.spawn('nvim_tree_hydra') end },
             },
         },
@@ -79,10 +75,10 @@ local function change_root_to_global_cwd()
 end
 
 local hint = [[
- _w_: cd CWD   _c_: Path yank           _/_: Filter
+ _w_: cd cwd   _c_: Path yank           _/_: Filter
  _y_: Copy     _x_: Cut                 _p_: Paste
  _r_: Rename   _d_: Remove              _n_: New
- _h_: Hidden   _?_: Help
+ _._: hidden   _?_: Help
  ^
 ]]
 -- ^ ^           _q_: exit
@@ -105,7 +101,7 @@ local function spawn_nvim_tree_hydra()
               },
           },
           mode = "n",
-          body = "H",
+          -- body = "H",
           heads = {
               { "w", change_root_to_global_cwd,     { silent = true } },
               { "c", api.fs.copy.absolute_path,     { silent = true } },
@@ -116,7 +112,8 @@ local function spawn_nvim_tree_hydra()
               { "r", api.fs.rename,                 { silent = true } },
               { "d", api.fs.remove,                 { silent = true } },
               { "n", api.fs.create,                 { silent = true } },
-              { "h", api.tree.toggle_hidden_filter, { silent = true } },
+              -- { "H", api.tree.collapse_all, { silent = true } },
+              { ".", api.tree.toggle_hidden_filter, { silent = true } },
               { "?", api.tree.toggle_help,          { silent = true } },
               -- { "q", nil, { exit = true, nowait = true } },
           },

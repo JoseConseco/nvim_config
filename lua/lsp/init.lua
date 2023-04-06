@@ -1,7 +1,9 @@
-require("neodev").setup({
+require("neodev").setup {
   -- add any options here, or leave empty to use the default settings
-})
+}
 local nvim_lsp = require "lspconfig"
+
+local navic = require("nvim-navic") -- replaces gps
 
 local opts = { noremap = true, silent = true }
 -- vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
@@ -28,7 +30,7 @@ local on_attach = function(client, bufnr)
   buf_set_keymap("n", "gd", ":lua require('telescope.builtin').lsp_definitions({initial_mode = 'normal'})<CR>", opts) --zv - open fold at line
   buf_set_keymap("n", "K", "<Cmd>lua vim.lsp.buf.hover()<CR>", opts)
   -- buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  buf_set_keymap("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
   -- buf_set_keymap('n', '<space>la', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
   -- buf_set_keymap('n', '<space>lr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
   -- buf_set_keymap('n', '<space>ll', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
@@ -77,6 +79,10 @@ local on_attach = function(client, bufnr)
       callback = vim.lsp.buf.clear_references,
       group = lsp_doc_hl_au_idx,
     })
+  end
+  if client.server_capabilities.documentSymbolProvider then
+    navic.attach(client, bufnr)
+    navic.get_location()
   end
 
   -- require'aerial'.on_attach(client) -- aerial plug - outliner - now uses treesitter
@@ -141,7 +147,8 @@ nvim_lsp.pyright.setup {
         useLibraryCodeForTypes = true,
         typeCheckingMode = "off", --  ["off", "basic", "strict"]:
         diagnosticMode = "workspace", -- ["openFilesOnly", "workspace"]
-        diagnosticSeverityOverrides = { -- "error," "warning," "information," "true," "false," or "none"
+        diagnosticSeverityOverrides = {
+          -- "error," "warning," "information," "true," "false," or "none"
           reportDuplicateImport = "warning",
           reportImportCycles = "warning",
           reportMissingImports = "error",

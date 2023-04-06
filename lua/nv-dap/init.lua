@@ -31,9 +31,9 @@ local dap_ft = nil
 local hint = [[
  _s_: Continue/Start  _X_: Dap Close    _b_: Breakpoint     _K_: Eval
  _n_: Step            _<_: Step into    _>_: Step out       _c_: to cursor
- _x_: Quit            _C_: Close UI     ^ ^
+ _x_: Quit DAP        _C_: Close UI     ^ ^
  ^
- ^ ^              _q_: exit
+ ^ ^              _q_: Exit Hydra
 ]]
 
 local function show_dap_hydra()
@@ -96,4 +96,15 @@ Hydra.spawn["dap_hydra"] = function()
     end,
     group = dap_au_group,
   })
+end
+
+dap.listeners.before.event_initialized['hydra_integration'] = function(session, body)
+  print('Started', vim.inspect(session), vim.inspect(body))
+  dap.set_breakpoint()
+  require'hydra'.spawn['dap_hydra']()
+end
+dap.listeners.before.event_exited['hydra_integration'] = function(session, body)
+  print('Started', vim.inspect(session), vim.inspect(body))
+  dap.set_breakpoint()
+  require'hydra'.spawn['dap_hydra']()
 end
