@@ -390,6 +390,7 @@ wk.register({
 	['<leader>lTa'] = {':Telescope lsp_code_actions<CR>',         'Code Actions'},
 	['<leader>lTA'] = {':Telescope lsp_range_code_actions<CR>',   'Range Code Actions'},
 	['<leader>lTs'] = {':Telescope lsp_document_symbols<CR>',     'Document Symbols'},
+
 	['<leader>lTS'] = {':Telescope lsp_workspace_symbols<CR>',    'Workspace Symbols'},
 	['<leader>lTD'] = {':Telescope lsp_document_diagnostics<CR>', 'Document Diagnostics'},
 })
@@ -517,7 +518,7 @@ wk.register({
 	['<leader>Sa'] = {':call v:lua.CmdInput("lua MiniSessions.write(\'%s\')")<CR>',          'Save as'}  ,
 	['<leader>Sc'] = {':SClose<CR>',                                                    'Sesion Close'} ,
 	['<leader>Sd'] = {':SDelete<CR>',                                                   'Sesion Delete'},
-	['<leader>Sd'] = {':so /home/bartosz/.config/nvim/lua/settings.lua<CR>',            'Source Defaults'},
+	['<leader>So'] = {':so /home/bartosz/.config/nvim/lua/settings.lua<CR>',            'Source Defaults'},
 	-- Startify
 	-- ['<leader>Ps'] = {':SSave<CR>',                                                     'Sesion Save'}  ,
 	-- ['<leader>Pl'] = {':SLoad<CR>',                                                     'Sesion Load'}  ,
@@ -535,6 +536,7 @@ wk.register({
 	['<leader>tb'] = {':Telescope buffers<CR>'             , 'Buffers'},
 	['<leader>to'] = {':Telescope oldfiles<CR>'            , 'Oldfiles'},
 	['<leader>tc'] = {':Telescope colorscheme<CR>'         , 'colorscheme'},
+    ['<leader>ts'] = {showDocumentSymbols                  , 'Buffer Symbols'},
 	['<leader>th'] = {':Telescope help_tags<CR>'           , 'Help'},
 })
 
@@ -542,12 +544,12 @@ wk.register({
 wk.register({
 	['<leader>u'] = { name = '+UI' },
 	['<leader>ua'] = {':call v:lua.conditional_width()<CR>', 'Auto width'},
-	['<leader>uw'] = {':set wrap!<CR>',                  'Toggle Wrap'},
-	['<leader>ul'] = {':set list!<CR>',                  'Toggle List Chars'},
-	['<leader>uc'] = {':Telescope colorscheme<CR>',          'Colorscheme'},
-	['<leader>uh'] = {':set hlsearch!<CR>',                  'Search highlight'},
-	['<leader>uf'] = {':FocusToggle<cr>',                        'Focus Toggle'},
-	['<leader>ut'] = {':Twilight<cr>',                           'Twilight'},
+	['<leader>uw'] = {':set wrap!<CR>'                     , 'Toggle Wrap'},
+	['<leader>ul'] = {':set list!<CR>'                     , 'Toggle List Chars'},
+	['<leader>uc'] = {':Telescope colorscheme<CR>'         , 'Colorscheme'},
+	['<leader>uh'] = {':set hlsearch!<CR>'                 , 'Search highlight'},
+	['<leader>uf'] = {':FocusToggle<cr>'                   , 'Focus Toggle'},
+	['<leader>ut'] = {':Twilight<cr>'                      , 'Twilight'},
 })
 
 

@@ -183,6 +183,7 @@ local cmp_autopairs = require "nvim-autopairs.completion.cmp"
 cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done { map_char = { tex = "" } })
 
 cmp.setup.cmdline(":", {
+  mapping = cmp.mapping.preset.cmdline(),
   formatting = {
     format = function(entry, vim_item)
       -- vim_item.kind = lspkind.presets.default[vim_item.kind] .. " " .. vim_item.kind
@@ -204,6 +205,7 @@ cmp.setup.cmdline(":", {
   },
 })
 cmp.setup.cmdline({ "/", "?" }, {
+  mapping = cmp.mapping.preset.cmdline(),
   sources = {
     -- { name = 'buffer' },
     { name = "rg" }, -- or 'rg'

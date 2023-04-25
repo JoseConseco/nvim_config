@@ -1,8 +1,8 @@
 -- vim.api.nvim_set_keymap('n', '<F3>', ':AerialOpen float<CR> | :AerialTreeCloseAll<cr>', { noremap = true})
 
 -- Call the setup function to change the default behavior
-aerial = require("aerial")
-require("aerial").setup({
+aerial = require "aerial"
+require("aerial").setup {
   -- Priority list of preferred backends for aerial.
   -- This can be a filetype map (see :help aerial-filetype-map)
   backends = { "treesitter", "lsp", "markdown" },
@@ -14,8 +14,7 @@ require("aerial").setup({
   --             buffer to attach to
   --   global  - same as 'persist', and will always show symbols for the current buffer
   -- close_behavior = "auto",
-	close_automatic_events = { "unsupported" }, -- see :help aerial-close-behavior
-
+  close_automatic_events = { "unsupported" }, -- see :help aerial-close-behavior
   keymaps = {
     ["?"] = "actions.show_help",
     ["g?"] = "actions.show_help",
@@ -37,7 +36,16 @@ require("aerial").setup({
     ["O"] = "actions.tree_toggle_recursive",
     ["zA"] = "actions.tree_toggle_recursive",
     -- ["l"] = "actions.tree_open",
-    ["l"] = { callback = function() local current_line_str = vim.api.nvim_get_current_line(); aerial.tree_close_all(); vim.fn.search(current_line_str); aerial.tree_open() end, desc = "", nowait = true },
+    ["l"] = {
+      callback = function()
+        local current_line_str = vim.api.nvim_get_current_line()
+        aerial.tree_close_all()
+        vim.fn.search(current_line_str)
+        aerial.tree_open()
+      end,
+      desc = "",
+      nowait = true,
+    },
     ["zo"] = "actions.tree_open",
     ["L"] = "actions.tree_open_recursive",
     ["zO"] = "actions.tree_open_recursive",
@@ -52,7 +60,14 @@ require("aerial").setup({
     ["zx"] = "actions.tree_sync_folds",
     ["zX"] = "actions.tree_sync_folds",
   },
-
+  nav = {
+    preview = true,
+    keymaps = {
+      ["<CR>"] = "actions.jump",
+      ["<Esc>"] = "actions.close",
+      q = "actions.close",
+    },
+  },
 
   -- Disable aerial on files with this many lines
   disable_max_lines = 10000,
@@ -92,7 +107,6 @@ require("aerial").setup({
   -- window opening behavior; it's entirely handled by the open_automatic
   -- function.
 
-
   -- When you fold code with za, zo, or zc, update the aerial tree as well.
   -- Only works when manage_folds = true
   link_folds_to_tree = false,
@@ -113,12 +127,11 @@ require("aerial").setup({
     max_width = { 80, 0.5 },
     width = nil,
     min_width = 20,
-
-  -- Enum: prefer_right, prefer_left, right, left, float
-  -- Determines the default direction to open the aerial window. The 'prefer'
-  -- options will open the window in the other direction *if* there is a
-  -- different buffer in the way of the preferred direction
-  default_direction = "prefer_right",
+    -- Enum: prefer_right, prefer_left, right, left, float
+    -- Determines the default direction to open the aerial window. The 'prefer'
+    -- options will open the window in the other direction *if* there is a
+    -- different buffer in the way of the preferred direction
+    default_direction = "prefer_right",
   },
 
   -- Set default symbol icons to use patched font icons (see https://www.nerdfonts.com/)
@@ -134,8 +147,7 @@ require("aerial").setup({
   open_automatic = false,
 
   -- Run this command after jumping to a symbol (false will disable)
-  post_jump_cmd = 'normal! zzzv',
-
+  post_jump_cmd = "normal! zzzv",
 
   -- A list of all symbols to display. Set to false to display all symbols.
   -- This can be a filetype map (see :help aerial-filetype-map)
@@ -175,13 +187,11 @@ require("aerial").setup({
   float = {
     -- Controls border appearance. Passed to nvim_open_win
     border = "rounded",
-
     -- Enum: cursor, editor, win
     --   cursor - Opens float on top of the cursor
     --   editor - Opens float centered in the editor
     --   win    - Opens float centered in the window
     relative = "cursor",
-
     -- These control the height of the floating window.
     -- They can be integers or a float between 0 and 1 (e.g. 0.4 for 40%)
     -- min_height and max_height can be a list of mixed types.
@@ -189,7 +199,6 @@ require("aerial").setup({
     max_height = 0.9,
     height = nil,
     min_height = { 8, 0.1 },
-
     override = function(conf)
       -- This is the config that will be passed to nvim_open_win.
       -- Change values here to customize the layout
@@ -201,7 +210,6 @@ require("aerial").setup({
     -- Fetch document symbols when LSP diagnostics update.
     -- If false, will update on buffer changes.
     diagnostics_trigger_update = true,
-
     -- Set to false to not update the symbols when there are LSP errors
     update_when_errors = true,
   },
@@ -215,4 +223,4 @@ require("aerial").setup({
     -- How long to wait (in ms) after a buffer change before updating
     update_delay = 300,
   },
-})
+}

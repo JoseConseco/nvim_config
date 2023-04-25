@@ -593,14 +593,8 @@ return require("lazy").setup {
   {
     "nvim-telescope/telescope-fzf-native.nvim", build = "make"
   },
-  -- {
-  --   "ibhagwan/fzf-lua",
-  --   -- optional for icon support
-  --   dependencies = { "nvim-tree/nvim-web-devicons" },
-  -- },
 
   -- Explorer  -------------------------------------------------------------------------------------------------------
-  --  { "elihunter173/dirbuf.nvim" }, -- edit dir as buffer text
   {
     "stevearc/oil.nvim",
     config = function()
@@ -699,13 +693,13 @@ return require("lazy").setup {
       }
     end,
   },
-  --  {
-  --   "max397574/better-escape.nvim", -- faster jk escae
-  --   config = function()
-  --     require("better_escape").setup()
-  --   end,
+  -- {
+  --   "ecthelionvi/NeoComposer.nvim",
+  --   dependencies = { "kkharji/sqlite.lua" },
+  --   opts = {
+  --     notify = false
+  --   },
   -- },
-  "nullchilly/fsread.nvim",
 
   --find and replace ? -------------------------------------------------------------------------------------------------------
   {
@@ -780,14 +774,6 @@ return require("lazy").setup {
     end,
   },
   {
-    "monkoose/matchparen.nvim",
-    enabled = false, -- what idt does? - faster highlight (), [], & {} compared to vim builtin matchparen
-    config = function()
-      vim.g.loaded_matchparen = 1
-      require("matchparen").setup()
-    end,
-  },
-  {
     "windwp/nvim-autopairs", -- lua + wont close () next to char finally good and simple +++
     config = function()
       require "nv-autopairs"
@@ -795,6 +781,11 @@ return require("lazy").setup {
   },
 
   "JoseConseco/vim-case-change", -- rotate strign case - modded by me
+  { "johmsalas/text-case.nvim",  -- ga then eg. u for upper  case (gau)
+    config = function()
+      require('textcase').setup {}
+    end
+  },
   {
     "mg979/vim-visual-multi", --multi cursor support like vscode...
     config = function()
