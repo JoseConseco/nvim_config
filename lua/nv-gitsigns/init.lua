@@ -29,14 +29,14 @@ gitsigns.setup {
   }, -- narrower ▎  , ┋, ［
   numhl = false,
   linehl = false,
-  keymaps = {
-    -- Default keymap options
-    noremap = true,
-    buffer = true,
-    -- ['n <leader>ghp'] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
-    -- ['n <leader>ghr'] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
-    -- ['n <leader>ghn'] = '<cmd>lua require\"gitsigns\".next_hunk()<CR>',
-  },
+  -- keymaps = {
+  --   -- Default keymap options
+  --   noremap = true,
+  --   buffer = true,
+  --   -- ['n <leader>ghp'] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
+  --   -- ['n <leader>ghr'] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
+  --   -- ['n <leader>ghn'] = '<cmd>lua require\"gitsigns\".next_hunk()<CR>',
+  -- },
   sign_priority = 6,
   update_debounce = 200,
   status_formatter = nil, -- Use default

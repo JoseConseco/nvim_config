@@ -22,7 +22,7 @@ ts_config.setup {
     disable = { "comment" },
     use_languagetree = true,
   },
-  indent = { enable = true },
+  indent = { enable = false }, -- broken since 0.10?
   -- playground = {
   --     enable = true,
   --     disable = {},
@@ -30,7 +30,8 @@ ts_config.setup {
   --     persist_queries = false -- Whether the query persists across vim sessions
   -- },
   autotag = { enable = true },
-  rainbow = { -- for  p00f/nvim-ts-rainbow
+  rainbow = {
+    -- for  p00f/nvim-ts-rainbow
     enable = true,
     extended_mode = true, -- Highlight also non-parentheses delimiters, boolean or table: lang -> boolean
     max_file_lines = 3000, -- Do not enable for files with more than n lines, int
@@ -54,52 +55,54 @@ ts_config.setup {
     },
   },
   autopairs = { enable = true }, -- for windwp/nvim-autopairs plug
-  matchup = { -- for andymass/vim-matchup
+  matchup = {
+    -- for andymass/vim-matchup
     enable = true, -- mandatory, false will disable the whole extension
     disable = { "ruby" }, -- optional, list of language that will be disabled
   },
-	-- markid = { enable = true }, -- for		use 'David-Kunz/markid'
-  textobjects = { -- uses 'nvim-treesitter/nvim-treesitter-refactor'
-		select = {
-			enable = false,
-			keymaps = {
-				-- You can use the capture groups defined in textobjects.scm
-				["af"] = "@function.outer",
-				["if"] = "@function.inner",
-				["aC"] = "@class.outer",
-				["iC"] = "@class.inner",
-				["il"] = "@loop.inner",
-				["al"] = "@loop.outer",
-				["ic"] = "@conditional.inner",
-				["ac"] = "@conditional.outer",
-				["ib"] = "@block.inner",
-				["ab"] = "@block.outer",
-				["ip"] = "@parameter.inner",
-				["ap"] = "@parameter.outer",
-				-- Or you can define your own textobjects like this
-			},
-		},
-		move = {
-			enable = true,
-			set_jumps = true, -- whether to set jumps in the jumplist
-			goto_next_start = {
-				["]m"] = "@function.outer",
-				["]c"] = "@class.outer",
-			},
-			goto_previous_start = {
-				["[m"] = "@function.outer",
-				["[c"] = "@class.outer",
-			},
-			goto_next_end = {
-				["]M"] = "@function.outer",
-				["]C"] = "@class.outer",
-			},
-			goto_previous_end = {
-				["[M"] = "@function.outer",
-				["[C"] = "@class.outer",
-			},
-		},
-	},
+  -- markid = { enable = true }, -- for		use 'David-Kunz/markid'
+  textobjects = {
+    -- uses 'nvim-treesitter/nvim-treesitter-refactor'
+    select = {
+      enable = false,
+      keymaps = {
+        -- You can use the capture groups defined in textobjects.scm
+        ["af"] = "@function.outer",
+        ["if"] = "@function.inner",
+        ["aC"] = "@class.outer",
+        ["iC"] = "@class.inner",
+        ["il"] = "@loop.inner",
+        ["al"] = "@loop.outer",
+        ["ic"] = "@conditional.inner",
+        ["ac"] = "@conditional.outer",
+        ["ib"] = "@block.inner",
+        ["ab"] = "@block.outer",
+        ["ip"] = "@parameter.inner",
+        ["ap"] = "@parameter.outer",
+        -- Or you can define your own textobjects like this
+      },
+    },
+    move = {
+      enable = true,
+      set_jumps = true, -- whether to set jumps in the jumplist
+      goto_next_start = {
+        ["]m"] = "@function.outer",
+        ["]c"] = "@class.outer",
+      },
+      goto_previous_start = {
+        ["[m"] = "@function.outer",
+        ["[c"] = "@class.outer",
+      },
+      goto_next_end = {
+        ["]M"] = "@function.outer",
+        ["]C"] = "@class.outer",
+      },
+      goto_previous_end = {
+        ["[M"] = "@function.outer",
+        ["[C"] = "@class.outer",
+      },
+    },
+  },
 }
 
 -- vim.treesitter.query.set_query('python', 'folds', "(function_definition (block) @fold)")
@@ -156,3 +159,15 @@ if require("nvim-treesitter.parsers").has_parser "lua" then
   -- require("vim.treesitter.query").set_query("lua", "folds", folds_query)
   require("vim.treesitter.query").set("lua", "folds", folds_query)
 end
+
+
+-- see /home/bartosz/.local/share/nvim/lazy/nvim-treesitter/queries/c/folds.scm
+if require("nvim-treesitter.parsers").has_parser "c" and require("nvim-treesitter.parsers").has_parser "cpp" then
+        local folds_query = [[
+        [
+           (compound_statement)
+        ] @fold
+        ]]
+        require("vim.treesitter.query").set("c", "folds", folds_query)
+        require("vim.treesitter.query").set("cpp", "folds", folds_query)
+   end

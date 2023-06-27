@@ -177,7 +177,6 @@ wk.register({
 	-- ['<leader>bb'] = {'<c-^>',                                                                                                                            'Cycle with Previous'},
 	-- ['<leader>bn'] = {':enew<CR>',                                                                                                                        'New'},
 	['<leader>bn'] = { pick_filetype,                                                                                                                        'New'},
-	['<leader>bt'] = { set_filetype,                                                                                                                        'Set Filetype'},
 	['<leader>b]'] = {':BufferLineCycleNext<CR>',                                                                                                         'Next'},
 	['<leader>b['] = {':BufferLineCyclePrev<CR>',                                                                                                         'Previous'},
 	-- ['<leader>bc'] = {':confirm bd<CR>',                                                                                                                  'Close'},   -- fixes error on buffer close
@@ -199,7 +198,6 @@ wk.register({
 
 wk.register({
 	['<leader>c'] = { name = '+Code' },
-	['<leader>c.'] = {':Telescope filetypes<CR>',    'filetypes'},
 	-- ['<leader>cF'] = {':Autoformat<CR>',             'Autoformat lines'},
 	['<leader>cc'] = {':Neogen<CR>',             'Annotation (Neogen)'},
 	['<leader>ca'] = {':lua vim.lsp.buf.code_action()<CR>',                                    'Code Action'} ,
@@ -277,7 +275,9 @@ wk.register({
 	-- ['<leader>ff'] = {':Telescope file_browser<CR>',                       'File Browser (fuzzy)'},
 	['<leader>fy'] = { ":call v:lua.yankpath()<CR>",                       'Yank file location<CR>'},
 	['<leader>fo'] = { ':!xdg-open "%:p:h"<CR>',                           'Open containing folder'},
-	['<leader>ft'] = { ':!alacritty --working-directory "%:p:h"<CR>',      'Open at terminal'},
+	-- ['<leader>ft'] = { set_filetype,                                                                                                                        'Set Filetype'},
+	['<leader>ft'] = {':Telescope filetypes<CR>',    'filetypes'},
+
 	['<leader>fc'] = {':cd %:p:h<CR>',                                     'cd %'},
 })
 
@@ -292,17 +292,16 @@ end
 
 local function compare_to_clipboard()
 	local ftype = vim.api.nvim_eval("&filetype")
-	vim.cmd(string.format([[
-    vsplit
-    enew
-    normal! P
-    setlocal buftype=nowrite
-    set filetype=%s
-    diffthis
-    bprevious
-    execute "normal! \<C-w>\<C-w>"
-    diffthis
-  ]], ftype))
+	vim.cmd.vsplit()
+	vim.cmd.enew()
+	vim.cmd [[ normal! P ]]
+    -- local bufnr = vim.api.nvim_get_current_buf()
+    -- vim.api.nvim_set_option_value('modifiable', false, {}) # fucks things up
+    vim.cmd.diffthis() -- put new buff in diff mode
+    vim.cmd.file('ClipBoard')
+    vim.api.nvim_set_option_value('filetype', ftype, {})
+	vim.cmd.wincmd('p')
+    vim.cmd.diffthis() -- put original buff in diff mode
 end
 
 -- g is for git
@@ -316,6 +315,9 @@ wk.register({
 	['<leader>gt'] =  { ':diffthis<CR>',                            'Diff This'},
 	['<leader>gu'] =  { ':diffupdate<CR>',                          'Update changes'},
 	['<leader>gw'] =  { ':windo diffthis<cr>',                      'Diff visible windows'},
+    ['<leader>gc'] = {  compare_to_clipboard,                       'Diff with clipboard'},   -- fixes error on buffer close
+    ['<leader>gs'] = {  diffWithSaved,                              'Diff with saved'},   -- fixes error on buffer close
+
 
     ['<leader>gf'] = { name = '+Fugitive' },
 	['<leader>gfR'] = {':Ggrep<CR>'                            , 'git grep'},
@@ -334,8 +336,6 @@ wk.register({
 	['<leader>gfV'] = {':GV!<CR>'                              , 'view buffer commits'},
 
 	['<leader>gd'] = { name = '+DiffView' },
-	['<leader>gdc'] = {  compare_to_clipboard,                       'Diff with clipboard'},   -- fixes error on buffer close
-	['<leader>gds'] = {  diffWithSaved,                              'Diff with saved'},   -- fixes error on buffer close
 	['<leader>gdd'] =  { ':DiffviewOpen<CR>',                        'Diffview Open'},
 	['<leader>gdh'] =  { ':DiffviewFileHistory --base=LOCAL %<CR>',  'Diffview File History (LOCAL)'},
 	['<leader>gdf'] =  { ':DiffviewFileHistory %<CR>',               'Diffview File History'},
@@ -442,7 +442,9 @@ wk.register({
 			require'hydra'.spawn['codi']()
 		end, 'Codi Start (multi lang REPL)'},
 	['<leader>oC'] = {':Codi!<CR>',                                  'Codi Stop'},
-	['<leader>ot'] = {':FloatermNew<CR>', 'Term'},
+	['<leader>ot'] = {':FloatermNew<CR>',                                  'Term Float'},
+	['<leader>oT'] = { ':!alacritty --working-directory "%:p:h"<CR>',      'Terminal External'},
+
 })
 
 -- function _G.replace_word()
@@ -464,6 +466,7 @@ wk.register({
 		local name = vim.fn.input('To: ', vim.fn.expand('<cword>'))
 		vim.cmd(":.,$s/\\<"..vim.fn.expand('<cword>').."\\>/"..name.."/gc|1,''-&&")
 	end,                                                                                  'Replace word'},       -- write to reg z (@a) then use it for replacign * word
+	['<leader>ss'] = {":lua require('spectre').open_file_search({select_word=true})<CR>",        'Spectre Local'},
 	-- ['<leader>s/'] = {":lua require('searchbox').replace({default_value = vim.fn.expand('<cword>'), confirm = 'menu'})<CR>", 'Find and Replace word'},       -- write to reg z (@a) then use it for replacign * word
 	-- ['<leader>s*'] = {[["ayiw:lua require('searchbox').replace({confirm='menu'})<CR><C-r>=getreg('a')<CR><CR>:sl m<CR><C-r>=getreg('"')<CR>]], 'Replace word'},       -- write to reg z (@a) then use it for replacign * word
 })
@@ -481,6 +484,7 @@ wk.register({  -- second one for visual mode
 wk.register({  -- second one for visual mode
 	['<leader>s'] = { name = '+Substitute'},
 	['<leader>s*'] = {"\"ay:.,$s/<C-r>a/<C-r>+/gc|1,''-&&<CR>",					 'Replace word with yank'},    -- \<word\>  -adds whitespace  word limit (sub only whole words)
+	['<leader>ss'] = {":lua require('spectre').open_file_search()<CR>",        'Spectre Local'},
 	['<leader>s/'] = {
 	function()
 		vim.cmd("normal! \"ay")

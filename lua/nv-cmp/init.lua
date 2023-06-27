@@ -10,13 +10,14 @@ local press = function(key)
   vim.api.nvim_feedkeys(replace_keycodes(key), "m", true)
 end
 
--- vim.opt.completeopt = "menu,menuone,noselect,noinsert" -- not needed anymore - actually needed for cmp-dap...
+-- not needed anymore - actually needed for cmp-dap, or else it will auto insert first entry after dot.
+vim.opt.completeopt = "menu,menuone,noselect,noinsert"
 cmp.setup {
   sources = cmp.config.sources {
     -- { name = "nvim_lsp_signature_help" },
     { name = "copilot",     priority = 9, group_index = 1, keyword_length = 0 },
-    { name = "nvim_lsp", priority = 8, group_index = 1, keyword_length = 2, max_item_count = 5 },
-    { name = "cmp_tabnine", priority = 8, group_index = 1, keyword_length = 2 },
+    { name = "cmp_tabnine", priority = 8, group_index = 1, keyword_length = 0 },
+    { name = "nvim_lsp", priority = 8, group_index = 1, keyword_length = 2, max_item_count = 6 },
     { name = "cmp_dap", priority = 7, group_index = 1 },
     { name = "ultisnips", priority = 7, group_index = 1 },
     { name = "nvim_lua", priority = 5, group_index = 1 },
@@ -169,7 +170,7 @@ cmp.setup {
 -- form "rcarriga/cmp-dap",
 -- enable cmp-dap - only for dap-repl - or else cmp will throw error
 
-require("cmp").setup.filetype("dap-repl", {
+require("cmp").setup.filetype({"dap-repl", "dapui_watches", "dapui_hover"}, {
   -- nvim-cmp by defaults disables autocomplete for prompt buffers
   enabled = function()
     return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt" or require("cmp_dap").is_dap_buffer()

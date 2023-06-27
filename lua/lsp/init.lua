@@ -120,6 +120,14 @@ capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 --
 local util = require "lspconfig/util"
 
+nvim_lsp.clangd.setup {
+  capabilities = capabilities,
+  on_attach = on_attach,
+  cmd = {
+      "clangd",
+      "--offset-encoding=utf-16", -- get rid of "Multiple different client offset_encodings detected" warning
+  },
+}
 nvim_lsp.pyright.setup {
   capabilities = capabilities,
   on_attach = on_attach,
@@ -158,6 +166,31 @@ nvim_lsp.pyright.setup {
     },
   },
 }
+
+-- require'lspconfig'.ruff_lsp.setup{ -- rust fast, but: no hover highlight, no go definition etc
+--   capabilities = capabilities,
+--   on_attach = on_attach,
+--   init_options = {
+--     settings = {
+--       -- Any extra CLI arguments for `ruff` go here.
+--       args = {'--ignore=E501'},
+--       -- ignore = { "E501" },
+--     }
+--   },
+--   filetypes = { "python" },
+--   root_dir = function(filename)
+--     local root_files = {
+--       -- 'setup.py',
+--       -- 'pyproject.toml',
+--       -- 'setup.cfg',
+--       -- 'requirements.txt',
+--       ".git",
+--     }
+--     return util.root_pattern(unpack(root_files))(filename) or util.find_git_ancestor(filename) or nil -- forces to run in signle file mode
+--     -- util.path.dirname(filename) -- this will point to root addons == very slow
+--   end,
+-- }
+
 
 -- flake is great for showing eg. from where thing was imported... short messages
 -- F405 - shows from where thing was imported
