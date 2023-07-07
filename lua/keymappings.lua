@@ -12,6 +12,7 @@ vim.api.nvim_set_keymap("n", "gg", "G", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "G", "gg", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("v", "gg", "G", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("v", "G", "gg", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "g%", ":normal! ggVG<cr>", { noremap = true, silent = true })
 
 -- I hate escape
 vim.api.nvim_set_keymap("i", "jk", "<ESC>zv", { noremap = true, silent = true })

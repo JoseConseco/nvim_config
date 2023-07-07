@@ -102,7 +102,7 @@ return require("lazy").setup {
         filetypes = { "css", "lua", "html" },
       }
     end,
-  },                            --color highlighter
+  }, --color highlighter
   {
     "azabiong/vim-highlighter", -- highlight selection and occurrences
     config = function()
@@ -116,13 +116,13 @@ return require("lazy").setup {
     config = function()
       require("twilight").setup {
         dimming = {
-          alpha = 0.4,      -- amount of dimming
+          alpha = 0.4, -- amount of dimming
           -- color = { "Normal", "#ffffff" }, -- we try to get the foreground from the highlight groups or fallback color
           inactive = false, -- when true, other windows will be fully dimmed (unless they contain the same buffer)
         },
-        context = 0,        -- amount of lines we will try to show around the current line
+        context = 0, -- amount of lines we will try to show around the current line
         node_context = 0,
-        treesitter = true,  -- use treesitter when available for the filetype
+        treesitter = true, -- use treesitter when available for the filetype
         -- treesitter is used to automatically expand the visible text,
         -- but you can further control the types of nodes that should always be fully expanded
         expand = {
@@ -235,7 +235,7 @@ return require("lazy").setup {
 
   {
     "petertriho/nvim-scrollbar", -- scrollbar with marked errors and search results
-    cond = true,                 -- scrollbar which shows search resutls   and errors
+    cond = true, -- scrollbar which shows search resutls   and errors
     config = function()
       require "nv-nvim-scrollbar"
     end,
@@ -276,7 +276,7 @@ return require("lazy").setup {
           winwidth = 0.62,
         },
         ignore = {
-                   --			  |windows.ignore|
+          --			  |windows.ignore|
           buftype = { "quickfix" },
           filetype = { "NvimTree", "neo-tree", "undotree", "gundo", "DiffviewFiles" },
         },
@@ -354,18 +354,18 @@ return require("lazy").setup {
     dependencies = "mfussenegger/nvim-dap",
     config = function()
       require("nvim-dap-virtual-text").setup {
-        enabled = true,                     -- enable this plugin (the default)
-        enabled_commands = true,            -- create commands DapVirtualTextEnable, DapVirtualTextDisable, DapVirtualTextToggle, (DapVirtualTextForceRefresh for refreshing when debug adapter did notify its termination)
+        enabled = true, -- enable this plugin (the default)
+        enabled_commands = true, -- create commands DapVirtualTextEnable, DapVirtualTextDisable, DapVirtualTextToggle, (DapVirtualTextForceRefresh for refreshing when debug adapter did notify its termination)
         highlight_changed_variables = true, -- highlight changed values with NvimDapVirtualTextChanged, else always NvimDapVirtualText
-        highlight_new_as_changed = true,    -- highlight new variables in the same way as changed variables (if highlight_changed_variables)
-        show_stop_reason = true,            -- show stop reason when stopped for exceptions
-        commented = false,                  -- prefix virtual text with comment string
+        highlight_new_as_changed = true, -- highlight new variables in the same way as changed variables (if highlight_changed_variables)
+        show_stop_reason = true, -- show stop reason when stopped for exceptions
+        commented = false, -- prefix virtual text with comment string
         -- experimental features:
-        virt_text_pos = "right_align",      -- position of virtual text, see :h nvim_buf_set_extmark() - 'right_align', 'eol', 'overlay'
-        all_frames = false,                 -- show virtual text for all stack frames not only current. Only works for debugpy on my machine.
-        all_references = true,              -- show virtual text for all references not only current. Only works for debugpy on my machine.
-        virt_lines = false,                 -- show virtual lines instead of virtual text (will flicker!)
-        virt_text_win_col = 85,             -- position the virtual text at a fixed window column (starting from the first text column) ,
+        virt_text_pos = "right_align", -- position of virtual text, see :h nvim_buf_set_extmark() - 'right_align', 'eol', 'overlay'
+        all_frames = false, -- show virtual text for all stack frames not only current. Only works for debugpy on my machine.
+        all_references = true, -- show virtual text for all references not only current. Only works for debugpy on my machine.
+        virt_lines = false, -- show virtual lines instead of virtual text (will flicker!)
+        virt_text_win_col = 85, -- position the virtual text at a fixed window column (starting from the first text column) ,
         -- e.g. 80 to position at column 80 see :h nvim_buf_set_extmark()
       }
       -- vim.api.nvim_exec("highlight! link NvimDapVirtualText DiagnosticVirtualTextInfo", false)
@@ -417,31 +417,39 @@ return require("lazy").setup {
       }
     end,
   },
-  -- {
-  --   "mfussenegger/nvim-treehopper", -- replaced by folke flash
-  --   cond=false,
-  --   config = function()
-  --     vim.api.nvim_set_keymap("o", "u", ":<C-U>lua require('tsht').nodes()<CR>",
-  --       { noremap = false, silent = true, desc = "TSNode (nvim-treehopper" })
-  --     vim.api.nvim_set_keymap("v", "u", ":lua require('tsht').nodes()<CR>",
-  --       { noremap = true, silent = true, desc = "TSNode (nvim-treehopper" })
-  --   end,
-  -- },
   {
-    -- "p00f/nvim-ts-rainbow", -- archived
-    -- "mrjones2014/nvim-ts-rainbow", -- archived
-    "HiPhish/nvim-ts-rainbow2",
-    -- dependencies = {"nightfox.nvim", "nvim-treesitter/nvim-treesitter"},
+    "hiphish/rainbow-delimiters.nvim",
     config = function()
+      local rainbow_delimiters = require "rainbow-delimiters"
+
+      vim.g.rainbow_delimiters = {
+        strategy = {
+          [""] = rainbow_delimiters.strategy["global"],
+          vim = rainbow_delimiters.strategy["local"],
+        },
+        query = {
+          [""] = "rainbow-delimiters",
+          lua = "rainbow-blocks",
+        },
+        highlight = {
+          "RainbowDelimiterRed",
+          "RainbowDelimiterBlue",
+          "RainbowDelimiterYellow",
+          "RainbowDelimiterOrange",
+          "RainbowDelimiterGreen",
+          "RainbowDelimiterViolet",
+          "RainbowDelimiterCyan",
+        },
+      }
       -- add colorscheme change hook
       local hl_manager = require "hl_manager"
-      hl_manager.match_color_to_highlight("#df717a", "@keyword", "rainbowcol1", "foreground")
-      hl_manager.match_color_to_highlight("#a3be8c", "@keyword", "rainbowcol2", "foreground")
-      hl_manager.match_color_to_highlight("#b48ead", "@keyword", "rainbowcol3", "foreground")
-      hl_manager.match_color_to_highlight("#88c0d0", "@keyword", "rainbowcol4", "foreground")
-      hl_manager.match_color_to_highlight("#d08770", "@keyword", "rainbowcol5", "foreground")
-      hl_manager.match_color_to_highlight("#6ea1ec", "@keyword", "rainbowcol6", "foreground")
-      hl_manager.match_color_to_highlight("#ebcb8b", "@keyword", "rainbowcol7", "foreground")
+      hl_manager.match_color_to_highlight("#df717a", "@keyword", "RainbowDelimiterRed", "foreground")
+      hl_manager.match_color_to_highlight("#6ea1ec", "@keyword", "RainbowDelimiterBlue", "foreground")
+      hl_manager.match_color_to_highlight("#ebcb8b", "@keyword", "RainbowDelimiterYellow", "foreground")
+      hl_manager.match_color_to_highlight("#d08770", "@keyword", "RainbowDelimiterOrange", "foreground")
+      hl_manager.match_color_to_highlight("#a3be8c", "@keyword", "RainbowDelimiterGreen", "foreground")
+      hl_manager.match_color_to_highlight("#b48ead", "@keyword", "RainbowDelimiterViolet", "foreground")
+      hl_manager.match_color_to_highlight("#88c0d0", "@keyword", "RainbowDelimiterCyan", "foreground")
     end,
   },
   "nvim-treesitter/playground",
@@ -488,11 +496,11 @@ return require("lazy").setup {
       require("nvim-navbuddy").setup {
         lsp = {
           auto_attach = true, -- If set to true, you don't need to manually use attach function
-          preference = nil,   -- list of lsp server names in order of preference
+          preference = nil, -- list of lsp server names in order of preference
         },
         source_buffer = {
           follow_node = false, -- Keep the current node in focus on the source buffer
-          highlight = false,   -- Highlight the currently focused node
+          highlight = false, -- Highlight the currently focused node
         },
       }
     end,
@@ -612,8 +620,7 @@ return require("lazy").setup {
   {
     "nvim-telescope/telescope.nvim",
     -- branch = "fix/another_teardown_issue",
-    dependencies = { "nvim-tree/nvim-web-devicons", "nvim-lua/popup.nvim", "nvim-lua/plenary.nvim",
-      "tom-anders/telescope-vim-bookmarks.nvim", "JoseConseco/telescope_sessions_picker.nvim" },
+    dependencies = { "nvim-tree/nvim-web-devicons", "nvim-lua/popup.nvim", "nvim-lua/plenary.nvim", "tom-anders/telescope-vim-bookmarks.nvim", "JoseConseco/telescope_sessions_picker.nvim" },
     config = function()
       require "telescope-nvim"
     end,
@@ -670,7 +677,7 @@ return require("lazy").setup {
     config = function()
       require("nvim-surround").setup {
         keymaps = {
-                    -- vim-surround style keymaps
+          -- vim-surround style keymaps
           -- insert = "ys",
           visual = "S",
           delete = "ds",
@@ -758,7 +765,7 @@ return require("lazy").setup {
       require("bqf").setup {
         auto_enable = true,
         auto_resize_height = true, -- highly recommended enable
-        preview = {                -- stefandtw/quickfix-reflector.vim breaks this
+        preview = { -- stefandtw/quickfix-reflector.vim breaks this
           auto_preview = true,
         },
         -- create autocmd for 'qf' filetype. It will create 2 buffer levels mappings: for j and k keys.
@@ -768,16 +775,16 @@ return require("lazy").setup {
   },
   "stefandtw/quickfix-reflector.vim", -- edit quickfix list as text - :w to save to multi files
   -- 'gabrielpoca/replacer.nvim',   -- edit quick fis list - in lua
-  "brooth/far.vim",                   --use: Far(r) from to **/*.py   > then :Fardo
-  "dyng/ctrlsf.vim",                  --Run :CtrlSF [pattern]
+  "brooth/far.vim", --use: Far(r) from to **/*.py   > then :Fardo
+  "dyng/ctrlsf.vim", --Run :CtrlSF [pattern]
   --  use {"JoseConseco/ctrlsf.vim", --Run :CtrlSF [pattern] - fixes dow \r escape
   -- 	-- config = function()
   -- 	-- 	-- vim.g.ctrlsf_debug_mode=1
   -- 	-- end,
   -- }
-  "mhinz/vim-grepper",     -- Grepper
+  "mhinz/vim-grepper", -- Grepper
   "eugen0329/vim-esearch", -- Grepper
-  { "windwp/nvim-spectre",         dependencies = { { "nvim-lua/popup.nvim" }, { "nvim-lua/plenary.nvim" } } },
+  { "windwp/nvim-spectre", dependencies = { { "nvim-lua/popup.nvim" }, { "nvim-lua/plenary.nvim" } } },
 
   --UNDO REDO  -------------------------------------------------------------------------------------------------------
   {
@@ -787,7 +794,7 @@ return require("lazy").setup {
       require "nv-neoclip"
     end,
   },
-  "mbbill/undotree",        -- undo history  :UndotreeToggle to toggle the undo-tree panel.
+  "mbbill/undotree", -- undo history  :UndotreeToggle to toggle the undo-tree panel.
   "mg979/vim-localhistory", -- local history LHLoad, LHWrite
 
   --CODE/FORMAT -------------------------------------------------------------------------------------------------------
@@ -814,9 +821,10 @@ return require("lazy").setup {
   },
   {
     "andymass/vim-matchup", -- slow as hell
-    enabled = false,        -- increase power of % - slow as hell (not any more?) higlights fun, if etc. ranges
+    enabled = true, -- increase power of % - slow as hell (not any more?) higlights fun, if etc. ranges
     init = function()
       vim.g.matchup_matchparen_deferred = 1
+      vim.g.matchup_matchparen_deferred_show_delay = 180
     end,
     config = function()
       vim.g.matchup_matchparen_deferred = 1
@@ -831,7 +839,7 @@ return require("lazy").setup {
 
   "JoseConseco/vim-case-change", -- rotate strign case - modded by me
   {
-    "johmsalas/text-case.nvim",  -- ga then eg. u for upper  case (gau)
+    "johmsalas/text-case.nvim", -- ga then eg. u for upper  case (gau)
     config = function()
       require("textcase").setup {}
     end,
@@ -841,6 +849,15 @@ return require("lazy").setup {
     config = function()
       vim.g.VM_mouse_mappings = 1
     end,
+  },
+  {
+    "smoka7/multicursors.nvim", -- still n wayto to MC from visual sel
+    cond = false,
+    event = "VeryLazy",
+    opts = {},
+    keys = {
+      { "<C-n>", "<cmd>MCstart<cr>", desc = "Create a selection for word under the cursor" },
+    },
   },
   {
     "echasnovski/mini.nvim",
@@ -885,131 +902,116 @@ return require("lazy").setup {
   {
     "folke/flash.nvim",
     cond = true,
+    -- commit="13022c09fa30fb03d14110a380238f6a75b42ab4", -- correct colors under cword
     event = "VeryLazy",
+    -- branch = "rainbow",
     opts = {},
     keys = {
       {
-        ",",
+        "  ",
         mode = { "n", "x", "o" },
         function()
           -- default options: exact mode, multi window, all directions, with a backdrop
           require("flash").jump()
         end,
       },
-      -- {
-      --   "f",
-      --   mode = { "n", "x", "o" },
-      --   function()
-      --     -- default options: exact mode, multi window, all directions, with a backdrop
-      --     require("flash").jump({
-      --       forward = true, multi_window=false,
-      --       highlight = {
-      --         label = {after={0,0},  style = "overlay" }
-      --       },
-      --       jump = { inclusive = true},
-      --     })
-      --   end,
-      -- },
-      -- {
-      --   "t",
-      --   mode = { "n", "x", "o" },
-      --   function()
-      --     require("flash").jump({
-      --       forward = true, multi_window=false,
-      --       highlight = {
-      --         label = {after={0,0},  style = "overlay" }
-      --       },
-      --       jump = { inclusive = false},
-      --     })
-      --   end,
-      -- },
-      -- {
-      --   "F",
-      --   mode = { "n", "x", "o" },
-      --   function()
-      --     require("flash").jump({
-      --       forward = false, multi_window=false,
-      --       highlight = {
-      --         label = {after={0,0},  style = "overlay" }
-      --       },
-      --       jump = { inclusive = true},
-      --     })
-      --   end,
-      -- },
-      -- {
-      --   "T",
-      --   mode = { "n", "x", "o" },
-      --   function()
-      --     require("flash").jump({
-      --       forward = false, multi_window=false,
-      --       highlight = {
-      --         label = {after={0,0},  style = "overlay" }
-      --       },
-      --       jump = { inclusive = false},
-      --     })
-      --   end,
-      -- },
-
       {
         "u", -- unit textobject
         mode = { "o", "x" },
         function()
-          require("flash").treesitter()
+          require("flash").treesitter {
+            filter = function(matches)
+              ---@param m Flash.Match.TS
+              -- for all matches,  match[n+1] should use previous match[n] label. Do in reverse order, to prevet copying first label to all matches
+              for i = #matches, 2, -1 do
+                matches[i].label = matches[i - 1].label
+              end
+              table.remove(matches, 1) -- remove first match, as it is same as word under cursor thus redundant with word motion
+            end,
+            label = {
+              rainbow = {
+                enabled = true,
+              },
+            },
+          }
         end,
       },
-
+      {
+        "R",
+        mode = { "o", "x" }, -- remote search (treesitter)
+        function()
+          require("flash").treesitter_search {
+            label = {
+              rainbow = {
+                enabled = true,
+              },
+            },
+          }
+        end,
+        desc = "Flash Treesitter Search",
+      },
       {
         "gl",
         mode = { "n", "x", "o" },
         function()
           require("flash").jump {
-            search = { mode = "search" },
-            highlight = { label = { after = { 0, 0 } } },
-            pattern = "^\\s*\\S", -- match non-whitespace at start plus any character (ignores empty lines)
+            search = { mode = "search", max_length = 0 }, -- len == 0  so all labels will be used and skips won't be calculated
+            label = { after = { 0, 0 } },
+            highlight = {
+              matches = false, -- to hide the whitespace match
+            },
+            jump = { pos = "end" }, -- jump to end of match regex (so to first non-whitespace char)
+            pattern = "^\\s*\\S", -- match non-whitespace at start plus any character (ignores empty lines), add \\? to match empty lines too
           }
-          vim.cmd [[normal! ^]]
         end,
       },
     },
 
     config = function()
-      require("flash").setup({
-      -- labels = "ASDFGHJKLQWERTYUIOPZXCVBNM",
-      highlight = {
+      require("flash").setup {
+        -- labels = "ASDFGHJKLQWERTYUIOPZXCVBNM",
         label = {
           rainbow = {
             enabled = false,
-          }
-        }
-      },
-      modes = {
-        char = { -- `f`, `F`, `t`, `T`, `;` and `,` motions
-          enabled = false,
+          },
         },
-      },
-
-      })
-      local Config = require("flash.config")
-      local Char = require("flash.plugins.char")
-      for _, motion in ipairs({ "f", "t", "F", "T" }) do
-        vim.keymap.set({ "n", "x", "o" }, motion, function()
-          require("flash").jump(
-            Config.get({
-              mode = "char",
-              search = {
-                mode = Char.mode(motion),
-                max_length = 1,
-              },
-              highlight = {
-                label = {after={0,0},  style = "overlay", rainbow = { enabled = true }}
-              },
-            }, Char.motions[motion])
-          )
-        end)
-      end
+        highlight = {
+          priority = 9900,
+        },
+        modes = {
+          char = {
+            -- `f`, `F`, `t`, `T`, `;` and `,` motions
+            enabled = true,
+            keys = { "f", "F", "t", "T", ";", "," },
+            jump_labels = function(motion)
+              -- never show jump labels by default
+              -- return false
+              -- Always show jump labels for ftFT
+              return vim.v.count == 0 and motion:find "[ftFT]"
+              -- Show jump labels for ftFT in operator-pending mode
+              -- return vim.v.count == 0 and motion:find("[ftFT]") and vim.fn.mode(true):find("o")
+            end,
+          },
+        },
+      }
+      -- local Config = require "flash.config"
+      -- local Char = require "flash.plugins.char"
+      -- for _, motion in ipairs { "f", "t", "F", "T" } do
+      --   vim.keymap.set({ "n", "x", "o" }, motion, function()
+      --     require("flash").jump(Config.get({
+      --       mode = "char",
+      --       search = {
+      --         mode = Char.mode(motion),
+      --         max_length = 1,
+      --       },
+      --       highlight = {
+      --         label = { rainbow = { enabled = false } },
+      --         backdrop = false,
+      --       },
+      --     }, Char.motions[motion]))
+      --   end)
+      -- end
     end,
-
-
   },
   {
     -- preview line when using goto :xyz

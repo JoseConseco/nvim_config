@@ -52,8 +52,8 @@ vim.opt.expandtab = true -- Converts tabs to spaces always
 vim.opt.tabstop = 4 -- render tabs as 4 spaces
 vim.opt.shiftwidth = 4 -- inser 4 spaces when tab is pressed
 vim.opt.softtabstop = 4 -- ignored when using expandtab
-vim.bo.smartindent = true -- Makes indenting smart
-vim.bo.autoindent = true -- copy indent from current line when starting a new line
+-- vim.bo.smartindent = true -- Makes indenting smart
+-- vim.bo.autoindent = true -- copy indent from current line when starting a new line
 vim.opt.breakindent = true
 
 vim.opt.incsearch = true --  show partially typed result for searc

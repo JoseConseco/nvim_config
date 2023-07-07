@@ -22,7 +22,7 @@ ts_config.setup {
     disable = { "comment" },
     use_languagetree = true,
   },
-  indent = { enable = false }, -- broken since 0.10?
+  indent = { enable = true }, -- broken since 0.10?
   -- playground = {
   --     enable = true,
   --     disable = {},
@@ -30,21 +30,6 @@ ts_config.setup {
   --     persist_queries = false -- Whether the query persists across vim sessions
   -- },
   autotag = { enable = true },
-  rainbow = {
-    -- for  p00f/nvim-ts-rainbow
-    enable = true,
-    extended_mode = true, -- Highlight also non-parentheses delimiters, boolean or table: lang -> boolean
-    max_file_lines = 3000, -- Do not enable for files with more than n lines, int
-    colors = {
-      "#ebcb8b",
-      "#a3be8c",
-      "#88c0d0",
-      "#6ea1ec",
-      "#b48ead",
-      "#df717a",
-      "#d08770",
-    },
-  },
   incremental_selection = {
     enable = true,
     keymaps = {
@@ -86,20 +71,12 @@ ts_config.setup {
       enable = true,
       set_jumps = true, -- whether to set jumps in the jumplist
       goto_next_start = {
-        ["]m"] = "@function.outer",
+        ["]f"] = "@function.outer",
         ["]c"] = "@class.outer",
       },
       goto_previous_start = {
-        ["[m"] = "@function.outer",
+        ["[f"] = "@function.outer",
         ["[c"] = "@class.outer",
-      },
-      goto_next_end = {
-        ["]M"] = "@function.outer",
-        ["]C"] = "@class.outer",
-      },
-      goto_previous_end = {
-        ["[M"] = "@function.outer",
-        ["[C"] = "@class.outer",
       },
     },
   },
