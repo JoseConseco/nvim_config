@@ -173,7 +173,7 @@ wk.register({
 	-- ['<leader>b?'] = {':Telescope current_buffer_fuzzy_find<CR>',                                                                                         'Search fuzzy'},
 	['<leader>bs'] = {showDocumentSymbols,             'Tele Buffer Symbols'},
 	-- ['<leader>bb'] = {buffers,                                                                                                           'Get buffer' } ,
-	['<leader>bb'] = { [[:NeoTreeFloat buffers<cr>]],                                                                                                           'Get buffer' } ,
+	-- ['<leader>bb'] = { [[:NeoTreeFloat buffers<cr>]],                                                                                                           'Get buffer' } ,
 	-- ['<leader>bb'] = {'<c-^>',                                                                                                                            'Cycle with Previous'},
 	-- ['<leader>bn'] = {':enew<CR>',                                                                                                                        'New'},
 	['<leader>bn'] = { pick_filetype,                                                                                                                        'New'},
@@ -230,6 +230,7 @@ wk.register({
 	['<leader>c'] = { name = '+Code'},
 	['<leader>ce'] = {":lua require('refactoring').refactor('Extract Function')<CR>",            'Extract Function'},
 	['<leader>cv'] = {":lua require('refactoring').refactor('Extract Variable')<CR>",            'Extract Variable'},
+	['<leader>ci'] = {":lua require('refactoring').refactor('Inline Variable')<CR>",             'Inline Variable'},
 }, {mode = "v", prefix = ""})
 
 

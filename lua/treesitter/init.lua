@@ -22,7 +22,7 @@ ts_config.setup {
     disable = { "comment" },
     use_languagetree = true,
   },
-  indent = { enable = true }, -- broken since 0.10?
+  indent = { enable = false }, -- broken since 0.10?
   -- playground = {
   --     enable = true,
   --     disable = {},

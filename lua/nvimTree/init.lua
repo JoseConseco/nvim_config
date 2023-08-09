@@ -138,4 +138,4 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
     group = nt_au_group,
 })
 
-vim.api.nvim_set_keymap("n", "<F11>", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap("n", "<F11>", ":NvimTreeToggle<CR>", { noremap = true, silent = true })

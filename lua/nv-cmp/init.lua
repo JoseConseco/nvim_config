@@ -10,9 +10,16 @@ local press = function(key)
   vim.api.nvim_feedkeys(replace_keycodes(key), "m", true)
 end
 
+local cmp_ultisnips_mappings = require("cmp_nvim_ultisnips.mappings")
 -- not needed anymore - actually needed for cmp-dap, or else it will auto insert first entry after dot.
 vim.opt.completeopt = "menu,menuone,noselect,noinsert"
 cmp.setup {
+
+  snippet = {
+    expand = function(args)
+      vim.fn["UltiSnips#Anon"](args.body)
+    end,
+  },
   sources = cmp.config.sources {
     -- { name = "nvim_lsp_signature_help" },
     { name = "copilot",     priority = 9, group_index = 1, keyword_length = 0 },
@@ -77,7 +84,8 @@ cmp.setup {
     ["<C-f>"] = cmp.mapping.scroll_docs(4),
     ["<S-Tab>"] = cmp.mapping(function(fallback)
       if vim.fn["UltiSnips#CanJumpBackwards"]() == 1 then
-        press "<C-R>=UltiSnips#JumpBackwards()<CR>"
+        cmp_ultisnips_mappings.jump_backwards(fallback)
+        -- press "<C-R>=UltiSnips#JumpBackwards()<CR>"
       elseif vim.fn.pumvisible() == 1 then
         press "<C-p>"
       elseif cmp.visible() then
@@ -88,7 +96,8 @@ cmp.setup {
     end, { "i", "s", "c" }),
     ["<Tab>"] = cmp.mapping(function(fallback)
       if vim.fn["UltiSnips#CanJumpForwards"]() == 1 then
-        press "<esc>:call UltiSnips#JumpForwards()<CR>"
+        cmp_ultisnips_mappings.expand_or_jump_forwards(fallback)
+        -- press "<esc>:call UltiSnips#JumpForwards()<CR>"
         --[[ if vim.fn.mode() == 's' then
 					press("<esc>:call UltiSnips#JumpForwards()<CR>")
 				elseif vim.fn.mode() == 'i' then
@@ -142,11 +151,6 @@ cmp.setup {
         -- fallback()
       end
     end, { "i", "s" }),
-  },
-  snippet = {
-    expand = function(args)
-      vim.fn["UltiSnips#Anon"](args.body)
-    end,
   },
   sorting = {
     priority_weight = 0.8,

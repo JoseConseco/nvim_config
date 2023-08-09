@@ -102,27 +102,31 @@ return require("lazy").setup {
         filetypes = { "css", "lua", "html" },
       }
     end,
-  }, --color highlighter
+  },                            --color highlighter
   {
     "azabiong/vim-highlighter", -- highlight selection and occurrences
+    event = "VeryLazy",
     config = function()
       vim.cmd [[let HiClearUsingOneTime = 1]]
+      vim.cmd [[let HiSyncMode = 1]]
+      vim.cmd [[let HiFindTool = 'rg -H --color=never --no-heading --column --smart-case']]
     end,
   },
   {
     -- "folke/twilight.nvim",
     "mkonig/twilight.nvim",
+    event = "VeryLazy",
     -- branch = "pr/1", -- my fix for expand props
     config = function()
       require("twilight").setup {
         dimming = {
-          alpha = 0.4, -- amount of dimming
+          alpha = 0.4,      -- amount of dimming
           -- color = { "Normal", "#ffffff" }, -- we try to get the foreground from the highlight groups or fallback color
           inactive = false, -- when true, other windows will be fully dimmed (unless they contain the same buffer)
         },
-        context = 0, -- amount of lines we will try to show around the current line
+        context = 0,        -- amount of lines we will try to show around the current line
         node_context = 0,
-        treesitter = true, -- use treesitter when available for the filetype
+        treesitter = true,  -- use treesitter when available for the filetype
         -- treesitter is used to automatically expand the visible text,
         -- but you can further control the types of nodes that should always be fully expanded
         expand = {
@@ -235,7 +239,7 @@ return require("lazy").setup {
 
   {
     "petertriho/nvim-scrollbar", -- scrollbar with marked errors and search results
-    cond = true, -- scrollbar which shows search resutls   and errors
+    cond = true,                 -- scrollbar which shows search resutls   and errors
     config = function()
       require "nv-nvim-scrollbar"
     end,
@@ -243,7 +247,7 @@ return require("lazy").setup {
 
   {
     "karb94/neoscroll.nvim", -- smooth scroll
-    -- cond = false,
+    cond = true,
     config = function()
       require("neoscroll").setup { hide_cursor = false }
     end,
@@ -354,18 +358,18 @@ return require("lazy").setup {
     dependencies = "mfussenegger/nvim-dap",
     config = function()
       require("nvim-dap-virtual-text").setup {
-        enabled = true, -- enable this plugin (the default)
-        enabled_commands = true, -- create commands DapVirtualTextEnable, DapVirtualTextDisable, DapVirtualTextToggle, (DapVirtualTextForceRefresh for refreshing when debug adapter did notify its termination)
+        enabled = true,                     -- enable this plugin (the default)
+        enabled_commands = true,            -- create commands DapVirtualTextEnable, DapVirtualTextDisable, DapVirtualTextToggle, (DapVirtualTextForceRefresh for refreshing when debug adapter did notify its termination)
         highlight_changed_variables = true, -- highlight changed values with NvimDapVirtualTextChanged, else always NvimDapVirtualText
-        highlight_new_as_changed = true, -- highlight new variables in the same way as changed variables (if highlight_changed_variables)
-        show_stop_reason = true, -- show stop reason when stopped for exceptions
-        commented = false, -- prefix virtual text with comment string
+        highlight_new_as_changed = true,    -- highlight new variables in the same way as changed variables (if highlight_changed_variables)
+        show_stop_reason = true,            -- show stop reason when stopped for exceptions
+        commented = false,                  -- prefix virtual text with comment string
         -- experimental features:
-        virt_text_pos = "right_align", -- position of virtual text, see :h nvim_buf_set_extmark() - 'right_align', 'eol', 'overlay'
-        all_frames = false, -- show virtual text for all stack frames not only current. Only works for debugpy on my machine.
-        all_references = true, -- show virtual text for all references not only current. Only works for debugpy on my machine.
-        virt_lines = false, -- show virtual lines instead of virtual text (will flicker!)
-        virt_text_win_col = 85, -- position the virtual text at a fixed window column (starting from the first text column) ,
+        virt_text_pos = "right_align",      -- position of virtual text, see :h nvim_buf_set_extmark() - 'right_align', 'eol', 'overlay'
+        all_frames = false,                 -- show virtual text for all stack frames not only current. Only works for debugpy on my machine.
+        all_references = true,              -- show virtual text for all references not only current. Only works for debugpy on my machine.
+        virt_lines = false,                 -- show virtual lines instead of virtual text (will flicker!)
+        virt_text_win_col = 85,             -- position the virtual text at a fixed window column (starting from the first text column) ,
         -- e.g. 80 to position at column 80 see :h nvim_buf_set_extmark()
       }
       -- vim.api.nvim_exec("highlight! link NvimDapVirtualText DiagnosticVirtualTextInfo", false)
@@ -489,22 +493,22 @@ return require("lazy").setup {
       require "nv-aerial"
     end,
   },
-  {
-    "SmiteshP/nvim-navbuddy",
-    dependencies = { "neovim/nvim-lspconfig", "SmiteshP/nvim-navic", "MunifTanjim/nui.nvim" },
-    config = function()
-      require("nvim-navbuddy").setup {
-        lsp = {
-          auto_attach = true, -- If set to true, you don't need to manually use attach function
-          preference = nil, -- list of lsp server names in order of preference
-        },
-        source_buffer = {
-          follow_node = false, -- Keep the current node in focus on the source buffer
-          highlight = false, -- Highlight the currently focused node
-        },
-      }
-    end,
-  },
+  -- {
+  --   "SmiteshP/nvim-navbuddy",  -- code outline - but without filtering
+  --   dependencies = { "neovim/nvim-lspconfig", "SmiteshP/nvim-navic", "MunifTanjim/nui.nvim" },
+  --   config = function()
+  --     require("nvim-navbuddy").setup {
+  --       lsp = {
+  --         auto_attach = true, -- If set to true, you don't need to manually use attach function
+  --         preference = nil, -- list of lsp server names in order of preference
+  --       },
+  --       source_buffer = {
+  --         follow_node = false, -- Keep the current node in focus on the source buffer
+  --         highlight = false, -- Highlight the currently focused node
+  --       },
+  --     }
+  --   end,
+  -- },
   --  {disable=true,
   -- {"ray-x/lsp_signature.nvim" }, --  for funct(), signature hint - replaced with noice
 
@@ -559,7 +563,7 @@ return require("lazy").setup {
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-cmdline",
       "hrsh7th/cmp-nvim-lua",
-      "quangnguyen30192/cmp-nvim-ultisnips",
+      -- "quangnguyen30192/cmp-nvim-ultisnips",
       "hrsh7th/cmp-calc",
       "lukas-reineke/cmp-rg",
       "rcarriga/cmp-dap",
@@ -571,12 +575,14 @@ return require("lazy").setup {
       require "nv-cmp"
     end,
   },
-  { "dmitmel/cmp-cmdline-history", dependencies = "hrsh7th/cmp-cmdline" },
-  -- use { "tzachar/cmp-fuzzy-path", dependencies = { "hrsh7th/nvim-cmp", "hrsh7th/cmp-path", "tzachar/fuzzy.nvim" } }
+  { "quangnguyen30192/cmp-nvim-ultisnips", dependencies = { "hrsh7th/nvim-cmp" } },
+  { "dmitmel/cmp-cmdline-history",         dependencies = "hrsh7th/cmp-cmdline" },
+  -- { "tzachar/cmp-fuzzy-path", dependencies = { "hrsh7th/nvim-cmp", "hrsh7th/cmp-path", "tzachar/fuzzy.nvim" } }
   -- use { "tzachar/cmp-fuzzy-buffer", dependencies = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" } }
   {
     "tzachar/cmp-tabnine",
     cond = true,
+    event = "InsertEnter",
     dependencies = "hrsh7th/nvim-cmp",
     build = "./install.sh",
     config = function()
@@ -610,6 +616,7 @@ return require("lazy").setup {
   },
   {
     "zbirenbaum/copilot-cmp",
+    event = "InsertEnter",
     dependencies = { "copilot.lua", "nvim-cmp" },
     config = function()
       require("copilot_cmp").setup { event = "LspAttach" }
@@ -619,8 +626,9 @@ return require("lazy").setup {
   -- Telescope   -------------------------------------------------------------------------------------------------------
   {
     "nvim-telescope/telescope.nvim",
-    -- branch = "fix/another_teardown_issue",
-    dependencies = { "nvim-tree/nvim-web-devicons", "nvim-lua/popup.nvim", "nvim-lua/plenary.nvim", "tom-anders/telescope-vim-bookmarks.nvim", "JoseConseco/telescope_sessions_picker.nvim" },
+    dependencies = { "nvim-tree/nvim-web-devicons", "nvim-lua/popup.nvim", "nvim-lua/plenary.nvim",
+      "tom-anders/telescope-vim-bookmarks.nvim", "JoseConseco/telescope_sessions_picker.nvim" },
+    cmd = "Telescope frecency",
     config = function()
       require "telescope-nvim"
     end,
@@ -635,14 +643,13 @@ return require("lazy").setup {
   },
   {
     "debugloop/telescope-undo.nvim",
+    cmd = "Telescope undo",
     config = function()
       require("telescope").load_extension "undo"
     end,
   },
-  {
-    "nvim-telescope/telescope-fzf-native.nvim",
-    build = "make",
-  },
+  { 'nvim-telescope/telescope-fzf-native.nvim',
+  build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' },
 
   -- Explorer  -------------------------------------------------------------------------------------------------------
   {
@@ -653,6 +660,7 @@ return require("lazy").setup {
   },
   {
     "nvim-tree/nvim-tree.lua",
+    cond = false,
     dependencies = { "nvim-tree/nvim-web-devicons" }, -- optional, for file icons },
     config = function()
       require "nvimTree"
@@ -663,14 +671,24 @@ return require("lazy").setup {
     "nvim-neo-tree/neo-tree.nvim", -- nice buffers preview...
     cond = true,
     branch = "v2.x",
-    dependencies = { "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons", "MunifTanjim/nui.nvim" },
+    dependencies = { "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons", "MunifTanjim/nui.nvim",
+      "s1n7ax/nvim-window-picker" },
+    keys = {
+      { "<F11>", "<cmd>NeoTreeFloat<cr>", desc = "Open Neotree on side" },
+      { " bb", "<cmd>NeoTreeFloat buffers<cr>", desc = "Open Neotree on side" },
+    },
     config = function()
       require "nv_neotree"
     end,
   },
   -- Git  -------------------------------------------------------------------------------------------------------
+  -- { "tpope/vim-fugitive", -- add :Gitxx commands },
   {
-    "tpope/vim-fugitive", -- add :Gitxx commands
+    "NeogitOrg/neogit",
+    dependencies = "nvim-lua/plenary.nvim",
+    config = function()
+      require("neogit").setup()
+    end,
   },
   {
     "kylechui/nvim-surround",
@@ -686,9 +704,7 @@ return require("lazy").setup {
       }
     end,
   },
-  {
-    "tpope/vim-repeat",
-  },
+  -- { "tpope/vim-repeat" },
   {
     "lewis6991/gitsigns.nvim",
     dependencies = { "nvim-lua/plenary.nvim", "lewis6991/foldsigns.nvim" },
@@ -698,7 +714,6 @@ return require("lazy").setup {
   }, -- lua + wont close () next to char finally good and simple +++
   {
     "sindrets/diffview.nvim",
-    -- dependencies = "nightfox.nvim",
     cmd = { "DiffviewOpen", "DiffviewFileHistory" },
     config = function()
       require("diffview").setup {
@@ -710,17 +725,9 @@ return require("lazy").setup {
   -- general  -------------------------------------------------------------------------------------------------------
   {
     "folke/which-key.nvim",
-    -- branch = "pr/278", -- visual multi fix
+    event = "VeryLazy",
     config = function()
       require "nv-which-key"
-    end,
-  },
-  {
-    "Cassin01/wf.nvim", -- new which key - with fuzzy find..
-    version = "*",
-    cond = false,
-    config = function()
-      require "nv-wf-nvim"
     end,
   },
   {
@@ -765,7 +772,7 @@ return require("lazy").setup {
       require("bqf").setup {
         auto_enable = true,
         auto_resize_height = true, -- highly recommended enable
-        preview = { -- stefandtw/quickfix-reflector.vim breaks this
+        preview = {                -- stefandtw/quickfix-reflector.vim breaks this
           auto_preview = true,
         },
         -- create autocmd for 'qf' filetype. It will create 2 buffer levels mappings: for j and k keys.
@@ -774,15 +781,15 @@ return require("lazy").setup {
     end,
   },
   "stefandtw/quickfix-reflector.vim", -- edit quickfix list as text - :w to save to multi files
-  -- 'gabrielpoca/replacer.nvim',   -- edit quick fis list - in lua
-  "brooth/far.vim", --use: Far(r) from to **/*.py   > then :Fardo
-  "dyng/ctrlsf.vim", --Run :CtrlSF [pattern]
+  -- 'gabrielpoca/replacer.nvim',   -- edit quick fis list - in lua - not as good as quickfix-reflector
+  "brooth/far.vim",                   --use: Far(r) from to **/*.py   > then :Fardo
+  "dyng/ctrlsf.vim",                  --Run :CtrlSF [pattern]
   --  use {"JoseConseco/ctrlsf.vim", --Run :CtrlSF [pattern] - fixes dow \r escape
   -- 	-- config = function()
   -- 	-- 	-- vim.g.ctrlsf_debug_mode=1
   -- 	-- end,
   -- }
-  "mhinz/vim-grepper", -- Grepper
+  "mhinz/vim-grepper",     -- Grepper
   "eugen0329/vim-esearch", -- Grepper
   { "windwp/nvim-spectre", dependencies = { { "nvim-lua/popup.nvim" }, { "nvim-lua/plenary.nvim" } } },
 
@@ -794,7 +801,7 @@ return require("lazy").setup {
       require "nv-neoclip"
     end,
   },
-  "mbbill/undotree", -- undo history  :UndotreeToggle to toggle the undo-tree panel.
+  "mbbill/undotree",        -- undo history  :UndotreeToggle to toggle the undo-tree panel.
   "mg979/vim-localhistory", -- local history LHLoad, LHWrite
 
   --CODE/FORMAT -------------------------------------------------------------------------------------------------------
@@ -821,7 +828,7 @@ return require("lazy").setup {
   },
   {
     "andymass/vim-matchup", -- slow as hell
-    enabled = true, -- increase power of % - slow as hell (not any more?) higlights fun, if etc. ranges
+    enabled = true,         -- increase power of % - slow as hell (not any more?) higlights fun, if etc. ranges
     init = function()
       vim.g.matchup_matchparen_deferred = 1
       vim.g.matchup_matchparen_deferred_show_delay = 180
@@ -839,7 +846,7 @@ return require("lazy").setup {
 
   "JoseConseco/vim-case-change", -- rotate strign case - modded by me
   {
-    "johmsalas/text-case.nvim", -- ga then eg. u for upper  case (gau)
+    "johmsalas/text-case.nvim",  -- ga then eg. u for upper  case (gau)
     config = function()
       require("textcase").setup {}
     end,
@@ -883,22 +890,6 @@ return require("lazy").setup {
   },
 
   -- navigation  -------------------------------------------------------------------------------------------------------
-  {
-    "rlane/pounce.nvim",
-    cond = false,
-    config = function()
-      require("pounce").setup {
-        accept_keys = "JFKDLSAHGNUVRBYTMICEOXWPQZ",
-        accept_best_key = "<enter>",
-        multi_window = false,
-        debug = false,
-      }
-      vim.api.nvim_set_keymap("n", "  ", ":Pounce<cr>", { noremap = true, desc = "Pounce", silent = true })
-      vim.api.nvim_set_keymap("n", ",", ":Pounce<cr>", { noremap = true, desc = "Pounce", silent = true })
-      vim.api.nvim_set_keymap("v", "  ", "<cmd>Pounce<cr>", { noremap = true, desc = "Pounce", silent = true })
-      vim.api.nvim_set_keymap("o", "  ", "<cmd>Pounce<cr>", { noremap = true, desc = "Pounce", silent = true })
-    end,
-  },
   {
     "folke/flash.nvim",
     cond = true,
@@ -958,10 +949,10 @@ return require("lazy").setup {
             search = { mode = "search", max_length = 0 }, -- len == 0  so all labels will be used and skips won't be calculated
             label = { after = { 0, 0 } },
             highlight = {
-              matches = false, -- to hide the whitespace match
+              matches = false,      -- to hide the whitespace match
             },
             jump = { pos = "end" }, -- jump to end of match regex (so to first non-whitespace char)
-            pattern = "^\\s*\\S", -- match non-whitespace at start plus any character (ignores empty lines), add \\? to match empty lines too
+            pattern = "^\\s*\\S",   -- match non-whitespace at start plus any character (ignores empty lines), add \\? to match empty lines too
           }
         end,
       },

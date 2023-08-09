@@ -10,12 +10,20 @@ vim.fn.sign_define("DiagnosticSignHint", { text = "", texthl = "DiagnosticSig
 -- in the form "LspDiagnosticsSignWarning"
 
 require("neo-tree").setup {
-  close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
+  event_handlers = {
+    {
+      event = "file_opened",
+      handler = function(file_path)
+        require("neo-tree").close_all()
+      end
+    },
+  },
+  close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
   popup_border_style = "rounded",
   enable_git_status = false,
   enable_diagnostics = false,
   sort_case_insensitive = false, -- used when sorting files and directories in the tree
-  sort_function = nil, -- use a custom function for sorting files and directories in the tree
+  sort_function = nil,           -- use a custom function for sorting files and directories in the tree
   -- sort_function = function (a,b)
   --       if a.type == b.type then
   --           return a.path > b.path
@@ -62,7 +70,7 @@ require("neo-tree").setup {
     git_status = {
       symbols = {
         -- Change type
-        added = "", -- or "✚", but this is redundant info if you use git_status_colors on the name
+        added = "",    -- or "✚", but this is redundant info if you use git_status_colors on the name
         modified = "", -- or "", but this is redundant info if you use git_status_colors on the name
         deleted = "✖", -- this can only be used in the git_status source
         renamed = "", -- this can only be used in the git_status source
@@ -88,7 +96,7 @@ require("neo-tree").setup {
         nowait = false, -- disable `nowait` if you have existing combos starting with this char that you want to use
       },
       ["<2-LeftMouse>"] = "open",
-      ["<cr>"] = "open",
+      -- ["<cr>"] = "open",
       ["l"] = "open",
       ["<esc>"] = "revert_preview",
       ["P"] = { "toggle_preview", config = { use_float = true } },
@@ -100,7 +108,7 @@ require("neo-tree").setup {
       -- ["t"] = "open_tabnew",
       -- ["<cr>"] = "open_drop",
       -- ["t"] = "open_tab_drop",
-      ["w"] = "open_with_window_picker",
+      ["<cr>"] = "open_with_window_picker",
       --["P"] = "toggle_preview", -- enter preview mode, which shows the current node without focusing
       ["h"] = "close_node",
       ["H"] = "close_all_nodes",
@@ -159,9 +167,9 @@ require("neo-tree").setup {
         --".null-ls_*",
       },
     },
-    follow_current_file = true, -- This will find and focus the file in the active buffer every
+    follow_current_file = true,             -- This will find and focus the file in the active buffer every
     -- time the current file is changed while the tree is open.
-    group_empty_dirs = false, -- when true, empty folders will be grouped together
+    group_empty_dirs = false,               -- when true, empty folders will be grouped together
     hijack_netrw_behavior = "open_default", -- netrw disabled, opening a directory opens neo-tree
     -- in whatever position is specified in window.position
     -- "open_current",  -- netrw disabled, opening a directory opens within the
@@ -188,7 +196,7 @@ require("neo-tree").setup {
   buffers = {
     follow_current_file = true, -- This will find and focus the file in the active buffer every
     -- time the current file is changed while the tree is open.
-    group_empty_dirs = true, -- when true, empty folders will be grouped together
+    group_empty_dirs = true,    -- when true, empty folders will be grouped together
     show_unloaded = true,
     window = {
       mappings = {
@@ -216,10 +224,10 @@ require("neo-tree").setup {
 
 
 local hint = [[
- _w_: cd cwd   _c_: Path yank           _/_: Filter
+ _s_: set root   _c_: Path yank           _/_: Filter
  _y_: Copy     _x_: Cut                 _p_: Paste
  _r_: Rename   _d_: Remove              _n_: New
- _._: hidden   _?_: Help
+ _._: hidden   _?_: Help                _q_: Exit
  ^
 ]]
 -- ^ ^           _q_: exit
@@ -231,7 +239,7 @@ local neot_au_group = vim.api.nvim_create_augroup("NeoTreeHydraAu", { clear = tr
 -- local common = require("neo-tree.sources.common.commands")
 
 local clock = os.clock
-function sleep(n)  -- seconds
+function sleep(n) -- seconds
   local t0 = clock()
   while clock() - t0 <= n do end
 end
@@ -253,51 +261,51 @@ end
 local Hydra = require "hydra"
 local function spawn_nvim_tree_hydra()
   neo_tree_hydra = Hydra {
-          name = "NeoTree",
-          hint = hint,
-          config = {
-              color = "pink",
-              invoke_on_body = true,
-              buffer = 0, -- only for active buffer
-              hint = {
-                  position = "bottom",
-                  border = "rounded",
-              },
-          },
-          mode = "n",
-          body = " fbn",
-          heads = {
-              { "w", function() build_command("set_root") end ,     { silent = true } },
-              { "c", function() build_command("yank Path") end,     { silent = true } },
-              { "/", function() build_command("filter_as_you_type") end,         { silent = true } },
-              { "y", function() build_command("copy_to_clipboard") end,              { silent = true } },
-              { "x", function() build_command("cut_to_clipboard") end,                    { exit = true, silent = true } },
-              { "p", function() build_command("paste_from_clipboard") end,                  { exit = true, silent = true } },
-              { "r", function() build_command("rename") end,                 { silent = true } },
-              { "d", function() build_command("delete") end,                 { silent = true } },
-              { "n", function() build_command("add") end,                 { silent = true } },
-              { ".", function() build_command("toggle_hidden") end, { silent = true } },
-              { "?", "",          { silent = true } },
-          },
-      }
+    name = "NeoTree",
+    hint = hint,
+    config = {
+      color = "pink",
+      invoke_on_body = true,
+      buffer = 0,         -- only for active buffer
+      hint = {
+        position = "bottom",
+        border = "rounded",
+      },
+    },
+    mode = "n",
+    body = " fbn",
+    heads = {
+      { "s", function() build_command("set_root") end,             { silent = true } },
+      { "c", function() build_command("yank Path") end,            { silent = true } },
+      { "/", function() build_command("filter_as_you_type") end,   { silent = true } },
+      { "y", function() build_command("copy_to_clipboard") end,    { silent = true } },
+      { "x", function() build_command("cut_to_clipboard") end,     { exit = true, silent = true } },
+      { "p", function() build_command("paste_from_clipboard") end, { exit = true, silent = true } },
+      { "r", function() build_command("rename") end,               { silent = true } },
+      { "d", function() build_command("delete") end,               { silent = true } },
+      { "n", function() build_command("add") end,                  { silent = true } },
+      { ".", function() build_command("toggle_hidden") end,        { silent = true } },
+      { "q", function() build_command("close_window") end,         { exit = true, nowait = true } },
+      { "?", "",                                                   { exit=true,silent = true } },
+    },
+  }
   neo_tree_hydra:activate()
 end
 
 vim.api.nvim_create_autocmd({ "BufEnter" }, {
-    pattern = "*",
-    callback = function(opts)
-      -- print("leave: ft "..vim.bo[opts.buf].filetype)
-      if vim.bo[opts.buf].filetype == "neo-tree" then
-        vim.defer_fn(spawn_nvim_tree_hydra, 200) -- wait for the neo-tree to be fully loaded - so it wont overide hydra keys
-      else
-        -- print("au close hydra")
-        if neo_tree_hydra then
-          neo_tree_hydra:exit()
-          neo_tree_hydra = nil
-        end
-        -- return true -- removes autocmd
+  pattern = "*",
+  callback = function(opts)
+    -- print("leave: ft "..vim.bo[opts.buf].filetype)
+    if vim.bo[opts.buf].filetype == "neo-tree" then
+      vim.defer_fn(spawn_nvim_tree_hydra, 200)   -- wait for the neo-tree to be fully loaded - so it wont overide hydra keys
+    else
+      -- print("au close hydra")
+      if neo_tree_hydra then
+        neo_tree_hydra:exit()
+        neo_tree_hydra = nil
       end
-    end,
-    group = neot_au_group,
+      -- return true -- removes autocmd
+    end
+  end,
+  group = neot_au_group,
 })
-
