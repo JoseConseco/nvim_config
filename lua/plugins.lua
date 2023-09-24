@@ -102,7 +102,7 @@ return require("lazy").setup {
         filetypes = { "css", "lua", "html" },
       }
     end,
-  },                            --color highlighter
+  }, --color highlighter
   {
     "azabiong/vim-highlighter", -- highlight selection and occurrences
     event = "VeryLazy",
@@ -120,13 +120,13 @@ return require("lazy").setup {
     config = function()
       require("twilight").setup {
         dimming = {
-          alpha = 0.4,      -- amount of dimming
+          alpha = 0.4, -- amount of dimming
           -- color = { "Normal", "#ffffff" }, -- we try to get the foreground from the highlight groups or fallback color
           inactive = false, -- when true, other windows will be fully dimmed (unless they contain the same buffer)
         },
-        context = 0,        -- amount of lines we will try to show around the current line
+        context = 0, -- amount of lines we will try to show around the current line
         node_context = 0,
-        treesitter = true,  -- use treesitter when available for the filetype
+        treesitter = true, -- use treesitter when available for the filetype
         -- treesitter is used to automatically expand the visible text,
         -- but you can further control the types of nodes that should always be fully expanded
         expand = {
@@ -239,7 +239,7 @@ return require("lazy").setup {
 
   {
     "petertriho/nvim-scrollbar", -- scrollbar with marked errors and search results
-    cond = true,                 -- scrollbar which shows search resutls   and errors
+    cond = true, -- scrollbar which shows search resutls   and errors
     config = function()
       require "nv-nvim-scrollbar"
     end,
@@ -358,18 +358,18 @@ return require("lazy").setup {
     dependencies = "mfussenegger/nvim-dap",
     config = function()
       require("nvim-dap-virtual-text").setup {
-        enabled = true,                     -- enable this plugin (the default)
-        enabled_commands = true,            -- create commands DapVirtualTextEnable, DapVirtualTextDisable, DapVirtualTextToggle, (DapVirtualTextForceRefresh for refreshing when debug adapter did notify its termination)
+        enabled = true, -- enable this plugin (the default)
+        enabled_commands = true, -- create commands DapVirtualTextEnable, DapVirtualTextDisable, DapVirtualTextToggle, (DapVirtualTextForceRefresh for refreshing when debug adapter did notify its termination)
         highlight_changed_variables = true, -- highlight changed values with NvimDapVirtualTextChanged, else always NvimDapVirtualText
-        highlight_new_as_changed = true,    -- highlight new variables in the same way as changed variables (if highlight_changed_variables)
-        show_stop_reason = true,            -- show stop reason when stopped for exceptions
-        commented = false,                  -- prefix virtual text with comment string
+        highlight_new_as_changed = true, -- highlight new variables in the same way as changed variables (if highlight_changed_variables)
+        show_stop_reason = true, -- show stop reason when stopped for exceptions
+        commented = false, -- prefix virtual text with comment string
         -- experimental features:
-        virt_text_pos = "right_align",      -- position of virtual text, see :h nvim_buf_set_extmark() - 'right_align', 'eol', 'overlay'
-        all_frames = false,                 -- show virtual text for all stack frames not only current. Only works for debugpy on my machine.
-        all_references = true,              -- show virtual text for all references not only current. Only works for debugpy on my machine.
-        virt_lines = false,                 -- show virtual lines instead of virtual text (will flicker!)
-        virt_text_win_col = 85,             -- position the virtual text at a fixed window column (starting from the first text column) ,
+        virt_text_pos = "right_align", -- position of virtual text, see :h nvim_buf_set_extmark() - 'right_align', 'eol', 'overlay'
+        all_frames = false, -- show virtual text for all stack frames not only current. Only works for debugpy on my machine.
+        all_references = true, -- show virtual text for all references not only current. Only works for debugpy on my machine.
+        virt_lines = false, -- show virtual lines instead of virtual text (will flicker!)
+        virt_text_win_col = 85, -- position the virtual text at a fixed window column (starting from the first text column) ,
         -- e.g. 80 to position at column 80 see :h nvim_buf_set_extmark()
       }
       -- vim.api.nvim_exec("highlight! link NvimDapVirtualText DiagnosticVirtualTextInfo", false)
@@ -541,18 +541,18 @@ return require("lazy").setup {
       vim.g.copilot_filetypes = { ["dap-repl"] = false }
     end,
   },
-  {
-    "jackMort/ChatGPT.nvim",
-    event = "VeryLazy",
-    config = function()
-      require("chatgpt").setup()
-    end,
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-      "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim",
-    },
-  },
+  -- {
+  --   "jackMort/ChatGPT.nvim",
+  --   event = "VeryLazy",
+  --   config = function()
+  --     require("chatgpt").setup()
+  --   end,
+  --   dependencies = {
+  --     "MunifTanjim/nui.nvim",
+  --     "nvim-lua/plenary.nvim",
+  --     "nvim-telescope/telescope.nvim",
+  --   },
+  -- },
   {
     "hrsh7th/nvim-cmp",
     cond = true,
@@ -576,7 +576,7 @@ return require("lazy").setup {
     end,
   },
   { "quangnguyen30192/cmp-nvim-ultisnips", dependencies = { "hrsh7th/nvim-cmp" } },
-  { "dmitmel/cmp-cmdline-history",         dependencies = "hrsh7th/cmp-cmdline" },
+  { "dmitmel/cmp-cmdline-history", dependencies = "hrsh7th/cmp-cmdline" },
   -- { "tzachar/cmp-fuzzy-path", dependencies = { "hrsh7th/nvim-cmp", "hrsh7th/cmp-path", "tzachar/fuzzy.nvim" } }
   -- use { "tzachar/cmp-fuzzy-buffer", dependencies = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" } }
   {
@@ -597,7 +597,12 @@ return require("lazy").setup {
     "tzachar/highlight-undo.nvim",
     config = function()
       require("highlight-undo").setup {
-        hlgroup = "PounceAccept", --'HighlightUndo',
+        undo = {
+          hlgroup = "@text.danger", --'HighlightUndo',
+        },
+        redo = {
+          hlgroup = "@text.todo", --'HighlightUndo',
+        },
         duration = 400,
       }
     end,
@@ -626,8 +631,7 @@ return require("lazy").setup {
   -- Telescope   -------------------------------------------------------------------------------------------------------
   {
     "nvim-telescope/telescope.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons", "nvim-lua/popup.nvim", "nvim-lua/plenary.nvim",
-      "tom-anders/telescope-vim-bookmarks.nvim", "JoseConseco/telescope_sessions_picker.nvim" },
+    dependencies = { "nvim-tree/nvim-web-devicons", "nvim-lua/popup.nvim", "nvim-lua/plenary.nvim", "tom-anders/telescope-vim-bookmarks.nvim", "JoseConseco/telescope_sessions_picker.nvim" },
     cmd = "Telescope frecency",
     config = function()
       require "telescope-nvim"
@@ -648,8 +652,10 @@ return require("lazy").setup {
       require("telescope").load_extension "undo"
     end,
   },
-  { 'nvim-telescope/telescope-fzf-native.nvim',
-  build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' },
+  {
+    "nvim-telescope/telescope-fzf-native.nvim",
+    build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
+  },
 
   -- Explorer  -------------------------------------------------------------------------------------------------------
   {
@@ -671,8 +677,7 @@ return require("lazy").setup {
     "nvim-neo-tree/neo-tree.nvim", -- nice buffers preview...
     cond = true,
     branch = "v2.x",
-    dependencies = { "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons", "MunifTanjim/nui.nvim",
-      "s1n7ax/nvim-window-picker" },
+    dependencies = { "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons", "MunifTanjim/nui.nvim", "s1n7ax/nvim-window-picker" },
     keys = {
       { "<F11>", "<cmd>NeoTreeFloat<cr>", desc = "Open Neotree on side" },
       { " bb", "<cmd>NeoTreeFloat buffers<cr>", desc = "Open Neotree on side" },
@@ -772,7 +777,7 @@ return require("lazy").setup {
       require("bqf").setup {
         auto_enable = true,
         auto_resize_height = true, -- highly recommended enable
-        preview = {                -- stefandtw/quickfix-reflector.vim breaks this
+        preview = { -- stefandtw/quickfix-reflector.vim breaks this
           auto_preview = true,
         },
         -- create autocmd for 'qf' filetype. It will create 2 buffer levels mappings: for j and k keys.
@@ -782,16 +787,20 @@ return require("lazy").setup {
   },
   "stefandtw/quickfix-reflector.vim", -- edit quickfix list as text - :w to save to multi files
   -- 'gabrielpoca/replacer.nvim',   -- edit quick fis list - in lua - not as good as quickfix-reflector
-  "brooth/far.vim",                   --use: Far(r) from to **/*.py   > then :Fardo
-  "dyng/ctrlsf.vim",                  --Run :CtrlSF [pattern]
+  "brooth/far.vim", --use: Far(r) from to **/*.py   > then :Fardo
+  "dyng/ctrlsf.vim", --Run :CtrlSF [pattern]
   --  use {"JoseConseco/ctrlsf.vim", --Run :CtrlSF [pattern] - fixes dow \r escape
   -- 	-- config = function()
   -- 	-- 	-- vim.g.ctrlsf_debug_mode=1
   -- 	-- end,
   -- }
-  "mhinz/vim-grepper",     -- Grepper
+  "mhinz/vim-grepper", -- Grepper
   "eugen0329/vim-esearch", -- Grepper
   { "windwp/nvim-spectre", dependencies = { { "nvim-lua/popup.nvim" }, { "nvim-lua/plenary.nvim" } } },
+  {
+    "AckslD/muren.nvim",
+    config = true,
+  },
 
   --UNDO REDO  -------------------------------------------------------------------------------------------------------
   {
@@ -801,7 +810,7 @@ return require("lazy").setup {
       require "nv-neoclip"
     end,
   },
-  "mbbill/undotree",        -- undo history  :UndotreeToggle to toggle the undo-tree panel.
+  "mbbill/undotree", -- undo history  :UndotreeToggle to toggle the undo-tree panel.
   "mg979/vim-localhistory", -- local history LHLoad, LHWrite
 
   --CODE/FORMAT -------------------------------------------------------------------------------------------------------
@@ -828,7 +837,7 @@ return require("lazy").setup {
   },
   {
     "andymass/vim-matchup", -- slow as hell
-    enabled = true,         -- increase power of % - slow as hell (not any more?) higlights fun, if etc. ranges
+    enabled = true, -- increase power of % - slow as hell (not any more?) higlights fun, if etc. ranges
     init = function()
       vim.g.matchup_matchparen_deferred = 1
       vim.g.matchup_matchparen_deferred_show_delay = 180
@@ -846,7 +855,7 @@ return require("lazy").setup {
 
   "JoseConseco/vim-case-change", -- rotate strign case - modded by me
   {
-    "johmsalas/text-case.nvim",  -- ga then eg. u for upper  case (gau)
+    "johmsalas/text-case.nvim", -- ga then eg. u for upper  case (gau)
     config = function()
       require("textcase").setup {}
     end,
@@ -949,10 +958,10 @@ return require("lazy").setup {
             search = { mode = "search", max_length = 0 }, -- len == 0  so all labels will be used and skips won't be calculated
             label = { after = { 0, 0 } },
             highlight = {
-              matches = false,      -- to hide the whitespace match
+              matches = false, -- to hide the whitespace match
             },
             jump = { pos = "end" }, -- jump to end of match regex (so to first non-whitespace char)
-            pattern = "^\\s*\\S",   -- match non-whitespace at start plus any character (ignores empty lines), add \\? to match empty lines too
+            pattern = "^\\s*\\S", -- match non-whitespace at start plus any character (ignores empty lines), add \\? to match empty lines too
           }
         end,
       },
@@ -1049,6 +1058,187 @@ return require("lazy").setup {
     "metakirby5/codi.vim", -- repls for all other langs ...
     config = function()
       require "nv-codi"
+    end,
+  },
+  {
+    "gsuuon/llm.nvim",
+    config = function()
+      local llm = require "llm"
+      local curl = require "llm.curl"
+      local util = require "llm.util"
+      local provider_util = require "llm.providers.util"
+      local llamacpp = require "llm.providers.llamacpp"
+
+      local M = {}
+
+      ---@param handlers StreamHandlers
+      ---@param params? any Additional params for request
+      ---@param options? { model?: string }
+      function M.request_completion(handlers, params, options)
+        local model = (options or {}).model or "bigscience/bloom"
+        -- vim.print(params)
+
+        -- TODO handle non-streaming calls
+        return curl.stream({
+          -- url = 'https://api-inference.huggingface.co/models/', --.. model,
+          url = "http://127.0.0.1:8080/completion",
+          method = "POST",
+          body = vim.tbl_extend("force", { stream = true }, params),
+          headers = {
+            -- Authorization = 'Bearer ' .. util.env_memo('HUGGINGFACE_API_KEY'),
+            ["Content-Type"] = "application/json",
+            -- ['data'] = '{"prompt": "Building a website can be done in 10 simple steps:","n_predict": 128}',
+          },
+        }, function(raw)
+
+          provider_util.iter_sse_items(raw, function(item)
+            local data = util.json.decode(item)
+
+            if data == nil then
+              handlers.on_error(item, "json parse error")
+              return
+            end
+
+            if data.generation_settings ~= nil then -- last message
+              handlers.on_finish('', "stop")
+              return
+            end
+
+            handlers.on_partial(data.content)
+
+          end)
+
+
+
+        end, function(error)
+          handlers.on_error(error)
+        end)
+      end
+
+
+
+      -- LLaMa 2
+      -- This stuff is adapted from https://github.com/facebookresearch/llama/blob/main/llama/generation.py
+      local SYSTEM_BEGIN = '<<SYS>>\n'
+      local SYSTEM_END = '\n<</SYS>>\n\n'
+      local INST_BEGIN = '[INST]'
+      local INST_END = '[/INST]'
+
+      local function as_user(text)
+        return table.concat({
+          INST_BEGIN,
+          text,
+          INST_END,
+        }, '\n')
+      end
+
+      local function as_system_prompt(text)
+        return SYSTEM_BEGIN .. text .. SYSTEM_END
+      end
+
+      local default_system_prompt =
+        [[You are a helpful, respectful and honest assistant. Always answer as helpfully as possible, while being safe. Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content. Please ensure that your responses are socially unbiased and positive in nature. If a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don't know the answer to a question, please don't share false information.]]
+
+      ---@param prompt { system?: string, messages: string[] } -- messages are alternating user/assistant strings
+      M.llama_2_format = function(prompt)
+        local texts = {}
+
+        for i,message in ipairs(prompt.messages) do
+          if i % 2 == 0 then
+            table.insert(texts, message)
+          else
+            table.insert(texts, as_user(message))
+          end
+        end
+
+        return
+          as_system_prompt(prompt.system or default_system_prompt)
+          .. table.concat(texts, '\n')
+          .. '\n'
+      end
+
+
+
+      M.default_prompt = {
+        provider = M,
+        options = {
+          -- model = 'bigscience/bloom'
+        },
+        params = {
+          return_full_text = false,
+        },
+        builder = function(input)
+          return {
+            prompt = M.llama_2_format {
+              messages = {
+                input,
+              },
+            },
+          }
+        end,
+      }
+
+
+      require("llm").setup {
+        hl_group = "Substitute",
+        -- prompts = util.module.autoload "prompt_library",
+        default_prompt = {
+          provider = M,
+          options = {
+            -- model = 'bigscience/bloom'
+          },
+          params = {
+            return_full_text = false,
+          },
+          builder = function(input)
+            return {
+              prompt = M.llama_2_format {
+                messages = {
+                  input,
+                },
+              },
+            }
+          end,
+          -- mode = 'append',
+
+        },
+        prompts = {
+          instruct = {
+            provider = M,
+            params = {
+              temperature = 0.3,
+              return_full_text = false,
+            },
+            mode = llm.mode.REPLACE,
+            builder = function(input)
+              local messages = {
+                {
+                  role = 'user',
+                  content = input
+                }
+              }
+
+              -- There's an easier way to do this I think -- vim.ui.input
+              return vim.ui.input({
+                prompt = 'Additional instruction for prompt: '
+              }, function(user_input)
+                if user_input == nil then return end
+
+                if #user_input > 0 then
+                  table.insert(messages, {
+                    role = 'user',
+                    content = user_input
+                  })
+                end
+
+                return {
+                  messages = messages
+                }
+              end)
+            end,
+          },
+        },
+      }
     end,
   },
   -- {

@@ -10,7 +10,21 @@ local press = function(key)
   vim.api.nvim_feedkeys(replace_keycodes(key), "m", true)
 end
 
-local cmp_ultisnips_mappings = require("cmp_nvim_ultisnips.mappings")
+local source_mapping = {
+  cmp_tabnine = "[T9]",
+  copilot = "[COP]",
+  cmp_dap = "[DAP]",
+  nvim_lsp = "[LSP]",
+  ultisnips = "[USnip]",
+  spell = "[SPELL]", -- from f3fora/cmp-spell (vim spell has to be enabled)
+  nvim_lua = "[LUA]",
+  rg = "[RG]",
+  path = "[PATH]",
+  buffer = "[Buffer]",
+  calc = "[Calc]",
+}
+
+local cmp_ultisnips_mappings = require "cmp_nvim_ultisnips.mappings"
 -- not needed anymore - actually needed for cmp-dap, or else it will auto insert first entry after dot.
 vim.opt.completeopt = "menu,menuone,noselect,noinsert"
 cmp.setup {
@@ -22,7 +36,7 @@ cmp.setup {
   },
   sources = cmp.config.sources {
     -- { name = "nvim_lsp_signature_help" },
-    { name = "copilot",     priority = 9, group_index = 1, keyword_length = 0 },
+    { name = "copilot", priority = 9, group_index = 1, keyword_length = 0 },
     { name = "cmp_tabnine", priority = 8, group_index = 1, keyword_length = 0 },
     { name = "nvim_lsp", priority = 8, group_index = 1, keyword_length = 2, max_item_count = 6 },
     { name = "cmp_dap", priority = 7, group_index = 1 },
@@ -36,22 +50,42 @@ cmp.setup {
     -- { name = 'vsnip' },
   },
   formatting = {
-    format = lspkind.cmp_format {
-      with_text = true,
-      menu = {
-        cmp_tabnine = "[T9]",
-        copilot = "[COP]",
-        cmp_dap = "[DAP]",
-        nvim_lsp = "[LSP]",
-        ultisnips = "[USnip]",
-        spell = "[SPELL]", -- from f3fora/cmp-spell (vim spell has to be enabled)
-        nvim_lua = "[LUA]",
-        rg = "[RG]",
-        path = "[PATH]",
-        buffer = "[Buffer]",
-        calc = "[Calc]",
-      },
-    },
+    format = function(entry, vim_item)
+      -- if you have lspkind installed, you can use it like
+      -- in the following line:
+      vim_item.kind = lspkind.symbolic(vim_item.kind, { mode = "symbol" })
+      vim_item.menu = source_mapping[entry.source.name]
+      if entry.source.name == "cmp_tabnine" then
+        local detail = (entry.completion_item.labelDetails or {}).detail
+        vim_item.kind = ""
+        if detail and detail:find ".*%%.*" then
+          vim_item.kind = vim_item.kind .. " " .. detail
+        end
+
+        if (entry.completion_item.data or {}).multiline then
+          vim_item.kind = vim_item.kind .. " " .. "[ML]"
+        end
+      end
+      local maxwidth = 80
+      vim_item.abbr = string.sub(vim_item.abbr, 1, maxwidth)
+      return vim_item
+    end,
+    -- format = lspkind.cmp_format {
+    --   with_text = true,
+    --   menu = {
+    --     cmp_tabnine = "[T9]",
+    --     copilot = "[COP]",
+    --     cmp_dap = "[DAP]",
+    --     nvim_lsp = "[LSP]",
+    --     ultisnips = "[USnip]",
+    --     spell = "[SPELL]", -- from f3fora/cmp-spell (vim spell has to be enabled)
+    --     nvim_lua = "[LUA]",
+    --     rg = "[RG]",
+    --     path = "[PATH]",
+    --     buffer = "[Buffer]",
+    --     calc = "[Calc]",
+    --   },
+    -- },
   },
   -- enabled = function ()  -- for cmp dap
   --   return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
@@ -60,8 +94,8 @@ cmp.setup {
   -- You can set mappings if you want
   window = {
     documentation = {
-      border = "rounded",
-      scrollbar = "║",
+      completion = cmp.config.window.bordered(),
+      documentation = cmp.config.window.bordered(),
     },
   },
   matching = {
@@ -118,6 +152,7 @@ cmp.setup {
       select = false,
     },
     -- ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-]>'] = cmp.mapping.complete(), -- manual trigger
     ["<C-SPACE>"] = cmp.mapping(function(fallback)
       -- print(vim.inspect(vim.fn.complete_info()))
       if cmp.visible() then
@@ -174,7 +209,7 @@ cmp.setup {
 -- form "rcarriga/cmp-dap",
 -- enable cmp-dap - only for dap-repl - or else cmp will throw error
 
-require("cmp").setup.filetype({"dap-repl", "dapui_watches", "dapui_hover"}, {
+require("cmp").setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
   -- nvim-cmp by defaults disables autocomplete for prompt buffers
   enabled = function()
     return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt" or require("cmp_dap").is_dap_buffer()
