@@ -1,6 +1,8 @@
 local llm = require "llm"
 local llamacpp = require "llm.providers.llamacpp"
 local extract = require('llm.prompts.extract')
+-- best model so far: codellama-13b-instruct.Q5_K_S.gguf
+-- https://huggingface.co/TheBloke/CodeLlama-13B-Instruct-GGUF
 
 require("llm").setup {
   hl_group = "Substitute",
@@ -26,13 +28,8 @@ require("llm").setup {
                 -- [===[<s>[INST]<<SYS>>\nWrite code to solve the following coding problem. Please wrap your code answer using ```. Output only the code.\n<</SYS>>.]==]
 
                 final_prompt =
-  [===[
-  <s>[INST] Write code to solve the following coding problem that obeys the constraints and passes the example test cases. Please wrap your code answer using ```.
-  ]===]
-  .. user_input ..
-  [===[
-  [/INST]
-  ]===]
+  " <s>[INST]<<SYS>>Write code to solve the following coding problem that obeys the constraints and passes the example test cases. Please wrap your code answer using ```.<<SYS>>"
+  .. user_input .. "\n[/INST]\n"
 
               else
                 return
@@ -166,7 +163,7 @@ require("llm").setup {
               if #user_input > 0 then
 
                 final_prompt =
-[===[ <s>[INST]<<SYS>>\nHelp USER to fix his python code wrapped inside [CODE] tag.\n<<SYS>>\n\nUser:]===] .. user_input .. "\n[CODE]\n" .. input .. [===[\n[/CODE]\n [/INST] ]===]
+"<s>[INST]<<SYS>>\nHelp USER to fix his python code wrapped inside [CODE] tag.\n<<SYS>>\n\nUSER:" .. user_input .. "\n[CODE]\n" .. input .. "\n[/CODE]\n [/INST] "
 
               else
                 return
