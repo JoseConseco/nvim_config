@@ -397,6 +397,18 @@ wk.register({
 })
 
 
+wk.register({
+	['<leader>L'] = { name = '+LLAMA' },
+	['<leader>LD'] = {':LlmDelete<CR>',                                    'Delete last Ouput'},
+	['<leader>LC'] = {':LlmCancel<CR>',                                    'Cancell last Ouput'},
+})
+
+wk.register({
+	['<leader>L'] = { name = '+LLAMA' },
+	['<leader>LL'] = {':Llm modify<CR>',                                    'Modify Selection'},
+}, {mode = "v", prefix = ""})
+
+
 -- Fold All toggle
 -- -- vim.api.nvim_set_keymap( "n", "<F1>",  vim.cmd([[&foldlevel='zM'?'zR' ]]), { expr = true, noremap = true, silent = true } )
 -- vim.api.nvim_set_keymap( "n", "<S-F1>",  'v=lua.conditional_fold()',  { expr = true, noremap = true, silent = true } )
