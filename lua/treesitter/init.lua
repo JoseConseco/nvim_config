@@ -33,10 +33,10 @@ ts_config.setup {
   incremental_selection = {
     enable = true,
     keymaps = {
-      init_selection = "gnn",
-      node_incremental = "+",
-      scope_incremental = "grc",
-      node_decremental = "-",
+      -- init_selection = "gnn",
+      node_incremental = "v",
+      -- scope_incremental = "grc",
+      node_decremental = "V",
     },
   },
   autopairs = { enable = true }, -- for windwp/nvim-autopairs plug

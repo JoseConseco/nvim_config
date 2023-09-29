@@ -93,7 +93,7 @@ return require("lazy").setup {
   }, -- lua + wont close () next to char finally good and simple +++
   "mhartington/oceanic-next",
 
-  -- UI -------------------------------------------------------------------------------------------------------
+  -- -- UI -------------------------------------------------------------------------------------------------------
   {
     -- "norcalli/nvim-colorizer.lua",  -- original repo - not maintained
     "NvChad/nvim-colorizer.lua",
@@ -148,14 +148,14 @@ return require("lazy").setup {
       }
     end,
   },
-  -- "nvim-tree/nvim-web-devicons",
-  {
-    "nvim-tree/nvim-web-devicons",
-    dependencies = "nvim-tree/nvim-web-devicons",
-    config = function()
-      require "web-devicons"
-    end,
-  },
+  -- -- "nvim-tree/nvim-web-devicons",
+  -- {
+  --   "nvim-tree/nvim-web-devicons",
+  --   dependencies = "nvim-tree/nvim-web-devicons",
+  --   config = function()
+  --     require "web-devicons"
+  --   end,
+  -- },
   {
     "nvim-lualine/lualine.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -210,14 +210,8 @@ return require("lazy").setup {
   },
   {
     "lukas-reineke/indent-blankline.nvim",
-    -- after = "nightfox.nvim",
+    after = "nightfox.nvim",
     config = function()
-      local hl_manager = require "hl_manager"
-      hl_manager.highlight_from_src("IndentEven", "Normal", { bg = -6 }) -- reduce contrast by default by -5
-      vim.cmd [[highlight IndentOdd guifg=NONE guibg=NONE gui=nocombine]]
-      -- hl_manager.highlight_from_src("IndentBlanklineContextChar", "Normal", {action='contrast', factor=-10}) -- reduce contrast by default by -5
-      -- vim.cmd [[highlight! link IndentBlanklineContextChar Comment]]
-      hl_manager.highlight_link("IndentBlanklineContextChar", "Comment")
       require "nv-indentline"
     end,
   },

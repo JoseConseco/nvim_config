@@ -252,13 +252,13 @@ local function t(str)
 end
 local function open_sub_folds()
   local line_data = vim.api.nvim_win_get_cursor(0) -- returns {row, col}
-  vim.cmd [[IndentBlanklineRefresh]] -- from lukas-reineke/indent-blankline.nvim
+  -- vim.cmd [[IndentBlanklineRefresh]] -- from lukas-reineke/indent-blankline.nvim
   if vim.fn.foldclosed(line_data[1]) == -1 then -- not folded
     -- open sub folds
-    return ":normal! zczO" .. t "<cr>" .. "|<cmd>IndentBlanklineRefresh<cr>" -- normal - prevets flicker
+    return ":normal! zczO" .. t "<cr>" .. "<cr>" -- normal - prevets flicker
     -- return "zczO"
   else -- if fold - then open normall
-    return ":normal! zO" .. t "<cr>" .. "|<cmd>IndentBlanklineRefresh<cr>" -- normal - prevets flicker
+    return ":normal! zO" .. t "<cr>" .. "<cr>" -- normal - prevets flicker
     -- return "zO"
   end
 end
@@ -268,16 +268,16 @@ local function override_l_with_indent_refresh()
   if vim.fn.foldclosed(line_data[1]) ~= -1 then --  folded
     print "folded"
     vim.cmd [[normal! zo^]] -- from lukas-reineke/indent-blankline.nvim
-    vim.cmd [[IndentBlanklineRefresh]] -- from lukas-reineke/indent-blankline.nvim
+    -- vim.cmd [[IndentBlanklineRefresh]] -- from lukas-reineke/indent-blankline.nvim
   else
     vim.cmd "normal! l"
   end
 end
 
 vim.keymap.set("n", "l", override_l_with_indent_refresh, { remap = true })
-vim.keymap.set("n", "zo", "zo:IndentBlanklineRefresh<cr>", { remap = false, desc = "zo with indentline refresh" })
-vim.keymap.set("n", "zi", "zi:IndentBlanklineRefresh<cr>", { remap = false, desc = "zi with indentline refresh" })
-vim.keymap.set("n", "zx", "zxzM:IndentBlanklineRefresh<cr>", { remap = false, desc = "zi with indentline refresh" })
+vim.keymap.set("n", "zo", "zo<cr>", { remap = false, desc = "zo with indentline refresh" })
+vim.keymap.set("n", "zi", "zi<cr>", { remap = false, desc = "zi with indentline refresh" })
+vim.keymap.set("n", "zx", "zxzM<cr>", { remap = false, desc = "zi with indentline refresh" })
 vim.keymap.set("n", "zO", open_sub_folds, { remap = true, expr = true })
 
 -- better subfodls

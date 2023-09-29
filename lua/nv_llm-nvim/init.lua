@@ -179,5 +179,45 @@ require("llm").setup {
       transform = extract.markdown_code,
     },
 
+
+    wizard = {
+      provider = llamacpp,
+      params = { temperature = 0.4, },
+
+      options = {
+        temperature = 0.5,     -- Adjust the randomness of the generated text (default: 0.8).
+        repeat_penalty = 1.0,  -- Control the repetition of token sequences in the generated text (default: 1.1)
+        seed = -1,             -- Set the random number generator (RNG) seed (default: -1, -1 = random seed)
+      },
+
+      mode = llm.mode.INSERT_OR_REPLACE,
+      -- mode = llm.mode.BUFFER,
+      builder = function(input)
+        return function(build)
+          vim.ui.input(
+            { prompt = 'Action to perform on code: ' },
+            function(user_input)
+              if user_input == nil then return end
+
+              local final_prompt = ''
+              if #user_input > 0 then
+
+                final_prompt =
+"Below is an instruction that describes a task. Write a response that appropriately completes the request.\n\n### Instruction:\n"..user_input .. "\n[CODE]\n" .. input .. "\n[/CODE]\n".."\n\n### Response:"
+
+              else
+                return
+              end
+
+              print(final_prompt)
+              build({
+                prompt = final_prompt
+              })
+            end)
+        end
+      end,
+      transform = extract.markdown_code,
+    },
+
   },
 }
