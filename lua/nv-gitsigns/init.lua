@@ -4,7 +4,7 @@ augroup MyColors
 	autocmd!
 	autocmd ColorScheme * highlight CustomSignsAdd guifg=#a4cf69 | highlight CustomSignsChange guifg=#63c1e6 | highlight CustomSignsDelete guifg=#d74f56
 augroup END
-]] ,
+]],
   false
 )
 
@@ -28,6 +28,8 @@ gitsigns.setup {
     fold = { enable = true, hl = "GitSignsFold", text = "▋", numhl = "GitSignsFoldNr", linehl = "GitSignsFoldLn" },
   }, -- narrower ▎  , ┋, ［
   numhl = false,
+  attach_to_untracked = false,
+  on_attach = function(bufnr) end,
   linehl = false,
   -- keymaps = {
   --   -- Default keymap options
@@ -55,6 +57,21 @@ local hint = [[
  ^
  ^ ^              _<Enter>_: Neogit              _q_: exit
 ]]
+
+-- if buffer not tacked autocmd  use gitsigns attach function
+-- gitsigns.attach(bufnr, opts)
+-- local git_non_tracked = vim.api.nvim_create_augroup("GitSignTrackNonTracked", { clear = true })
+-- vim.api.nvim_create_autocmd({ "BufEnter"}, {
+--   pattern = "*",
+--   callback = function()
+--     print('attaching gitsigngs')
+--     gitsigns.attach(nil, {
+--       file = vim.fn.expand("%:p"),
+--       toplevel = vim.fn.expand("%:p"),
+--       base = 'FILE' })
+--   end,
+--   group = git_non_tracked,
+-- })
 
 Hydra {
   hint = hint,

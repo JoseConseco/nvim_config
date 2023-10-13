@@ -148,14 +148,13 @@ return require("lazy").setup {
       }
     end,
   },
-  -- -- "nvim-tree/nvim-web-devicons",
-  -- {
-  --   "nvim-tree/nvim-web-devicons",
-  --   dependencies = "nvim-tree/nvim-web-devicons",
-  --   config = function()
-  --     require "web-devicons"
-  --   end,
-  -- },
+  {
+    "nvim-tree/nvim-web-devicons",
+    -- dependencies = "nvim-tree/nvim-web-devicons", -- broken??? wtf. works eg. eblow ok..
+    config = function()
+      require "web-devicons"
+    end,
+  },
   {
     "nvim-lualine/lualine.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -186,6 +185,24 @@ return require("lazy").setup {
       "rcarriga/nvim-notify",
     },
   },
+
+  { -- better vim.ui  - eg. vim.input, vim.select etc.
+    "stevearc/dressing.nvim",
+    lazy = true,
+    init = function()
+      ---@diagnostic disable-next-line: duplicate-set-field
+      vim.ui.select = function(...)
+        require("lazy").load { plugins = { "dressing.nvim" } }
+        return vim.ui.select(...)
+      end
+      ---@diagnostic disable-next-line: duplicate-set-field
+      vim.ui.input = function(...)
+        require("lazy").load { plugins = { "dressing.nvim" } }
+        return vim.ui.input(...)
+      end
+    end,
+  },
+
   {
     "smjonas/live-command.nvim",
     -- live-command supports semantic versioning via tags
@@ -401,6 +418,7 @@ return require("lazy").setup {
     config = function()
       require "nv-treesittercontext"
     end,
+    opts = { mode = "cursor" },
   },
   {
     "mizlan/iswap.nvim",
@@ -487,25 +505,6 @@ return require("lazy").setup {
       require "nv-aerial"
     end,
   },
-  -- {
-  --   "SmiteshP/nvim-navbuddy",  -- code outline - but without filtering
-  --   dependencies = { "neovim/nvim-lspconfig", "SmiteshP/nvim-navic", "MunifTanjim/nui.nvim" },
-  --   config = function()
-  --     require("nvim-navbuddy").setup {
-  --       lsp = {
-  --         auto_attach = true, -- If set to true, you don't need to manually use attach function
-  --         preference = nil, -- list of lsp server names in order of preference
-  --       },
-  --       source_buffer = {
-  --         follow_node = false, -- Keep the current node in focus on the source buffer
-  --         highlight = false, -- Highlight the currently focused node
-  --       },
-  --     }
-  --   end,
-  -- },
-  --  {disable=true,
-  -- {"ray-x/lsp_signature.nvim" }, --  for funct(), signature hint - replaced with noice
-
   {
     "ThePrimeagen/refactoring.nvim",
     enabled = true,
@@ -515,7 +514,8 @@ return require("lazy").setup {
     end,
   },
   {
-    "jose-elias-alvarez/null-ls.nvim",
+    -- "jose-elias-alvarez/null-ls.nvim", -- abandoned
+    "nvimtools/none-ls.nvim",
     -- cond = false,
     config = function()
       require "nv-null"
@@ -637,7 +637,7 @@ return require("lazy").setup {
     config = function()
       require("telescope").load_extension "frecency"
     end,
-    dependencies = { "kkharji/sqlite.lua" },
+    -- dependencies = { "kkharji/sqlite.lua" },
   },
   {
     "debugloop/telescope-undo.nvim",
@@ -1051,10 +1051,56 @@ return require("lazy").setup {
   },
   {
     "gsuuon/llm.nvim",
+    enabled = false,
     -- "JoseConseco/llm.nvim",
     -- dev = true, -- too keep local changes
     config = function()
       require "nv_llm-nvim"
+    end,
+  },
+  {
+    "David-Kunz/gen.nvim",
+    -- "JoseConseco/gen.nvim", -- my fork
+    config = function()
+      require("gen").model = "dolphin-2.1-mistral-7b:Q5_K_M" -- "zephyr:7b-alpha-q5_K_M" -- default 'mistal:instruct'
+      local coding_model = "mywizard_coder:latest" -- or 'my_phindv2:q4_K_M'
+      local prompts = require("gen").prompts
+      prompts["Make_Table"] = nil
+      prompts["Make_List"] = nil
+      prompts["Generate"] = nil
+      prompts["Enhance_Code"] = nil
+      prompts["Change_Code"] = nil
+      prompts["Review_Code"] = nil
+
+      prompts["Ask"] = { prompt = "$input" }
+      prompts["Code_Change"] = {
+        -- prompt = "Regarding the following code, $input1, only output the result in format ```$filetype\n...\n```:\n```$filetype\n$text\n```",
+        prompt = "Below is an instruction that describes a task. Write a response that appropriately completes the request.\n\n### Instruction:\n$input\n[CODE]\n$text\n[/CODE]\n" .. "\n\n### Response:",
+        replace = false,
+        -- extract = "[CODE](.-)[/CODE]"
+        extract = "```$filetype\n(.-)```",
+        model = coding_model, -- 34b
+        -- model = "mywizard_coder:latest", -- 13b
+      }
+      prompts["Code_Enhance"] = {
+        prompt = "Enhance the following code, only output the result in format ```$filetype\n...\n```:\n```$filetype\n$text\n```",
+        replace = true,
+        extract = "```$filetype\n(.-)```",
+        model = coding_model,
+      }
+      prompts["Code_Review"] = {
+        prompt = "Review the following code and make concise suggestions:\n```$filetype\n$text\n```",
+        model = coding_model,
+      }
+      prompts["Code_Generate"] = {
+        prompt = "$input",
+        replace = false,
+        model = coding_model,
+      }
+      prompts["Enhance_Wording"] = {
+        prompt = "Modify the following text to use better wording:\n$text",
+        replace = false,
+      }
     end,
   },
   -- {
@@ -1076,16 +1122,6 @@ return require("lazy").setup {
     "AckslD/messages.nvim", -- :Messages messages
     config = function()
       require("messages").setup()
-    end,
-  },
-  {
-    "SmiteshP/nvim-navic", -- bread_crumbs
-    dependencies = "neovim/nvim-lspconfig",
-    config = function()
-      require("nvim-navic").setup {
-        icons = { Class = "⛬ " },
-        separator = " ▶ ",
-      }
     end,
   },
 }

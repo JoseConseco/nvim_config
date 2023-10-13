@@ -1,5 +1,3 @@
-local gps = require "nvim-navic"
-
 local colors = {
   bg = "#282c34",
   line_bg = "#282c34",
@@ -181,7 +179,7 @@ require("lualine").setup {
       { modified, color = "WinBar" },
       { get_cwd, separator = " ▶ ", color = "WinBar" },
       -- { file_name, separator = " ▶ ", color = "WinBar" },
-      { function() return gps.get_location() end, cond = gps.is_available, color = get_hl_fg },
+      {'aerial'},
     },
   },
   inactive_winbar = {
@@ -189,7 +187,7 @@ require("lualine").setup {
       { modified, color = "WinBarNC" },
       { get_cwd, color = "WinBarNC" },
       -- { file_name, color = "WinBarNC" },
-      { function() return gps.get_location() end, cond = gps.is_available, color = "WinBarNC" },
+      {'aerial'},
     },
   },
   extensions = {},

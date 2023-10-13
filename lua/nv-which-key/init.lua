@@ -399,13 +399,15 @@ wk.register({
 
 wk.register({
 	['<leader>L'] = { name = '+LLAMA' },
-	['<leader>LD'] = {':LlmDelete<CR>',                                    'Delete last Ouput'},
-	['<leader>LC'] = {':LlmCancel<CR>',                                    'Cancell last Ouput'},
+	['<leader>LL'] = {':Gen<CR>',                                    'LLama'},
+	-- ['<leader>LD'] = {':LlmDelete<CR>',                                    'Delete last Ouput'},
+	-- ['<leader>LC'] = {':LlmCancel<CR>',                                    'Cancell last Ouput'},
 })
 
 wk.register({
 	['<leader>L'] = { name = '+LLAMA' },
-	['<leader>LL'] = {':Llm modify<CR>',                                    'Modify Selection'},
+	-- ['<leader>LL'] = {':Llm modify<CR>',                                    'Modify Selection'},
+	['<leader>LL'] = { ':Gen<cr>',                                    'LLama'},
 }, {mode = "v", prefix = ""})
 
 

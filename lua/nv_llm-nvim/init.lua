@@ -163,7 +163,7 @@ require("llm").setup {
               if #user_input > 0 then
 
                 final_prompt =
-"<s>[INST]<<SYS>>\nHelp USER to fix his python code wrapped inside [CODE] tag.\n<<SYS>>\n\nUSER:" .. user_input .. "\n[CODE]\n" .. input .. "\n[/CODE]\n [/INST] "
+"<s>[INST]\nHelp to fix python code wrapped inside [CODE] tag.\n" .. user_input .. "\n[CODE]\n" .. input .. "\n[/CODE]\n [/INST] "
 
               else
                 return
@@ -185,7 +185,7 @@ require("llm").setup {
       params = { temperature = 0.4, },
 
       options = {
-        temperature = 0.5,     -- Adjust the randomness of the generated text (default: 0.8).
+        temperature = 0.2,     -- Adjust the randomness of the generated text (default: 0.8).
         repeat_penalty = 1.0,  -- Control the repetition of token sequences in the generated text (default: 1.1)
         seed = -1,             -- Set the random number generator (RNG) seed (default: -1, -1 = random seed)
       },
@@ -205,6 +205,49 @@ require("llm").setup {
                 final_prompt =
 "Below is an instruction that describes a task. Write a response that appropriately completes the request.\n\n### Instruction:\n"..user_input .. "\n[CODE]\n" .. input .. "\n[/CODE]\n".."\n\n### Response:"
 
+              else
+                return
+              end
+
+              print(final_prompt)
+              build({
+                prompt = final_prompt
+              })
+            end)
+        end
+      end,
+      transform = extract.markdown_code,
+    },
+
+    open_assistant = { --  does not stop talking...
+      provider = llamacpp,
+      params = { temperature = 0.4, },
+
+      options = {
+        temperature = 0.2,     -- Adjust the randomness of the generated text (default: 0.8).
+        repeat_penalty = 1.0,  -- Control the repetition of token sequences in the generated text (default: 1.1)
+        seed = -1,             -- Set the random number generator (RNG) seed (default: -1, -1 = random seed)
+      },
+
+      mode = llm.mode.INSERT_OR_REPLACE,
+      -- mode = llm.mode.BUFFER,
+      builder = function(input)
+        return function(build)
+          vim.ui.input(
+            { prompt = 'Action to perform on code: ' },
+            function(user_input)
+              if user_input == nil then return end
+
+              local final_prompt = ''
+              if #user_input > 0 then
+
+                final_prompt =
+"Below is an instruction that describes a task. Write a response that appropriately completes the request.\n\n### Instruction:\n"..user_input .. "\n[CODE]\n" .. input .. "\n[/CODE]\n".."\n\n### Response:"
+                -- local sys_msg = "Follow user instruction and modify code wrapped in [CODE] tag. Write a response that appropriately completes the request."
+                -- final_prompt = "<|im_start|>\nsystem\n" .. user_input .."<|im_end|>\n<|im_start|>user\n".. "\n[CODE]\n" .. input .. "\n[/CODE]\n" .."<|im_end|>\n<|im_start|>assistant "
+
+                final_prompt =
+"<|im_start|>system\nBelow is an instruction that describes a task. Write a response that appropriately completes the request.<|im_end|>\n"..user_input .. "\n[CODE]\n" .. input .. "\n[/CODE]\n"
               else
                 return
               end

@@ -3,8 +3,6 @@ require("neodev").setup {
 }
 local nvim_lsp = require "lspconfig"
 
-local navic = require("nvim-navic") -- replaces gps
-
 local opts = { noremap = true, silent = true }
 -- vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
 vim.api.nvim_set_keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
@@ -79,10 +77,6 @@ local on_attach = function(client, bufnr)
       callback = vim.lsp.buf.clear_references,
       group = lsp_doc_hl_au_idx,
     })
-  end
-  if client.server_capabilities.documentSymbolProvider then
-    navic.attach(client, bufnr)
-    navic.get_location()
   end
 
   -- require'aerial'.on_attach(client) -- aerial plug - outliner - now uses treesitter
