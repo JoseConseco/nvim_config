@@ -1,3 +1,5 @@
+local dap = require "dap"
+
 vim.fn.sign_define("DapBreakpoint", { text = "⭘", texthl = "DiagnosticsHint", linehl = "", numhl = "" })
 vim.fn.sign_define("DapStopped", { text = "🔴", texthl = "DiagnosticsError", linehl = "PmenuSel", numhl = "" })
 -- vim.fn.sign_define("DapStopped", { text = "●", texthl = "DiagnosticsError", linehl = "DiagnosticsError", numhl = "" })
@@ -21,20 +23,30 @@ vim.api.nvim_set_keymap("n", "<F9>", ":lua require'dap'.step_out()<CR>", { norem
 -- auto complete for REPL
 vim.cmd [[au FileType dap-repl lua require('dap.ext.autocompl').attach()]]
 
+
+
+
 local Hydra = require "hydra"
-local dap = require "dap"
 
 local dap_hydra = nil
 local dap_au_group = vim.api.nvim_create_augroup("DapUiHydraAu", { clear = true })
 local dap_ft = nil
 
 local hint = [[
- _s_: Continue/Start  _X_: Dap Close    _b_: Breakpoint     _K_: Eval
- _n_: Step            _<_: Step into    _>_: Step out       _c_: to cursor
- _x_: Quit DAP        _C_: Close UI     ^ ^
+ _s_: Continue/Start  _X_: Dap Close   _b_: Breakpoint   _B_: Cond Breakpoint   _L_: Log Breakpoint
+ _n_: Step            _<_: Step out    _>_: Step in      _c_: to cursor
+ _x_: Quit DAP        _C_: Close UI    _K_: Eval         ^ ^
  ^
  ^ ^              _q_: Exit Hydra
 ]]
+
+local function cond_breakpoint()
+  dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
+end
+
+local function log_breakpoint()
+  dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
+end
 
 local function show_dap_hydra()
   dap_hydra = Hydra {
@@ -56,6 +68,9 @@ local function show_dap_hydra()
       { "s", dap.continue, { silent = true } },
       { "X", dap.close, { silent = true } },
       { "b", dap.toggle_breakpoint, { silent = true } },
+      { "B", cond_breakpoint, { silent = true } },
+      { "L", log_breakpoint, { silent = true } },
+      -- { "R", dap.repl.open, { silent = true } },
       { "K", ":lua require('dap.ui.widgets').hover()<CR>", { silent = true } },
 
       { "n", dap.step_over, { silent = true } },

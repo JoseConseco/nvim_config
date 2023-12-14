@@ -90,21 +90,21 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   group = init_group,
 })
 
-vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave", "TextYankPost", "WinEnter" }, {
---"TextChanged"
-  pattern = "*",
-  callback = function()
-    -- print("open fold")
-    local line_data = vim.api.nvim_win_get_cursor(0) -- returns {row, col}
-    -- print("row: "..line_data[1])
-    local fold_closed = vim.fn.foldclosed(line_data[1]) -- -1 if no fold at line
-    -- print("closed: "..fold_closed)
-    if fold_closed < line_data[1] and fold_closed ~= -1 then --fold before cursor, and fold exist (not -1)
-      vim.cmd [[normal! zv]]
-    end
-  end,
-  group = init_group,
-})
+-- vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave", "TextYankPost", "WinEnter" }, {
+-- --"TextChanged"
+--   pattern = "*",
+--   callback = function()
+--     -- print("open fold")
+--     local line_data = vim.api.nvim_win_get_cursor(0) -- returns {row, col}
+--     -- print("row: "..line_data[1])
+--     local fold_closed = vim.fn.foldclosed(line_data[1]) -- -1 if no fold at line
+--     print("closed: "..fold_closed)
+--     if fold_closed < line_data[1] and fold_closed ~= -1 then --fold before cursor, and fold exist (not -1)
+--       vim.cmd [[normal! zv]]
+--     end
+--   end,
+--   group = init_group,
+-- })
 
 -- go to last loc when opening a buffer
 vim.api.nvim_create_autocmd("BufReadPost", {

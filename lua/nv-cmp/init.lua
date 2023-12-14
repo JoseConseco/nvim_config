@@ -13,6 +13,7 @@ end
 local source_mapping = {
   cmp_tabnine = "[T9]",
   copilot = "[COP]",
+  cmp_ai = "[OLLAMA]",
   cmp_dap = "[DAP]",
   nvim_lsp = "[LSP]",
   ultisnips = "[USnip]",
@@ -28,25 +29,32 @@ local cmp_ultisnips_mappings = require "cmp_nvim_ultisnips.mappings"
 -- not needed anymore - actually needed for cmp-dap, or else it will auto insert first entry after dot.
 vim.opt.completeopt = "menu,menuone,noselect,noinsert"
 cmp.setup {
-
   snippet = {
     expand = function(args)
       vim.fn["UltiSnips#Anon"](args.body)
     end,
   },
+  performance = {
+    -- disable = true,
+    debounce = 200, -- ms
+    throttle = 400, -- does it even work?
+    -- fetching_timeout = 0.1,
+    max_view_limit = 14,
+  },
   sources = cmp.config.sources {
     -- { name = "nvim_lsp_signature_help" },
-    { name = "copilot", priority = 9, group_index = 1, keyword_length = 0 },
-    { name = "cmp_tabnine", priority = 8, group_index = 1, keyword_length = 0 },
-    { name = "nvim_lsp", priority = 8, group_index = 1, keyword_length = 2, max_item_count = 6 },
+    { name = "copilot", priority = 11, group_index = 1, keyword_length = 0 },
+    { name = "cmp_ai", priority = 10, group_index = 1, keyword_length = 0 },
+    -- { name = "cmp_tabnine", priority = 8, group_index = 1, keyword_length = 0 },
+    { name = "nvim_lsp", priority = 9, group_index = 1, keyword_length = 2, max_item_count = 6 },
     { name = "cmp_dap", priority = 7, group_index = 1 },
-    { name = "ultisnips", priority = 7, group_index = 1 },
+    { name = "ultisnips", priority = 7, group_index = 1, keyword_length = 1, },
     { name = "nvim_lua", priority = 5, group_index = 1 },
     -- { name = "buffer",      priority = 5, group_index = 1, keyword_length = 2, max_item_count = 5 }, -- actually nicer than RG
     { name = "rg", priority = 5, group_index = 1, keyword_length = 2, max_item_count = 4 }, -- first for locality sorting?
     { name = "spell", priority = 5, group_index = 1, keyword_length = 3, keyword_pattern = [[\w\+]] },
     { name = "calc", priority = 3, group_index = 1, keyword_pattern = [[\d\+\W\{-\}\d]] },
-    { name = "path", priority = 1, group_index = 1 },
+    { name = "path", priority = 1, group_index = 1, keyword_length = 3 },
     -- { name = 'vsnip' },
   },
   formatting = {
@@ -70,22 +78,6 @@ cmp.setup {
       vim_item.abbr = string.sub(vim_item.abbr, 1, maxwidth)
       return vim_item
     end,
-    -- format = lspkind.cmp_format {
-    --   with_text = true,
-    --   menu = {
-    --     cmp_tabnine = "[T9]",
-    --     copilot = "[COP]",
-    --     cmp_dap = "[DAP]",
-    --     nvim_lsp = "[LSP]",
-    --     ultisnips = "[USnip]",
-    --     spell = "[SPELL]", -- from f3fora/cmp-spell (vim spell has to be enabled)
-    --     nvim_lua = "[LUA]",
-    --     rg = "[RG]",
-    --     path = "[PATH]",
-    --     buffer = "[Buffer]",
-    --     calc = "[Calc]",
-    --   },
-    -- },
   },
   -- enabled = function ()  -- for cmp dap
   --   return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
@@ -106,6 +98,7 @@ cmp.setup {
   },
 
   completion = {
+    autocomplete = false,
     border = "rounded",
     scrollbar = "║",
     keyword_length = 0,
@@ -116,6 +109,17 @@ cmp.setup {
     ["<C-n>"] = cmp.mapping(cmp.mapping.select_next_item(), { "i", "s", "c" }),
     ["<C-d>"] = cmp.mapping.scroll_docs(-4),
     ["<C-f>"] = cmp.mapping.scroll_docs(4),
+    ["<C-x>"] = cmp.mapping(
+      cmp.mapping.complete {
+        config = {
+          reason = cmp.ContextReason.Auto, -- or Manual
+          sources = cmp.config.sources {
+            { name = "cmp_ai" },
+          },
+        },
+      },
+      { "i" }
+    ),
     ["<S-Tab>"] = cmp.mapping(function(fallback)
       if vim.fn["UltiSnips#CanJumpBackwards"]() == 1 then
         cmp_ultisnips_mappings.jump_backwards(fallback)
@@ -145,6 +149,7 @@ cmp.setup {
         fallback()
       end
     end, { "i", "s", "c" }),
+    ["<Esc>"] = cmp.mapping.abort(),
     ["<C-e>"] = cmp.mapping(cmp.mapping.close(), { "i", "s", "c" }),
     -- ['<C-e>'] = cmp.mapping.abort(),
     ["<CR>"] = cmp.mapping.confirm { -- remapped at bottom by autopairs
@@ -152,7 +157,7 @@ cmp.setup {
       select = false,
     },
     -- ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-]>'] = cmp.mapping.complete(), -- manual trigger
+    ["<C-]>"] = cmp.mapping.complete(), -- manual trigger
     ["<C-SPACE>"] = cmp.mapping(function(fallback)
       -- print(vim.inspect(vim.fn.complete_info()))
       if cmp.visible() then
@@ -188,12 +193,12 @@ cmp.setup {
     end, { "i", "s" }),
   },
   sorting = {
-    priority_weight = 0.8,
+    priority_weight = 1.0,
     comparators = {
       -- compare.score_offset, -- not good at all
+      compare.score, -- based on :  score = score + ((#sources - (source_index - 1)) * sorting.priority_weight)
       compare.scopes, -- treesitter scope
       compare.locality,
-      compare.score, -- based on :  score = score + ((#sources - (source_index - 1)) * sorting.priority_weight)
       compare.offset,
       compare.recently_used,
       compare.order,
@@ -302,3 +307,89 @@ augroup END
 --   capacity = 5,
 --   debug = false,
 -- }
+
+local cmp_ai = require "cmp_ai.config"
+
+cmp_ai:setup {
+  max_lines = 30,
+  provider = "LlamaCpp",
+  provider_options = {
+    -- prompt="<｜fim▁begin｜>"..lines_before.."<｜fim▁hole｜>"..lines_after.."<｜fim▁end｜>"
+    options = {
+      -- temperature = 0.2,
+      n_predict = 20,  -- number of generated predictions
+      min_p = 0.05, -- default 0.05,  Cut off predictions with probability below  Max_prob * min_p
+      -- repeat_last_n = 64, -- default 64
+      -- repeat_penalty = 1.100, -- default 1.1
+    },
+  },
+  debounce_delay = 700, -- ms
+  notify = true,
+  notify_callback = function(msg)
+    vim.notify(msg)
+  end,
+  run_on_every_keystroke = false,
+  ignored_file_types = {
+    -- default is not to ignore
+    -- uncomment to ignore in lua:
+    -- lua = true
+  },
+}
+-- cmp_ai:setup {
+--   max_lines = 50,
+--   provider = "Ollama",
+--   provider_options = {
+--     -- model = "codellama:7b-code", -- low q, but works...
+--     -- model = 'my_deepseek-coder-6.7b-base.Q4_K_M:latest', -- way stronger version.. but not working.. -- maybe with <s>prompt...
+--     model = 'deepseek-coder:1.3b-base-q5_0', -- way stronger version.. but not working..--need custom promps.
+--     -- model = 'my_deepseek-coder-6.7b-base.Q4_K_S:latest', -- way stronger version.. -- but does not use all gpu-layers - sloowwwjwkh
+--     -- prompt="<｜fim▁begin｜>"..lines_before.."<｜fim▁hole｜>"..lines_after.."<｜fim▁end｜>"
+--     options = {
+--       temperature = 0.2,
+--       -- num_predict = 20,  -- number of generated predictions
+--     },
+--   },
+--   debounce_delay = 700, -- ms
+--   notify = true,
+--   notify_callback = function(msg)
+--     vim.notify(msg)
+--   end,
+--   run_on_every_keystroke = false,
+--   ignored_file_types = {
+--     -- default is not to ignore
+--     -- uncomment to ignore in lua:
+--     -- lua = true
+--   },
+-- }
+
+
+-- this will show cmp popup after bounce_delay of inactivity when typing. Works even on empty line, or after space...
+local fn = function()
+  if vim.fn.mode() == 'i' then --not cmp.visible() and
+    -- Auto takes keyword_length into account, (wont ignore existing letters - unlike manual) but wont show anything if no letter in line...
+    -- Manual will show popup even if no letter, but then ignores these latters it seems...
+    -- check if current line has any letters : if not use Manual
+    local current_line = vim.api.nvim_get_current_line()
+    local has_letters = string.find(current_line, "%a") -- "%a" matches any alphabet character (equivalent to [a-zA-Z])
+    if has_letters then
+      cmp.complete({ reason = cmp.ContextReason.Auto }) -- without reason, it will ignore letters before cursor...
+    else
+      cmp.complete({ reason = cmp.ContextReason.Manual }) -- without reason, it will ignore letters before cursor...
+    end
+
+    -- cmp.complete()  -- gives 'old' suggestion (like it does not see characters types after first bounce... even thought using bounce_trailing)
+  end
+end
+
+local bounce_delay = 300 -- ms
+local cmp_on_hold, timer = require'throttle-debounce'.debounce_trailing(fn, bounce_delay, false) -- first = false (use last arg)
+
+local au_cmp_hold_show = vim.api.nvim_create_augroup("CmpShowOnHold", { clear = true })
+vim.api.nvim_create_autocmd({"TextChangedI","InsertEnter"},{
+  pattern = "*",
+  callback = function()
+    cmp_on_hold()
+  end,
+  group = au_cmp_hold_show
+})
+

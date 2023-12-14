@@ -1,3 +1,7 @@
+require("notify").setup {
+  animate = false, stages = "static"
+}
+
 require("noice").setup {
   popupmenu = {
     enabled = true, -- enables the Noice popupmenu UI
@@ -5,7 +9,7 @@ require("noice").setup {
     backend = "cmp", -- backend to use to show regular cmdline completions
   },
   cmdline = {
-  format = {
+    format = {
       -- conceal: (default=true) This will hide the text in the cmdline that matches the pattern.
       -- view: (default is cmdline view)
       -- opts: any options passed to the view
@@ -38,7 +42,7 @@ require("noice").setup {
     -- The default routes will forward notifications to nvim-notify
     -- Benefit of using Noice for this is the routing and consistent history view
     enabled = true,
-    view = "popup", -- "notify", "popup", "split"
+    view = "notify", -- "notify", "popup", "split"
   },
   views = {
     cmdline_popup = {

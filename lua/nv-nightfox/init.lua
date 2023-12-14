@@ -120,6 +120,8 @@ hl_manager.match_color_to_highlight("#63c1e6", "CursorLine", "DiffChange", "back
 hl_manager.match_color_to_highlight("#d74f56", "CursorLine", "DiffDelete", "background")
 hl_manager.match_color_to_highlight("#FFba00", "CursorLine", "DiffText", "background")
 
+-- XXX: why cursor wont change color?
+vim.api.nvim_set_hl(0, "Cursor", { bg = "#FFba00" , reverse=false, fg="#FF0000"})
 
 -- local theme_change_au = vim.api.nvim_create_augroup("MyThemeChangeAu", { clear = true })
 

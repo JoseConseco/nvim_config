@@ -83,10 +83,6 @@ telescope.setup {
     qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
     -- Developer configurations: Not meant for general override
     buffer_previewer_maker = require("telescope.previewers").buffer_previewer_maker,
-    history = { -- from nvim-telescope/telescope-smart-history.nvim plug
-      path = vim.fn.stdpath "data" .. "/databases/telescope_history.sqlite3",
-      limit = 100,
-    },
   },
   pickers = {
     live_grep = {
@@ -144,6 +140,8 @@ telescope.load_extension "vim_bookmarks"
 telescope.load_extension "aerial"
 -- telescope.load_extension "file_browser"
 telescope.load_extension "sessions_picker"
+telescope.load_extension "sessions_picker"
+telescope.load_extension('textcase') --from text-case.nvim
 -- require('telescope').load_extension('projects')
 -- telescope.load_extension "smart_history" -- somethign wrong with reading history
 

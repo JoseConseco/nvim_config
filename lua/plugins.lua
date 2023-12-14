@@ -47,7 +47,8 @@ return require("lazy").setup {
   },
   {
     "EdenEast/nightfox.nvim",
-    lazy = false, -- loads immediately
+    lazy = false,    -- make sure we load this during startup if it is your main colorscheme
+    priority = 1000, -- make sure to load this before all the other start plugins
     -- branch = "feat/interactive",
     -- commit = "c88664b18e593319aea1ded731dd252d4f9e0f9a", -- before day-fox refactor, not looking goodd
     config = function()
@@ -102,7 +103,7 @@ return require("lazy").setup {
         filetypes = { "css", "lua", "html" },
       }
     end,
-  }, --color highlighter
+  },                            --color highlighter
   {
     "azabiong/vim-highlighter", -- highlight selection and occurrences
     event = "VeryLazy",
@@ -120,13 +121,13 @@ return require("lazy").setup {
     config = function()
       require("twilight").setup {
         dimming = {
-          alpha = 0.4, -- amount of dimming
+          alpha = 0.4,      -- amount of dimming
           -- color = { "Normal", "#ffffff" }, -- we try to get the foreground from the highlight groups or fallback color
           inactive = false, -- when true, other windows will be fully dimmed (unless they contain the same buffer)
         },
-        context = 0, -- amount of lines we will try to show around the current line
+        context = 0,        -- amount of lines we will try to show around the current line
         node_context = 0,
-        treesitter = true, -- use treesitter when available for the filetype
+        treesitter = true,  -- use treesitter when available for the filetype
         -- treesitter is used to automatically expand the visible text,
         -- but you can further control the types of nodes that should always be fully expanded
         expand = {
@@ -250,7 +251,7 @@ return require("lazy").setup {
 
   {
     "petertriho/nvim-scrollbar", -- scrollbar with marked errors and search results
-    cond = true, -- scrollbar which shows search resutls   and errors
+    cond = true,                 -- scrollbar which shows search resutls   and errors
     config = function()
       require "nv-nvim-scrollbar"
     end,
@@ -369,18 +370,18 @@ return require("lazy").setup {
     dependencies = "mfussenegger/nvim-dap",
     config = function()
       require("nvim-dap-virtual-text").setup {
-        enabled = true, -- enable this plugin (the default)
-        enabled_commands = true, -- create commands DapVirtualTextEnable, DapVirtualTextDisable, DapVirtualTextToggle, (DapVirtualTextForceRefresh for refreshing when debug adapter did notify its termination)
+        enabled = true,                     -- enable this plugin (the default)
+        enabled_commands = true,            -- create commands DapVirtualTextEnable, DapVirtualTextDisable, DapVirtualTextToggle, (DapVirtualTextForceRefresh for refreshing when debug adapter did notify its termination)
         highlight_changed_variables = true, -- highlight changed values with NvimDapVirtualTextChanged, else always NvimDapVirtualText
-        highlight_new_as_changed = true, -- highlight new variables in the same way as changed variables (if highlight_changed_variables)
-        show_stop_reason = true, -- show stop reason when stopped for exceptions
-        commented = false, -- prefix virtual text with comment string
+        highlight_new_as_changed = true,    -- highlight new variables in the same way as changed variables (if highlight_changed_variables)
+        show_stop_reason = true,            -- show stop reason when stopped for exceptions
+        commented = false,                  -- prefix virtual text with comment string
         -- experimental features:
-        virt_text_pos = "right_align", -- position of virtual text, see :h nvim_buf_set_extmark() - 'right_align', 'eol', 'overlay'
-        all_frames = false, -- show virtual text for all stack frames not only current. Only works for debugpy on my machine.
-        all_references = true, -- show virtual text for all references not only current. Only works for debugpy on my machine.
-        virt_lines = false, -- show virtual lines instead of virtual text (will flicker!)
-        virt_text_win_col = 85, -- position the virtual text at a fixed window column (starting from the first text column) ,
+        virt_text_pos = "right_align",      -- position of virtual text, see :h nvim_buf_set_extmark() - 'right_align', 'eol', 'overlay'
+        all_frames = false,                 -- show virtual text for all stack frames not only current. Only works for debugpy on my machine.
+        all_references = true,              -- show virtual text for all references not only current. Only works for debugpy on my machine.
+        virt_lines = false,                 -- show virtual lines instead of virtual text (will flicker!)
+        virt_text_win_col = 85,             -- position the virtual text at a fixed window column (starting from the first text column) ,
         -- e.g. 80 to position at column 80 see :h nvim_buf_set_extmark()
       }
       -- vim.api.nvim_exec("highlight! link NvimDapVirtualText DiagnosticVirtualTextInfo", false)
@@ -487,9 +488,10 @@ return require("lazy").setup {
     end,
   }, -- lua + wont close () next to char finally good and simple +++
   {
-    "rmagatti/goto-preview",
+    "carbon-steel/detour.nvim",
+    cond = true,
     config = function()
-      require "nv-goto-preview"
+      require "nv-detour"
     end,
   },
   {
@@ -547,11 +549,15 @@ return require("lazy").setup {
   --     "nvim-telescope/telescope.nvim",
   --   },
   -- },
+  -- {'tzachar/cmp-ai', dependencies = 'nvim-lua/plenary.nvim'},
+  {'JoseConseco/cmp-ai', dependencies = 'nvim-lua/plenary.nvim'},
   {
     "hrsh7th/nvim-cmp",
     cond = true,
     event = "InsertEnter",
     dependencies = {
+      -- 'tzachar/cmp-ai',
+      'JoseConseco/cmp-ai',
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-path",
@@ -564,13 +570,14 @@ return require("lazy").setup {
       -- "hrsh7th/cmp-nvim-lsp-signature-help", - x ray better
       -- "uga-rosa/cmp-dictionary", -- based on custom dict
       "f3fora/cmp-spell", -- vim spell hast to be enabled
+      "runiq/neovim-throttle-debounce", -- for debouncing of cmp complettions...
     },
     config = function()
       require "nv-cmp"
     end,
   },
   { "quangnguyen30192/cmp-nvim-ultisnips", dependencies = { "hrsh7th/nvim-cmp" } },
-  { "dmitmel/cmp-cmdline-history", dependencies = "hrsh7th/cmp-cmdline" },
+  { "dmitmel/cmp-cmdline-history",         dependencies = "hrsh7th/cmp-cmdline" },
   -- { "tzachar/cmp-fuzzy-path", dependencies = { "hrsh7th/nvim-cmp", "hrsh7th/cmp-path", "tzachar/fuzzy.nvim" } }
   -- use { "tzachar/cmp-fuzzy-buffer", dependencies = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" } }
   {
@@ -625,7 +632,8 @@ return require("lazy").setup {
   -- Telescope   -------------------------------------------------------------------------------------------------------
   {
     "nvim-telescope/telescope.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons", "nvim-lua/popup.nvim", "nvim-lua/plenary.nvim", "tom-anders/telescope-vim-bookmarks.nvim", "JoseConseco/telescope_sessions_picker.nvim" },
+    dependencies = { "nvim-tree/nvim-web-devicons", "nvim-lua/popup.nvim", "nvim-lua/plenary.nvim",
+      "tom-anders/telescope-vim-bookmarks.nvim", "JoseConseco/telescope_sessions_picker.nvim" },
     cmd = "Telescope frecency",
     config = function()
       require "telescope-nvim"
@@ -648,7 +656,8 @@ return require("lazy").setup {
   },
   {
     "nvim-telescope/telescope-fzf-native.nvim",
-    build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
+    build =
+    "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
   },
 
   -- Explorer  -------------------------------------------------------------------------------------------------------
@@ -671,10 +680,11 @@ return require("lazy").setup {
     "nvim-neo-tree/neo-tree.nvim", -- nice buffers preview...
     cond = true,
     branch = "v2.x",
-    dependencies = { "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons", "MunifTanjim/nui.nvim", "s1n7ax/nvim-window-picker" },
+    dependencies = { "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons", "MunifTanjim/nui.nvim",
+      "s1n7ax/nvim-window-picker" },
     keys = {
-      { "<F11>", "<cmd>NeoTreeFloat<cr>", desc = "Open Neotree on side" },
-      { " bb", "<cmd>NeoTreeFloat buffers<cr>", desc = "Open Neotree on side" },
+      { "<F11>", "<cmd>NeoTreeFloat<cr>",         desc = "Open Neotree on side" },
+      { " bb",   "<cmd>NeoTreeFloat buffers<cr>", desc = "Open Neotree on side" },
     },
     config = function()
       require "nv_neotree"
@@ -684,6 +694,7 @@ return require("lazy").setup {
   -- { "tpope/vim-fugitive", -- add :Gitxx commands },
   {
     "NeogitOrg/neogit",
+    cond = false,
     dependencies = "nvim-lua/plenary.nvim",
     config = function()
       require("neogit").setup()
@@ -704,6 +715,12 @@ return require("lazy").setup {
     end,
   },
   -- { "tpope/vim-repeat" },
+  {
+    "lewis6991/foldsigns.nvim",
+    config = function()
+      require('foldsigns').setup()
+    end
+  },
   {
     "lewis6991/gitsigns.nvim",
     dependencies = { "nvim-lua/plenary.nvim", "lewis6991/foldsigns.nvim" },
@@ -738,6 +755,7 @@ return require("lazy").setup {
   },
   {
     "folke/todo-comments.nvim", -- original
+    dependencies = { "nvim-lua/plenary.nvim" },
     config = function()
       require "nv-todo"
     end,
@@ -771,7 +789,7 @@ return require("lazy").setup {
       require("bqf").setup {
         auto_enable = true,
         auto_resize_height = true, -- highly recommended enable
-        preview = { -- stefandtw/quickfix-reflector.vim breaks this
+        preview = {                -- stefandtw/quickfix-reflector.vim breaks this
           auto_preview = true,
         },
         -- create autocmd for 'qf' filetype. It will create 2 buffer levels mappings: for j and k keys.
@@ -781,10 +799,10 @@ return require("lazy").setup {
   },
   "stefandtw/quickfix-reflector.vim", -- edit quickfix list as text - :w to save to multi files
   -- 'gabrielpoca/replacer.nvim',   -- edit quick fis list - in lua - not as good as quickfix-reflector
-  "brooth/far.vim", --use: Far(r) from to **/*.py   > then :Fardo
-  "dyng/ctrlsf.vim", --Run :CtrlSF [pattern]
-  "mhinz/vim-grepper", -- Grepper
-  "eugen0329/vim-esearch", -- Grepper
+  "brooth/far.vim",                   --use: Far(r) from to **/*.py   > then :Fardo
+  "dyng/ctrlsf.vim",                  --Run :CtrlSF [pattern]
+  "mhinz/vim-grepper",                -- Grepper
+  "eugen0329/vim-esearch",            -- Grepper
   { "windwp/nvim-spectre", dependencies = { { "nvim-lua/popup.nvim" }, { "nvim-lua/plenary.nvim" } } },
   {
     "AckslD/muren.nvim",
@@ -799,7 +817,7 @@ return require("lazy").setup {
       require "nv-neoclip"
     end,
   },
-  "mbbill/undotree", -- undo history  :UndotreeToggle to toggle the undo-tree panel.
+  "mbbill/undotree",        -- undo history  :UndotreeToggle to toggle the undo-tree panel.
   "mg979/vim-localhistory", -- local history LHLoad, LHWrite
 
   --CODE/FORMAT -------------------------------------------------------------------------------------------------------
@@ -825,8 +843,8 @@ return require("lazy").setup {
     end,
   },
   {
-    "andymass/vim-matchup", -- slow as hell
-    enabled = true, -- increase power of % - slow as hell (not any more?) higlights fun, if etc. ranges
+    "andymass/vim-matchup", -- slow as hell still in 2023 dec
+    enabled = false,        -- increase power of % - slow as hell (not any more?) higlights fun, if etc. ranges
     init = function()
       vim.g.matchup_matchparen_deferred = 1
       vim.g.matchup_matchparen_deferred_show_delay = 180
@@ -844,7 +862,7 @@ return require("lazy").setup {
 
   "JoseConseco/vim-case-change", -- rotate strign case - modded by me
   {
-    "johmsalas/text-case.nvim", -- ga then eg. u for upper  case (gau)
+    "johmsalas/text-case.nvim",  -- ga then eg. u for upper  case (gau)
     config = function()
       require("textcase").setup {}
     end,
@@ -947,10 +965,10 @@ return require("lazy").setup {
             search = { mode = "search", max_length = 0 }, -- len == 0  so all labels will be used and skips won't be calculated
             label = { after = { 0, 0 } },
             highlight = {
-              matches = false, -- to hide the whitespace match
+              matches = false,      -- to hide the whitespace match
             },
             jump = { pos = "end" }, -- jump to end of match regex (so to first non-whitespace char)
-            pattern = "^\\s*\\S", -- match non-whitespace at start plus any character (ignores empty lines), add \\? to match empty lines too
+            pattern = "^\\s*\\S",   -- match non-whitespace at start plus any character (ignores empty lines), add \\? to match empty lines too
           }
         end,
       },
@@ -1062,45 +1080,7 @@ return require("lazy").setup {
     "David-Kunz/gen.nvim",
     -- "JoseConseco/gen.nvim", -- my fork
     config = function()
-      require("gen").model = "dolphin-2.1-mistral-7b:Q5_K_M" -- "zephyr:7b-alpha-q5_K_M" -- default 'mistal:instruct'
-      local coding_model = "mywizard_coder:latest" -- or 'my_phindv2:q4_K_M'
-      local prompts = require("gen").prompts
-      prompts["Make_Table"] = nil
-      prompts["Make_List"] = nil
-      prompts["Generate"] = nil
-      prompts["Enhance_Code"] = nil
-      prompts["Change_Code"] = nil
-      prompts["Review_Code"] = nil
-
-      prompts["Ask"] = { prompt = "$input" }
-      prompts["Code_Change"] = {
-        -- prompt = "Regarding the following code, $input1, only output the result in format ```$filetype\n...\n```:\n```$filetype\n$text\n```",
-        prompt = "Below is an instruction that describes a task. Write a response that appropriately completes the request.\n\n### Instruction:\n$input\n[CODE]\n$text\n[/CODE]\n" .. "\n\n### Response:",
-        replace = false,
-        -- extract = "[CODE](.-)[/CODE]"
-        extract = "```$filetype\n(.-)```",
-        model = coding_model, -- 34b
-        -- model = "mywizard_coder:latest", -- 13b
-      }
-      prompts["Code_Enhance"] = {
-        prompt = "Enhance the following code, only output the result in format ```$filetype\n...\n```:\n```$filetype\n$text\n```",
-        replace = true,
-        extract = "```$filetype\n(.-)```",
-        model = coding_model,
-      }
-      prompts["Code_Review"] = {
-        prompt = "Review the following code and make concise suggestions:\n```$filetype\n$text\n```",
-        model = coding_model,
-      }
-      prompts["Code_Generate"] = {
-        prompt = "$input",
-        replace = false,
-        model = coding_model,
-      }
-      prompts["Enhance_Wording"] = {
-        prompt = "Modify the following text to use better wording:\n$text",
-        replace = false,
-      }
+      require "nv_gen-nvim"
     end,
   },
   -- {

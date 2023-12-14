@@ -5,6 +5,7 @@ require("todo-comments").setup({
 		keyword = "fg", -- "fg", "bg", "wide" or empty. (wide is the same as bg, but will also highlight surrounding characters)
 		after = "fg", -- "fg" or "bg" or empty
 		pattern = [[\s*<(KEYWORDS):?\s+]], -- pattern used for highlightng (vim regex)
+		-- pattern = [[.*<(KEYWORDS)\s*:]], -- pattern used for highlightng (vim regex)
 	},
 	colors = {
 	    error = { "DiagnosticError", "ErrorMsg", "#DC2626" },

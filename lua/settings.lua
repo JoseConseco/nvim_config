@@ -115,3 +115,7 @@ vim.opt.foldopen:append { "jump", "insert" } -- default: "block,hor,mark,percent
 vim.opt.laststatus = 3 -- show line and column number
 -- vim.opt.winbar = "%m  [%t]"
 vim.opt.spelloptions:append "camel" -- spell check camel case words
+
+if vim.fn.has("nvim-0.10") == 1 then
+  vim.opt.smoothscroll = true -- does not seem to work?
+end

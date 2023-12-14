@@ -199,7 +199,8 @@ wk.register({
 wk.register({
 	['<leader>c'] = { name = '+Code' },
 	-- ['<leader>cF'] = {':Autoformat<CR>',             'Autoformat lines'},
-	['<leader>cc'] = {':Neogen<CR>',             'Annotation (Neogen)'},
+	['<leader>cn'] = {':Neogen<CR>',             'Annotation (Neogen)'},
+	['<leader>cc'] = {"<cmd>TextCaseOpenTelescope<CR>",             'Case Change'}, --from text-case.nvim
 	['<leader>ca'] = {':lua vim.lsp.buf.code_action()<CR>',                                    'Code Action'} ,
 	-- ['<leader>cc'] = {':TSContextToggle<CR>',             'Context toggle'}, --from treesitter-context plug
 	-- ['<leader>ca'] = {":lua require('nvim-autopairs').disable()<CR>",             'Auto-pairs disable'}, --from treesitter-context plug
@@ -228,6 +229,7 @@ wk.register({
 
 wk.register({
 	['<leader>c'] = { name = '+Code'},
+	['<leader>cc'] = {"<cmd>TextCaseOpenTelescope<CR>",             'Case Change'}, --from text-case.nvim
 	['<leader>ce'] = {":lua require('refactoring').refactor('Extract Function')<CR>",            'Extract Function'},
 	['<leader>cv'] = {":lua require('refactoring').refactor('Extract Variable')<CR>",            'Extract Variable'},
 	['<leader>ci'] = {":lua require('refactoring').refactor('Inline Variable')<CR>",             'Inline Variable'},
@@ -320,21 +322,9 @@ wk.register({
     ['<leader>gs'] = {  diffWithSaved,                              'Diff with saved'},   -- fixes error on buffer close
 
 
-    ['<leader>gf'] = { name = '+Fugitive' },
-	['<leader>gfR'] = {':Ggrep<CR>'                            , 'git grep'},
-	['<leader>gfa'] = {':Git add .<CR>'                        , 'add all'},
-	['<leader>gfc'] = {':Git commit<CR>'                       , 'commit'},
-	['<leader>gfd'] = {':Git diff<CR>'                         , 'diff'},
-	['<leader>gfD'] = {':Gdiffsplit<CR>'                       , 'diff split'},
-	['<leader>gfH'] = {':Gdiffsplit HEAD~1'                    , 'diff split to Head~1'},
-	['<leader>gfs'] = {':Git<CR>'                              , 'status'}, -- old Gitstatus  - deprecated
-	['<leader>gfL'] = {':Gclog<CR>'                            , 'log files revisions'},
-	['<leader>gfl'] = {':0Gclog<CR>'                           , 'log current file revisions'},
-	['<leader>gfp'] = {':!git push<CR>'                        , 'push'},
-	['<leader>gfP'] = {':Git pull<CR>'                         , 'pull'},
-	['<leader>gfr'] = {':GRemove<CR>'                          , 'remove'},
-	['<leader>gfv'] = {':GV<CR>'                               , 'view commits'},
-	['<leader>gfV'] = {':GV!<CR>'                              , 'view buffer commits'},
+    ['<leader>gn'] = { name = '+Neogit' },
+	['<leader>gfn'] = {':Neogit<CR>'                            , 'git grep'},
+	['<leader>gfc'] = {':Neogit commit<CR>'                       , 'commit'},
 
 	['<leader>gd'] = { name = '+DiffView' },
 	['<leader>gdd'] =  { ':DiffviewOpen<CR>',                        'Diffview Open'},
