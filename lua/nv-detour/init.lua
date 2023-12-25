@@ -25,7 +25,7 @@ vim.keymap.set("n", "<c-w><enter>", function()
   close_on_leave()
 end)
 vim.keymap.set("n", "gD", function()
-  require("detour").Detour() -- Open a detour popup
+  require("detour").DetourCurrentWindow() -- Open a detour popup
   require('telescope.builtin').lsp_definitions({initial_mode = 'normal'})
   close_on_leave()
 

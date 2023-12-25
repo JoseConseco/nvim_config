@@ -209,7 +209,8 @@ vim.api.nvim_set_keymap("n", "<F10>", "<c-^>", { noremap = true, silent = true }
 -- NTree replacement
 -- vim.api.nvim_set_keymap( "n", "<F4>", ":Fern . -drawer -reveal=% -toggle -width=35<CR>", { noremap = true, silent = true} )
 -- vim.api.nvim_set_keymap( "n", "<F4>", "<Cmd>NnnPicker %:p:h<CR>", { noremap = true, silent = true} ) -- randomly wont work
-vim.api.nvim_set_keymap("n", "<F4>", ":FloatermNew ranger<CR>", { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap("n", "<F4>", ":FloatermNew ranger<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<F4>", ":Triptych<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "-", ":Oil --float<cr>", { noremap = true, silent = true })
 
 --MM click to toggle folds under cursor(zA)
@@ -263,18 +264,6 @@ local function open_sub_folds()
   end
 end
 
-local function override_l_with_indent_refresh()
-  local line_data = vim.api.nvim_win_get_cursor(0) -- returns {row, col}
-  if vim.fn.foldclosed(line_data[1]) ~= -1 then --  folded
-    print "folded"
-    vim.cmd [[normal! zo^]] -- from lukas-reineke/indent-blankline.nvim
-    -- vim.cmd [[IndentBlanklineRefresh]] -- from lukas-reineke/indent-blankline.nvim
-  else
-    vim.cmd "normal! l"
-  end
-end
-
-vim.keymap.set("n", "l", override_l_with_indent_refresh, { remap = true })
 vim.keymap.set("n", "zo", "zo<cr>", { remap = false, desc = "zo with indentline refresh" })
 vim.keymap.set("n", "zi", "zi<cr>", { remap = false, desc = "zi with indentline refresh" })
 vim.keymap.set("n", "zx", "zxzM<cr>", { remap = false, desc = "zi with indentline refresh" })
@@ -284,6 +273,7 @@ vim.keymap.set("n", "zO", open_sub_folds, { remap = true, expr = true })
 -- vim.keymap.set( "n", "zO", close_sub_folds, { remap = true, expr = true } )
 -- vim.api.nvim_set_keymap('n', 'zC',  'zC:foldc!|normal! zo<cr>', {noremap = true, silent = true})
 vim.api.nvim_set_keymap("n", "zC", ':execute "normal! zC" | foldc! | exe "normal! zv"<cr>', { noremap = true, silent = true }) -- close fold under cursor rec
+vim.api.nvim_set_keymap("n", "gx", ':!xdg-open <cWORD><cr>', { noremap = true, silent = true }) -- close fold under cursor rec
 
 --close all Folds remap
 

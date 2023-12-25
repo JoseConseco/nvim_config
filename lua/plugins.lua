@@ -1058,6 +1058,66 @@ return require("lazy").setup {
       hl_manager.highlight_link("FloatermBorder", "Normal")
     end,
   },
+  {
+    'simonmclean/triptych.nvim',
+    event = 'VeryLazy',
+    dependencies = {
+      'nvim-lua/plenary.nvim', -- required
+      'nvim-tree/nvim-web-devicons', -- optional
+    },
+    config = function()
+      require 'triptych'.setup {
+        mappings = {
+          -- Everything below is buffer-local, meaning it will only apply to Triptych windows
+          show_help = 'g?',
+          jump_to_cwd = '.',  -- Pressing again will toggle back
+          nav_left = 'h',
+          nav_right = { 'l', '<CR>' },
+          delete = 'd',
+          add = 'a',
+          copy = 'c',
+          rename = 'r',
+          cut = 'x',
+          paste = 'p',
+          quit = 'q',
+          toggle_hidden = '<leader>.',
+        },
+        extension_mappings = {},
+        options = {
+
+          column_widths = { .2, .25, .55 }, -- Must add up to 1 after rounding to 2 decimal
+          highlights = { -- Highlight groups to use. See `:highlight` or `:h highlight`
+                file_names = '@variable',
+                directory_names = '@function',
+              },
+
+          dirs_first = true,
+          show_hidden = false,
+          line_numbers = {
+            enabled = false,
+            relative = false,
+          },
+          file_icons = {
+            enabled = true,
+            directory_icon = '',
+            fallback_file_icon = ''
+          }
+        },
+        git_signs = {
+          enabled = true,
+          signs = {
+            add = '+',
+            modify = '~',
+            rename = 'r',
+            untracked = '?',
+          },
+        },
+        diagnostic_signs = {
+          enabled = false,
+        }
+      }
+    end,
+  },
 
   --REPLS -------------------------------------------------------------------------------------------------------
   "rafcamlet/nvim-luapad", -- :Luapad - open interactive scratch bufer with realtime eval

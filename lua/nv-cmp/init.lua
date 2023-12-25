@@ -10,9 +10,11 @@ local press = function(key)
   vim.api.nvim_feedkeys(replace_keycodes(key), "m", true)
 end
 
+local bounce_delay = 350 -- ms
+
 local source_mapping = {
   cmp_tabnine = "[T9]",
-  copilot = "[COP]",
+  -- copilot = "[COP]",
   cmp_ai = "[OLLAMA]",
   cmp_dap = "[DAP]",
   nvim_lsp = "[LSP]",
@@ -27,28 +29,32 @@ local source_mapping = {
 
 local cmp_ultisnips_mappings = require "cmp_nvim_ultisnips.mappings"
 -- not needed anymore - actually needed for cmp-dap, or else it will auto insert first entry after dot.
-vim.opt.completeopt = "menu,menuone,noselect,noinsert"
+-- vim.opt.completeopt = "menu,menuone,noselect,noinsert"
 cmp.setup {
-  snippet = {
-    expand = function(args)
-      vim.fn["UltiSnips#Anon"](args.body)
-    end,
+  -- enabled = function()
+  --  return vim.api.nvim_get_mode().mode == 'c'
+  -- end,
+  completion = {
+    -- autocomplete = { cmp.TriggerEvent.InsertEnter, cmp.TriggerEvent.TextChanged },
+    -- border = "rounded",
+    -- scrollbar = "║",
+    keyword_length = 0,
   },
   performance = {
     -- disable = true,
-    debounce = 200, -- ms
-    throttle = 400, -- does it even work?
+    debounce = bounce_delay, -- ms
+    -- throttle = 400, -- does it even work?
     -- fetching_timeout = 0.1,
     max_view_limit = 14,
   },
   sources = cmp.config.sources {
     -- { name = "nvim_lsp_signature_help" },
-    { name = "copilot", priority = 11, group_index = 1, keyword_length = 0 },
+    -- { name = "copilot", priority = 11, group_index = 1, keyword_length = 0 },
     { name = "cmp_ai", priority = 10, group_index = 1, keyword_length = 0 },
     -- { name = "cmp_tabnine", priority = 8, group_index = 1, keyword_length = 0 },
     { name = "nvim_lsp", priority = 9, group_index = 1, keyword_length = 2, max_item_count = 6 },
     { name = "cmp_dap", priority = 7, group_index = 1 },
-    { name = "ultisnips", priority = 7, group_index = 1, keyword_length = 1, },
+    { name = "ultisnips", priority = 7, group_index = 1, keyword_length = 2, max_item_count = 4},
     { name = "nvim_lua", priority = 5, group_index = 1 },
     -- { name = "buffer",      priority = 5, group_index = 1, keyword_length = 2, max_item_count = 5 }, -- actually nicer than RG
     { name = "rg", priority = 5, group_index = 1, keyword_length = 2, max_item_count = 4 }, -- first for locality sorting?
@@ -79,6 +85,11 @@ cmp.setup {
       return vim_item
     end,
   },
+  snippet = {
+    expand = function(args)
+      vim.fn["UltiSnips#Anon"](args.body)
+    end,
+  },
   -- enabled = function ()  -- for cmp dap
   --   return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
   --     or require("cmp_dap").is_dap_buffer()
@@ -97,13 +108,6 @@ cmp.setup {
     disallow_partial_fuzzy_matching = false,
   },
 
-  completion = {
-    autocomplete = false,
-    border = "rounded",
-    scrollbar = "║",
-    keyword_length = 0,
-  },
-
   mapping = {
     ["<C-p>"] = cmp.mapping(cmp.mapping.select_prev_item(), { "i", "s", "c" }),
     ["<C-n>"] = cmp.mapping(cmp.mapping.select_next_item(), { "i", "s", "c" }),
@@ -114,6 +118,7 @@ cmp.setup {
         config = {
           reason = cmp.ContextReason.Auto, -- or Manual
           sources = cmp.config.sources {
+            { name = "copilot" },
             { name = "cmp_ai" },
           },
         },
@@ -310,6 +315,7 @@ augroup END
 
 local cmp_ai = require "cmp_ai.config"
 
+
 cmp_ai:setup {
   max_lines = 30,
   provider = "LlamaCpp",
@@ -322,11 +328,16 @@ cmp_ai:setup {
       -- repeat_last_n = 64, -- default 64
       -- repeat_penalty = 1.100, -- default 1.1
     },
+    prompt = function(lines_before, lines_after)
+      return "<s><｜fim▁begin｜>" .. lines_before .. "<｜fim▁hole｜>" .. lines_after .. "<｜fim▁end｜>" -- for deepseek coder
+      -- return "<fim_prefix>" .. lines_before .. "<fim_suffix>" .. lines_after .. "<fim_middle>" -- for Refact 1.5 coder -- stopped workign after llama update..
+    end,
   },
   debounce_delay = 700, -- ms
   notify = true,
   notify_callback = function(msg)
-    vim.notify(msg)
+    print(msg)
+    -- vim.notify(msg)
   end,
   run_on_every_keystroke = false,
   ignored_file_types = {
@@ -336,20 +347,20 @@ cmp_ai:setup {
   },
 }
 -- cmp_ai:setup {
---   max_lines = 50,
+--   max_lines = 30,
 --   provider = "Ollama",
 --   provider_options = {
---     -- model = "codellama:7b-code", -- low q, but works...
---     -- model = 'my_deepseek-coder-6.7b-base.Q4_K_M:latest', -- way stronger version.. but not working.. -- maybe with <s>prompt...
---     model = 'deepseek-coder:1.3b-base-q5_0', -- way stronger version.. but not working..--need custom promps.
---     -- model = 'my_deepseek-coder-6.7b-base.Q4_K_S:latest', -- way stronger version.. -- but does not use all gpu-layers - sloowwwjwkh
---     -- prompt="<｜fim▁begin｜>"..lines_before.."<｜fim▁hole｜>"..lines_after.."<｜fim▁end｜>"
+--     model = 'deepseek-coder:6.7b-base-q4_K_M', -- way stronger version.. but not working..--need custom promps.
+--     prompt = function(lines_before, lines_after)
+--       return "<s><｜fim▁begin｜>" .. lines_before .. "<｜fim▁hole｜>" .. lines_after .. "<｜fim▁end｜>" -- for deepseek coder
+--       -- return "<fim_prefix>" .. lines_before .. "<fim_suffix>" .. lines_after .. "<fim_middle>" -- for Refact 1.5 coder -- stopped workign after llama update..
+--     end,
 --     options = {
 --       temperature = 0.2,
 --       -- num_predict = 20,  -- number of generated predictions
 --     },
 --   },
---   debounce_delay = 700, -- ms
+--   debounce_delay = 600, -- ms
 --   notify = true,
 --   notify_callback = function(msg)
 --     vim.notify(msg)
@@ -364,32 +375,41 @@ cmp_ai:setup {
 
 
 -- this will show cmp popup after bounce_delay of inactivity when typing. Works even on empty line, or after space...
-local fn = function()
-  if vim.fn.mode() == 'i' then --not cmp.visible() and
+local cmp_complete_force = function()
+  if vim.fn.mode() == 'i' then -- and not cmp.visible() and
     -- Auto takes keyword_length into account, (wont ignore existing letters - unlike manual) but wont show anything if no letter in line...
     -- Manual will show popup even if no letter, but then ignores these latters it seems...
     -- check if current line has any letters : if not use Manual
     local current_line = vim.api.nvim_get_current_line()
     local has_letters = string.find(current_line, "%a") -- "%a" matches any alphabet character (equivalent to [a-zA-Z])
-    if has_letters then
-      cmp.complete({ reason = cmp.ContextReason.Auto }) -- without reason, it will ignore letters before cursor...
-    else
-      cmp.complete({ reason = cmp.ContextReason.Manual }) -- without reason, it will ignore letters before cursor...
-    end
-
+    -- cmp.complete({ reason = cmp.ContextReason.Manual }) -- without reason, it will ignore letters before cursor...
+    cmp.complete({ reason = cmp.ContextReason.Manual }) --  ok after all?
+    -- if has_letters then
+    --   cmp.complete({ reason = cmp.ContextReason.Auto }) -- takes letters into account, but wont show popup if no letters in line
+    -- else
+    --   cmp.complete({ reason = cmp.ContextReason.Manual }) -- without reason, it will ignore letters before cursor...
+    -- end
     -- cmp.complete()  -- gives 'old' suggestion (like it does not see characters types after first bounce... even thought using bounce_trailing)
   end
 end
 
-local bounce_delay = 300 -- ms
-local cmp_on_hold, timer = require'throttle-debounce'.debounce_trailing(fn, bounce_delay, false) -- first = false (use last arg)
+local cmp_complete_bounce, timer = require'throttle-debounce'.debounce_trailing(cmp_complete_force, bounce_delay, false) -- first = false (use last arg)
 
 local au_cmp_hold_show = vim.api.nvim_create_augroup("CmpShowOnHold", { clear = true })
-vim.api.nvim_create_autocmd({"TextChangedI","InsertEnter"},{
-  pattern = "*",
+vim.api.nvim_create_autocmd({"TextChangedI","InsertEnter","TextChangedP"},{  -- bounce as much as possible
+  pattern = {"*.py","*.lua"},
   callback = function()
-    cmp_on_hold()
+    cmp_complete_bounce()
   end,
   group = au_cmp_hold_show
+})
+
+-- same for insert leave - except it will timer.close()
+vim.api.nvim_create_autocmd({"InsertLeave"},{
+  pattern = {"*.py","*.lua"},
+  callback = function()
+    timer:stop() -- do not fire timer callback on insert
+  end,
+ group = au_cmp_hold_show
 })
 

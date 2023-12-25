@@ -2,7 +2,8 @@
 local coding_model = "deepseek-coder:6.7b-instruct-q5_K_M"  -- or 'my_phindv2:q4_K_M'
 
 -- require("gen").model = "zephyr:7b-beta-q5_K_M" -- good for sumamry.., not so great for coding..
-require("gen").model = "openhermes2.5-mistral:7b-q5_K_M" -- ok at +++ coding tooo...
+-- require("gen").model = "openhermes2.5-mistral:7b-q5_K_M" -- ok at +++ coding tooo...
+require("gen").model = "starling-lm:7b-alpha-q4_K_M" -- ok at +++ coding tooo...
 local prompts = require("gen").prompts
 prompts["Make_Table"] = nil
 prompts["Make_List"] = nil
