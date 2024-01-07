@@ -118,8 +118,8 @@ nvim_lsp.clangd.setup {
   capabilities = capabilities,
   on_attach = on_attach,
   cmd = {
-      "clangd",
-      "--offset-encoding=utf-16", -- get rid of "Multiple different client offset_encodings detected" warning
+    "clangd",
+    "--offset-encoding=utf-16", -- get rid of "Multiple different client offset_encodings detected" warning
   },
 }
 nvim_lsp.pyright.setup {
@@ -135,7 +135,8 @@ nvim_lsp.pyright.setup {
       -- 'requirements.txt',
       ".git",
     }
-    return util.root_pattern(unpack(root_files))(filename) or util.find_git_ancestor(filename) or nil -- forces to run in signle file mode
+    return util.root_pattern(unpack(root_files))(filename) or util.find_git_ancestor(filename) or
+        nil -- forces to run in signle file mode
     -- util.path.dirname(filename) -- this will point to root addons == very slow
   end,
   settings = {
@@ -147,7 +148,7 @@ nvim_lsp.pyright.setup {
         extraPaths = { "/home/bartosz/.local/lib/python3.10/site-packages/" },
         autoSearchPaths = true,
         useLibraryCodeForTypes = true,
-        typeCheckingMode = "off", --  ["off", "basic", "strict"]:
+        typeCheckingMode = "off",     --  ["off", "basic", "strict"]:
         diagnosticMode = "workspace", -- ["openFilesOnly", "workspace"]
         diagnosticSeverityOverrides = {
           -- "error," "warning," "information," "true," "false," or "none"
@@ -333,7 +334,8 @@ require("lspconfig").vimls.setup {
 }
 
 require("lspconfig").ltex.setup {
-  cmd = { "ltex-ls" },
+  -- cmd = { "ltex-ls" },
+  cmd = { "/home/bartosz/Publiczny/ltex-ls-16.0.0/bin/ltex-ls" },
   on_attach = on_attach,
   capabilities = capabilities,
   filetypes = { "bib", "gitcommit", "markdown", "org", "plaintex", "rst", "rnoweb", "tex" },

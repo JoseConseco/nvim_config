@@ -582,7 +582,7 @@ return require("lazy").setup {
   -- use { "tzachar/cmp-fuzzy-buffer", dependencies = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" } }
   {
     "tzachar/cmp-tabnine",
-    cond = true,
+    cond = false,
     event = "InsertEnter",
     dependencies = "hrsh7th/nvim-cmp",
     build = "./install.sh",
@@ -656,8 +656,7 @@ return require("lazy").setup {
   },
   {
     "nvim-telescope/telescope-fzf-native.nvim",
-    build =
-    "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
+    build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
   },
 
   -- Explorer  -------------------------------------------------------------------------------------------------------
@@ -909,9 +908,7 @@ return require("lazy").setup {
   {
     "folke/flash.nvim",
     cond = true,
-    -- commit="13022c09fa30fb03d14110a380238f6a75b42ab4", -- correct colors under cword
     event = "VeryLazy",
-    -- branch = "rainbow",
     opts = {},
     keys = {
       {
@@ -942,6 +939,7 @@ return require("lazy").setup {
             },
           }
         end,
+        desc = "Flash Treesitter",
       },
       {
         "R",
@@ -971,6 +969,7 @@ return require("lazy").setup {
             pattern = "^\\s*\\S",   -- match non-whitespace at start plus any character (ignores empty lines), add \\? to match empty lines too
           }
         end,
+        desc = "Flash Jump Line",
       },
     },
 
@@ -1067,54 +1066,6 @@ return require("lazy").setup {
     },
     config = function()
       require 'triptych'.setup {
-        mappings = {
-          -- Everything below is buffer-local, meaning it will only apply to Triptych windows
-          show_help = 'g?',
-          jump_to_cwd = '.',  -- Pressing again will toggle back
-          nav_left = 'h',
-          nav_right = { 'l', '<CR>' },
-          delete = 'd',
-          add = 'a',
-          copy = 'c',
-          rename = 'r',
-          cut = 'x',
-          paste = 'p',
-          quit = 'q',
-          toggle_hidden = '<leader>.',
-        },
-        extension_mappings = {},
-        options = {
-
-          column_widths = { .2, .25, .55 }, -- Must add up to 1 after rounding to 2 decimal
-          highlights = { -- Highlight groups to use. See `:highlight` or `:h highlight`
-                file_names = '@variable',
-                directory_names = '@function',
-              },
-
-          dirs_first = true,
-          show_hidden = false,
-          line_numbers = {
-            enabled = false,
-            relative = false,
-          },
-          file_icons = {
-            enabled = true,
-            directory_icon = '',
-            fallback_file_icon = ''
-          }
-        },
-        git_signs = {
-          enabled = true,
-          signs = {
-            add = '+',
-            modify = '~',
-            rename = 'r',
-            untracked = '?',
-          },
-        },
-        diagnostic_signs = {
-          enabled = false,
-        }
       }
     end,
   },
@@ -1142,6 +1093,18 @@ return require("lazy").setup {
     config = function()
       require "nv_gen-nvim"
     end,
+  },
+  {
+    "huynle/ogpt.nvim",
+      event = "VeryLazy",
+      config = function()
+        require "nv_ogpt"
+      end,
+      dependencies = {
+        "MunifTanjim/nui.nvim",
+        "nvim-lua/plenary.nvim",
+        "nvim-telescope/telescope.nvim"
+      }
   },
   -- {
   --   "jackMort/ChatGPT.nvim",

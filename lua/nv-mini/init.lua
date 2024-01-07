@@ -52,7 +52,7 @@ local my_items = {
 	-- starter.sections.recent_files(10, true),
 	-- Use this if you set up 'mini.sessions'
 	starter.sections.sessions(9, true),
-	{ name = 'Addons', action = ':Oil ~/.config/blender/2.82/scripts/addons', section = 'Bookmarks' },
+	{ name = 'Addons', action = ':Oil ~/.config/blender/scripts/addons/', section = 'Bookmarks' },
 	{ name = 'NvimPlugs', action = ':Oil ~/.local/share/nvim/site/pack/packer/start', section = 'Bookmarks' },
 
 }

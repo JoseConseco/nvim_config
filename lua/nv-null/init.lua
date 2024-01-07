@@ -16,7 +16,7 @@ null_ls.setup {
       filetypes = { "python" },
       -- args = {},
       extra_args = { "--max-line-length=230", "--ignore=E226,E24,W50,W690" }, -- To add more arguments to a source's defaults
-    }, -- support range format
+    },                                                                        -- support range format
     -- null_ls.builtins.completion.spell,
     null_ls.builtins.diagnostics.codespell.with {
       filetypes = { "html", "txt", "json", "markdown", "python", "lua" },

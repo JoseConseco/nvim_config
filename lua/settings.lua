@@ -18,7 +18,7 @@ vim.opt.listchars = {
   precedes = "<",
   extends = ">",
 }
-vim.opt.foldopen = 'all'
+-- vim.opt.foldopen = 'all'  -- not cool - undolds even on j,k
 vim.cmd.setlocal "nolist" -- won't work
 
 -- vim.cmd('set whichwrap+=<,>,[,],h,l') -- move to next line with theses keys

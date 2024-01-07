@@ -22,7 +22,7 @@ ts_config.setup {
     disable = { "comment" },
     use_languagetree = true,
   },
-  indent = { enable = false }, -- broken since 0.10?
+  indent = { enable = true }, -- broken since 0.10?
   -- playground = {
   --     enable = true,
   --     disable = {},
@@ -90,7 +90,7 @@ vim.wo.foldmethod = "expr"
 vim.wo.foldexpr = "nvim_treesitter#foldexpr()" -- o will give errors...
 vim.wo.foldenable = true --do notenable fold at start
 
-vim.api.nvim_set_keymap("n", "+", ":normal v+<cr>", { noremap = true, silent = true }) -- + will now switch to normal and  grow selection from treesitter
+-- vim.api.nvim_set_keymap("n", "+", ":normal v<cr>", { noremap = true, silent = true }) -- + will now switch to normal and  grow selection from treesitter
 if require("nvim-treesitter.parsers").has_parser "python" then
   local folds_query = [[
 (function_definition (block) @fold)
