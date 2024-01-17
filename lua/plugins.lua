@@ -190,18 +190,18 @@ return require("lazy").setup {
   { -- better vim.ui  - eg. vim.input, vim.select etc.
     "stevearc/dressing.nvim",
     lazy = true,
-    init = function()
-      ---@diagnostic disable-next-line: duplicate-set-field
-      vim.ui.select = function(...)
-        require("lazy").load { plugins = { "dressing.nvim" } }
-        return vim.ui.select(...)
-      end
-      ---@diagnostic disable-next-line: duplicate-set-field
-      vim.ui.input = function(...)
-        require("lazy").load { plugins = { "dressing.nvim" } }
-        return vim.ui.input(...)
-      end
-    end,
+    -- init = function()
+    --   ---@diagnostic disable-next-line: duplicate-set-field
+    --   vim.ui.select = function(...)
+    --     require("lazy").load { plugins = { "dressing.nvim" } }
+    --     return vim.ui.select(...)
+    --   end
+    --   ---@diagnostic disable-next-line: duplicate-set-field
+    --   vim.ui.input = function(...)
+    --     require("lazy").load { plugins = { "dressing.nvim" } }
+    --     return vim.ui.input(...)
+    --   end
+    -- end,
   },
 
   {
@@ -821,11 +821,12 @@ return require("lazy").setup {
 
   --CODE/FORMAT -------------------------------------------------------------------------------------------------------
   "wellle/targets.vim", -- eg ci,  ci_ etc replaced by mini.ai
-  -- use({ -- select indent lua
-  -- 	"arsham/indent-tools.nvim",
-  -- 	dependencies = { "arsham/arshlib.nvim" },
-  -- 	config = function() require("indent-tools").config({}) end,
-  -- })
+  {
+    'nmac427/guess-indent.nvim',
+    config = function() require('guess-indent').setup {
+      auto_cmd = true,
+    } end,
+  },
   {
     "urxvtcd/vim-indent-object",
     init = function()
@@ -1088,7 +1089,8 @@ return require("lazy").setup {
     end,
   },
   {
-    "David-Kunz/gen.nvim",
+    -- "David-Kunz/gen.nvim",
+    "JoseConseco/gen.nvim",
     -- "JoseConseco/gen.nvim", -- my fork
     config = function()
       require "nv_gen-nvim"

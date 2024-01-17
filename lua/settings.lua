@@ -96,6 +96,8 @@ if vim.g.neovide then -- does not workk...
   vim.g.neovide_scale_factor = 1.0
   vim.g.neovide_refresh_rate = 30
   vim.g.neovide_transparency = 1.0
+  vim.g.neovide_cursor_animate_in_insert_mode = false
+  vim.g.neovide_cursor_vfx_mode = "wireframe"
 end
 
 function _G.custom_fold_text()

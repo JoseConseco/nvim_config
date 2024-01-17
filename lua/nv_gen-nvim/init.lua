@@ -3,7 +3,7 @@ local coding_model = "deepseek-coder:6.7b-instruct-q5_K_M"  -- or 'my_phindv2:q4
 
 -- require("gen").model = "zephyr:7b-beta-q5_K_M" -- good for sumamry.., not so great for coding..
 -- require("gen").model = "openhermes2.5-mistral:7b-q5_K_M" -- ok at +++ coding tooo...
-require("gen")
+-- require("gen")
 require('gen').setup({
   model = "starling-lm:7b-alpha-q4_K_M", -- ok at +++ coding tooo...
   display_mode = "float", -- The display mode. Can be "float" or "split".
@@ -12,7 +12,11 @@ require('gen').setup({
   no_auto_close = false, -- Never closes the window automatically.
   init = function(options) pcall(io.popen, "ollama serve > /dev/null 2>&1 &") end,
   -- Function to initialize Ollama
-  command = "curl --silent --no-buffer -X POST http://localhost:11434/api/generate -d $body", -- ollama
+  -- command = "curl --silent --no-buffer -X POST http://localhost:11434/api/generate -d $body", -- ollama
+  command = "curl --silent --no-buffer -X POST http://localhost:8080/completion -d $body", -- llamacpp
+  model_options = {
+    min_p = 0.1,
+  },
   -- The command for the Ollama service. You can use placeholders $prompt, $model and $body (shellescaped).
   -- This can also be a lua function returning a command string, with options as the input parameter.
   -- The executed command must return a JSON object with { response, context }
@@ -49,6 +53,9 @@ prompts["Code_Enhance"] = {
   "Enhance the following code, only output the result in format ```$filetype\n...\n```:\n```$filetype\n$text\n```",
   replace = false,
   extract = "```$filetype\n(.-)```",
+  model_options = {
+    min_p = 0.4,
+  },
   model = coding_model,
 }
 prompts["Code_Review"] = {
@@ -64,6 +71,9 @@ prompts["Code_Generate"] = {
   prompt = "$input",
   replace = false,
   model = coding_model,
+  model_options = {
+    min_p = 0.4,
+  },
 }
 prompts["Code_Annotation"] = {
   prompt = "Explainig in one sentence what function below is it doing. Output your response in '''$filetype''' docstring format:\n```$filetype\n$text\n```",
@@ -71,6 +81,6 @@ prompts["Code_Annotation"] = {
   model = coding_model,
 }
 prompts["Enhance_Wording"] = {
-  prompt = "Modify the following text to use better wording:\n$text",
+  prompt = "Modify the following text to use better wording:```\n$text\n```",
   replace = false,
 }

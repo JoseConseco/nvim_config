@@ -317,14 +317,14 @@ local cmp_ai = require "cmp_ai.config"
 
 
 cmp_ai:setup {
-  max_lines = 30,
+  max_lines = 20,
   provider = "LlamaCpp",
   provider_options = {
     -- prompt="<｜fim▁begin｜>"..lines_before.."<｜fim▁hole｜>"..lines_after.."<｜fim▁end｜>"
     options = {
       -- temperature = 0.2,
-      n_predict = 20,  -- number of generated predictions
-      min_p = 0.05, -- default 0.05,  Cut off predictions with probability below  Max_prob * min_p
+      n_predict = 10,  -- number of generated predictions
+      min_p = 0.1, -- default 0.05,  Cut off predictions with probability below  Max_prob * min_p
       -- repeat_last_n = 64, -- default 64
       -- repeat_penalty = 1.100, -- default 1.1
     },

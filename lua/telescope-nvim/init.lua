@@ -1,11 +1,26 @@
 -- local fb_actions = require "telescope._extensions.file_browser.actions"
 local actions = require "telescope.actions"
+local actions_state = require "telescope.actions.state"
 
 local t = function(str)
   return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
 local press = function(key)
   vim.api.nvim_feedkeys(t(key, true, true, true), "i", true)
+end
+
+local open_and_unfold = function(prompt_bufnr)
+  local entry = actions_state.get_selected_entry()
+  if entry == nil then
+    return
+  end
+  -- actions.file_edit(prompt_bufnr)
+  -- vim.cmd("normal! zO")  -- schedule  this to avoid fold not found error
+  actions.file_edit(prompt_bufnr)
+  vim.schedule(function()
+    vim.cmd("normal! zO")
+  end)
+
 end
 
 local telescope = require "telescope"
@@ -61,6 +76,7 @@ telescope.setup {
         ["<C-Up>"] = require("telescope.actions").cycle_history_prev,
         ["<C-s>"] = actions.file_split,
         ["<C-v>"] = actions.file_vsplit,
+        ["<cr>"] = open_and_unfold,
       },
       n = {
         ["<C-n>"] = actions.move_selection_next,
