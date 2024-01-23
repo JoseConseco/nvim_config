@@ -14,11 +14,13 @@ local open_and_unfold = function(prompt_bufnr)
   if entry == nil then
     return
   end
-  -- actions.file_edit(prompt_bufnr)
   -- vim.cmd("normal! zO")  -- schedule  this to avoid fold not found error
-  actions.file_edit(prompt_bufnr)
+  actions.select_default(prompt_bufnr)
   vim.schedule(function()
-    vim.cmd("normal! zO")
+    local line_data = vim.api.nvim_win_get_cursor(0) -- returns {row, col}
+    if vim.fn.foldclosed(line_data[1]) ~= -1 then -- not folded
+      vim.cmd("normal! zO")
+    end
   end)
 
 end

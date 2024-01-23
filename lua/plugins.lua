@@ -489,7 +489,7 @@ return require("lazy").setup {
   }, -- lua + wont close () next to char finally good and simple +++
   {
     "carbon-steel/detour.nvim",
-    cond = true,
+    branch="dev",
     config = function()
       require "nv-detour"
     end,
@@ -1027,6 +1027,31 @@ return require("lazy").setup {
       require("numb").setup()
     end,
   },
+  -- {
+  --   'rasulomaroff/reactive.nvim', -- detect eg. operator pending mode
+  --   config = function()
+  --     -- require('reactive').setup{
+  --     --   -- builtin = {
+  --     --   --   cursorline = false,
+  --     --   --   cursor = false,
+  --     --   --   modemsg = false
+  --     --   -- },
+  --     -- }
+  --     require('reactive').add_preset{
+  --       name = 'test',
+  --       modes = {
+  --         no = {
+  --           to = function()
+  --             vim.opt.relativenumber = true
+  --           end,
+  --           from = function()
+  --             vim.opt.relativenumber = false
+  --           end,
+  --         },
+  --       },
+  --     }
+  --   end,
+  -- },
   {
     "axlebedev/footprints",
     config = function()

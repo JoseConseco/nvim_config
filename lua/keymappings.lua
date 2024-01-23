@@ -253,7 +253,6 @@ local function t(str)
 end
 local function open_sub_folds()
   local line_data = vim.api.nvim_win_get_cursor(0) -- returns {row, col}
-  -- vim.cmd [[IndentBlanklineRefresh]] -- from lukas-reineke/indent-blankline.nvim
   if vim.fn.foldclosed(line_data[1]) == -1 then -- not folded
     -- open sub folds
     return ":normal! zczO" .. t "<cr>" .. "<cr>" -- normal - prevets flicker

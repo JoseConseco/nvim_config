@@ -1,39 +1,39 @@
-local function close_on_leave()
-  local attached_bufnr = vim.api.nvim_get_current_buf()
-  local attached_winid = vim.api.nvim_get_current_win()
-  -- vim.bo.bufhidden = 'delete' -- close the terminal when window closes
-  -- I am not entirely sure if there is any benefit to having this augroup
-  local test_au = vim.api.nvim_create_augroup("DetourClose", { clear = true })
+local function close_on_leave(popup_id)
+    -- This autocmd will close the created detour popup when you focus on a different window.
+    vim.api.nvim_create_autocmd({ "WinEnter" }, {
+        callback = function()
+            local window_id = vim.api.nvim_get_current_win()
+            -- Skip cases where we are entering popup menus or the detour popup itself.
+            if vim.api.nvim_win_get_config(window_id).relative ~= "" or window_id == popup_id then
+                return
+            end
 
-  vim.api.nvim_create_autocmd({ "WinEnter" }, {
-    buffer = attached_bufnr,
-    callback = function()
-      print "Detour leave"
-      -- check if current window is floating. If it is, skip closing detur window
-      local winid = vim.api.nvim_get_current_win()
-      if vim.api.nvim_win_get_config(winid).relative ~= "" or winid == attached_winid then
-        return
-      end
-      vim.api.nvim_win_close(attached_winid, true)
-      -- this autocmd only needs to return once so make sure you return true so it deletes itself after running.
-      return true
-    end,
-    group = test_au,
-    -- this nested attribute is actually needed at the moment or breaks the plugin's assumptions.
-    -- I need to update the plugin so it doesn't depend on users remembering to setting the nested attribute.
-    nested = true,
-  })
+            -- Check to make sure the popup has not already been closed
+            if vim.tbl_contains(vim.api.nvim_list_wins(), popup_id) then
+                vim.api.nvim_win_close(popup_id, false)
+            end
+
+            -- delete this autocmd if the popup was closed
+            return not vim.tbl_contains(vim.api.nvim_list_wins(), popup_id)
+        end,
+    })
 end
 
 vim.keymap.set("n", "<c-w><enter>", function()
-  require("detour").Detour() -- Open a detour popup
-  close_on_leave()
-end)
-vim.keymap.set("n", "gD", function()
-  require("detour").DetourCurrentWindow() -- Open a detour popup
-  close_on_leave()
-  -- vim.bo.bufhidden = 'delete' -- delete this scratch buffer when we move out of it
-  require('telescope.builtin').lsp_definitions({initial_mode = 'normal'})
+    local ok = require("detour").Detour() -- Open a detour popup
 
+    if ok then
+        close_on_leave(vim.api.nvim_get_current_win())
+    end
+end)
+
+vim.keymap.set("n", "gD", function ()
+    local ok = require("detour").Detour() -- Open a detour popup
+    -- Call this function whether or not a detour popup was successfully created. This means we fallback to using the current window if the popup failed.
+    require('telescope.builtin').lsp_definitions({initial_mode = 'normal'})
+
+    if ok then
+        close_on_leave(vim.api.nvim_get_current_win())
+    end
 end)
 

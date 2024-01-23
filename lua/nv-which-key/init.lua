@@ -296,12 +296,19 @@ end
 local function compare_to_clipboard()
 	local ftype = vim.api.nvim_eval("&filetype")
 	vim.cmd.vsplit()
-	vim.cmd.enew()
-	vim.cmd [[ normal! P ]]
-    -- local bufnr = vim.api.nvim_get_current_buf()
-    -- vim.api.nvim_set_option_value('modifiable', false, {}) # fucks things up
-    vim.cmd.diffthis() -- put new buff in diff mode
-    vim.cmd.file('ClipBoard')
+    -- check if 'Clipboard' buffer exists if not create it, else use it
+    local bufnr = vim.fn.bufnr('ClipBoard')
+    if bufnr == -1 then
+	  vim.cmd.enew()
+	  vim.cmd [[ normal! P ]]
+	  vim.cmd.file('ClipBoard')
+	else -- set current buffer to 'ClipBoard' and paste
+	  vim.cmd.edit('ClipBoard')
+	  vim.cmd [[ normal! ggVG"_dP ]]
+	end
+	--    -- local bufnr = vim.api.nvim_get_current_buf()
+	--    -- vim.api.nvim_set_option_value('modifiable', false, {}) # fucks things up
+	vim.cmd.diffthis() -- put new buff in diff mode
     vim.api.nvim_set_option_value('filetype', ftype, {})
 	vim.cmd.wincmd('p')
     vim.cmd.diffthis() -- put original buff in diff mode
