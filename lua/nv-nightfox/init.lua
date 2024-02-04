@@ -93,7 +93,10 @@ require("nightfox").setup {
   groups = {
     all = {
       ["@keyword.function"] = { link = "@keyword.return" }, -- make them reddish
-      ["@conditional"] = { link = "@keyword.return" },
+      ["@keyword.repeat"] = { link = "@keyword.return" }, -- make them reddish
+      ["@keyword.conditional"] = { link = "@keyword.return" }, -- make them reddish
+      ["@keyword.exception"] = { link = "@keyword.return" }, -- make them reddish
+      -- ["@conditional"] = { link = "@keyword.return" },
       ["@repeat"] = { link = "@keyword.return" },
       ["@keyword.operator"] = { link = "@keyword.return" },
       ["@keyword"] = { link = "@keyword.return" }, -- from blueish, to red

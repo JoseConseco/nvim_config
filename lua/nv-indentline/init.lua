@@ -46,7 +46,7 @@ hl_manager.match_color_to_highlight("#6ea1ec", "conceal", "RainbowBlue", "foregr
 
 require("ibl").setup {
   indent = { highlight = highlight },
-  scope = { enabled = false },
+  scope = { enabled = false, highlight='@keyword' },
 }
 -- require("ibl").setup {
 --   indent = { highlight = highlight, char = "" },

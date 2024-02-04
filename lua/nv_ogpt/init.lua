@@ -251,7 +251,7 @@ local defaults = {
         }
       }
     },
-    docstring = {
+    docstring2 = {
       type = "chat",
       opts = {
         template =

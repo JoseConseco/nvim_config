@@ -9,28 +9,54 @@ local press = function(key)
   vim.api.nvim_feedkeys(t(key, true, true, true), "i", true)
 end
 
+local delayed_unfold = function()
+  vim.defer_fn(function()
+    vim.cmd("normal! zO")
+  end, 100)
+
+  -- vim.schedule(function()
+  --   local line_data = vim.api.nvim_win_get_cursor(0) -- returns {row, col}
+  --   if vim.fn.foldclosed(line_data[1]) ~= -1 then    -- not folded
+  --     vim.cmd("normal! zO")
+  --   end
+  -- end
+  -- )
+end
+
 local open_and_unfold = function(prompt_bufnr)
   local entry = actions_state.get_selected_entry()
   if entry == nil then
     return
   end
-  -- vim.cmd("normal! zO")  -- schedule  this to avoid fold not found error
   actions.select_default(prompt_bufnr)
-  vim.schedule(function()
-    local line_data = vim.api.nvim_win_get_cursor(0) -- returns {row, col}
-    if vim.fn.foldclosed(line_data[1]) ~= -1 then -- not folded
-      vim.cmd("normal! zO")
-    end
-  end)
-
+  delayed_unfold() -- vim.cmd("normal! zO")  -- schedule  this to avoid fold not found error
 end
+
+local open_and_unfold_vsplit = function(prompt_bufnr)
+  local entry = actions_state.get_selected_entry()
+  if entry == nil then
+    return
+  end
+  actions.file_vsplit(prompt_bufnr)
+  delayed_unfold() -- vim.cmd("normal! zO")  -- schedule  this to avoid fold not found error
+end
+
+local open_and_unfold_split = function(prompt_bufnr)
+  local entry = actions_state.get_selected_entry()
+  if entry == nil then
+    return
+  end
+  actions.file_split(prompt_bufnr)
+  delayed_unfold() -- vim.cmd("normal! zO")  -- schedule  this to avoid fold not found error
+end
+
 
 local telescope = require "telescope"
 local fzf_opts = {
-  fuzzy = true, -- false will only do exact matching
+  fuzzy = true,                   -- false will only do exact matching
   override_generic_sorter = true, -- override the generic sorter
-  override_file_sorter = true, -- override the file sorter
-  case_mode = "smart_case", -- or "ignore_case" or "respect_case"
+  override_file_sorter = true,    -- override the file sorter
+  case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
   -- the default case_mode is "smart_case"
 }
 
@@ -76,15 +102,16 @@ telescope.setup {
         -- ["<C-Down>"] = actions.cycle_history_next,
         ["<C-Down>"] = require("telescope.actions").cycle_history_next,
         ["<C-Up>"] = require("telescope.actions").cycle_history_prev,
-        ["<C-s>"] = actions.file_split,
-        ["<C-v>"] = actions.file_vsplit,
+        ["<C-s>"] = open_and_unfold_split,  -- actions.file_split,
+        ["<C-v>"] = open_and_unfold_vsplit, -- actions.file_vsplit,
         ["<cr>"] = open_and_unfold,
       },
       n = {
         ["<C-n>"] = actions.move_selection_next,
         ["<C-p>"] = actions.move_selection_previous,
-        ["<C-s>"] = actions.file_split,
-        ["<C-v>"] = actions.file_vsplit,
+        ["<C-s>"] = open_and_unfold_split,  -- actions.file_split,
+        ["<C-v>"] = open_and_unfold_vsplit, -- actions.file_vsplit,
+        ["<cr>"] = open_and_unfold,
       },
     },
     file_sorter = require("telescope.sorters").get_fuzzy_file,
@@ -196,5 +223,3 @@ local showDocumentSymbols = function()
 end
 vim.keymap.set("n", "<F3>", showWorkspaceSymbols, { noremap = true, silent = true, desc = "Show Workspace Symbols" })
 -- vim.keymap.set( "n", "<F3>", showDocumentSymbols, { noremap = true, silent = true, desc="Show Workspace Symbols" } )
-
-

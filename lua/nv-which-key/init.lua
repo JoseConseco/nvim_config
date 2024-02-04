@@ -80,7 +80,7 @@ wk.register({
 	-- ['<leader>?'] = { search_unfolded,                                             'Word to clist (Grepper)'},
 	['<leader>p'] = 'which_key_ignore',
 	['<leader>R'] = {':Lazy sync<cr>', 'Lazy Sync'},
-	['<leader>r'] = {':Telescope frecency<cr>', 'Frecency'},
+	['<leader>r'] = {':Telescope find_files<cr>', 'Files'},
 	['<leader>1'] = 'which_key_ignore',
 	['<leader>2'] = 'which_key_ignore',
 	['<leader>3'] = 'which_key_ignore',
@@ -261,7 +261,7 @@ wk.register({
 	['<leader>dn']  = { ":lua require'dap'.step_over()<CR>",                                            'Step Over'},
 	['<leader>dc']  = { ":lua require'dap'.run_to_cursor()<CR>",                                        'Run to Cursor'},
 	['<leader>dr']  = { ":lua require'dap'.repl.toggle()<CR>",                                          'Repl Toggle'},
-	['<leader>dL']  = { ":lua require'osv'.launch()<cr>",                                          'Start Lua Dap Server'},
+	['<leader>dL']  = { ":lua require'osv'.launch({port=5678})<cr>",                                    'Start Lua Dap Server (port 5678)'},
 })
 
 function _G.yankpath()
@@ -564,7 +564,7 @@ wk.register({
 	['<leader>ul'] = {':set list!<CR>'                     , 'Toggle List Chars'},
 	['<leader>uc'] = {':Telescope colorscheme<CR>'         , 'Colorscheme'},
 	['<leader>uh'] = {':set hlsearch!<CR>'                 , 'Search highlight'},
-	['<leader>uf'] = {':FocusToggle<cr>'                   , 'Focus Toggle'},
+	-- ['<leader>uf'] = {':FocusToggle<cr>'                   , 'Focus Toggle'},
 	['<leader>ut'] = {':Twilight<cr>'                      , 'Twilight'},
 })
 

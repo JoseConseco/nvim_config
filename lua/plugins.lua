@@ -114,8 +114,8 @@ return require("lazy").setup {
     end,
   },
   {
-    -- "folke/twilight.nvim",
-    "mkonig/twilight.nvim",
+    "folke/twilight.nvim",
+    -- "mkonig/twilight.nvim",
     event = "VeryLazy",
     -- branch = "pr/1", -- my fix for expand props
     config = function()
@@ -267,7 +267,7 @@ return require("lazy").setup {
 
   -- WINDOWS MANAGER  -------------------------------------------------------------------------------------------------------
   {
-    "beauwilliams/focus.nvim",
+    "nvim-focus/focus.nvim",
     cond = false, -- autoresize windows to gold ration - replaced with "anuvyklack/windows.nvim"
     config = function()
       require("focus").setup {
@@ -489,7 +489,7 @@ return require("lazy").setup {
   }, -- lua + wont close () next to char finally good and simple +++
   {
     "carbon-steel/detour.nvim",
-    branch="dev",
+    -- branch="dev",
     config = function()
       require "nv-detour"
     end,
@@ -634,18 +634,25 @@ return require("lazy").setup {
     "nvim-telescope/telescope.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons", "nvim-lua/popup.nvim", "nvim-lua/plenary.nvim",
       "tom-anders/telescope-vim-bookmarks.nvim", "JoseConseco/telescope_sessions_picker.nvim" },
-    cmd = "Telescope frecency",
     config = function()
       require "telescope-nvim"
     end,
   }, -- lua + wont lose () next to char finally good and simple +++
   "nvim-telescope/telescope-media-files.nvim",
   {
-    "nvim-telescope/telescope-frecency.nvim",
+    'prochri/telescope-all-recent.nvim',
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+      "kkharji/sqlite.lua",
+      "stevearc/dressing.nvim"       -- optional, if using telescope for vim.ui.select
+    },
     config = function()
-      require("telescope").load_extension "frecency"
+      require('nv-telescope-all-recent')
     end,
-    -- dependencies = { "kkharji/sqlite.lua" },
+    opts =
+      {
+        -- your config goes here
+      }
   },
   {
     "debugloop/telescope-undo.nvim",

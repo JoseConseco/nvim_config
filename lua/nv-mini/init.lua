@@ -45,7 +45,7 @@ local starter = require('mini.starter')
 local my_items = {
 	starter.sections.builtin_actions(),
 	{ name = 'Sessions', action = ":Telescope sessions_picker", section = 'Telescope' },
-	{ name = 'Recent Files', action = ':Telescope frecency', section = 'Telescope' },
+	{ name = 'Recent Files', action = ':Telescope find_files', section = 'Telescope' },
 	{ name = 'Old Files', action = ':Telescope oldfiles', section = 'Telescope' },
 	-- { name = 'File Brower', action = ':Telescope file_browser', section = 'Telescope' },
 	-- starter.sections.recent_files(10, false),

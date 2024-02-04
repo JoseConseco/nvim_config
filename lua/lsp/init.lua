@@ -132,7 +132,8 @@ nvim_lsp.pyright.setup {
       -- 'setup.py',
       -- 'pyproject.toml',
       -- 'setup.cfg',
-      -- 'requirements.txt',
+      'requirements.txt',
+      "main.py", --mine
       ".git",
     }
     return util.root_pattern(unpack(root_files))(filename) or util.find_git_ancestor(filename) or

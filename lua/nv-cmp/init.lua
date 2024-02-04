@@ -316,6 +316,43 @@ augroup END
 local cmp_ai = require "cmp_ai.config"
 
 
+cmp_ai:setup {
+  max_lines = 30,
+  provider = "DocileLlamaCpp", -- my local LlamaCpp forvading server (will auto start different models)
+  provider_options = {
+    -- prompt="<｜fim▁begin｜>"..lines_before.."<｜fim▁hole｜>"..lines_after.."<｜fim▁end｜>"
+    options = {
+      -- temperature = 0.2,
+      n_predict = 20,  -- number of generated predictions
+      min_p = 0.2, -- default 0.05,  Cut off predictions with probability below  Max_prob * min_p
+      -- repeat_last_n = 64, -- default 64
+      -- repeat_penalty = 1.100, -- default 1.1
+
+
+
+      -- new args for my forwading my python server  branch.. ---------------
+      model = "deepseek-coder-6.7b-base.Q4_K_M.gguf",
+      ngl = 50,
+    },
+    prompt = function(lines_before, lines_after)
+      return "<s><｜fim▁begin｜>" .. lines_before .. "<｜fim▁hole｜>" .. lines_after .. "<｜fim▁end｜>" -- for deepseek coder
+      -- return "<fim_prefix>" .. lines_before .. "<fim_suffix>" .. lines_after .. "<fim_middle>" -- for Refact 1.5 coder -- stopped workign after llama update..
+    end,
+  },
+  debounce_delay = 600, -- ms
+  notify = true,
+  notify_callback = function(msg)
+    print(msg)
+    -- vim.notify(msg)
+  end,
+  run_on_every_keystroke = false,
+  ignored_file_types = {
+    -- default is not to ignore
+    -- uncomment to ignore in lua:
+    -- lua = true
+  },
+}
+
 -- cmp_ai:setup {
 --   max_lines = 30,
 --   provider = "LlamaCpp",
@@ -327,6 +364,12 @@ local cmp_ai = require "cmp_ai.config"
 --       min_p = 0.2, -- default 0.05,  Cut off predictions with probability below  Max_prob * min_p
 --       -- repeat_last_n = 64, -- default 64
 --       -- repeat_penalty = 1.100, -- default 1.1
+--
+--
+--
+--       -- new args for my forwading server  branch.. ---------------
+--       model = "deepseek-coder-6.7b-base.Q4_K_M.gguf",
+--       ngl = 50,
 --     },
 --     prompt = function(lines_before, lines_after)
 --       return "<s><｜fim▁begin｜>" .. lines_before .. "<｜fim▁hole｜>" .. lines_after .. "<｜fim▁end｜>" -- for deepseek coder
@@ -346,32 +389,33 @@ local cmp_ai = require "cmp_ai.config"
 --     -- lua = true
 --   },
 -- }
-cmp_ai:setup {
-  max_lines = 30,
-  provider = "Ollama",
-  provider_options = {
-    model = 'deepseek-coder:6.7b-base-q4_K_M', -- way stronger version.. but not working..--need custom promps.
-    prompt = function(lines_before, lines_after)
-      return "<s><｜fim▁begin｜>" .. lines_before .. "<｜fim▁hole｜>" .. lines_after .. "<｜fim▁end｜>" -- for deepseek coder
-      -- return "<fim_prefix>" .. lines_before .. "<fim_suffix>" .. lines_after .. "<fim_middle>" -- for Refact 1.5 coder -- stopped workign after llama update..
-    end,
-    options = {
-      temperature = 0.2,
-      -- num_predict = 20,  -- number of generated predictions
-    },
-  },
-  debounce_delay = 600, -- ms
-  notify = true,
-  notify_callback = function(msg)
-    vim.notify(msg)
-  end,
-  run_on_every_keystroke = false,
-  ignored_file_types = {
-    -- default is not to ignore
-    -- uncomment to ignore in lua:
-    -- lua = true
-  },
-}
+
+-- cmp_ai:setup {
+--   max_lines = 30,
+--   provider = "Ollama",
+--   provider_options = {
+--     model = 'deepseek-coder:6.7b-base-q4_K_M', -- way stronger version.. but not working..--need custom promps.
+--     prompt = function(lines_before, lines_after)
+--       return "<s><｜fim▁begin｜>" .. lines_before .. "<｜fim▁hole｜>" .. lines_after .. "<｜fim▁end｜>" -- for deepseek coder
+--       -- return "<fim_prefix>" .. lines_before .. "<fim_suffix>" .. lines_after .. "<fim_middle>" -- for Refact 1.5 coder -- stopped workign after llama update..
+--     end,
+--     options = {
+--       temperature = 0.2,
+--       -- num_predict = 20,  -- number of generated predictions
+--     },
+--   },
+--   debounce_delay = 600, -- ms
+--   notify = true,
+--   notify_callback = function(msg)
+--     vim.notify(msg)
+--   end,
+--   run_on_every_keystroke = false,
+--   ignored_file_types = {
+--     -- default is not to ignore
+--     -- uncomment to ignore in lua:
+--     -- lua = true
+--   },
+-- }
 
 
 -- this will show cmp popup after bounce_delay of inactivity when typing. Works even on empty line, or after space...
