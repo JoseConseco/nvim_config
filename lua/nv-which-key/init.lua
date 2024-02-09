@@ -118,15 +118,7 @@ wk.register({  --ignore magic s and g in cmd mode
 -- wk.register('which_key_ignore'
 -- wk.register('which_key_ignore'
 
--- b for buffers  - for nvim-bufferline<Plug>
--- ['s'] = {':BLines',                              'Search lines fzf'},
-local function set_filetype()
-	vim.ui.select({ 'python', 'lua', 'text'}, { prompt = 'Select file type:', },
-		function(choice)
-			vim.bo.filetype = choice -- not working
-		end
-	)
-end
+
 local function pick_filetype()
 	vim.ui.select({ 'python', 'lua', 'text'}, { prompt = 'Select file type:', },
 		function(choice)
@@ -177,12 +169,9 @@ wk.register({
 	-- ['<leader>bb'] = {'<c-^>',                                                                                                                            'Cycle with Previous'},
 	-- ['<leader>bn'] = {':enew<CR>',                                                                                                                        'New'},
 	['<leader>bn'] = { pick_filetype,                                                                                                                        'New'},
-	['<leader>b]'] = {':BufferLineCycleNext<CR>',                                                                                                         'Next'},
-	['<leader>b['] = {':BufferLineCyclePrev<CR>',                                                                                                         'Previous'},
 	-- ['<leader>bc'] = {':confirm bd<CR>',                                                                                                                  'Close'},   -- fixes error on buffer close
 	['<leader>bc'] = {':lua MiniBufremove.delete()<CR>',                                                                                                  'Close'},   -- wont change layout From mini plug
 	['<leader>bo'] = {':%bd|e#|bd#<CR>',                                                                                                                  'Close all but current'},
-	['<leader>bp'] = {':BufferLinePick<CR>',                                                                                                              'Pick (gb)'},
 	['<leader>br'] = {':confirm e<CR>',                                                                                                                   'Reload File(e!)'},
 })
 
@@ -278,7 +267,6 @@ wk.register({
 	-- ['<leader>ff'] = {':Telescope file_browser<CR>',                       'File Browser (fuzzy)'},
 	['<leader>fy'] = { ":call v:lua.yankpath()<CR>",                       'Yank file location<CR>'},
 	['<leader>fo'] = { ':!xdg-open "%:p:h"<CR>',                           'Open containing folder'},
-	-- ['<leader>ft'] = { set_filetype,                                                                                                                        'Set Filetype'},
 	['<leader>ft'] = {':Telescope filetypes<CR>',    'filetypes'},
 
 	['<leader>fc'] = {':cd %:p:h<CR>',                                     'cd %'},

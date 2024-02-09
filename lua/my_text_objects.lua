@@ -47,10 +47,10 @@ end
 -- repeatable_command("o", "iW", "BigInnerWord", get_big_word, "i")
 -- repeatable_command("o", "aW", "BigAroundWord", get_big_word, "a")
 -- repeatable_command("o", "W", "BigWord", get_big_word, nil)
-repeatable_command("iW", "BigInnerWord", get_big_word, "i")
-repeatable_command("aW", "BigAroundWord", get_big_word, "a")
-repeatable_command("W", "BigWord", get_big_word, nil)
-vim.keymap.set('n', 'W', "<cmd>BigWord"..t "<CR>")  -- for vis mode <c-u> - clears '<'>
+-- repeatable_command("iW", "BigInnerWord", get_big_word, "i")
+-- repeatable_command("aW", "BigAroundWord", get_big_word, "a")
+-- repeatable_command("W", "BigWord", get_big_word, nil)
+-- vim.keymap.set('n', 'W', "<cmd>BigWord"..t "<CR>")  -- for vis mode <c-u> - clears '<'>
 
 
 

@@ -13,7 +13,7 @@ end
 local bounce_delay = 350 -- ms
 
 local source_mapping = {
-  cmp_tabnine = "[T9]",
+  -- cmp_tabnine = "[T9]",
   -- copilot = "[COP]",
   cmp_ai = "[OLLAMA]",
   cmp_dap = "[DAP]",
@@ -69,17 +69,17 @@ cmp.setup {
       -- in the following line:
       vim_item.kind = lspkind.symbolic(vim_item.kind, { mode = "symbol" })
       vim_item.menu = source_mapping[entry.source.name]
-      if entry.source.name == "cmp_tabnine" then
-        local detail = (entry.completion_item.labelDetails or {}).detail
-        vim_item.kind = ""
-        if detail and detail:find ".*%%.*" then
-          vim_item.kind = vim_item.kind .. " " .. detail
-        end
-
-        if (entry.completion_item.data or {}).multiline then
-          vim_item.kind = vim_item.kind .. " " .. "[ML]"
-        end
-      end
+      -- if entry.source.name == "cmp_tabnine" then
+      --   local detail = (entry.completion_item.labelDetails or {}).detail
+      --   vim_item.kind = ""
+      --   if detail and detail:find ".*%%.*" then
+      --     vim_item.kind = vim_item.kind .. " " .. detail
+      --   end
+      --
+      --   if (entry.completion_item.data or {}).multiline then
+      --     vim_item.kind = vim_item.kind .. " " .. "[ML]"
+      --   end
+      -- end
       local maxwidth = 80
       vim_item.abbr = string.sub(vim_item.abbr, 1, maxwidth)
       return vim_item
@@ -90,10 +90,14 @@ cmp.setup {
       vim.fn["UltiSnips#Anon"](args.body)
     end,
   },
-  -- enabled = function ()  -- for cmp dap
-  --   return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
-  --     or require("cmp_dap").is_dap_buffer()
-  -- end,
+  enabled = function ()  -- for cmp dap
+    local current_win_id = vim.fn.win_getid() -- if windows if floating then ignore
+    if vim.api.nvim_win_get_config(current_win_id).zindex then
+      return
+    end
+    return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
+      or require("cmp_dap").is_dap_buffer()
+  end,
   -- You can set mappings if you want
   window = {
     documentation = {
@@ -219,7 +223,7 @@ cmp.setup {
 -- form "rcarriga/cmp-dap",
 -- enable cmp-dap - only for dap-repl - or else cmp will throw error
 
-require("cmp").setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
+cmp.setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
   -- nvim-cmp by defaults disables autocomplete for prompt buffers
   enabled = function()
     return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt" or require("cmp_dap").is_dap_buffer()
@@ -313,9 +317,8 @@ augroup END
 --   debug = false,
 -- }
 
+
 local cmp_ai = require "cmp_ai.config"
-
-
 cmp_ai:setup {
   max_lines = 30,
   provider = "DocileLlamaCpp", -- my local LlamaCpp forvading server (will auto start different models)
@@ -421,11 +424,16 @@ cmp_ai:setup {
 -- this will show cmp popup after bounce_delay of inactivity when typing. Works even on empty line, or after space...
 local cmp_complete_force = function()
   if vim.fn.mode() == 'i' then -- and not cmp.visible() and
+    local current_win_id = vim.fn.win_getid() -- if windows if floating then ignore
+    if vim.api.nvim_win_get_config(current_win_id).zindex then
+      return
+    end
     -- Auto takes keyword_length into account, (wont ignore existing letters - unlike manual) but wont show anything if no letter in line...
     -- Manual will show popup even if no letter, but then ignores these latters it seems...
     -- check if current line has any letters : if not use Manual
     local current_line = vim.api.nvim_get_current_line()
     local has_letters = string.find(current_line, "%a") -- "%a" matches any alphabet character (equivalent to [a-zA-Z])
+    -- make sure current buffer is not input box, command, or terminal
     -- cmp.complete({ reason = cmp.ContextReason.Manual }) -- without reason, it will ignore letters before cursor...
     cmp.complete({ reason = cmp.ContextReason.Manual }) --  ok after all?
     -- if has_letters then

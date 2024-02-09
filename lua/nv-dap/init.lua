@@ -66,7 +66,7 @@ local function show_dap_hydra()
     body = "<leader>dh",
     heads = {
       { "s", dap.continue, { silent = true } },
-      { "X", dap.close, { silent = true } },
+      { "X", dap.close, { silent = true } }, -- close current session (This does NOT terminate the debug adapter or debugee. - for that use |dap.terminate()| or |dap.disconnect()|)
       { "b", dap.toggle_breakpoint, { silent = true } },
       { "B", cond_breakpoint, { silent = true } },
       { "L", log_breakpoint, { silent = true } },

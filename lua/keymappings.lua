@@ -274,6 +274,11 @@ vim.keymap.set("n", "zO", open_sub_folds, { remap = true, expr = true })
 vim.api.nvim_set_keymap("n", "zC", ':execute "normal! zC" | foldc! | exe "normal! zv"<cr>', { noremap = true, silent = true }) -- close fold under cursor rec
 vim.api.nvim_set_keymap("n", "gx", ':!xdg-open <cWORD><cr>', { noremap = true, silent = true }) -- close fold under cursor rec
 
+
+-- map cnext and cprev hotkeys
+vim.api.nvim_set_keymap("n", "]q", ":cnext<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "[q", ":cprev<CR>", { noremap = true, silent = true })
+
 --close all Folds remap
 
 -- Saner behavior of n and N - plus added hlslens

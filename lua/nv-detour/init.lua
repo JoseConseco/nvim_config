@@ -19,20 +19,24 @@ local function close_on_leave(popup_id)
     })
 end
 
+local detour = require("detour")
+
 vim.keymap.set("n", "<c-w><enter>", function()
-    local ok = require("detour").Detour() -- Open a detour popup
+    local ok = detour.Detour() -- Open a detour popup
 
     if ok then
+        -- detour.CloseOnLeave()
         close_on_leave(vim.api.nvim_get_current_win())
     end
 end)
 
 vim.keymap.set("n", "gD", function ()
-    local ok = require("detour").Detour() -- Open a detour popup
+    local ok = detour.Detour() -- Open a detour popup
     -- Call this function whether or not a detour popup was successfully created. This means we fallback to using the current window if the popup failed.
     require('telescope.builtin').lsp_definitions({initial_mode = 'normal'})
 
     if ok then
+        -- require("detour").CloseOnLeave()
         close_on_leave(vim.api.nvim_get_current_win())
     end
 end)

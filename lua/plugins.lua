@@ -16,18 +16,6 @@ return require("lazy").setup {
 
   -- THEMES -------------------------------------------------------------------------------------------------------
   "mvpopuk/inspired-github.vim",
-  {
-    "rmehri01/onenord.nvim",
-    enabled = false,
-    config = function()
-      require("onenord").setup {
-        borders = true, -- Split window borders
-        italics = { comments = true, strings = false, keywords = true, functions = false, variables = false },
-        bold = { comments = false, strings = false, keywords = true, functions = true, variables = false },
-        custom_highlights = { Normal = { bg = "#272b2E" } }, -- Overwrite default highlight groups
-      }
-    end,
-  },
   "Mofiqul/adwaita.nvim",
   {
     "projekt0n/github-nvim-theme",
@@ -92,7 +80,6 @@ return require("lazy").setup {
     end,
     -- config=function() vim.cmd('colorscheme tokyonight'); vim.cmd([[highlight LineNr guifg=#5081c0 | highlight CursorLineNR guifg=#FFba00 ]])end
   }, -- lua + wont close () next to char finally good and simple +++
-  "mhartington/oceanic-next",
 
   -- -- UI -------------------------------------------------------------------------------------------------------
   {
@@ -161,15 +148,6 @@ return require("lazy").setup {
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
       require "nv-lualine"
-    end,
-  },
-  {
-    "akinsho/nvim-bufferline.lua",
-    -- after = "nightfox.nvim",
-    cond = false,
-    dependencies = "nvim-tree/nvim-web-devicons",
-    config = function()
-      require "nv-bufferline"
     end,
   },
   {
@@ -550,7 +528,7 @@ return require("lazy").setup {
   --   },
   -- },
   -- {'tzachar/cmp-ai', dependencies = 'nvim-lua/plenary.nvim'},
-  {'JoseConseco/cmp-ai', dependencies = 'nvim-lua/plenary.nvim'},
+  { 'JoseConseco/cmp-ai',                  dependencies = 'nvim-lua/plenary.nvim' },
   {
     "hrsh7th/nvim-cmp",
     cond = true,
@@ -569,7 +547,7 @@ return require("lazy").setup {
       "rcarriga/cmp-dap",
       -- "hrsh7th/cmp-nvim-lsp-signature-help", - x ray better
       -- "uga-rosa/cmp-dictionary", -- based on custom dict
-      "f3fora/cmp-spell", -- vim spell hast to be enabled
+      "f3fora/cmp-spell",               -- vim spell hast to be enabled
       "runiq/neovim-throttle-debounce", -- for debouncing of cmp complettions...
     },
     config = function()
@@ -580,20 +558,20 @@ return require("lazy").setup {
   { "dmitmel/cmp-cmdline-history",         dependencies = "hrsh7th/cmp-cmdline" },
   -- { "tzachar/cmp-fuzzy-path", dependencies = { "hrsh7th/nvim-cmp", "hrsh7th/cmp-path", "tzachar/fuzzy.nvim" } }
   -- use { "tzachar/cmp-fuzzy-buffer", dependencies = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" } }
-  {
-    "tzachar/cmp-tabnine",
-    cond = false,
-    event = "InsertEnter",
-    dependencies = "hrsh7th/nvim-cmp",
-    build = "./install.sh",
-    config = function()
-      require("cmp_tabnine.config"):setup {
-        max_lines = 100,
-        max_num_results = 3,
-        sort = true,
-      }
-    end,
-  },
+  -- {
+  --   "tzachar/cmp-tabnine",
+  --   cond = false,
+  --   event = "InsertEnter",
+  --   dependencies = "hrsh7th/nvim-cmp",
+  --   build = "./install.sh",
+  --   config = function()
+  --     require("cmp_tabnine.config"):setup {
+  --       max_lines = 100,
+  --       max_num_results = 3,
+  --       sort = true,
+  --     }
+  --   end,
+  -- },
   {
     "tzachar/highlight-undo.nvim",
     config = function()
@@ -644,15 +622,15 @@ return require("lazy").setup {
     dependencies = {
       "nvim-telescope/telescope.nvim",
       "kkharji/sqlite.lua",
-      "stevearc/dressing.nvim"       -- optional, if using telescope for vim.ui.select
+      "stevearc/dressing.nvim" -- optional, if using telescope for vim.ui.select
     },
     config = function()
       require('nv-telescope-all-recent')
     end,
     opts =
-      {
-        -- your config goes here
-      }
+    {
+      -- your config goes here
+    }
   },
   {
     "debugloop/telescope-undo.nvim",
@@ -830,9 +808,11 @@ return require("lazy").setup {
   "wellle/targets.vim", -- eg ci,  ci_ etc replaced by mini.ai
   {
     'nmac427/guess-indent.nvim',
-    config = function() require('guess-indent').setup {
-      auto_cmd = true,
-    } end,
+    config = function()
+      require('guess-indent').setup {
+        auto_cmd = true,
+      }
+    end,
   },
   {
     "urxvtcd/vim-indent-object",
@@ -879,15 +859,6 @@ return require("lazy").setup {
     config = function()
       vim.g.VM_mouse_mappings = 1
     end,
-  },
-  {
-    "smoka7/multicursors.nvim", -- still n wayto to MC from visual sel
-    cond = false,
-    event = "VeryLazy",
-    opts = {},
-    keys = {
-      { "<C-n>", "<cmd>MCstart<cr>", desc = "Create a selection for word under the cursor" },
-    },
   },
   {
     "echasnovski/mini.nvim",
@@ -1094,7 +1065,7 @@ return require("lazy").setup {
     'simonmclean/triptych.nvim',
     event = 'VeryLazy',
     dependencies = {
-      'nvim-lua/plenary.nvim', -- required
+      'nvim-lua/plenary.nvim',       -- required
       'nvim-tree/nvim-web-devicons', -- optional
     },
     config = function()
@@ -1112,15 +1083,6 @@ return require("lazy").setup {
     end,
   },
   {
-    "gsuuon/llm.nvim",
-    enabled = false,
-    -- "JoseConseco/llm.nvim",
-    -- dev = true, -- too keep local changes
-    config = function()
-      require "nv_llm-nvim"
-    end,
-  },
-  {
     -- "David-Kunz/gen.nvim",
     "JoseConseco/gen.nvim",
     -- "JoseConseco/gen.nvim", -- my fork
@@ -1130,11 +1092,10 @@ return require("lazy").setup {
   },
   {
     "huynle/ogpt.nvim",
-      event = "VeryLazy",
-      config = function()
-        require "nv_ogpt"
-      end,
-      dependencies = {
+    config = function()
+      require("nv_ogpt")
+    end,
+    dependencies = {
         "MunifTanjim/nui.nvim",
         "nvim-lua/plenary.nvim",
         "nvim-telescope/telescope.nvim"
@@ -1155,10 +1116,4 @@ return require("lazy").setup {
   -- },
 
   ---  TOOLS -------------------------------------------------------------------------------------------------------
-  {
-    "AckslD/messages.nvim", -- :Messages messages
-    config = function()
-      require("messages").setup()
-    end,
-  },
 }
