@@ -326,7 +326,7 @@ cmp_ai:setup {
     -- prompt="<｜fim▁begin｜>"..lines_before.."<｜fim▁hole｜>"..lines_after.."<｜fim▁end｜>"
     options = {
       -- temperature = 0.2,
-      n_predict = 20,  -- number of generated predictions
+      n_predict = 35,  -- number of generated predictions
       min_p = 0.2, -- default 0.05,  Cut off predictions with probability below  Max_prob * min_p
       -- repeat_last_n = 64, -- default 64
       -- repeat_penalty = 1.100, -- default 1.1
@@ -353,6 +353,7 @@ cmp_ai:setup {
     -- default is not to ignore
     -- uncomment to ignore in lua:
     -- lua = true
+    -- markdown = true,
   },
 }
 

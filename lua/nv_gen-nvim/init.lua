@@ -73,7 +73,7 @@ prompts["Change"] = {
   },
 }
 prompts["Enhance_Wording"] = {
-  prompt = starling_wrap("Modify the following text to use better wording:```\n$text\n```"),
+  prompt = starling_wrap("Improve the following text by better wording. Use casual style and avoid technical jargon. Do not change the meaning of the text:```\n$text\n```"),
   replace = false,
   model_options = {
     stop = {"<|end_of_turn|>"},

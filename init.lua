@@ -6,7 +6,7 @@ require "plugins"
 require "hl_manager"
 require "settings"
 require "keymappings"
-require "my_text_objects" -- repalced with mini.ai ...
+-- require "my_text_objects" -- repalced with mini.ai ...
 
 local timeday_theme_au = vim.api.nvim_create_augroup("TimedayThemeAu", { clear = true })
 

@@ -28,7 +28,7 @@ require("dial.config").augends:register_group {
 				return { text = text, cursor = cursor }
 			end,
 		},
-		-- augend.paren.new {
+		-- augend.paren.new { -- breaks eg. number increase if it is in brackets...
 		--   patterns = { { "(", ")" }, { "[", "]" }, { "{", "}" }, { "(", ")" }, { "'", "'" }, { '"', '"' }, { "'", "'" } },
 		--   nested = false,
 		--   cyclic = false,

@@ -397,7 +397,6 @@ return require("lazy").setup {
     config = function()
       require "nv-treesittercontext"
     end,
-    opts = { mode = "cursor" },
   },
   {
     "mizlan/iswap.nvim",
@@ -805,7 +804,7 @@ return require("lazy").setup {
   "mg979/vim-localhistory", -- local history LHLoad, LHWrite
 
   --CODE/FORMAT -------------------------------------------------------------------------------------------------------
-  "wellle/targets.vim", -- eg ci,  ci_ etc replaced by mini.ai
+  -- "wellle/targets.vim", -- eg ci,  ci_ etc replaced by mini.ai
   {
     'nmac427/guess-indent.nvim',
     config = function()
@@ -846,8 +845,7 @@ return require("lazy").setup {
       require "nv-autopairs"
     end,
   },
-
-  "JoseConseco/vim-case-change", -- rotate strign case - modded by me
+  -- "JoseConseco/vim-case-change", -- rotate strign case - modded by me
   {
     "johmsalas/text-case.nvim",  -- ga then eg. u for upper  case (gau)
     config = function()
@@ -856,6 +854,7 @@ return require("lazy").setup {
   },
   {
     "mg979/vim-visual-multi", --multi cursor support like vscode...
+    lazy = false, -- Otherwise <C-n> will insert <CR> on first run, due to default mapping
     config = function()
       vim.g.VM_mouse_mappings = 1
     end,
@@ -865,15 +864,6 @@ return require("lazy").setup {
     config = function()
       require "nv-mini"
     end,
-  },
-  {
-    "danymat/neogen", -- generate code docs
-    config = function()
-      require("neogen").setup {}
-    end,
-    dependencies = "nvim-treesitter/nvim-treesitter",
-    -- Uncomment next line if you want to follow only stable versions
-    version = "*",
   },
   {
     -- increse decrease numbers but also datas, true to false etc
@@ -1083,8 +1073,7 @@ return require("lazy").setup {
     end,
   },
   {
-    -- "David-Kunz/gen.nvim",
-    "JoseConseco/gen.nvim",
+    "David-Kunz/gen.nvim",
     -- "JoseConseco/gen.nvim", -- my fork
     config = function()
       require "nv_gen-nvim"

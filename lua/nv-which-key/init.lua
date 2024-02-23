@@ -188,7 +188,6 @@ wk.register({
 wk.register({
 	['<leader>c'] = { name = '+Code' },
 	-- ['<leader>cF'] = {':Autoformat<CR>',             'Autoformat lines'},
-	['<leader>cn'] = {':Neogen<CR>',             'Annotation (Neogen)'},
 	['<leader>cc'] = {"<cmd>TextCaseOpenTelescope<CR>",             'Case Change'}, --from text-case.nvim
 	['<leader>ca'] = {':lua vim.lsp.buf.code_action()<CR>',                                    'Code Action'} ,
 	-- ['<leader>cc'] = {':TSContextToggle<CR>',             'Context toggle'}, --from treesitter-context plug
@@ -464,8 +463,12 @@ wk.register({
 	['<leader>s/'] = {
 	function()
 		local name = vim.fn.input('To: ', vim.fn.expand('<cword>'))
-		vim.cmd(":.,$s/\\<"..vim.fn.expand('<cword>').."\\>/"..name.."/gc|1,''-&&")
-	end,                                                                                  'Replace word'},       -- write to reg z (@a) then use it for replacign * word
+	    -- & - synonym for :s - repeat last subsittute
+	    -- e - no error if no match
+	    -- & - reuse last search flags
+		vim.cmd(":.,$s/\\<"..vim.fn.expand('<cword>').."\\>/"..name.."/gce|1,''-&&")
+	end,
+	'Replace word'},
 	['<leader>ss'] = {":lua require('spectre').open_file_search({select_word=true})<CR>",        'Spectre Local'},
 	-- ['<leader>s/'] = {":lua require('searchbox').replace({default_value = vim.fn.expand('<cword>'), confirm = 'menu'})<CR>", 'Find and Replace word'},       -- write to reg z (@a) then use it for replacign * word
 	-- ['<leader>s*'] = {[["ayiw:lua require('searchbox').replace({confirm='menu'})<CR><C-r>=getreg('a')<CR><CR>:sl m<CR><C-r>=getreg('"')<CR>]], 'Replace word'},       -- write to reg z (@a) then use it for replacign * word
