@@ -190,6 +190,7 @@ telescope.load_extension "aerial"
 telescope.load_extension "sessions_picker"
 telescope.load_extension "sessions_picker"
 telescope.load_extension('textcase') --from text-case.nvim
+telescope.load_extension('bookmarks')
 -- require('telescope').load_extension('projects')
 -- telescope.load_extension "smart_history" -- somethign wrong with reading history
 

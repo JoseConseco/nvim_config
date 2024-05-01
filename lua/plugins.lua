@@ -373,7 +373,7 @@ return require("lazy").setup {
   },
   {
     "rcarriga/nvim-dap-ui",
-    dependencies = { "mfussenegger/nvim-dap" },
+    dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
     -- commit = "6b6081ad244ae5aa1358775cc3c08502b04368f9", -- till fix is merged
     config = function()
       require "nv-dapui"
@@ -457,6 +457,24 @@ return require("lazy").setup {
       require("mason-lspconfig").setup()
     end,
   },
+  -- {
+  --   "dgagn/diagflow.nvim",
+  --   event = "LspAttach", --This is what I use personnally and it works great
+  --   config = function()
+  --     require("diagflow").setup {
+  --       show_sign = true,
+  --       placement = "inline",
+  --       inline_padding_left = 5,
+  --     }
+  --   end,
+  -- },
+  {
+    "folke/trouble.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    conf = function()
+      require "nv-lsptrouble"
+    end,
+  },
   "williamboman/mason-lspconfig.nvim",
   {
     "neovim/nvim-lspconfig",
@@ -527,14 +545,14 @@ return require("lazy").setup {
   --   },
   -- },
   -- {'tzachar/cmp-ai', dependencies = 'nvim-lua/plenary.nvim'},
-  { 'JoseConseco/cmp-ai',                  dependencies = 'nvim-lua/plenary.nvim' },
+  { "JoseConseco/cmp-ai",                  dependencies = "nvim-lua/plenary.nvim" },
   {
     "hrsh7th/nvim-cmp",
     cond = true,
     event = "InsertEnter",
     dependencies = {
       -- 'tzachar/cmp-ai',
-      'JoseConseco/cmp-ai',
+      "JoseConseco/cmp-ai",
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-path",
@@ -609,27 +627,25 @@ return require("lazy").setup {
   -- Telescope   -------------------------------------------------------------------------------------------------------
   {
     "nvim-telescope/telescope.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons", "nvim-lua/popup.nvim", "nvim-lua/plenary.nvim",
-      "tom-anders/telescope-vim-bookmarks.nvim", "JoseConseco/telescope_sessions_picker.nvim" },
+    dependencies = { "nvim-tree/nvim-web-devicons", "nvim-lua/popup.nvim", "nvim-lua/plenary.nvim", "tom-anders/telescope-vim-bookmarks.nvim", "JoseConseco/telescope_sessions_picker.nvim" },
     config = function()
       require "telescope-nvim"
     end,
   }, -- lua + wont lose () next to char finally good and simple +++
   "nvim-telescope/telescope-media-files.nvim",
   {
-    'prochri/telescope-all-recent.nvim',
+    "prochri/telescope-all-recent.nvim",
     dependencies = {
       "nvim-telescope/telescope.nvim",
       "kkharji/sqlite.lua",
-      "stevearc/dressing.nvim" -- optional, if using telescope for vim.ui.select
+      "stevearc/dressing.nvim", -- optional, if using telescope for vim.ui.select
     },
     config = function()
-      require('nv-telescope-all-recent')
+      require "nv-telescope-all-recent"
     end,
-    opts =
-    {
+    opts = {
       -- your config goes here
-    }
+    },
   },
   {
     "debugloop/telescope-undo.nvim",
@@ -663,8 +679,7 @@ return require("lazy").setup {
     "nvim-neo-tree/neo-tree.nvim", -- nice buffers preview...
     cond = true,
     branch = "v2.x",
-    dependencies = { "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons", "MunifTanjim/nui.nvim",
-      "s1n7ax/nvim-window-picker" },
+    dependencies = { "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons", "MunifTanjim/nui.nvim", "s1n7ax/nvim-window-picker" },
     keys = {
       { "<F11>", "<cmd>NeoTreeFloat<cr>",         desc = "Open Neotree on side" },
       { " bb",   "<cmd>NeoTreeFloat buffers<cr>", desc = "Open Neotree on side" },
@@ -701,8 +716,8 @@ return require("lazy").setup {
   {
     "lewis6991/foldsigns.nvim",
     config = function()
-      require('foldsigns').setup()
-    end
+      require("foldsigns").setup()
+    end,
   },
   {
     "lewis6991/gitsigns.nvim",
@@ -806,9 +821,9 @@ return require("lazy").setup {
   --CODE/FORMAT -------------------------------------------------------------------------------------------------------
   -- "wellle/targets.vim", -- eg ci,  ci_ etc replaced by mini.ai
   {
-    'nmac427/guess-indent.nvim',
+    "nmac427/guess-indent.nvim",
     config = function()
-      require('guess-indent').setup {
+      require("guess-indent").setup {
         auto_cmd = true,
       }
     end,
@@ -830,7 +845,7 @@ return require("lazy").setup {
   },
   {
     "andymass/vim-matchup", -- slow as hell still in 2023 dec
-    enabled = false,        -- increase power of % - slow as hell (not any more?) higlights fun, if etc. ranges
+    enabled = true,         -- increase power of % - slow as hell (not any more?) higlights fun, if etc. ranges
     init = function()
       vim.g.matchup_matchparen_deferred = 1
       vim.g.matchup_matchparen_deferred_show_delay = 180
@@ -839,6 +854,35 @@ return require("lazy").setup {
       vim.g.matchup_matchparen_deferred = 1
     end,
   },
+
+  {
+    "briangwaltney/paren-hint.nvim", -- show matching paren by ghost text
+    enabled = true,
+    lazy = false,
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+    },
+    config = function()
+      -- you can create a custom highlight group for the ghost text with the below command.
+      -- change the `highlight` option to `parenhint` if you use this method.
+      -- vim.api.nvim_exec([[ highlight parenhint guifg='#56633E' ]], false)
+      require("paren-hint").setup {
+        -- Include the opening paren in the ghost text
+        include_paren = true,
+
+        -- Show ghost text when cursor is anywhere on the line that includes the close paren rather just when the cursor is on the close paren
+        anywhere_on_line = true,
+
+        -- show the ghost text when the opening paren is on the same line as the close paren
+        show_same_line_opening = false,
+
+        -- style of the ghost text using highlight group
+        -- :Telescope highlights to see the available highlight groups if you have telescope installed
+        highlight = "@attribute",
+      }
+    end,
+  },
+
   {
     "windwp/nvim-autopairs", -- lua + wont close () next to char finally good and simple +++
     config = function()
@@ -847,17 +891,22 @@ return require("lazy").setup {
   },
   -- "JoseConseco/vim-case-change", -- rotate strign case - modded by me
   {
-    "johmsalas/text-case.nvim",  -- ga then eg. u for upper  case (gau)
+    "johmsalas/text-case.nvim", -- ga then eg. u for upper  case (gau)
     config = function()
       require("textcase").setup {}
     end,
   },
   {
-    "mg979/vim-visual-multi", --multi cursor support like vscode...
-    lazy = false, -- Otherwise <C-n> will insert <CR> on first run, due to default mapping
-    config = function()
-      vim.g.VM_mouse_mappings = 1
+    "mg979/vim-visual-multi", --multi cursor
+    init = function()
+      vim.g.VM_maps = {       -- fixes first ctrl+n in visual mode not working.
+        ["I BS"] = "",
+      }
     end,
+    -- config = function()
+    --   vim.g.VM_mouse_mappings = 1
+    --   -- vim.cmd [[VMDebug]]
+    -- end,
   },
   {
     "echasnovski/mini.nvim",
@@ -911,7 +960,7 @@ return require("lazy").setup {
         desc = "Flash Treesitter",
       },
       {
-        "R",
+        "r",
         mode = { "o", "x" }, -- remote search (treesitter)
         function()
           require("flash").treesitter_search {
@@ -920,6 +969,7 @@ return require("lazy").setup {
                 enabled = true,
               },
             },
+            remote_op = { restore = true, motion = true },
           }
         end,
         desc = "Flash Treesitter Search",
@@ -1030,14 +1080,39 @@ return require("lazy").setup {
       vim.g.footprintsHistoryDepth = 27
     end,
   },
-
   {
-    "MattesGroeger/vim-bookmarks",
+    "tomasky/bookmarks.nvim",
+    -- after = "telescope.nvim",
+    event = "VimEnter",
     config = function()
-      vim.api.nvim_set_keymap("n", "mn", "<Plug>BookmarkNext | zvzz", { silent = true })
-      vim.api.nvim_set_keymap("n", "mp", "<Plug>BookmarkPrev | zvzz", { silent = true })
+      require("bookmarks").setup {
+        -- sign_priority = 8,  --set bookmark sign priority to cover other sign
+        save_file = vim.fn.expand "$HOME/.bookmarks", -- bookmarks save file path
+        keywords = {
+          ["@t"] = "☑️ ", -- mark annotation startswith @t ,signs this icon as `Todo`
+          ["@w"] = "⚠️ ", -- mark annotation startswith @w ,signs this icon as `Warn`
+        },
+        on_attach = function(bufnr)
+          local bm = require "bookmarks"
+          local map = vim.keymap.set
+          map("n", "mm", bm.bookmark_toggle) -- add or remove bookmark at current line
+          map("n", "mi", bm.bookmark_ann)    -- add or edit mark annotation at current line
+          map("n", "mc", bm.bookmark_clean)  -- clean all marks in local buffer
+          map("n", "mn", bm.bookmark_next)   -- jump to next mark in local buffer
+          map("n", "mp", bm.bookmark_prev)   -- jump to previous mark in local buffer
+          map("n", "ml", bm.bookmark_list)   -- show marked file list in quickfix window
+          map("n", "mg", function() require('telescope').extensions.bookmarks.list() end)   -- show marked file list in quickfix window
+        end,
+      }
     end,
   },
+  -- {
+  --   "MattesGroeger/vim-bookmarks",
+  --   config = function()
+  --     vim.api.nvim_set_keymap("n", "mn", "<Plug>BookmarkNext | zvzz", { silent = true })
+  --     vim.api.nvim_set_keymap("n", "mp", "<Plug>BookmarkPrev | zvzz", { silent = true })
+  --   end,
+  -- },
 
   -- ternimal in popup -------------------------------------------------------------------------------------------------------
   {
@@ -1052,15 +1127,14 @@ return require("lazy").setup {
     end,
   },
   {
-    'simonmclean/triptych.nvim',
-    event = 'VeryLazy',
+    "simonmclean/triptych.nvim",
+    event = "VeryLazy",
     dependencies = {
-      'nvim-lua/plenary.nvim',       -- required
-      'nvim-tree/nvim-web-devicons', -- optional
+      "nvim-lua/plenary.nvim",       -- required
+      "nvim-tree/nvim-web-devicons", -- optional
     },
     config = function()
-      require 'triptych'.setup {
-      }
+      require("triptych").setup {}
     end,
   },
 
@@ -1075,6 +1149,7 @@ return require("lazy").setup {
   {
     "David-Kunz/gen.nvim",
     -- "JoseConseco/gen.nvim", -- my fork
+    commit = "c3fca8695dd61c350e08e9912784c21061f98a1e", -- later version wont work with llamacpp - seems fixed after all
     config = function()
       require "nv_gen-nvim"
     end,
@@ -1082,13 +1157,13 @@ return require("lazy").setup {
   {
     "huynle/ogpt.nvim",
     config = function()
-      require("nv_ogpt")
+      require "nv_ogpt"
     end,
     dependencies = {
-        "MunifTanjim/nui.nvim",
-        "nvim-lua/plenary.nvim",
-        "nvim-telescope/telescope.nvim"
-      }
+      "MunifTanjim/nui.nvim",
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim",
+    },
   },
   -- {
   --   "jackMort/ChatGPT.nvim",

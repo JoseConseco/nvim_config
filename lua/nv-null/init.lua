@@ -12,11 +12,11 @@ null_ls.setup {
     -- null_ls.builtins.formatting.yapf.with({
     -- 		extra_args = { "--style","{based_on_style: pep8, column_limit: 129}" }, -- To add more arguments to a source's defaults
     -- }), -- support range format
-    null_ls.builtins.formatting.autopep8.with {
-      filetypes = { "python" },
-      -- args = {},
-      extra_args = { "--max-line-length=230", "--ignore=E226,E24,W50,W690" }, -- To add more arguments to a source's defaults
-    },                                                                        -- support range format
+    -- null_ls.builtins.formatting.autopep8.with {  -- autopep8 - deprecated , damm ruff too..
+    --   filetypes = { "python" },
+    --   -- args = {},
+    --   extra_args = { "--max-line-length=230", "--ignore=E226,E24,W50,W690" }, -- To add more arguments to a source's defaults
+    -- },                                                                        -- support range format
     -- null_ls.builtins.completion.spell,
     null_ls.builtins.diagnostics.codespell.with {
       filetypes = { "html", "txt", "json", "markdown", "python", "lua" },

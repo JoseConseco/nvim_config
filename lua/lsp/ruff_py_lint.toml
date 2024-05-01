@@ -1,0 +1,3 @@
+[lint]
+# F405 is the "name may be undefined or defined from star import" error
+ignore = ["F405"]

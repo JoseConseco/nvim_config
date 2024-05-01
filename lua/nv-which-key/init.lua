@@ -175,6 +175,10 @@ wk.register({
 	['<leader>br'] = {':confirm e<CR>',                                                                                                                   'Reload File(e!)'},
 })
 
+wk.register({
+	['<leader>b'] = { name = '+Buffers' }, -- get telescope visual selection
+	['<leader>b*'] = {[["ay:lua require'telescope.builtin'.live_grep({search_dirs = {vim.fn.expand('%')}, path_display = {'hidden'}, default_text = vim.fn.getreg('a')})<cr>]], 'Search *'},
+}, {mode = "v", prefix = ""})
 -- ['c']= {
 --		name= '+Changes',
 --		['t'] = {':TCV',   'Toggle line changes'},
@@ -187,7 +191,6 @@ wk.register({
 
 wk.register({
 	['<leader>c'] = { name = '+Code' },
-	-- ['<leader>cF'] = {':Autoformat<CR>',             'Autoformat lines'},
 	['<leader>cc'] = {"<cmd>TextCaseOpenTelescope<CR>",             'Case Change'}, --from text-case.nvim
 	['<leader>ca'] = {':lua vim.lsp.buf.code_action()<CR>',                                    'Code Action'} ,
 	-- ['<leader>cc'] = {':TSContextToggle<CR>',             'Context toggle'}, --from treesitter-context plug
@@ -195,6 +198,7 @@ wk.register({
 	-- ['<leader>cA'] = {":lua require('nvim-autopairs').enable()<CR>",             'Auto-pairs enable'}, --from treesitter-context plug
 	['<leader>cl'] = {":CreateCompletionLine<CR>",             'Create Completion'}, --from treesitter-context plug
 	['<leader>co'] = {":AerialNavToggle<cr>",             'Open Outliner (Aerial)'}, --from treesitter-context plug
+	['<leader>cd'] = {function() vim.diagnostic.open_float() end,             'Diagnostic Float'},
 	-- ['<leader>co'] = {":AerialOpen float<cr>",             'Open Outliner (Aerial)'}, --from treesitter-context plug
 	-- ['<leader>co'] = {":AerialOpen float<CR> | :lua require'aerial'.tree_close_all()<cr>",             'Open Outliner (Aerial)'}, --from treesitter-context plug
 

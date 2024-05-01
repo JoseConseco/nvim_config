@@ -3,7 +3,7 @@
 -- end
 
 require "plugins"
-require "hl_manager"
+-- require "javelin".setup()
 require "settings"
 require "keymappings"
 -- require "my_text_objects" -- repalced with mini.ai ...

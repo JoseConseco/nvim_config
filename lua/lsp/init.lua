@@ -122,10 +122,53 @@ nvim_lsp.clangd.setup {
     "--offset-encoding=utf-16", -- get rid of "Multiple different client offset_encodings detected" warning
   },
 }
-nvim_lsp.pyright.setup {
+
+-- nvim_lsp.pyright.setup {
+--   capabilities = capabilities,
+--   on_attach = on_attach,
+--   cmd = { "pyright-langserver", "--stdio" },
+--   filetypes = { "python" },
+--   root_dir = function(filename)
+--     local root_files = {
+--       -- 'setup.py',
+--       -- 'pyproject.toml',
+--       -- 'setup.cfg',
+--       'requirements.txt',
+--       "main.py", --mine
+--       ".git",
+--     }
+--     return util.root_pattern(unpack(root_files))(filename) or util.find_git_ancestor(filename) or
+--         nil -- forces to run in signle file mode
+--     -- util.path.dirname(filename) -- this will point to root addons == very slow
+--   end,
+--   settings = {
+--     pyright = {
+--       -- Using Ruff's import organizer
+--       disableOrganizeImports = true,
+--     },
+--     python = {
+--       analysis = {
+--         extraPaths = { "/home/bartosz/.local/lib/python3.11/site-packages/" },
+--         autoSearchPaths = true,
+--         useLibraryCodeForTypes = true,
+--         typeCheckingMode = "off",     --  ["off", "basic", "strict"]:
+--         diagnosticMode = "workspace", -- ["openFilesOnly", "workspace"]
+--         diagnosticSeverityOverrides = {
+--           -- "error," "warning," "information," "true," "false," or "none"
+--           reportDuplicateImport = "warning",
+--           reportImportCycles = "warning",
+--           reportMissingImports = "error",
+--           reportMissingModuleSource = "error",
+--         },
+--       },
+--     },
+--   },
+-- }
+
+nvim_lsp.basedpyright.setup {
   capabilities = capabilities,
   on_attach = on_attach,
-  cmd = { "pyright-langserver", "--stdio" },
+  cmd = {"basedpyright-langserver", "--stdio" },
   filetypes = { "python" },
   root_dir = function(filename)
     local root_files = {
@@ -140,13 +183,15 @@ nvim_lsp.pyright.setup {
         nil -- forces to run in signle file mode
     -- util.path.dirname(filename) -- this will point to root addons == very slow
   end,
+  single_file_support = true,
   settings = {
-    pyright = {
-      disableOrganizeImports = false,
-    },
-    python = {
+    -- pyright = {
+    --   -- Using Ruff's import organizer
+    --   disableOrganizeImports = true,
+    -- },
+    basedpyright = {
       analysis = {
-        extraPaths = { "/home/bartosz/.local/lib/python3.10/site-packages/" },
+        extraPaths = { "/home/bartosz/.local/lib/python3.11/site-packages/" },
         autoSearchPaths = true,
         useLibraryCodeForTypes = true,
         typeCheckingMode = "off",     --  ["off", "basic", "strict"]:
@@ -163,29 +208,43 @@ nvim_lsp.pyright.setup {
   },
 }
 
--- require'lspconfig'.ruff_lsp.setup{ -- rust fast, but: no hover highlight, no go definition etc
---   capabilities = capabilities,
---   on_attach = on_attach,
---   init_options = {
---     settings = {
---       -- Any extra CLI arguments for `ruff` go here.
---       args = {'--ignore=E501'},
---       -- ignore = { "E501" },
---     }
---   },
---   filetypes = { "python" },
---   root_dir = function(filename)
---     local root_files = {
---       -- 'setup.py',
---       -- 'pyproject.toml',
---       -- 'setup.cfg',
---       -- 'requirements.txt',
---       ".git",
---     }
---     return util.root_pattern(unpack(root_files))(filename) or util.find_git_ancestor(filename) or nil -- forces to run in signle file mode
---     -- util.path.dirname(filename) -- this will point to root addons == very slow
---   end,
--- }
+-- A Language Server Protocol implementation for Ruff, an extremely fast Python linter and code formatter, written in Rust.
+-- get abs file path to ./py_format.toml in current dir
+local py_format_toml = '/home/bartosz/.config/nvim/lua/lsp/ruff_py_format.toml'
+local py_lint_toml = '/home/bartosz/.config/nvim/lua/lsp/ruff_py_lint.toml'
+require'lspconfig'.ruff_lsp.setup{ -- rust fast, but: no hover highlight, no go definition etc
+  capabilities = capabilities,
+  on_attach = on_attach,
+  cmd = {"ruff-lsp"},
+  filetypes = { "python" },
+  init_options = {
+    -- Any extra CLI arguments for `ruff` go here.
+    -- args = {'format --ignore=E501 --line-length=230 --max-line-length=230',},
+    settings = { -- https://github.com/astral-sh/ruff-lsp?tab=readme-ov-file#settings
+      format= {
+        enabled = true,
+        args = {'--config='..py_format_toml},
+      },
+      lint = {
+        enabled = true,
+        args = {'--config='..py_lint_toml},
+      },
+    }
+  },
+  single_file_support = true,
+  root_dir = function(filename)
+    local root_files = {
+      -- 'setup.py',
+      -- 'pyproject.toml',
+      -- 'setup.cfg',
+      'requirements.txt',
+      "main.py", --mine
+      ".git",
+    }
+    return util.root_pattern(unpack(root_files))(filename) or util.find_git_ancestor(filename) or nil -- forces to run in signle file mode
+    -- util.path.dirname(filename) -- this will point to root addons == very slow
+  end,
+}
 
 
 -- flake is great for showing eg. from where thing was imported... short messages
