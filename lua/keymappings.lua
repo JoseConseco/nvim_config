@@ -93,12 +93,12 @@ vim.api.nvim_set_keymap("n", "<C-z>", "u", { noremap = true })
 
 -- vim.cmd([[call yankstack#setup()]]) --or else yank stack wont work with Y
 -- 'normal' Backspace
-vim.api.nvim_set_keymap("n", "<BS>", '"_X', { noremap = true, silent = true })
-vim.api.nvim_set_keymap("v", "<BS>", '"_x', { noremap = true })
+vim.api.nvim_set_keymap("n", "<BS>", '"_X', { noremap = false, silent = true })
+vim.api.nvim_set_keymap("v", "<BS>", '"_x', { noremap = false })
 
 -- X and x wont affect clipboard
-vim.api.nvim_set_keymap("n", "X", '"_X', { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "x", '"_x', { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "X", '"_X', { noremap = true, silent = true }) --  allow remap - for multicursor del
+vim.api.nvim_set_keymap("n", "x", '"_x', { noremap = true, silent = true }) --  allow remap - for multicursor del
 
 -- do not override yank when deleting empty lines
 local function delete_special()

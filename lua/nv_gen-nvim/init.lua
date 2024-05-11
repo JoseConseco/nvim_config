@@ -18,8 +18,9 @@ require('gen').setup({
   -- Function to initialize Ollama
   -- command = "curl --silent --no-buffer -X POST http://localhost:11434/api/generate -d $body", -- ollama
   -- command = "curl --silent --no-buffer -X POST http://localhost:8080/completion -d $body", -- llamacpp
+  -- was /forward - with commit "c3fca8695dd61c350e08e9912784c21061f98a1e"
   command = [[curl --request POST \
-  --url http://localhost:5000/forward \
+  --url http://localhost:5000/v1/chat/completions \
   --header "Content-Type: application/json" \
   --data $body]], -- my local python forwarding REST server to llamacpp
   model_options = {

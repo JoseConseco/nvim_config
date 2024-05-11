@@ -16,7 +16,6 @@ return require("lazy").setup {
 
   -- THEMES -------------------------------------------------------------------------------------------------------
   "mvpopuk/inspired-github.vim",
-  "Mofiqul/adwaita.nvim",
   {
     "projekt0n/github-nvim-theme",
     config = function()
@@ -647,13 +646,13 @@ return require("lazy").setup {
       -- your config goes here
     },
   },
-  {
-    "debugloop/telescope-undo.nvim",
-    cmd = "Telescope undo",
-    config = function()
-      require("telescope").load_extension "undo"
-    end,
-  },
+  -- {
+  --   "debugloop/telescope-undo.nvim",
+  --   cmd = "Telescope undo",
+  --   config = function()
+  --     require("telescope").load_extension "undo"
+  --   end,
+  -- },
   {
     "nvim-telescope/telescope-fzf-native.nvim",
     build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
@@ -801,7 +800,7 @@ return require("lazy").setup {
   "dyng/ctrlsf.vim",                  --Run :CtrlSF [pattern]
   "mhinz/vim-grepper",                -- Grepper
   "eugen0329/vim-esearch",            -- Grepper
-  { "windwp/nvim-spectre", dependencies = { { "nvim-lua/popup.nvim" }, { "nvim-lua/plenary.nvim" } } },
+  { "nvim-pack/nvim-spectre", dependencies = { { "nvim-lua/popup.nvim" }, { "nvim-lua/plenary.nvim" } } },
   {
     "AckslD/muren.nvim",
     config = true,
@@ -1045,31 +1044,6 @@ return require("lazy").setup {
       require("numb").setup()
     end,
   },
-  -- {
-  --   'rasulomaroff/reactive.nvim', -- detect eg. operator pending mode
-  --   config = function()
-  --     -- require('reactive').setup{
-  --     --   -- builtin = {
-  --     --   --   cursorline = false,
-  --     --   --   cursor = false,
-  --     --   --   modemsg = false
-  --     --   -- },
-  --     -- }
-  --     require('reactive').add_preset{
-  --       name = 'test',
-  --       modes = {
-  --         no = {
-  --           to = function()
-  --             vim.opt.relativenumber = true
-  --           end,
-  --           from = function()
-  --             vim.opt.relativenumber = false
-  --           end,
-  --         },
-  --       },
-  --     }
-  --   end,
-  -- },
   {
     "axlebedev/footprints",
     config = function()
@@ -1149,22 +1123,22 @@ return require("lazy").setup {
   {
     "David-Kunz/gen.nvim",
     -- "JoseConseco/gen.nvim", -- my fork
-    commit = "c3fca8695dd61c350e08e9912784c21061f98a1e", -- later version wont work with llamacpp - seems fixed after all
+    -- commit = "c3fca8695dd61c350e08e9912784c21061f98a1e", -- later version wont work with llamacpp - seems fixed after all
     config = function()
       require "nv_gen-nvim"
     end,
   },
-  {
-    "huynle/ogpt.nvim",
-    config = function()
-      require "nv_ogpt"
-    end,
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-      "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim",
-    },
-  },
+  -- {
+  --   "huynle/ogpt.nvim",
+  --   config = function()
+  --     require "nv_ogpt"
+  --   end,
+  --   dependencies = {
+  --     "MunifTanjim/nui.nvim",
+  --     "nvim-lua/plenary.nvim",
+  --     "nvim-telescope/telescope.nvim",
+  --   },
+  -- },
   -- {
   --   "jackMort/ChatGPT.nvim",
   --   config = function()
