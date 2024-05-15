@@ -210,8 +210,8 @@ nvim_lsp.basedpyright.setup {
 
 -- A Language Server Protocol implementation for Ruff, an extremely fast Python linter and code formatter, written in Rust.
 -- get abs file path to ./py_format.toml in current dir
-local py_format_toml = '/home/bartosz/.config/nvim/lua/lsp/ruff_py_format.toml'
-local py_lint_toml = '/home/bartosz/.config/nvim/lua/lsp/ruff_py_lint.toml'
+local py_format_toml = '/home/bartosz/.config/nvim/lua/nv-lsp/ruff_py_format.toml'
+local py_lint_toml = '/home/bartosz/.config/nvim/lua/nv-lsp/ruff_py_lint.toml'
 require'lspconfig'.ruff_lsp.setup{ -- rust fast, but: no hover highlight, no go definition etc
   capabilities = capabilities,
   on_attach = on_attach,

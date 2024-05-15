@@ -227,6 +227,16 @@ wk.register({
 	['<leader>ci'] = {":lua require('refactoring').refactor('Inline Variable')<CR>",             'Inline Variable'},
 }, {mode = "v", prefix = ""})
 
+-- copilot section using capital C: CopilotChatOpen, CopilotChatClose, CopilotChatExplain, CopilotChatFix,  CopilotChatOptimize, CopilotChatDocs
+wk.register({
+	['<leader>C'] = { name = '+Copilot' },
+	['<leader>CC'] = {':CopilotChatOpen<CR>', 'Open Chat'},
+	['<leader>Ce'] = {':CopilotChatExplain<CR>', 'Explain'},
+	['<leader>Cf'] = {':CopilotChatFix<CR>', 'Fix'},
+	['<leader>Co'] = {':CopilotChatOptimize<CR>', 'Optimize'},
+	['<leader>Cd'] = {':CopilotChatDocs<CR>', 'Docs'},
+	['<leader>Cx'] = {':CopilotChatClose<CR>', 'Close Chat'},
+})
 
 wk.register({
 	['<leader>d']   = { name = '+Debugger' },
@@ -556,6 +566,7 @@ wk.register({
 	['<leader>u'] = { name = '+UI' },
 	['<leader>ua'] = {':call v:lua.conditional_width()<CR>', 'Auto width'},
 	['<leader>uw'] = {':set wrap!<CR>'                     , 'Toggle Wrap'},
+	['<leader>ux'] = {':NoNeckPain<CR>'                     ,'Center (NoNeckPain)'},
 	['<leader>ul'] = {':set list!<CR>'                     , 'Toggle List Chars'},
 	['<leader>uc'] = {':Telescope colorscheme<CR>'         , 'Colorscheme'},
 	['<leader>uh'] = {':set hlsearch!<CR>'                 , 'Search highlight'},

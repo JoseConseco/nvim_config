@@ -90,6 +90,7 @@ return require("lazy").setup {
       }
     end,
   },                            --color highlighter
+  {"shortcuts/no-neck-pain.nvim"},
   {
     "azabiong/vim-highlighter", -- highlight selection and occurrences
     event = "VeryLazy",
@@ -467,20 +468,21 @@ return require("lazy").setup {
   --     }
   --   end,
   -- },
-  {
-    "folke/trouble.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    conf = function()
-      require "nv-lsptrouble"
-    end,
-  },
   "williamboman/mason-lspconfig.nvim",
   {
     "neovim/nvim-lspconfig",
     config = function()
-      require "lsp"
+      require "nv-lsp"
     end,
   }, -- lua + wont close () next to char finally good and simple +++
+
+  {
+    "folke/trouble.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      require "nv-lsptrouble"
+    end,
+  },
   {
     "carbon-steel/detour.nvim",
     -- branch="dev",
@@ -530,6 +532,19 @@ return require("lazy").setup {
       vim.g.copilot_tab_fallback = ""
       vim.g.copilot_filetypes = { ["dap-repl"] = false }
     end,
+  },
+  {
+      "CopilotC-Nvim/CopilotChat.nvim",
+      branch = "canary",
+      dependencies = {
+        { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
+        { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
+      },
+      opts = {
+        debug = false, -- Enable debugging
+        -- See Configuration section for rest
+      },
+      -- See Commands section for default commands if you want to lazy load on them
   },
   -- {
   --   "jackMort/ChatGPT.nvim",
