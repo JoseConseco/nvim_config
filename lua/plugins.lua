@@ -450,25 +450,14 @@ return require("lazy").setup {
 
   -- lsp -------------------------------------------------------------------------------------------------------
   "onsails/lspkind-nvim", -- icons for completion popup
-  {
-    "williamboman/mason.nvim",
-    config = function()
-      require("mason").setup()
-      require("mason-lspconfig").setup()
-    end,
-  },
   -- {
-  --   "dgagn/diagflow.nvim",
-  --   event = "LspAttach", --This is what I use personnally and it works great
+  --   "williamboman/mason.nvim",
   --   config = function()
-  --     require("diagflow").setup {
-  --       show_sign = true,
-  --       placement = "inline",
-  --       inline_padding_left = 5,
-  --     }
+  --     require("mason").setup()
+  --     require("mason-lspconfig").setup()
   --   end,
   -- },
-  "williamboman/mason-lspconfig.nvim",
+  -- "williamboman/mason-lspconfig.nvim",
   {
     "neovim/nvim-lspconfig",
     config = function()
