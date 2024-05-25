@@ -630,7 +630,7 @@ return require("lazy").setup {
   -- Telescope   -------------------------------------------------------------------------------------------------------
   {
     "nvim-telescope/telescope.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons", "nvim-lua/popup.nvim", "nvim-lua/plenary.nvim", "tom-anders/telescope-vim-bookmarks.nvim", "JoseConseco/telescope_sessions_picker.nvim" },
+    dependencies = { "nvim-tree/nvim-web-devicons", "nvim-lua/popup.nvim", "nvim-lua/plenary.nvim", "tom-anders/telescope-vim-bookmarks.nvim", "JoseConseco/telescope_sessions_picker.nvim", "nvim-telescope/telescope-file-browser.nvim" },
     config = function()
       require "telescope-nvim"
     end,

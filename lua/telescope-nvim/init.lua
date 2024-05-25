@@ -1,4 +1,4 @@
--- local fb_actions = require "telescope._extensions.file_browser.actions"
+local fb_actions = require "telescope._extensions.file_browser.actions"
 local actions = require "telescope.actions"
 local actions_state = require "telescope.actions.state"
 
@@ -148,6 +148,28 @@ telescope.setup {
       filetypes = { "png", "webp", "jpg", "jpeg" },
       find_cmd = "rg", -- find command (defaults to `fd`)
     },
+    file_browser = {
+      -- sett cwd to current buffer's directory
+      cwd = vim.fn.expand "%:p:h", -- not work?
+      grouped = true,
+      mappings = {
+              ["n"] = {
+                ["c"] = fb_actions.create,
+                ["r"] = fb_actions.rename,
+                ["m"] = fb_actions.move,
+                ["y"] = fb_actions.copy,
+                ["d"] = fb_actions.remove,
+                ["o"] = fb_actions.open,
+                ["h"] = fb_actions.goto_parent_dir,
+                ["e"] = fb_actions.goto_home_dir,
+                ["w"] = fb_actions.goto_cwd,
+                ["t"] = fb_actions.change_cwd,
+                ["f"] = fb_actions.toggle_browser,
+                ["."] = fb_actions.toggle_hidden,
+                ["s"] = fb_actions.toggle_all,
+              },
+      },
+    },
     sessions_picker = {
       sessions_dir = vim.fn.stdpath "data" .. "/session/",
     },
@@ -186,7 +208,7 @@ telescope.load_extension "fzf" -- from 'nvim-telescope/telescope-fzf-native.nvim
 telescope.load_extension "media_files"
 telescope.load_extension "vim_bookmarks"
 telescope.load_extension "aerial"
--- telescope.load_extension "file_browser"
+telescope.load_extension "file_browser"
 telescope.load_extension "sessions_picker"
 telescope.load_extension "sessions_picker"
 telescope.load_extension('textcase') --from text-case.nvim

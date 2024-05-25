@@ -437,7 +437,7 @@ wk.register({
 	['<leader>o'] = { name = '+Open' },
 	['<leader>o/'] = {'q/',                                          'Search History (q/)'},
 	-- ['<leader>o.'] = {':Fern . -reveal=%<CR>',                    'File Browse (Fern)'},
-	-- ['<leader>of'] = {":lua require('telescope').extensions.file_browser.file_browser({initial_mode = 'normal'})<CR><ESC>",            'File Browser (fuzzy)'},
+	['<leader>of'] = {":lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<cr>",            'File Browser (fuzzy)'},
 	['<leader>od'] = {':Dirbuf<CR>',                                 'Dirbuf'},
 	['<leader>oE'] = {':Ex<CR>',                                     'Open Explorer(Ex)'} ,
 	['<leader>oU'] = {':UndotreeToggle<CR>',                         'Undo Tree'} ,
@@ -559,6 +559,7 @@ wk.register({
 	['<leader>tc'] = {':Telescope colorscheme<CR>'         , 'colorscheme'},
     ['<leader>ts'] = {showDocumentSymbols                  , 'Buffer Symbols'},
 	['<leader>th'] = {':Telescope help_tags<CR>'           , 'Help'},
+	['<leader>tf'] = {":lua require('telescope').extensions.file_browser.file_browser({initial_mode = 'normal', cwd = vim.fn.expand '%:p:h'})<CR><ESC>",            'File Browser (fuzzy)'},
 })
 
 

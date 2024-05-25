@@ -103,8 +103,52 @@ local function eval_with_visual_selection()
     line = string.sub(line, start_col, end_col)
   end
 
-  if line == "" then
-    line = vim.fn.expand "<cword>"
+  if line == "" then -- nothing selected
+    -- mark end pos - by going forward till we hit space, or dot, coma, etc
+    -- then go back from cursor - till we hit space
+    -- Get the current cursor position
+    local cursor_pos = vim.fn.getpos(".")
+    local line_num = cursor_pos[2]
+    local col_num = cursor_pos[3]
+
+    -- Get the current line content
+    local cursor_line = vim.fn.getline(line_num)
+
+    -- Initialize the start and end positions for the variable
+    local start_pos = col_num
+    local end_pos = col_num
+
+    -- go forward till we hit break char
+    local ending_break = { " ", ".", ",", "(", ")", "[", "]", "{", "}", ":", ";", "<", ">", "=", "+", "-", "*", "/", "&", "|", "!", "?", "~", "^", "%" }
+
+    -- then go back  till we hit starting break char
+    local starting_break = { " ",  ",", "(", ")", "[", "]", "{", "}", ":", ";", "<", ">", "=", "+", "-", "*", "/", "|", "!", "?", "~", "^", "%" }
+
+               -- Helper function to check if a character is in a break list
+    local function is_break_char(char, break_list)
+      for _, break_char in ipairs(break_list) do
+        if char == break_char then
+          return true
+        end
+      end
+      return false
+    end
+
+    -- Go forward till we hit an ending break char
+    while end_pos <= #cursor_line and not is_break_char(string.sub(cursor_line, end_pos, end_pos), ending_break) do
+      end_pos = end_pos + 1
+    end
+
+    -- Go backward till we hit a starting break char
+    while start_pos > 1 and not is_break_char(string.sub(cursor_line, start_pos - 1, start_pos - 1), starting_break) do
+      start_pos = start_pos - 1
+    end
+
+    -- Extract the variable
+    line = string.sub(cursor_line, start_pos, end_pos - 1)
+    print("Selected: '" .. line.. "'")
+
+    -- line = vim.fn.expand "<cword>"
   end
   require("dapui").eval(line, { enter = true })
 end
