@@ -239,7 +239,25 @@ return require("lazy").setup {
     "karb94/neoscroll.nvim", -- smooth scroll
     cond = true,
     config = function()
-      require("neoscroll").setup { hide_cursor = false }
+      local neoscroll = require('neoscroll')
+      neoscroll.setup { hide_cursor = false }
+      local keymap = {
+        -- ["<C-u>"] = function() neoscroll.ctrl_u({ duration = 250 }) end;
+        -- ["<C-d>"] = function() neoscroll.ctrl_d({ duration = 250 }) end;
+        -- ["<C-b>"] = function() neoscroll.ctrl_b({ duration = 450 }) end;
+        -- ["<C-f>"] = function() neoscroll.ctrl_f({ duration = 450 }) end;
+        -- ["<C-y>"] = function() neoscroll.scroll(-0.1, { move_cursor=false; duration = 100 }) end;
+        -- ["<C-e>"] = function() neoscroll.scroll(0.1, { move_cursor=false; duration = 100 }) end;
+        -- ["zt"]    = function() neoscroll.zt({ half_screen_duration = 250 }) end;
+        -- ["zz"]    = function() neoscroll.zz({ half_screen_duration = 250 }) end;
+        -- ["zb"]    = function() neoscroll.zb({ half_screen_duration = 250 }) end;
+        ["G"]     = function() neoscroll.G({ half_screen_duration = 250 }) end; -- throw error..
+        ["gg"]    = function() neoscroll.gg({ half_screen_duration = 250 }) end;
+      }
+      local modes = { 'n', 'v', 'x' }
+      for key, func in pairs(keymap) do
+        vim.keymap.set(modes, key, func)
+      end
     end,
   },
 
@@ -288,6 +306,7 @@ return require("lazy").setup {
   },
   {
     "sindrets/winshift.nvim",
+    cond = false,
     config = function()
       require("winshift").setup {
         keymaps = {
@@ -311,9 +330,22 @@ return require("lazy").setup {
       require("dap-python").setup "/usr/bin/python"
     end,
   },
+  -- {
+  --   "folke/neodev.nvim",
+  -- },
   {
-    "folke/neodev.nvim",
+    "folke/lazydev.nvim", -- for lua plugs
+    ft = "lua", -- only load on lua files
+    opts = {
+      library = {
+        "luvit-meta/library",
+        -- You can also add plugins you always want to have loaded.
+        -- Useful if the plugin has globals or types you want to use
+        -- vim.env.LAZY .. "/LazyVim", -- see below
+      },
+    },
   },
+  { "Bilal2453/luvit-meta", lazy = true }, -- optional `vim.uv` typings for 'folke/lazydev.'
   {
     "jbyuki/one-small-step-for-vimkind",
     config = function()
@@ -748,7 +780,8 @@ return require("lazy").setup {
     end,
   },
   {
-    "anuvyklack/hydra.nvim",
+    "nvimtools/hydra.nvim", -- original not longer maintained -"anuvyklack/hydra.nvim"
+    -- cond = false,
     dependencies = "anuvyklack/keymap-layer.nvim", -- needed only for pink hydras
     config = function()
       require "nv-hydra"

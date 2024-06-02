@@ -1,5 +1,7 @@
 require("notify").setup {
-  animate = false, stages = "static"
+  animate = false,
+  stages = "static",
+  top_down = false,
 }
 
 require("noice").setup {

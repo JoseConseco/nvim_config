@@ -1,6 +1,6 @@
-require("neodev").setup {
-  -- add any options here, or leave empty to use the default settings
-}
+-- require("neodev").setup {
+--   -- add any options here, or leave empty to use the default settings
+-- }
 local nvim_lsp = require "lspconfig"
 
 local opts = { noremap = true, silent = true }
