@@ -269,7 +269,7 @@ local function spawn_nvim_tree_hydra()
       buffer = 0,         -- only for active buffer
       hint = {
         position = "bottom",
-        border = "rounded",
+        float_opts = { border = 'rounded' }
       },
     },
     mode = "n",

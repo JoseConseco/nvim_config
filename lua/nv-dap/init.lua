@@ -163,7 +163,7 @@ local function show_dap_hydra()
       desc = "Dap Hydra",
       hint = {
         position = "bottom",
-        border = "rounded",
+        float_opts = { border = 'rounded' }
       },
     },
     name = "Dap",

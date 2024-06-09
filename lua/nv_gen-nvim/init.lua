@@ -10,7 +10,7 @@ local stop_token = {"<|end_of_turn|>"}
 local open_code_stop_token = {"<|im_end|>", "<|im_start|>"}
 require('gen').setup({
   model = "starling-lm-7b-alpha.Q4_K_M.gguf", -- ok at +++ coding tooo...
-  display_mode = "float", -- The display mode. Can be "float" or "split".
+  display_mode = "split", -- The display mode. Can be "float" or "split".
   show_prompt = false, -- Shows the Prompt submitted to Ollama.
   show_model = false, -- Displays which model you are using at the beginning of your chat session.
   no_auto_close = false, -- Never closes the window automatically.

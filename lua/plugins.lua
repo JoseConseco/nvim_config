@@ -740,7 +740,7 @@ return require("lazy").setup {
         keymaps = {
           -- vim-surround style keymaps
           -- insert = "ys",
-          visual = "S",
+          visual = "s",
           delete = "ds",
           change = "cs",
         },

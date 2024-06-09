@@ -16,7 +16,7 @@ Hydra.spawn["codi"] = function()
       desc = "Codi Hydra",
       hint = {
         position = "bottom",
-        border = "rounded",
+        float_opts = { border = 'rounded' }
       },
     },
     name = "Codi",
