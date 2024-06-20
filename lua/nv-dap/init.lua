@@ -195,21 +195,27 @@ local function show_dap_hydra()
   dap_hydra:activate()
 end
 
+-- local hydra_visible = false
 Hydra.spawn = Hydra.spawn or {}
 Hydra.spawn["dap_hydra"] = function()
   show_dap_hydra()
 
+  -- somehow code below errors out on invalid target buffer- even thoug seems valid.., ond :exit()
   vim.api.nvim_create_autocmd({ "BufEnter" }, {
     pattern = "*",
     callback = function(opts)
-      -- print("BufEnter: ft " .. (dap_ft or ""))
+      -- print("BufEnter: buf " .. opts.buf .. " valid: " .. tostring(vim.api.nvim_buf_is_valid(opts.buf)))
+      -- print("BufEnter: filetype " .. vim.bo[opts.buf].filetype .. " dap_ft: " .. dap_ft)
+      -- print("dap_hydra: " .. tostring(dap_hydra))
       if dap.session() == nil then
         return true -- close autocmd
       end
-      if vim.bo[opts.buf].filetype == dap_ft then
+      if vim.api.nvim_buf_is_valid(opts.buf) and vim.bo[opts.buf].filetype == dap_ft then
+        -- print("Show dap")
         show_dap_hydra()
       else
-        if dap_hydra then
+        if dap_hydra and vim.bo[opts.buf].filetype ~= 'hydra_hint' then
+          -- print("Exit dap hydra")
           dap_hydra:exit()
         end
       end

@@ -1166,17 +1166,6 @@ return require("lazy").setup {
     end,
   },
   -- {
-  --   "huynle/ogpt.nvim",
-  --   config = function()
-  --     require "nv_ogpt"
-  --   end,
-  --   dependencies = {
-  --     "MunifTanjim/nui.nvim",
-  --     "nvim-lua/plenary.nvim",
-  --     "nvim-telescope/telescope.nvim",
-  --   },
-  -- },
-  -- {
   --   "jackMort/ChatGPT.nvim",
   --   config = function()
   --     require("chatgpt").setup {

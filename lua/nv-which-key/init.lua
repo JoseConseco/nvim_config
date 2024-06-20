@@ -227,6 +227,7 @@ wk.register({
 	['<leader>ci'] = {":lua require('refactoring').refactor('Inline Variable')<CR>",             'Inline Variable'},
 }, {mode = "v", prefix = ""})
 
+
 -- copilot section using capital C: CopilotChatOpen, CopilotChatClose, CopilotChatExplain, CopilotChatFix,  CopilotChatOptimize, CopilotChatDocs
 wk.register({
 	['<leader>C'] = { name = '+Copilot' },
@@ -236,7 +237,7 @@ wk.register({
 	['<leader>Co'] = {':CopilotChatOptimize<CR>', 'Optimize'},
 	['<leader>Cd'] = {':CopilotChatDocs<CR>', 'Docs'},
 	['<leader>Cx'] = {':CopilotChatClose<CR>', 'Close Chat'},
-})
+}, {mode = "v", prefix = ""})
 
 wk.register({
 	['<leader>d']   = { name = '+Debugger' },
@@ -252,6 +253,7 @@ wk.register({
 			-- require'hydra'.spawn['dap_hydra']()
 		end,    'Attach (localhost, 5678)'} ,
 	-- ['<leader>da']  = { ":lua require'dap'.attach('0.0.0.0', 5678)<CR>",                                'Attach (localhost, 5678)'} ,
+	['<leader>dh']  = { function() require'hydra'.spawn['dap_hydra']() end,                              'Dap Hydra'} ,
 	['<leader>dl']  = { ":lua require'dap'.run_last()<CR>",                                             'Re-run Last'},
 	['<leader>db']  = { ":lua require'dap'.toggle_breakpoint()<CR>",                                    'Toggle breakpoint'},
 	-- ['<leader>dc']  = { ":lua require'dap'.goto_()<CR>",                                             'Run to Cursor'},
@@ -609,24 +611,6 @@ wk.register({  -- second one for visual mode
 
 
 
-wk.register({
-  O = {
-    name = "Ollama GPT",
-      e = { "<cmd>OGPTRun edit_with_instructions<CR>", "Edit with instruction", mode = { "n", "v" } },
-      c = { "<cmd>OGPTRun edit_code_with_instructions<CR>", "Edit code with instruction", mode = { "n", "v" } },
-      g = { "<cmd>OGPTRun grammar_correction<CR>", "Grammar Correction", mode = { "n", "v" } },
-      t = { "<cmd>OGPTRun translate<CR>", "Translate", mode = { "n", "v" } },
-      k = { "<cmd>OGPTRun keywords<CR>", "Keywords", mode = { "n", "v" } },
-      d = { "<cmd>OGPTRun docstring<CR>", "Docstring", mode = { "n", "v" } },
-      a = { "<cmd>OGPTRun add_tests<CR>", "Add Tests", mode = { "n", "v" } },
-      o = { "<cmd>OGPTRun optimize_code<CR>", "Optimize Code", mode = { "n", "v" } },
-      s = { "<cmd>OGPTRun summarize<CR>", "Summarize", mode = { "n", "v" } },
-      f = { "<cmd>OGPTRun fix_bugs<CR>", "Fix Bugs", mode = { "n", "v" } },
-      x = { "<cmd>OGPTRun explain_code<CR>", "Explain Code", mode = { "n", "v" } },
-      r = { "<cmd>OGPTRun roxygen_edit<CR>", "Roxygen Edit", mode = { "n", "v" } },
-      l = { "<cmd>OGPTRun code_readability_analysis<CR>", "Code Readability Analysis", mode = { "n", "v" } },
-    },
-}, { prefix = "<leader>" })
 
 
 -- TEMP fix for https://github.com/folke/which-key.nvim/issues/273  -- window closed immediately error when using Telescope
