@@ -57,7 +57,7 @@ vim.api.nvim_set_keymap("n", "<F7>", ":lua require'dap'.step_into()<CR>", { nore
 vim.api.nvim_set_keymap("n", "<F9>", ":lua require'dap'.step_out()<CR>", { noremap = true })
 
 -- auto complete for REPL
-vim.cmd [[au FileType dap-repl lua require('dap.ext.autocompl').attach()]]
+-- vim.cmd [[au FileType dap-repl lua require('dap.ext.autocompl').attach()]] -- XXX: this sheisse causes . to exit insert mode -- not needed>
 
 local Hydra = require "hydra"
 
@@ -228,10 +228,12 @@ end
 dap.listeners.before.event_initialized["hydra_integration"] = function(session, body)
   print("Started", vim.inspect(session), vim.inspect(body))
   dap.set_breakpoint()
+  require "dapui".open() -- has to be first - before hyrra - or errors out
   require("hydra").spawn["dap_hydra"]()
 end
 dap.listeners.before.event_exited["hydra_integration"] = function(session, body)
   print("Started", vim.inspect(session), vim.inspect(body))
   dap.set_breakpoint()
+  require "dapui".open() -- has to be first - before hyrra - or errors out
   require("hydra").spawn["dap_hydra"]()
 end

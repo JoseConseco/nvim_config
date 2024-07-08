@@ -330,9 +330,6 @@ return require("lazy").setup {
       require("dap-python").setup "/usr/bin/python"
     end,
   },
-  -- {
-  --   "folke/neodev.nvim",
-  -- },
   {
     "folke/lazydev.nvim", -- for lua plugs
     ft = "lua", -- only load on lua files

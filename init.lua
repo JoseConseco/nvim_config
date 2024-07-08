@@ -52,12 +52,12 @@ end
 time_day_theme_auto = vim.api.nvim_create_autocmd({"FocusGained" ,"FocusLost" }, {
   pattern = "*",
   callback = function()
-    theme_change_timeday(9, 14)
+    theme_change_timeday(9, 18)
   end,
   group = timeday_theme_au,
   -- nested = true, -- dow notwork in this case
 })
-theme_change_timeday(9, 14)
+theme_change_timeday(9, 18)
 
 
 
