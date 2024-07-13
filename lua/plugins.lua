@@ -805,13 +805,6 @@ return require("lazy").setup {
       }
     end,
   },
-  -- {
-  --   "ecthelionvi/NeoComposer.nvim",
-  --   dependencies = { "kkharji/sqlite.lua" },
-  --   opts = {
-  --     notify = false
-  --   },
-  -- },
 
   --find and replace ? -------------------------------------------------------------------------------------------------------
   {
@@ -853,6 +846,13 @@ return require("lazy").setup {
 
   --CODE/FORMAT -------------------------------------------------------------------------------------------------------
   -- "wellle/targets.vim", -- eg ci,  ci_ etc replaced by mini.ai
+  {
+    'Wansmer/treesj',
+    requires = { 'nvim-treesitter/nvim-treesitter' }, -- if you install parsers with `nvim-treesitter`
+    config = function()
+      require('treesj').setup({max_join_length = 820,})
+    end,
+  },
   {
     "nmac427/guess-indent.nvim",
     config = function()
@@ -1176,5 +1176,50 @@ return require("lazy").setup {
   --   },
   -- },
 
+  {
+    'rasulomaroff/reactive.nvim', -- detect eg. operator pending mode
+    config = function()
+      require('reactive').setup{
+        builtin = {
+          cursorline = false,
+          cursor = false,
+          modemsg = false
+        },
+        configs = {
+          -- a key here is a preset name, a value can be a boolean (if false, presets will be disabled)
+          -- or a table that overwrites preset's values
+        presetone = {
+              modes = {
+              }
+            },
+        }
+      }
+      require('reactive').add_preset {
+        name = 'relativenumber',
+        modes = {
+          no = {
+            to = function()
+              vim.opt.relativenumber = true
+            end,
+            from = function()
+              vim.opt.relativenumber = false
+            end,
+            operators = { -- only in no, nov, noV, and no\x16 modes
+              d = {
+                winhl = { CursorLine = { link = 'DiffDelete' } }
+              }
+            }
+          },
+
+          i = {
+            winhl = {
+              CursorLine = { link = 'DiffAdd' }
+            }
+          }
+
+        }
+      }
+    end,
+  },
   ---  TOOLS -------------------------------------------------------------------------------------------------------
 }

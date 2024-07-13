@@ -234,8 +234,12 @@ vim.api.nvim_set_keymap("n", "<4-MiddleMouse>", "<nop>", {}) --and disable 2MMB 
 -- vim.api.nvim_set_keymap( "n", "n", "nzzzv", { noremap = true } )
 -- vim.api.nvim_set_keymap( "n", "N", "Nzzzv", { noremap = true } )
 
+-- my way
 vim.api.nvim_set_keymap("n", "J", "mzJ'z", { noremap = true })
-vim.api.nvim_set_keymap("n", "<c-J>", "mq:s/\\v,\\s+/,\\r/g<cr>V'q=", { noremap = true })
+-- vim.api.nvim_set_keymap("n", "<c-J>", "mq:s/\\v,\\s+/,\\r/g<cr>V'q=", { noremap = true })
+-- the plugging Wansmer/treesj way
+-- vim.api.nvim_set_keymap("n", "J", ":TSJToggle<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<c-J>", ":TSJToggle<CR>", { noremap = true })
 
 -- repeat last ciw - on next word
 vim.api.nvim_set_keymap("n", "g.", '/\\V<C-r>"<CR>cgn<C-a><Esc>', { noremap = true, desc = "Repeat ciw" })
