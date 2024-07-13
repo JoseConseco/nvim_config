@@ -41,6 +41,7 @@ require('gen').setup({
   list_models = '<omitted lua function>', -- Retrieves a list of model names
   debug = false -- Prints errors and the command which is run.
 })
+
 local deep_seek_wrap = function(s)  -- for deepseek-coder
   local codex_prefix = "### Instruction:\n"
   local codex_suffix = "\n### Response:"
@@ -52,7 +53,9 @@ local starling_wrap = function(s)  -- for starling-lm
   return codex_prefix .. s .. codex_suffix
 end
 
-local openCodeInterpreter_wrap = function(s)  -- for starling-lm
+-- for: CodeQwen1.5-7B-Chat-Q5_K_S.gguf
+-- for starling-lm
+local openCodeInterpreter_wrap = function(s)
   local instruction = "<|im_start|>\nYou are a helpful assistant.<|im_end|>\n"
   local codex_prefix = "<|im_start|>user\n"
   local codex_suffix = "<|im_end|>\n<|im_start|>assistant"

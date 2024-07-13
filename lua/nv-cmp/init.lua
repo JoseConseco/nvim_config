@@ -334,12 +334,18 @@ cmp_ai:setup {
 
 
       -- new args for my forwarding my python server  branch.. ---------------
-      model = "CodeQwen1.5-7B-Q4_K_S.gguf",
+      model = "CodeQwen1.5-7B-Q4_K_S.gguf", -- still best?
       ngl = 50,
     },
     prompt = function(lines_before, lines_after)
+      return '<fim_prefix>' .. lines_before .. '<fim_suffix>' .. lines_after .. '<fim_middle>' -- CodeQwen1
+
+      -- codegeex4-all-9b-Q4_K_M - not so good
+      -- local upper_first_ft = vim.bo.filetype:gsub('^%l', string.upper)
+      -- local file_name = vim.fn.expand "%:t"
+      -- return '<|user|>\n###PATH:'..file_name..'\n###LANGUAGE:'.. upper_first_ft ..'\n###MODE:LINE\n<|code_suffix|>' .. lines_after .. '<|code_prefix|>' .. lines_before .. '<|code_middle|><|assistant|>\n' -- codegeex4-all-9b-Q4_K_M
+
       -- return "<s><｜fim▁begin｜>" .. lines_before .. "<｜fim▁hole｜>" .. lines_after .. "<｜fim▁end｜>" -- for deepseek coder
-      return '<fim_prefix>' .. lines_before .. '<fim_suffix>' .. lines_after .. '<fim_middle>'
       -- return "<fim_prefix>" .. lines_before .. "<fim_suffix>" .. lines_after .. "<fim_middle>" -- for Refact 1.5 coder -- stopped workign after llama update..
     end,
   },
