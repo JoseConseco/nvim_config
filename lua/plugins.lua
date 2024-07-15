@@ -212,22 +212,6 @@ return require("lazy").setup {
     end,
   },
   {
-    "Xuyuanp/scrollbar.nvim",
-    enabled = false,
-    config = function()
-      vim.cmd [[
-				augroup ScrollbarInit
-				autocmd!
-				autocmd WinScrolled,VimResized,QuitPre * silent! lua require('scrollbar').show()
-				autocmd WinEnter,FocusGained           * silent! lua require('scrollbar').show()
-				autocmd WinLeave,BufLeave,BufWinLeave,FocusLost            * silent! lua require('scrollbar').clear()
-				augroup end
-			]]
-      vim.g.scrollbar_shape = { head = "▎", body = "▎", tail = "▎" }
-    end,
-  },
-
-  {
     "petertriho/nvim-scrollbar", -- scrollbar with marked errors and search results
     cond = true,                 -- scrollbar which shows search resutls   and errors
     config = function()
@@ -273,7 +257,7 @@ return require("lazy").setup {
     end,
   },
   {
-    "anuvyklack/windows.nvim",
+    "anuvyklack/windows.nvim", -- auto expand wjindowsk
     cond = true,
     dependencies = {
       "anuvyklack/middleclass",
@@ -305,10 +289,22 @@ return require("lazy").setup {
     end,
   },
   {
-    "sindrets/winshift.nvim",
-    cond = false,
+    -- "sindrets/winshift.nvim", -- original gives error about Color Name not recognized
+    "jam1015/winshift.nvim", -- form PR
+    branch = "fix_colors",
+    cmd = "WinShift",
     config = function()
       require("winshift").setup {
+      highlight_moving_win = true,  -- Highlight the window being moved
+      focused_hl_group = "Visual",  -- The highlight group used for the moving window
+      moving_win_options = {
+        -- These are local options applied to the moving window while it's
+        -- being moved. They are unset when you leave Win-Move mode.
+        wrap = false,
+        cursorline = false,
+        cursorcolumn = false,
+        colorcolumn = "",
+      },
         keymaps = {
           disable_defaults = true,
         },
@@ -330,6 +326,43 @@ return require("lazy").setup {
       require("dap-python").setup "/usr/bin/python"
     end,
   },
+  {
+    "theHamsta/nvim-dap-virtual-text",
+    dependencies = "mfussenegger/nvim-dap",
+    config = function()
+      require("nvim-dap-virtual-text").setup {
+        enabled = true,                     -- enable this plugin (the default)
+        enabled_commands = true,            -- create commands DapVirtualTextEnable, DapVirtualTextDisable, DapVirtualTextToggle, (DapVirtualTextForceRefresh for refreshing when debug adapter did notify its termination)
+        highlight_changed_variables = true, -- highlight changed values with NvimDapVirtualTextChanged, else always NvimDapVirtualText
+        highlight_new_as_changed = true,    -- highlight new variables in the same way as changed variables (if highlight_changed_variables)
+        show_stop_reason = true,            -- show stop reason when stopped for exceptions
+        commented = false,                  -- prefix virtual text with comment string
+        -- experimental features:
+        virt_text_pos = "right_align",      -- position of virtual text, see :h nvim_buf_set_extmark() - 'right_align', 'eol', 'overlay'
+        all_frames = false,                 -- show virtual text for all stack frames not only current. Only works for debugpy on my machine.
+        all_references = true,              -- show virtual text for all references not only current. Only works for debugpy on my machine.
+        virt_lines = false,                 -- show virtual lines instead of virtual text (will flicker!)
+        virt_text_win_col = 85,             -- position the virtual text at a fixed window column (starting from the first text column) ,
+        -- e.g. 80 to position at column 80 see :h nvim_buf_set_extmark()
+      }
+      -- vim.api.nvim_exec("highlight! link NvimDapVirtualText DiagnosticVirtualTextInfo", false)
+      -- vim.api.nvim_exec("highlight! link NvimDapVirtualTextChanged DiagnosticVirtualTextWarn", false)
+      -- not sure why this works but above wont
+
+      local hl_manager = require "hl_manager"
+      hl_manager.highlight_link("NvimDapVirtualText", "DiagnosticVirtualTextInfo")
+      hl_manager.highlight_link("NvimDapVirtualTextChanged", "DiagnosticVirtualTextWarn")
+    end,
+  },
+  {
+    "rcarriga/nvim-dap-ui",
+    dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
+    -- commit = "6b6081ad244ae5aa1358775cc3c08502b04368f9", -- till fix is merged
+    config = function()
+      require "nv-dapui"
+    end,
+  },
+
   {
     "folke/lazydev.nvim", -- for lua plugs
     ft = "lua", -- only load on lua files
@@ -372,42 +405,6 @@ return require("lazy").setup {
       end
     end,
   },
-  {
-    "theHamsta/nvim-dap-virtual-text",
-    dependencies = "mfussenegger/nvim-dap",
-    config = function()
-      require("nvim-dap-virtual-text").setup {
-        enabled = true,                     -- enable this plugin (the default)
-        enabled_commands = true,            -- create commands DapVirtualTextEnable, DapVirtualTextDisable, DapVirtualTextToggle, (DapVirtualTextForceRefresh for refreshing when debug adapter did notify its termination)
-        highlight_changed_variables = true, -- highlight changed values with NvimDapVirtualTextChanged, else always NvimDapVirtualText
-        highlight_new_as_changed = true,    -- highlight new variables in the same way as changed variables (if highlight_changed_variables)
-        show_stop_reason = true,            -- show stop reason when stopped for exceptions
-        commented = false,                  -- prefix virtual text with comment string
-        -- experimental features:
-        virt_text_pos = "right_align",      -- position of virtual text, see :h nvim_buf_set_extmark() - 'right_align', 'eol', 'overlay'
-        all_frames = false,                 -- show virtual text for all stack frames not only current. Only works for debugpy on my machine.
-        all_references = true,              -- show virtual text for all references not only current. Only works for debugpy on my machine.
-        virt_lines = false,                 -- show virtual lines instead of virtual text (will flicker!)
-        virt_text_win_col = 85,             -- position the virtual text at a fixed window column (starting from the first text column) ,
-        -- e.g. 80 to position at column 80 see :h nvim_buf_set_extmark()
-      }
-      -- vim.api.nvim_exec("highlight! link NvimDapVirtualText DiagnosticVirtualTextInfo", false)
-      -- vim.api.nvim_exec("highlight! link NvimDapVirtualTextChanged DiagnosticVirtualTextWarn", false)
-      -- not sure why this works but above wont
-
-      local hl_manager = require "hl_manager"
-      hl_manager.highlight_link("NvimDapVirtualText", "DiagnosticVirtualTextInfo")
-      hl_manager.highlight_link("NvimDapVirtualTextChanged", "DiagnosticVirtualTextWarn")
-    end,
-  },
-  {
-    "rcarriga/nvim-dap-ui",
-    dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
-    -- commit = "6b6081ad244ae5aa1358775cc3c08502b04368f9", -- till fix is merged
-    config = function()
-      require "nv-dapui"
-    end,
-  },
 
   -- Treesitter    -------------------------------------------------------------------------------------------------------
   {
@@ -430,6 +427,7 @@ return require("lazy").setup {
   {
     "mizlan/iswap.nvim",
     -- "JoseConseco/iswap.nvim",
+
     config = function()
       require("iswap").setup {
         hl_snipe = "ErrorMsg",
@@ -679,13 +677,6 @@ return require("lazy").setup {
       -- your config goes here
     },
   },
-  -- {
-  --   "debugloop/telescope-undo.nvim",
-  --   cmd = "Telescope undo",
-  --   config = function()
-  --     require("telescope").load_extension "undo"
-  --   end,
-  -- },
   {
     "nvim-telescope/telescope-fzf-native.nvim",
     build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
@@ -746,7 +737,7 @@ return require("lazy").setup {
   },
   -- { "tpope/vim-repeat" },
   {
-    "lewis6991/foldsigns.nvim",
+    "lewis6991/foldsigns.nvim", -- for git signs in fildes?
     config = function()
       require("foldsigns").setup()
     end,
@@ -792,7 +783,7 @@ return require("lazy").setup {
     end,
   },
   {
-    "rainbowhxch/accelerated-jk.nvim",
+    "rainbowhxch/accelerated-jk.nvim", -- increase speed of jk after n jumps
     config = function()
       vim.api.nvim_set_keymap("n", "j", "<Plug>(accelerated_jk_gj)", {})
       vim.api.nvim_set_keymap("n", "k", "<Plug>(accelerated_jk_gk)", {})
@@ -847,7 +838,7 @@ return require("lazy").setup {
   --CODE/FORMAT -------------------------------------------------------------------------------------------------------
   -- "wellle/targets.vim", -- eg ci,  ci_ etc replaced by mini.ai
   {
-    'Wansmer/treesj',
+    'Wansmer/treesj', -- better SplitJoin - mapped in keymappings.lua  >TSJToggle
     requires = { 'nvim-treesitter/nvim-treesitter' }, -- if you install parsers with `nvim-treesitter`
     config = function()
       require('treesj').setup({max_join_length = 820,})
@@ -1207,6 +1198,9 @@ return require("lazy").setup {
             operators = { -- only in no, nov, noV, and no\x16 modes
               d = {
                 winhl = { CursorLine = { link = 'DiffDelete' } }
+              },
+              c = {
+                winhl = { CursorLine = { link = 'DiffText' } }
               }
             }
           },
