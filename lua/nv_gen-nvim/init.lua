@@ -7,9 +7,11 @@ local coding_model = "CodeQwen1.5-7B-Chat-Q5_K_S.gguf"  -- almost as good as dee
 -- require("gen").model = "openhermes2.5-mistral:7b-q5_K_M" -- ok at +++ coding tooo...
 -- require("gen")
 local stop_token = {"<|end_of_turn|>"}
-local open_code_stop_token = {"<|im_end|>", "<|im_start|>"}
+local gemma_stop = {"<end_of_turn>"}
+local open_code_stop_token = {"<|im_end|>", "<|im_start|>"} -- for starling
 require('gen').setup({
-  model = "starling-lm-7b-alpha.Q4_K_M.gguf", -- ok at +++ coding tooo...
+  model = "Gemma-2-9b-it-Q4_K_M", -- ok at +++ coding tooo...
+  -- model = "starling-lm-7b-alpha.Q4_K_M.gguf", -- ok at +++ coding tooo...
   display_mode = "split", -- The display mode. Can be "float" or "split".
   show_prompt = false, -- Shows the Prompt submitted to Ollama.
   show_model = false, -- Displays which model you are using at the beginning of your chat session.
@@ -32,7 +34,7 @@ require('gen').setup({
     -- model = "starling-lm-7b-alpha.Q4_K_M.gguf",  -- for my local llamacpp
     ngl = 25,
     n_predict = 850,
-    stop = open_code_stop_token
+    stop = gemma_stop
   },
   -- The command for the Ollama service. You can use placeholders $prompt, $model and $body (shellescaped).
   -- This can also be a lua function returning a command string, with options as the input parameter.
@@ -42,11 +44,16 @@ require('gen').setup({
   debug = false -- Prints errors and the command which is run.
 })
 
+local gemma_wrap = function(s)  -- for deepseek-coder
+  return "<bos><start_of_turn>user\n" .. s .. "<end_of_turn>\n<start_of_turn>model\n"
+end
+
 local deep_seek_wrap = function(s)  -- for deepseek-coder
   local codex_prefix = "### Instruction:\n"
   local codex_suffix = "\n### Response:"
   return codex_prefix .. s .. codex_suffix
 end
+
 local starling_wrap = function(s)  -- for starling-lm
   local codex_prefix = "GPT4 Correct User:\n"
   local codex_suffix = "\n<|end_of_turn|>GPT4 Correct Assistant:"
@@ -72,14 +79,14 @@ prompts["Code_Annotation"] = nil
 prompts["Review_Code"] = nil
 
 prompts["Ask"] = {
-  prompt = starling_wrap("$input"),
+  prompt = gemma_wrap("$input"),
   model_options = {
     stop = stop_token,
     min_p = 0.05
   },
 }
 prompts["Change"] = {
-  prompt = starling_wrap("$input:\n$text"),
+  prompt = gemma_wrap("$input:\n$text"),
   replace = false,
   model_options = {
     stop = stop_token,
@@ -87,7 +94,7 @@ prompts["Change"] = {
   },
 }
 prompts["Enhance_Wording"] = {
-  prompt = starling_wrap("Improve the following text by better wording. Use casual style and avoid technical jargon. Do not change the meaning of the text:\n```\n$text\n```"),
+  prompt = gemma_wrap("Improve the following text by better wording. Use simple style and avoid technical jargon. Here is the text:\n```\n$text\n```"),
   replace = false,
   model_options = {
     stop = stop_token,
@@ -97,7 +104,7 @@ prompts["Enhance_Wording"] = {
 }
 
 prompts["Enhance_Grammar_Spelling"] = {
-  prompt = starling_wrap("Modify the following text to improve grammar and spelling, just output the final text without additional quotes around it:\n```\n$text\n```"),
+  prompt = gemma_wrap("Modify the following text to improve grammar and spelling, just output the final text without additional quotes around it:\n```\n$text\n```"),
   replace = false,
   model_options = {
     stop = stop_token,
