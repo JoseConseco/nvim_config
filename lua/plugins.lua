@@ -499,13 +499,13 @@ return require("lazy").setup {
       require "nv-lsptrouble"
     end,
   },
-  {
-    "carbon-steel/detour.nvim",
-    -- branch="dev",
-    config = function()
-      require "nv-detour"
-    end,
-  },
+  -- {
+  --   "carbon-steel/detour.nvim",
+  --   -- branch="dev",
+  --   config = function()
+  --     require "nv-detour"
+  --   end,
+  -- },
   {
     "SirVer/ultisnips",
     config = function()
@@ -535,6 +535,17 @@ return require("lazy").setup {
       require "nv-null"
     end,
     dependencies = { "nvim-lua/plenary.nvim" },
+  },
+  {
+      'stevearc/conform.nvim',
+      config = function()
+        require('conform').setup({
+        formatters_by_ft = {
+          lua = {"stylua"},
+          python = {"ruff-lsp"}, -- has to be set in lsp - config...
+        },
+      })
+      end,
   },
 
   -- AUTO-COMPLETE -------------------------------------------------------------------------------------------------------

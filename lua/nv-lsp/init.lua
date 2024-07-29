@@ -37,12 +37,17 @@ local on_attach = function(client, bufnr)
   -- buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
   buf_set_keymap("n", "gr", ":lua require('telescope.builtin').lsp_references({initial_mode = 'normal'})<CR>", opts)
 
-  -- Set some keybinds conditional on server capabilities
+  -- Set some keybinds conditional on server capabilities - range does not work...
   -- if client.server_capabilities.document_formatting then
-  buf_set_keymap("n", "<space>cf", "<cmd>lua vim.lsp.buf.format()<CR>", opts)
+  -- buf_set_keymap("n", "<space>cf", "<cmd>lua vim.lsp.buf.format()<CR>", opts)
   -- elseif client.server_capabilities.document_range_formatting then
-  buf_set_keymap("v", "<space>cf", "<ESC><cmd>lua vim.lsp.formatexpr()<CR>", opts)
+  -- buf_set_keymap("v", "<space>cf", "<ESC><cmd>lua vim.lsp.formatexpr()<CR>", opts)
   -- end
+
+  -- from 'stevearc/conform.nvim'
+  buf_set_keymap("n", "<space>cf", [[<cmd>lua require('conform').format({lsp_fallback = true})<CR>]], opts) -- from 'stevearc/conform.nvim'
+  buf_set_keymap("v", "<space>cf", [[<cmd>lua require('conform').format({lsp_fallback = true, range=require('conform').Range})<CR>]], opts) -- from 'stevearc/conform.nvim'
+
 
   -- adding borders
   -- vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
