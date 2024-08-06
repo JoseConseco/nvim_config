@@ -50,6 +50,7 @@ cmp.setup {
   sources = cmp.config.sources {
     -- { name = "nvim_lsp_signature_help" },
     -- { name = "copilot", priority = 11, group_index = 1, keyword_length = 0 },
+    { name = "lazydev", group_index = 0}, -- set group index to 0 to skip loading LuaLS completions - for lazydev.nvim - folke
     { name = "cmp_ai", priority = 10, group_index = 1, keyword_length = 0 },
     -- { name = "cmp_tabnine", priority = 8, group_index = 1, keyword_length = 0 },
     { name = "nvim_lsp", priority = 9, group_index = 1, keyword_length = 2, max_item_count = 6 },

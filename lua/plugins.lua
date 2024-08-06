@@ -824,16 +824,21 @@ return require("lazy").setup {
     end,
   },
   "stefandtw/quickfix-reflector.vim", -- edit quickfix list as text - :w to save to multi files
-  -- 'gabrielpoca/replacer.nvim',   -- edit quick fis list - in lua - not as good as quickfix-reflector
-  "brooth/far.vim",                   --use: Far(r) from to **/*.py   > then :Fardo
   "dyng/ctrlsf.vim",                  --Run :CtrlSF [pattern]
-  "mhinz/vim-grepper",                -- Grepper
+  {
+    'MagicDuck/grug-far.nvim',
+    config = function()
+      require('grug-far').setup({
+        engines = {
+          astgrep = { path='ast-grep'},
+        },
+        engine = 'astgrep',
+        folding={enabled=false},
+      });
+    end
+  },
   "eugen0329/vim-esearch",            -- Grepper
   { "nvim-pack/nvim-spectre", dependencies = { { "nvim-lua/popup.nvim" }, { "nvim-lua/plenary.nvim" } } },
-  {
-    "AckslD/muren.nvim",
-    config = true,
-  },
 
   --UNDO REDO  -------------------------------------------------------------------------------------------------------
   {
