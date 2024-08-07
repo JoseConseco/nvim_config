@@ -185,16 +185,16 @@ vim.api.nvim_create_autocmd("BufEnter", { group = root_augroup, callback = set_r
 -- vim.cmd[[lua MiniStarter.open()]]  -- not sure why autoopen wont work... on hyprland
 
 -- hack to make nvim-bqf preview work with stefandtw/quickfix-reflector.vim plug
-local function t(str)
-  return vim.api.nvim_replace_termcodes(str, true, true, true)
-end
-vim.api.nvim_create_autocmd({"FileType" }, {
-  pattern = {"qf"},
-  callback = function()
-    vim.keymap.set("n", "j", function() vim.api.nvim_feedkeys(t("p<Down>p"),"m", true)  print('a') end, {noremap = true, silent = true, buffer=0})
-    vim.keymap.set("n", "k", function() vim.api.nvim_feedkeys(t("p<Up>p"),"m", true)  end, {noremap = true, silent = true, buffer=0})
-    -- vim.api.nvim_buf_set_keymap(0, "n", "k", [[<cmd>execute "normal! kpp"<cr>]], {noremap = true, silent = true})
-    return true -- finish au on first run
-  end,
-})
+-- local function t(str)
+--   return vim.api.nvim_replace_termcodes(str, true, true, true)
+-- end
+-- vim.api.nvim_create_autocmd({"FileType" }, {
+--   pattern = {"qf"},
+--   callback = function()
+--     vim.keymap.set("n", "j", function() vim.api.nvim_feedkeys(t("p<Down>p"),"m", true)  print('a') end, {noremap = true, silent = true, buffer=0})
+--     vim.keymap.set("n", "k", function() vim.api.nvim_feedkeys(t("p<Up>p"),"m", true)  end, {noremap = true, silent = true, buffer=0})
+--     -- vim.api.nvim_buf_set_keymap(0, "n", "k", [[<cmd>execute "normal! kpp"<cr>]], {noremap = true, silent = true})
+--     return true -- finish au on first run
+--   end,
+-- })
 

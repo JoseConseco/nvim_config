@@ -84,7 +84,7 @@ wk.add({
     { "<leader>7", hidden = true },
     { "<leader>8", hidden = true },
     { "<leader>9", hidden = true },
-    { "<leader>?", ":lua require('grug-far').grug_far({ prefills = { search = vim.fn.expand('<cword>') } })<cr>", desc = "Find CWord" },
+    { "<leader>?", ":lua require('grug-far').grug_far({ engine='rg' ,prefills = { search = vim.fn.expand('<cword>') } })<cr>", desc = "Find CWord" },
     { "<leader>R", ":Lazy sync<cr>", desc = "Lazy Sync" },
     { "<leader>p", hidden = true },
     { "<leader>r", ":Telescope find_files<cr>", desc = "Files" },
@@ -455,7 +455,7 @@ wk.add({
     { "<leader>sp*", "<Plug>CtrlSFCCwordPath<CR>", desc = "CtrlSF Word" },
     { "<leader>spc", "<Plug>CtrlSFPrompt -R {regex} -G *.py", desc = "CtrlSF" },
     { "<leader>spe", "<plug>(operator-esearch-prefill)<CR>", desc = "Esearch" },
-    -- { "<leader>spf", ":Farr<CR>", desc = "File Farr" },
+    { "<leader>spf", ":lua require('grug-far').grug_far({ engine='astgrep', prefills = { search = vim.fn.expand('<cword>') } })<CR>", desc = "GrugFar ast engine" },
     { "<leader>sps", ":lua require('spectre').open()<CR>", desc = "Spectre" },
     { "<leader>ss", ":lua require('spectre').open_file_search({select_word=true})<CR>", desc = "Spectre Local" },
 

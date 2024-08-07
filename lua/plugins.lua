@@ -34,7 +34,7 @@ return require("lazy").setup {
   },
   {
     "EdenEast/nightfox.nvim",
-    lazy = false,    -- make sure we load this during startup if it is your main colorscheme
+    lazy = false, -- make sure we load this during startup if it is your main colorscheme
     priority = 1000, -- make sure to load this before all the other start plugins
     -- branch = "feat/interactive",
     -- commit = "c88664b18e593319aea1ded731dd252d4f9e0f9a", -- before day-fox refactor, not looking goodd
@@ -89,8 +89,8 @@ return require("lazy").setup {
         filetypes = { "css", "lua", "html" },
       }
     end,
-  },                            --color highlighter
-  {"shortcuts/no-neck-pain.nvim"},
+  }, --color highlighter
+  { "shortcuts/no-neck-pain.nvim" },
   {
     "azabiong/vim-highlighter", -- highlight selection and occurrences
     event = "VeryLazy",
@@ -108,13 +108,13 @@ return require("lazy").setup {
     config = function()
       require("twilight").setup {
         dimming = {
-          alpha = 0.4,      -- amount of dimming
+          alpha = 0.4, -- amount of dimming
           -- color = { "Normal", "#ffffff" }, -- we try to get the foreground from the highlight groups or fallback color
           inactive = false, -- when true, other windows will be fully dimmed (unless they contain the same buffer)
         },
-        context = 0,        -- amount of lines we will try to show around the current line
+        context = 0, -- amount of lines we will try to show around the current line
         node_context = 0,
-        treesitter = true,  -- use treesitter when available for the filetype
+        treesitter = true, -- use treesitter when available for the filetype
         -- treesitter is used to automatically expand the visible text,
         -- but you can further control the types of nodes that should always be fully expanded
         expand = {
@@ -213,7 +213,7 @@ return require("lazy").setup {
   },
   {
     "petertriho/nvim-scrollbar", -- scrollbar with marked errors and search results
-    cond = true,                 -- scrollbar which shows search resutls   and errors
+    cond = true, -- scrollbar which shows search resutls   and errors
     config = function()
       require "nv-nvim-scrollbar"
     end,
@@ -223,7 +223,7 @@ return require("lazy").setup {
     "karb94/neoscroll.nvim", -- smooth scroll
     cond = true,
     config = function()
-      local neoscroll = require('neoscroll')
+      local neoscroll = require "neoscroll"
       neoscroll.setup { hide_cursor = false }
       local keymap = {
         -- ["<C-u>"] = function() neoscroll.ctrl_u({ duration = 250 }) end;
@@ -235,10 +235,14 @@ return require("lazy").setup {
         -- ["zt"]    = function() neoscroll.zt({ half_screen_duration = 250 }) end;
         -- ["zz"]    = function() neoscroll.zz({ half_screen_duration = 250 }) end;
         -- ["zb"]    = function() neoscroll.zb({ half_screen_duration = 250 }) end;
-        ["G"]     = function() neoscroll.G({ half_screen_duration = 250 }) end; -- throw error..
-        ["gg"]    = function() neoscroll.gg({ half_screen_duration = 250 }) end;
+        ["G"] = function()
+          neoscroll.G { half_screen_duration = 250 }
+        end, -- throw error..
+        ["gg"] = function()
+          neoscroll.gg { half_screen_duration = 250 }
+        end,
       }
-      local modes = { 'n', 'v', 'x' }
+      local modes = { "n", "v", "x" }
       for key, func in pairs(keymap) do
         vim.keymap.set(modes, key, func)
       end
@@ -295,16 +299,16 @@ return require("lazy").setup {
     cmd = "WinShift",
     config = function()
       require("winshift").setup {
-      highlight_moving_win = true,  -- Highlight the window being moved
-      focused_hl_group = "Visual",  -- The highlight group used for the moving window
-      moving_win_options = {
-        -- These are local options applied to the moving window while it's
-        -- being moved. They are unset when you leave Win-Move mode.
-        wrap = false,
-        cursorline = false,
-        cursorcolumn = false,
-        colorcolumn = "",
-      },
+        highlight_moving_win = true, -- Highlight the window being moved
+        focused_hl_group = "Visual", -- The highlight group used for the moving window
+        moving_win_options = {
+          -- These are local options applied to the moving window while it's
+          -- being moved. They are unset when you leave Win-Move mode.
+          wrap = false,
+          cursorline = false,
+          cursorcolumn = false,
+          colorcolumn = "",
+        },
         keymaps = {
           disable_defaults = true,
         },
@@ -331,18 +335,18 @@ return require("lazy").setup {
     dependencies = "mfussenegger/nvim-dap",
     config = function()
       require("nvim-dap-virtual-text").setup {
-        enabled = true,                     -- enable this plugin (the default)
-        enabled_commands = true,            -- create commands DapVirtualTextEnable, DapVirtualTextDisable, DapVirtualTextToggle, (DapVirtualTextForceRefresh for refreshing when debug adapter did notify its termination)
+        enabled = true, -- enable this plugin (the default)
+        enabled_commands = true, -- create commands DapVirtualTextEnable, DapVirtualTextDisable, DapVirtualTextToggle, (DapVirtualTextForceRefresh for refreshing when debug adapter did notify its termination)
         highlight_changed_variables = true, -- highlight changed values with NvimDapVirtualTextChanged, else always NvimDapVirtualText
-        highlight_new_as_changed = true,    -- highlight new variables in the same way as changed variables (if highlight_changed_variables)
-        show_stop_reason = true,            -- show stop reason when stopped for exceptions
-        commented = false,                  -- prefix virtual text with comment string
+        highlight_new_as_changed = true, -- highlight new variables in the same way as changed variables (if highlight_changed_variables)
+        show_stop_reason = true, -- show stop reason when stopped for exceptions
+        commented = false, -- prefix virtual text with comment string
         -- experimental features:
-        virt_text_pos = "right_align",      -- position of virtual text, see :h nvim_buf_set_extmark() - 'right_align', 'eol', 'overlay'
-        all_frames = false,                 -- show virtual text for all stack frames not only current. Only works for debugpy on my machine.
-        all_references = true,              -- show virtual text for all references not only current. Only works for debugpy on my machine.
-        virt_lines = false,                 -- show virtual lines instead of virtual text (will flicker!)
-        virt_text_win_col = 85,             -- position the virtual text at a fixed window column (starting from the first text column) ,
+        virt_text_pos = "right_align", -- position of virtual text, see :h nvim_buf_set_extmark() - 'right_align', 'eol', 'overlay'
+        all_frames = false, -- show virtual text for all stack frames not only current. Only works for debugpy on my machine.
+        all_references = true, -- show virtual text for all references not only current. Only works for debugpy on my machine.
+        virt_lines = false, -- show virtual lines instead of virtual text (will flicker!)
+        virt_text_win_col = 85, -- position the virtual text at a fixed window column (starting from the first text column) ,
         -- e.g. 80 to position at column 80 see :h nvim_buf_set_extmark()
       }
       -- vim.api.nvim_exec("highlight! link NvimDapVirtualText DiagnosticVirtualTextInfo", false)
@@ -537,15 +541,15 @@ return require("lazy").setup {
     dependencies = { "nvim-lua/plenary.nvim" },
   },
   {
-      'stevearc/conform.nvim',
-      config = function()
-        require('conform').setup({
+    "stevearc/conform.nvim",
+    config = function()
+      require("conform").setup {
         formatters_by_ft = {
-          lua = {"stylua"},
-          python = {"ruff-lsp"}, -- has to be set in lsp - config...
+          lua = { "stylua" },
+          python = { "ruff-lsp" }, -- has to be set in lsp - config...
         },
-      })
-      end,
+      }
+    end,
   },
 
   -- AUTO-COMPLETE -------------------------------------------------------------------------------------------------------
@@ -561,17 +565,17 @@ return require("lazy").setup {
     end,
   },
   {
-      "CopilotC-Nvim/CopilotChat.nvim",
-      branch = "canary",
-      dependencies = {
-        { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
-        { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
-      },
-      opts = {
-        debug = false, -- Enable debugging
-        -- See Configuration section for rest
-      },
-      -- See Commands section for default commands if you want to lazy load on them
+    "CopilotC-Nvim/CopilotChat.nvim",
+    branch = "canary",
+    dependencies = {
+      { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
+      { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
+    },
+    opts = {
+      debug = false, -- Enable debugging
+      -- See Configuration section for rest
+    },
+    -- See Commands section for default commands if you want to lazy load on them
   },
   -- {
   --   "jackMort/ChatGPT.nvim",
@@ -586,7 +590,7 @@ return require("lazy").setup {
   --   },
   -- },
   -- {'tzachar/cmp-ai', dependencies = 'nvim-lua/plenary.nvim'},
-  { "JoseConseco/cmp-ai",                  dependencies = "nvim-lua/plenary.nvim" },
+  { "JoseConseco/cmp-ai", dependencies = "nvim-lua/plenary.nvim" },
   {
     "hrsh7th/nvim-cmp",
     cond = true,
@@ -605,7 +609,7 @@ return require("lazy").setup {
       "rcarriga/cmp-dap",
       -- "hrsh7th/cmp-nvim-lsp-signature-help", - x ray better
       -- "uga-rosa/cmp-dictionary", -- based on custom dict
-      "f3fora/cmp-spell",               -- vim spell hast to be enabled
+      "f3fora/cmp-spell", -- vim spell hast to be enabled
       "runiq/neovim-throttle-debounce", -- for debouncing of cmp complettions...
     },
     config = function()
@@ -613,7 +617,7 @@ return require("lazy").setup {
     end,
   },
   { "quangnguyen30192/cmp-nvim-ultisnips", dependencies = { "hrsh7th/nvim-cmp" } },
-  { "dmitmel/cmp-cmdline-history",         dependencies = "hrsh7th/cmp-cmdline" },
+  { "dmitmel/cmp-cmdline-history", dependencies = "hrsh7th/cmp-cmdline" },
   -- { "tzachar/cmp-fuzzy-path", dependencies = { "hrsh7th/nvim-cmp", "hrsh7th/cmp-path", "tzachar/fuzzy.nvim" } }
   -- use { "tzachar/cmp-fuzzy-buffer", dependencies = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" } }
   -- {
@@ -668,7 +672,14 @@ return require("lazy").setup {
   -- Telescope   -------------------------------------------------------------------------------------------------------
   {
     "nvim-telescope/telescope.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons", "nvim-lua/popup.nvim", "nvim-lua/plenary.nvim", "tom-anders/telescope-vim-bookmarks.nvim", "JoseConseco/telescope_sessions_picker.nvim", "nvim-telescope/telescope-file-browser.nvim" },
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+      "nvim-lua/popup.nvim",
+      "nvim-lua/plenary.nvim",
+      "tom-anders/telescope-vim-bookmarks.nvim",
+      "JoseConseco/telescope_sessions_picker.nvim",
+      "nvim-telescope/telescope-file-browser.nvim",
+    },
     config = function()
       require "telescope-nvim"
     end,
@@ -715,8 +726,8 @@ return require("lazy").setup {
     branch = "v2.x",
     dependencies = { "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons", "MunifTanjim/nui.nvim", "s1n7ax/nvim-window-picker" },
     keys = {
-      { "<F11>", "<cmd>NeoTreeFloat<cr>",         desc = "Open Neotree on side" },
-      { " bb",   "<cmd>NeoTreeFloat buffers<cr>", desc = "Open Neotree on side" },
+      { "<F11>", "<cmd>NeoTreeFloat<cr>", desc = "Open Neotree on side" },
+      { " bb", "<cmd>NeoTreeFloat buffers<cr>", desc = "Open Neotree on side" },
     },
     config = function()
       require "nv_neotree"
@@ -815,29 +826,82 @@ return require("lazy").setup {
       require("bqf").setup {
         auto_enable = true,
         auto_resize_height = true, -- highly recommended enable
-        preview = {                -- stefandtw/quickfix-reflector.vim breaks this
-          auto_preview = true,
+        preview = { -- stefandtw/quickfix-reflector.vim breaks this
+          auto_preview = false,
+        },
+        func_map = {
+            open = '<CR>',
+            openc = 'o',
+            drop = 'O',
+            split = '<C-x>',
+            vsplit = '<C-v>',
+            tab = 't',
+            tabb = 'T',
+            tabc = '<C-t>',
+            tabdrop = '',
+            ptogglemode = 'zp',
+            ptoggleitem = 'p',
+            ptoggleauto = 'P',
+            pscrollup = '<C-b>',
+            pscrolldown = '<C-f>',
+            pscrollorig = 'zo',
+            -- prevfile = '<C-p>',#
+            -- nextfile = '<C-n>', - disable for multi-cursor
+            prevhist = '<',
+            nexthist = '>',
+            lastleave = [['"]],
+            stoggleup = '<S-Tab>',
+            stoggledown = '<Tab>',
+            stogglevm = '<Tab>',
+            stogglebuf = [['<Tab>]],
+            sclear = 'z<Tab>',
+            filter = 'zn',
+            filterr = 'zN',
+            fzffilter = 'zf'
         },
         -- create autocmd for 'qf' filetype. It will create 2 buffer levels mappings: for j and k keys.
         -- These keys will send 'pp' keys to refresh the preview window.
       }
     end,
   },
-  "stefandtw/quickfix-reflector.vim", -- edit quickfix list as text - :w to save to multi files
-  "dyng/ctrlsf.vim",                  --Run :CtrlSF [pattern]
+  -- "stefandtw/quickfix-reflector.vim", -- edit quickfix list as text - :w to save to multi files
   {
-    'MagicDuck/grug-far.nvim',
+    "stevearc/quicker.nvim", -- lua version of above list as text - :w to save to multi files
     config = function()
-      require('grug-far').setup({
-        engines = {
-          astgrep = { path='ast-grep'},
+      require("quicker").setup {
+        keys = {
+          {
+            ">",
+            function()
+              require("quicker").expand { before = 2, after = 2, add_to_existing = true }
+            end,
+            desc = "Expand quickfix context",
+          },
+          {
+            "<",
+            function()
+              require("quicker").collapse()
+            end,
+            desc = "Collapse quickfix context",
+          },
         },
-        engine = 'astgrep',
-        folding={enabled=false},
-      });
-    end
+      }
+    end,
   },
-  "eugen0329/vim-esearch",            -- Grepper
+  "dyng/ctrlsf.vim", --Run :CtrlSF [pattern]
+  {
+    "MagicDuck/grug-far.nvim",
+    config = function()
+      require("grug-far").setup {
+        engines = {
+          astgrep = { path = "ast-grep" },
+        },
+        engine = "astgrep",
+        folding = { enabled = false },
+      }
+    end,
+  },
+  "eugen0329/vim-esearch", -- Grepper
   { "nvim-pack/nvim-spectre", dependencies = { { "nvim-lua/popup.nvim" }, { "nvim-lua/plenary.nvim" } } },
 
   --UNDO REDO  -------------------------------------------------------------------------------------------------------
@@ -848,16 +912,16 @@ return require("lazy").setup {
       require "nv-neoclip"
     end,
   },
-  "mbbill/undotree",        -- undo history  :UndotreeToggle to toggle the undo-tree panel.
+  "mbbill/undotree", -- undo history  :UndotreeToggle to toggle the undo-tree panel.
   "mg979/vim-localhistory", -- local history LHLoad, LHWrite
 
   --CODE/FORMAT -------------------------------------------------------------------------------------------------------
   -- "wellle/targets.vim", -- eg ci,  ci_ etc replaced by mini.ai
   {
-    'Wansmer/treesj', -- better SplitJoin - mapped in keymappings.lua  >TSJToggle
-    requires = { 'nvim-treesitter/nvim-treesitter' }, -- if you install parsers with `nvim-treesitter`
+    "Wansmer/treesj", -- better SplitJoin - mapped in keymappings.lua  >TSJToggle
+    requires = { "nvim-treesitter/nvim-treesitter" }, -- if you install parsers with `nvim-treesitter`
     config = function()
-      require('treesj').setup({max_join_length = 820,})
+      require("treesj").setup { max_join_length = 820 }
     end,
   },
   {
@@ -885,7 +949,7 @@ return require("lazy").setup {
   },
   {
     "andymass/vim-matchup", -- slow as hell still in 2023 dec
-    enabled = true,         -- increase power of % - slow as hell (not any more?) higlights fun, if etc. ranges
+    enabled = true, -- increase power of % - slow as hell (not any more?) higlights fun, if etc. ranges
     init = function()
       vim.g.matchup_matchparen_deferred = 1
       vim.g.matchup_matchparen_deferred_show_delay = 180
@@ -939,7 +1003,7 @@ return require("lazy").setup {
   {
     "mg979/vim-visual-multi", --multi cursor
     init = function()
-      vim.g.VM_maps = {       -- fixes first ctrl+n in visual mode not working.
+      vim.g.VM_maps = { -- fixes first ctrl+n in visual mode not working.
         ["I BS"] = "",
       }
     end,
@@ -1022,10 +1086,10 @@ return require("lazy").setup {
             search = { mode = "search", max_length = 0 }, -- len == 0  so all labels will be used and skips won't be calculated
             label = { after = { 0, 0 } },
             highlight = {
-              matches = false,      -- to hide the whitespace match
+              matches = false, -- to hide the whitespace match
             },
             jump = { pos = "end" }, -- jump to end of match regex (so to first non-whitespace char)
-            pattern = "^\\s*\\S",   -- match non-whitespace at start plus any character (ignores empty lines), add \\? to match empty lines too
+            pattern = "^\\s*\\S", -- match non-whitespace at start plus any character (ignores empty lines), add \\? to match empty lines too
           }
         end,
         desc = "Flash Jump Line",
@@ -1111,12 +1175,14 @@ return require("lazy").setup {
           local bm = require "bookmarks"
           local map = vim.keymap.set
           map("n", "mm", bm.bookmark_toggle) -- add or remove bookmark at current line
-          map("n", "mi", bm.bookmark_ann)    -- add or edit mark annotation at current line
-          map("n", "mc", bm.bookmark_clean)  -- clean all marks in local buffer
-          map("n", "mn", bm.bookmark_next)   -- jump to next mark in local buffer
-          map("n", "mp", bm.bookmark_prev)   -- jump to previous mark in local buffer
-          map("n", "ml", bm.bookmark_list)   -- show marked file list in quickfix window
-          map("n", "mg", function() require('telescope').extensions.bookmarks.list() end)   -- show marked file list in quickfix window
+          map("n", "mi", bm.bookmark_ann) -- add or edit mark annotation at current line
+          map("n", "mc", bm.bookmark_clean) -- clean all marks in local buffer
+          map("n", "mn", bm.bookmark_next) -- jump to next mark in local buffer
+          map("n", "mp", bm.bookmark_prev) -- jump to previous mark in local buffer
+          map("n", "ml", bm.bookmark_list) -- show marked file list in quickfix window
+          map("n", "mg", function()
+            require("telescope").extensions.bookmarks.list()
+          end) -- show marked file list in quickfix window
         end,
       }
     end,
@@ -1145,7 +1211,7 @@ return require("lazy").setup {
     "simonmclean/triptych.nvim",
     event = "VeryLazy",
     dependencies = {
-      "nvim-lua/plenary.nvim",       -- required
+      "nvim-lua/plenary.nvim", -- required
       "nvim-tree/nvim-web-devicons", -- optional
     },
     config = function()
@@ -1184,25 +1250,24 @@ return require("lazy").setup {
   -- },
 
   {
-    'rasulomaroff/reactive.nvim', -- detect eg. operator pending mode
+    "rasulomaroff/reactive.nvim", -- detect eg. operator pending mode
     config = function()
-      require('reactive').setup{
+      require("reactive").setup {
         builtin = {
           cursorline = false,
           cursor = false,
-          modemsg = false
+          modemsg = false,
         },
         configs = {
           -- a key here is a preset name, a value can be a boolean (if false, presets will be disabled)
           -- or a table that overwrites preset's values
-        presetone = {
-              modes = {
-              }
-            },
-        }
+          presetone = {
+            modes = {},
+          },
+        },
       }
-      require('reactive').add_preset {
-        name = 'relativenumber',
+      require("reactive").add_preset {
+        name = "relativenumber",
         modes = {
           no = {
             to = function()
@@ -1213,21 +1278,20 @@ return require("lazy").setup {
             end,
             operators = { -- only in no, nov, noV, and no\x16 modes
               d = {
-                winhl = { CursorLine = { link = 'DiffDelete' } }
+                winhl = { CursorLine = { link = "DiffDelete" } },
               },
               c = {
-                winhl = { CursorLine = { link = 'DiffText' } }
-              }
-            }
+                winhl = { CursorLine = { link = "DiffText" } },
+              },
+            },
           },
 
           i = {
             winhl = {
-              CursorLine = { link = 'DiffAdd' }
-            }
-          }
-
-        }
+              CursorLine = { link = "DiffAdd" },
+            },
+          },
+        },
       }
     end,
   },
