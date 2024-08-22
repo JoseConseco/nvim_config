@@ -455,7 +455,7 @@ wk.add({
     { "<leader>sp*", "<Plug>CtrlSFCCwordPath<CR>", desc = "CtrlSF Word" },
     { "<leader>spc", "<Plug>CtrlSFPrompt -R {regex} -G *.py", desc = "CtrlSF" },
     { "<leader>spe", "<plug>(operator-esearch-prefill)<CR>", desc = "Esearch" },
-    { "<leader>spf", ":lua require('grug-far').grug_far({ engine='astgrep', prefills = { search = vim.fn.expand('<cword>') } })<CR>", desc = "GrugFar ast engine" },
+    { "<leader>spa", ":lua require('grug-far').grug_far({ engine='astgrep', prefills = { search = vim.fn.expand('<cword>') } })<CR>", desc = "GrugFar AST" },
     { "<leader>sps", ":lua require('spectre').open()<CR>", desc = "Spectre" },
     { "<leader>ss", ":lua require('spectre').open_file_search({select_word=true})<CR>", desc = "Spectre Local" },
 

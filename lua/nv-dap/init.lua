@@ -59,19 +59,6 @@ vim.api.nvim_set_keymap("n", "<F9>", ":lua require'dap'.step_out()<CR>", { norem
 -- auto complete for REPL
 -- vim.cmd [[au FileType dap-repl lua require('dap.ext.autocompl').attach()]] -- XXX: this sheisse causes . to exit insert mode -- not needed>
 
-local Hydra = require "hydra"
-
-local dap_hydra = nil
-local dap_au_group = vim.api.nvim_create_augroup("DapUiHydraAu", { clear = true })
-local dap_ft = nil
-
-local hint = [[
- _s_: Continue/Start  _X_: Dap Close   _b_: Breakpoint   _B_: Cond Breakpoint   _L_: Log Breakpoint
- _n_: Step            _<_: Step out    _>_: Step in      _c_: to cursor
- _x_: Quit DAP        _C_: Close UI    _K_: Eval         ^ ^
- ^
- ^ ^              _q_: Exit Hydra
-]]
 
 local function cond_breakpoint()
   dap.set_breakpoint(vim.fn.input "Breakpoint condition: ")
@@ -152,6 +139,20 @@ local function eval_with_visual_selection()
   end
   require("dapui").eval(line, { enter = true })
 end
+
+local hint = [[
+ _s_: Continue/Start  _X_: Dap Close   _b_: Breakpoint   _B_: Cond Breakpoint   _L_: Log Breakpoint
+ _n_: Step            _<_: Step out    _>_: Step in      _c_: to cursor
+ _x_: Quit DAP        _C_: Close UI    _K_: Eval         ^ ^
+ ^
+ ^ ^              _q_: Exit Hydra
+]]
+
+local Hydra = require "hydra"
+
+local dap_hydra = nil
+local dap_au_group = vim.api.nvim_create_augroup("DapUiHydraAu", { clear = true })
+local dap_ft = nil
 
 local function show_dap_hydra()
   dap_hydra = Hydra {

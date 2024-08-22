@@ -10,12 +10,20 @@
 -- 		update_n_lines = ' ssn' -- Update `n_lines`
 -- 	}
 -- })
+
+--------------------------------------------
 require("mini.files").setup {
   windows= {
     preview = true,
     width_preview = 50,
   },
 }
+
+--------------------------------------------
+
+
+
+
 
 require("mini.comment").setup {
   -- Toggle comment (like `gcip` - comment inner paragraph) for both

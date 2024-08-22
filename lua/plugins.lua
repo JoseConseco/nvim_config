@@ -721,6 +721,56 @@ return require("lazy").setup {
     tag = "nightly", -- optional, updated every week. (see issue #1193)
   },
   {
+    "Isrothy/neominimap.nvim",
+    version = "v3.*.*",
+    enabled = true,
+    lazy = false, -- NOTE: NO NEED to Lazy load
+    -- Optional
+    keys = {
+      -- Global Minimap Controls
+      { "<leader>nm", "<cmd>Neominimap toggle<cr>", desc = "Toggle global minimap" },
+      { "<leader>nr", "<cmd>Neominimap refresh<cr>", desc = "Refresh global minimap" },
+
+      -- Buffer-Specific Minimap Controls
+      { "<leader>nbt", "<cmd>Neominimap bufToggle<cr>", desc = "Toggle minimap for current buffer" },
+      { "<leader>nbr", "<cmd>Neominimap bufRefresh<cr>", desc = "Refresh minimap for current buffer" },
+
+      ---Focus Controls
+      { "<leader>nf", "<cmd>Neominimap toggleFocus<cr>", desc = "Switch focus on minimap" },
+    },
+    init = function()
+      -- The following options are recommended when layout == "float"
+      vim.opt.wrap = false
+      vim.opt.sidescrolloff = 36 -- Set a large value
+
+      --- Put your configuration here
+      ---@type Neominimap.UserConfig
+      vim.g.neominimap = {
+        auto_enable = true,
+        layout = "float",
+        float = { z_index = 110 },
+        diagnostic = {
+          enabled = false,
+        },
+        git = {
+          enabled = true,
+          mode = "line",
+        },
+        search = {
+          enabled = true,
+          mode = "sign",
+        },
+        win_filter = function(winid)
+          return winid == vim.api.nvim_get_current_win()
+        end,
+      }
+      -- link NeominimapGitAddLine highlight to DiffAdd
+      vim.api.nvim_set_hl(0, "NeominimapGitAddLine", { link = "DiffAdd" })
+      vim.api.nvim_set_hl(0, "NeominimapGitChangeLine", { link = "DiffChange" })
+      vim.api.nvim_set_hl(0, "NeominimapGitDeleteLine", { link = "DiffDelete" })
+    end,
+  },
+  {
     "nvim-neo-tree/neo-tree.nvim", -- nice buffers preview...
     cond = true,
     branch = "v2.x",
@@ -830,34 +880,34 @@ return require("lazy").setup {
           auto_preview = false,
         },
         func_map = {
-            open = '<CR>',
-            openc = 'o',
-            drop = 'O',
-            split = '<C-x>',
-            vsplit = '<C-v>',
-            tab = 't',
-            tabb = 'T',
-            tabc = '<C-t>',
-            tabdrop = '',
-            ptogglemode = 'zp',
-            ptoggleitem = 'p',
-            ptoggleauto = 'P',
-            pscrollup = '<C-b>',
-            pscrolldown = '<C-f>',
-            pscrollorig = 'zo',
-            -- prevfile = '<C-p>',#
-            -- nextfile = '<C-n>', - disable for multi-cursor
-            prevhist = '<',
-            nexthist = '>',
-            lastleave = [['"]],
-            stoggleup = '<S-Tab>',
-            stoggledown = '<Tab>',
-            stogglevm = '<Tab>',
-            stogglebuf = [['<Tab>]],
-            sclear = 'z<Tab>',
-            filter = 'zn',
-            filterr = 'zN',
-            fzffilter = 'zf'
+          open = "<CR>",
+          openc = "o",
+          drop = "O",
+          split = "<C-x>",
+          vsplit = "<C-v>",
+          tab = "t",
+          tabb = "T",
+          tabc = "<C-t>",
+          tabdrop = "",
+          ptogglemode = "zp",
+          ptoggleitem = "p",
+          ptoggleauto = "P",
+          pscrollup = "<C-b>",
+          pscrolldown = "<C-f>",
+          pscrollorig = "zo",
+          -- prevfile = '<C-p>',#
+          -- nextfile = '<C-n>', - disable for multi-cursor
+          prevhist = "<",
+          nexthist = ">",
+          lastleave = [['"]],
+          stoggleup = "<S-Tab>",
+          stoggledown = "<Tab>",
+          stogglevm = "<Tab>",
+          stogglebuf = [['<Tab>]],
+          sclear = "z<Tab>",
+          filter = "zn",
+          filterr = "zN",
+          fzffilter = "zf",
         },
         -- create autocmd for 'qf' filetype. It will create 2 buffer levels mappings: for j and k keys.
         -- These keys will send 'pp' keys to refresh the preview window.
