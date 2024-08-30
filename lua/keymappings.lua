@@ -298,3 +298,6 @@ onoremap <expr> N  'nN'[v:searchforward]
 ]]
 --
 --
+-- remap these serach mode keys:
+--cnoremap <expr> <Tab>   getcmdtype() =~ '[\/?]' ? "<C-g>" : "<C-z>"
+--cnoremap <expr> <S-Tab> getcmdtype() =~ '[\/?]' ? "<C-t>" : "<S-Tab>"

@@ -577,18 +577,6 @@ return require("lazy").setup {
     },
     -- See Commands section for default commands if you want to lazy load on them
   },
-  -- {
-  --   "jackMort/ChatGPT.nvim",
-  --   event = "VeryLazy",
-  --   config = function()
-  --     require("chatgpt").setup()
-  --   end,
-  --   dependencies = {
-  --     "MunifTanjim/nui.nvim",
-  --     "nvim-lua/plenary.nvim",
-  --     "nvim-telescope/telescope.nvim",
-  --   },
-  -- },
   -- {'tzachar/cmp-ai', dependencies = 'nvim-lua/plenary.nvim'},
   { "JoseConseco/cmp-ai", dependencies = "nvim-lua/plenary.nvim" },
   {
@@ -725,19 +713,6 @@ return require("lazy").setup {
     version = "v3.*.*",
     enabled = true,
     lazy = false, -- NOTE: NO NEED to Lazy load
-    -- Optional
-    keys = {
-      -- Global Minimap Controls
-      { "<leader>nm", "<cmd>Neominimap toggle<cr>", desc = "Toggle global minimap" },
-      { "<leader>nr", "<cmd>Neominimap refresh<cr>", desc = "Refresh global minimap" },
-
-      -- Buffer-Specific Minimap Controls
-      { "<leader>nbt", "<cmd>Neominimap bufToggle<cr>", desc = "Toggle minimap for current buffer" },
-      { "<leader>nbr", "<cmd>Neominimap bufRefresh<cr>", desc = "Refresh minimap for current buffer" },
-
-      ---Focus Controls
-      { "<leader>nf", "<cmd>Neominimap toggleFocus<cr>", desc = "Switch focus on minimap" },
-    },
     init = function()
       -- The following options are recommended when layout == "float"
       vim.opt.wrap = false
@@ -747,8 +722,10 @@ return require("lazy").setup {
       ---@type Neominimap.UserConfig
       vim.g.neominimap = {
         auto_enable = true,
+        -- log_level = vim.log.levels.TRACE,
+
         layout = "float",
-        float = { z_index = 110 },
+        float = { z_index = 10 },
         diagnostic = {
           enabled = false,
         },
@@ -787,12 +764,13 @@ return require("lazy").setup {
   -- { "tpope/vim-fugitive", -- add :Gitxx commands },
   {
     "NeogitOrg/neogit",
-    cond = false,
+    cond = true,
     dependencies = "nvim-lua/plenary.nvim",
     config = function()
       require("neogit").setup()
     end,
   },
+  { "akinsho/git-conflict.nvim", version = "*", config = true }, -- for solving git
   {
     "kylechui/nvim-surround",
     config = function()
@@ -1285,20 +1263,87 @@ return require("lazy").setup {
       require "nv_gen-nvim"
     end,
   },
-  -- {
-  --   "jackMort/ChatGPT.nvim",
-  --   config = function()
-  --     require("chatgpt").setup {
-  --       -- optional configuration
-  --     }
-  --   end,
-  --   dependencies = {
-  --     "MunifTanjim/nui.nvim",
-  --     "nvim-lua/plenary.nvim",
-  --     "nvim-telescope/telescope.nvim",
-  --   },
-  -- },
-
+  {
+    "yetone/avante.nvim", -- emulate the behaviour of the Cursor AI IDE: ChatGpt, Copilot, Deepseek etc
+    -- commit = "2bab4bf601650eede1a91a53134b406863a8e06b", -- after that  copilot support was removed
+    event = "VeryLazy",
+    build = "make",
+    opts = {
+      -- add any opts here
+    },
+    keys = {
+      { "<leader>aa", function() require("avante.api").ask() end, desc = "avante: ask", mode = { "n", "v" }, },
+      { "<leader>ar", function() require("avante.api").refresh() end, desc = "avante: refresh", },
+      { "<leader>ae", function() require("avante.api").edit() end, desc = "avante: edit", mode = "v", },
+    },
+    dependencies = {
+      "stevearc/dressing.nvim",
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      --- The below dependencies are optional,
+      "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+      "zbirenbaum/copilot.lua", -- for providers='copilot'
+      {
+        -- support for image pasting
+        "HakonHarnes/img-clip.nvim",
+        event = "VeryLazy",
+        opts = {
+          -- recommended settings
+          default = {
+            embed_image_as_base64 = false,
+            prompt_for_file_name = false,
+            drag_and_drop = {
+              insert_mode = true,
+            },
+            -- required for Windows users
+            use_absolute_path = true,
+          },
+        },
+      },
+      {
+        -- Make sure to setup it properly if you have lazy=true
+        "MeanderingProgrammer/render-markdown.nvim",
+        opts = {
+          file_types = { "markdown", "Avante" },
+        },
+        ft = { "markdown", "Avante" },
+      },
+    },
+    config = function()
+      require("avante").setup {
+        provider = "copilot",
+        -- provider = "deepseek", -- noo goooddd
+        -- vendors = {
+        --   ["deepseek"] = {
+        --     endpoint = "https://api.deepseek.com/chat/completions",
+        --     model = "deepseek-coder",
+        --     api_key_name = "DEEPSEEK_API_KEY",
+        --     parse_curl_args = function(opts, code_opts)
+        --       return {
+        --         url = opts.endpoint,
+        --         headers = {
+        --           ["Accept"] = "application/json",
+        --           ["Content-Type"] = "application/json",
+        --           ["Authorization"] = "Bearer " .. os.getenv(opts.api_key_name),
+        --         },
+        --         body = {
+        --           model = opts.model,
+        --           messages = require("avante.providers").azure.parse_message(code_opts), -- you can make your own message, but this is very advanced
+        --           temperature = 0,
+        --           max_tokens = 4096,
+        --           stream = true, -- this will be set by default.
+        --         },
+        --       }
+        --     end,
+        --     parse_response_data = function(data_stream, event_state, opts)
+        --       require("avante.providers").azure.parse_response(data_stream, event_state, opts)
+        --     end,
+        --   },
+        -- },
+        hints = { enabled = false },
+      }
+    end,
+  },
   {
     "rasulomaroff/reactive.nvim", -- detect eg. operator pending mode
     config = function()
