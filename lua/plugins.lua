@@ -192,14 +192,14 @@ return require("lazy").setup {
           Norm = { cmd = "norm" },
           G = { cmd = "g" },
           S = { cmd = "substitute" },
-          Reg = {
-            cmd = "norm",
-            -- This will transform ":5Reg a" into ":norm 5@a"
-            args = function(opts)
-              return (opts.count == -1 and "" or opts.count) .. "@" .. opts.args
-            end,
-            range = "",
-          },
+          -- Reg = {
+          --   cmd = "norm",
+          --   -- This will transform ":5Reg a" into ":norm 5@a"
+          --   args = function(opts)
+          --     return (opts.count == -1 and "" or opts.count) .. "@" .. opts.args
+          --   end,
+          --   range = "",
+          -- },
         },
       }
     end,
@@ -235,12 +235,12 @@ return require("lazy").setup {
         -- ["zt"]    = function() neoscroll.zt({ half_screen_duration = 250 }) end;
         -- ["zz"]    = function() neoscroll.zz({ half_screen_duration = 250 }) end;
         -- ["zb"]    = function() neoscroll.zb({ half_screen_duration = 250 }) end;
-        ["G"] = function()
-          neoscroll.G { half_screen_duration = 250 }
-        end, -- throw error..
-        ["gg"] = function()
-          neoscroll.gg { half_screen_duration = 250 }
-        end,
+        -- ["G"] = function()
+        --   neoscroll.G {}
+        -- end, -- throw error..
+        -- ["gg"] = function()
+        --   neoscroll.gg {}
+        -- end,
       }
       local modes = { "n", "v", "x" }
       for key, func in pairs(keymap) do
@@ -573,7 +573,45 @@ return require("lazy").setup {
     },
     opts = {
       debug = false, -- Enable debugging
+      auto_follow_cursor = false,
       -- See Configuration section for rest
+
+      -- default mappings
+      mappings = {
+        complete = {
+          detail = "Use @<Tab> or /<Tab> for options.",
+          insert = "<Tab>",
+        },
+        close = {
+          normal = "q",
+          insert = "<C-c>",
+        },
+        reset = {
+          normal = "<C-l>",
+          insert = "<C-l>",
+        },
+        submit_prompt = {
+          normal = "<CR>",
+          insert = "<C-s>",
+        },
+        accept_diff = {
+          normal = "A",
+          insert = "A",
+        },
+        yank_diff = {
+          normal = "gy",
+          register = '"',
+        },
+        show_diff = {
+          normal = "gd",
+        },
+        show_system_prompt = {
+          normal = "gp",
+        },
+        show_user_selection = {
+          normal = "gs",
+        },
+      },
     },
     -- See Commands section for default commands if you want to lazy load on them
   },
@@ -709,9 +747,9 @@ return require("lazy").setup {
     tag = "nightly", -- optional, updated every week. (see issue #1193)
   },
   {
-    "Isrothy/neominimap.nvim",
+    "Isrothy/neominimap.nvim", -- ok but low on big buffer enter..
     version = "v3.*.*",
-    enabled = true,
+    enabled = true, -- even when auto_enable false - it will still lagg
     lazy = false, -- NOTE: NO NEED to Lazy load
     init = function()
       -- The following options are recommended when layout == "float"
@@ -721,7 +759,7 @@ return require("lazy").setup {
       --- Put your configuration here
       ---@type Neominimap.UserConfig
       vim.g.neominimap = {
-        auto_enable = true,
+        auto_enable = false,
         -- log_level = vim.log.levels.TRACE,
 
         layout = "float",
@@ -850,6 +888,7 @@ return require("lazy").setup {
   --find and replace ? -------------------------------------------------------------------------------------------------------
   {
     "kevinhwang91/nvim-bqf", --better quickfix  (with preview and complicated mapping)
+    enabled=false,
     config = function()
       require("bqf").setup {
         auto_enable = true,
@@ -874,7 +913,7 @@ return require("lazy").setup {
           pscrolldown = "<C-f>",
           pscrollorig = "zo",
           -- prevfile = '<C-p>',#
-          -- nextfile = '<C-n>', - disable for multi-cursor
+          -- nextfile = '<C-n>', - disable for multi-cursor - still broken...
           prevhist = "<",
           nexthist = ">",
           lastleave = [['"]],
@@ -1264,10 +1303,35 @@ return require("lazy").setup {
     end,
   },
   {
+    "olimorris/codecompanion.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "hrsh7th/nvim-cmp", -- Optional: For using slash commands and variables in the chat buffer
+      "nvim-telescope/telescope.nvim", -- Optional: For using slash commands
+      { "stevearc/dressing.nvim", opts = {} }, -- Optional: Improves the default Neovim UI
+    },
+    config = function ()
+      require("codecompanion").setup({
+        strategies = {
+          chat = {
+            adapter = "copilot",
+          },
+          inline = {
+            adapter = "copilot",
+          },
+          agent = {
+            adapter = "copilot",
+          },
+        },
+      })
+    end
+  },
+  {
     "yetone/avante.nvim", -- emulate the behaviour of the Cursor AI IDE: ChatGpt, Copilot, Deepseek etc
     -- commit = "2bab4bf601650eede1a91a53134b406863a8e06b", -- after that  copilot support was removed
     event = "VeryLazy",
-    build = "make",
+    lazy = false,
     opts = {
       -- add any opts here
     },
@@ -1275,7 +1339,11 @@ return require("lazy").setup {
       { "<leader>aa", function() require("avante.api").ask() end, desc = "avante: ask", mode = { "n", "v" }, },
       { "<leader>ar", function() require("avante.api").refresh() end, desc = "avante: refresh", },
       { "<leader>ae", function() require("avante.api").edit() end, desc = "avante: edit", mode = "v", },
+      { "<leader>as", function() require("avante.api").get_suggestion():suggest() end, desc = "avante: Suggest", mode = "v", },
     },
+    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+    build = "make",
+    -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
     dependencies = {
       "stevearc/dressing.nvim",
       "nvim-lua/plenary.nvim",
@@ -1285,23 +1353,49 @@ return require("lazy").setup {
       "zbirenbaum/copilot.lua", -- for providers='copilot'
       {
         -- support for image pasting
-        "HakonHarnes/img-clip.nvim",
-        event = "VeryLazy",
-        opts = {
-          -- recommended settings
-          default = {
-            embed_image_as_base64 = false,
-            prompt_for_file_name = false,
-            drag_and_drop = {
-              insert_mode = true,
-            },
-            -- required for Windows users
-            use_absolute_path = true,
-          },
+        -- "HakonHarnes/img-clip.nvim",
+        -- event = "VeryLazy",
+        -- opts = {
+        --   -- recommended settings
+        --   default = {
+        --     embed_image_as_base64 = false,
+        --     prompt_for_file_name = false,
+        --     drag_and_drop = {
+        --       insert_mode = true,
+        --     },
+        --     -- required for Windows users
+        --     use_absolute_path = true,
+        --   },
+        -- },
+      },
+      mappings = {
+        --- @class AvanteConflictMappings
+        diff = {
+          ours = "co",
+          theirs = "ct",
+          all_theirs = "ca",
+          both = "cb",
+          cursor = "cc",
+          next = "]x",
+          prev = "[x",
+        },
+        suggestion = {
+          accept = "<M-l>",
+          next = "<M-]>",
+          prev = "<M-[>",
+          dismiss = "<C-]>",
+        },
+        jump = {
+          next = "]]",
+          prev = "[[",
+        },
+        submit = {
+          normal = "<CR>",
+          insert = "<C-s>",
         },
       },
       {
-        -- Make sure to setup it properly if you have lazy=true
+        -- Make sure to set this up properly if you have lazy=true
         "MeanderingProgrammer/render-markdown.nvim",
         opts = {
           file_types = { "markdown", "Avante" },

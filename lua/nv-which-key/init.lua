@@ -222,6 +222,7 @@ wk.add {
 wk.add({
   mode = { "v" },
   { "<leader>C", group = "Copilot" },
+  { "<leader>Ca", function() local input = vim.fn.input("Quick Chat: ") if input ~= "" then require("CopilotChat").ask(input, { selection = require("CopilotChat.select").selection }) end end, desc = "CopilotChat - Quick chat", },
   { "<leader>CC", ":CopilotChatOpen<CR>", desc = "Open Chat" },
   { "<leader>Cd", ":CopilotChatDocs<CR>", desc = "Docs" },
   { "<leader>Ce", ":CopilotChatExplain<CR>", desc = "Explain" },
@@ -313,26 +314,49 @@ local function compare_to_clipboard()
   vim.cmd.diffthis() -- put original buff in diff mode
 end
 
+ -- Compare clipboard to visual selection
+local function compare_clipboard_selection()
+  local ftype = vim.api.nvim_eval("&filetype")
+  vim.cmd(string.format([[
+    execute "normal! \"xy"
+    vsplit
+    enew
+    normal! P
+    setlocal buftype=nowrite
+    set filetype=%s
+    diffthis
+    execute "normal! \<C-w>\<C-w>"
+    enew
+    set filetype=%s
+    normal! "xP
+    diffthis
+  ]], ftype, ftype))
+end
+
 -- g is for git
 wk.add {
   { "<leader>g", group = "GIT" },
-  { "<leader>g[", "[c<CR>", desc = "Prev change [c" },
-  { "<leader>g]", "]c<CR>", desc = "Next change ]c" },
-  { "<leader>gdc", compare_to_clipboard, desc = "Diff with clipboard" },
+  { "<leader>gc", group = "Compare" },
+  { "<leader>gcs", diffWithSaved, desc = "Diff with saved" },
   { "<leader>gd", group = "DiffView" },
   { "<leader>gdd", ":DiffviewOpen<CR>", desc = "Diffview Open" },
   { "<leader>gdf", ":DiffviewFileHistory %<CR>", desc = "Diffview File History" },
   { "<leader>gdh", ":DiffviewFileHistory --base=LOCAL %<CR>", desc = "Diffview File History (LOCAL)" },
-  { "<leader>gfc", ":Neogit commit<CR>", desc = "commit" },
-  { "<leader>gfn", ":Neogit<CR>", desc = "git grep" },
+  { "<leader>gds", "<Cmd>'<,'>DiffviewFileHistory --follow<CR>",  desc = 'Selection history'},
+  { "<leader>gn", ":Neogit<CR>", desc = "NeoGit" },
   { "<leader>gg", ":FloatermNew lazygit<CR>", desc = "LazyGit" },
   { "<leader>gn", group = "Neogit" },
   { "<leader>go", ":diffget<CR>", desc = "Obtain(do)" },
   { "<leader>gp", ":diffput<CR>", desc = "Put(dp)" },
-  { "<leader>gs", diffWithSaved, desc = "Diff with saved" },
   { "<leader>gt", ":diffthis<CR>", desc = "Diff This" },
   { "<leader>gu", ":diffupdate<CR>", desc = "Update changes" },
   { "<leader>gw", ":windo diffthis<cr>", desc = "Diff visible windows" },
+}
+wk.add{
+  mode = { "v" },
+  { "<leader>gc", group = "Compare" },
+  { "<leader>gcc", compare_clipboard_selection, desc = "Diff with clipboard" },
+
 }
 -- ['h'] - taken by git_sign - hunk oper
 -- ['A'] = {':Git add %'                        , 'add current'},
@@ -560,6 +584,7 @@ wk.add {
   { "<leader>ut", ":Twilight<cr>", desc = "Twilight" },
   { "<leader>uw", ":set wrap!<CR>", desc = "Toggle Wrap" },
   { "<leader>ux", ":NoNeckPain<CR>", desc = "Center (NoNeckPain)" },
+  { "<leader>um", ":RenderMarkdown toggle<CR>", desc = "RenderMarkdown" },
   {
     "<leader>ui",
     function()

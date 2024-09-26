@@ -1,6 +1,6 @@
 require("treesitter-context").setup {
   enable = true,
-  max_lines = 5,
+  max_lines = 8,
   min_window_height = 25,
   line_numbers = true,
   multiline_threshold = 20, -- Maximum number of lines to show for a single context

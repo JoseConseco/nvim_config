@@ -54,7 +54,7 @@ cmp.setup {
     { name = "cmp_ai", priority = 10, group_index = 1, keyword_length = 0 },
     -- { name = "cmp_tabnine", priority = 8, group_index = 1, keyword_length = 0 },
     { name = "nvim_lsp", priority = 9, group_index = 1, keyword_length = 2, max_item_count = 6 },
-    { name = "cmp_dap", priority = 7, group_index = 1 },
+    { name = "cmp_dap", priority = 9, group_index = 1 },
     { name = "ultisnips", priority = 7, group_index = 1, keyword_length = 2, max_item_count = 4},
     { name = "nvim_lua", priority = 5, group_index = 1 },
     -- { name = "buffer",      priority = 5, group_index = 1, keyword_length = 2, max_item_count = 5 }, -- actually nicer than RG
@@ -327,19 +327,20 @@ cmp_ai:setup {
   provider_options = {
     -- prompt="<｜fim▁begin｜>"..lines_before.."<｜fim▁hole｜>"..lines_after.."<｜fim▁end｜>"
     options = {
-      -- temperature = 0.2,
+      temperature = 0.1,
       n_predict = 35,  -- number of generated predictions
-      min_p = 0.2, -- default 0.05,  Cut off predictions with probability below  Max_prob * min_p
+      min_p = 0.3, -- default 0.05,  Cut off predictions with probability below  Max_prob * min_p
       -- repeat_last_n = 64, -- default 64
       -- repeat_penalty = 1.100, -- default 1.1
 
 
       -- new args for my forwarding my python server  branch.. ---------------
-      model = "CodeQwen1.5-7B-Q4_K_S.gguf", -- still best?
+      -- model = "CodeQwen1.5-7B-Q4_K_S.gguf", -- still best?
+      model = "Qwen2.5-Coder-7B-Instruct-Q5_K_S", -- last's best with FIM and instruct at same time
       ngl = 50,
     },
     prompt = function(lines_before, lines_after)
-      return '<fim_prefix>' .. lines_before .. '<fim_suffix>' .. lines_after .. '<fim_middle>' -- CodeQwen1
+      return '<|fim_prefix|>' .. lines_before .. '<|fim_suffix|>' .. lines_after .. '<|fim_middle|>' -- CodeQwen1
 
       -- codegeex4-all-9b-Q4_K_M - not so good
       -- local upper_first_ft = vim.bo.filetype:gsub('^%l', string.upper)

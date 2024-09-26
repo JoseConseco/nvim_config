@@ -1,7 +1,8 @@
 -- local coding_model = "mywizard_coder:latest"  -- or 'my_phindv2:q4_K_M'
 -- local coding_model = "deepseek-coder:6.7b-instruct-q5_K_M"  -- for ollama
 -- local coding_model = "deepseek-coder-6.7b-instruct.Q5_K_M.gguf"  -- for llamacpp
-local coding_model = "CodeQwen1.5-7B-Chat-Q5_K_S.gguf"  -- almost as good as deepseek-coder 33b !
+-- local coding_model = "CodeQwen1.5-7B-Chat-Q5_K_S.gguf"  -- almost as good as deepseek-coder 33b !
+local coding_model = "Qwen2.5-Coder-7B-Instruct-Q5_K_S.gguf"  -- both fim and instruct! latest greatest
 
 -- require("gen").model = "zephyr:7b-beta-q5_K_M" -- good for sumamry.., not so great for coding..
 -- require("gen").model = "openhermes2.5-mistral:7b-q5_K_M" -- ok at +++ coding tooo...
