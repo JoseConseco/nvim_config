@@ -332,17 +332,44 @@ local function compare_clipboard_selection()
     diffthis
   ]], ftype, ftype))
 end
+-- Function to toggle 'iwhite' in 'diffopt'
+local function toggle_iwhite()
+  local diffopt = vim.api.nvim_get_option('diffopt')
+  if diffopt:find('iwhite') then
+    diffopt = diffopt:gsub('iwhite', '')
+  else
+    diffopt = (#diffopt > 0 and diffopt .. ',iwhite' or 'iwhite')
+  end
+  vim.api.nvim_set_option('diffopt', diffopt)
+end
+local function toggle_diff_algorithm()
+  local diffopt = vim.api.nvim_get_option('diffopt')
+
+  if diffopt:find('algorithm:myers') then
+    diffopt = diffopt:gsub('algorithm:myers', 'algorithm:patience')
+  elseif diffopt:find('algorithm:patience') then
+    diffopt = diffopt:gsub('algorithm:patience', 'algorithm:myers')
+  else
+    diffopt = (#diffopt > 0 and diffopt .. ',algorithm:myers' or 'algorithm:myers')
+  end
+
+  vim.api.nvim_set_option('diffopt', diffopt)
+end
 
 -- g is for git
 wk.add {
   { "<leader>g", group = "GIT" },
   { "<leader>gc", group = "Compare" },
+  { "<leader>gcc", compare_to_clipboard,  desc = "Clipboard" },
   { "<leader>gcs", diffWithSaved, desc = "Diff with saved" },
   { "<leader>gd", group = "DiffView" },
   { "<leader>gdd", ":DiffviewOpen<CR>", desc = "Diffview Open" },
   { "<leader>gdf", ":DiffviewFileHistory %<CR>", desc = "Diffview File History" },
   { "<leader>gdh", ":DiffviewFileHistory --base=LOCAL %<CR>", desc = "Diffview File History (LOCAL)" },
   { "<leader>gds", "<Cmd>'<,'>DiffviewFileHistory --follow<CR>",  desc = 'Selection history'},
+  { "<leader>gdi", toggle_iwhite, desc = "Toggle iwhite" },
+  { "<leader>gda", toggle_diff_algorithm, desc = "Toggle Diff Algorithm" },
+
   { "<leader>gn", ":Neogit<CR>", desc = "NeoGit" },
   { "<leader>gg", ":FloatermNew lazygit<CR>", desc = "LazyGit" },
   { "<leader>gn", group = "Neogit" },
@@ -495,7 +522,7 @@ wk.add {
   { "<leader>spc", "<Plug>CtrlSFPrompt -R {regex} -G *.py", desc = "CtrlSF" },
   { "<leader>spe", "<plug>(operator-esearch-prefill)<CR>", desc = "Esearch" },
   { "<leader>spa", ":lua require('grug-far').grug_far({ engine='astgrep', prefills = { search = vim.fn.expand('<cword>') } })<CR>", desc = "GrugFar AST" },
-  { "<leader>sps", ":lua require('spectre').open()<CR>", desc = "Spectre" },
+  { "<leader>sps", "<cmd>lua require('spectre').open_visual({select_word=true})<CR>", desc = "Spectre" }, -- select word wont work
   { "<leader>ss", ":lua require('spectre').open_file_search({select_word=true})<CR>", desc = "Spectre Local" },
 }
 local function t(str)
@@ -506,7 +533,7 @@ wk.add { -- second one for visual mode
   mode = { "v" },
   { "<leader>sp", group = "Project" },
   { "<leader>sp*", "<Plug>CtrlSFVwordPath<CR>", desc = "CtrlSF Word" },
-  { "<leader>sp/", "\"ay:lua require('spectre').open()<cr>\"aPa", desc = "Spectre" },
+  { "<leader>sp/", "\"ay:lua require('spectre').open({select_word=true})<cr>\"aPa", desc = "Spectre" },
   { "<leader>spc", "<Plug>CtrlSFPrompt -R {regex} -G *.py", desc = "CtrlSF" },
 }
 
@@ -575,6 +602,7 @@ wk.add {
   { "<leader>tt", ":Telescope<CR>", desc = "Telescope" },
 }
 
+
 wk.add {
   { "<leader>u", group = "UI" },
   { "<leader>ua", ":call v:lua.conditional_width()<CR>", desc = "Auto width" },
@@ -585,6 +613,7 @@ wk.add {
   { "<leader>uw", ":set wrap!<CR>", desc = "Toggle Wrap" },
   { "<leader>ux", ":NoNeckPain<CR>", desc = "Center (NoNeckPain)" },
   { "<leader>um", ":RenderMarkdown toggle<CR>", desc = "RenderMarkdown" },
+  -- toggle diffopt = iwhite - toggle ON off - ignore whitespace
   {
     "<leader>ui",
     function()

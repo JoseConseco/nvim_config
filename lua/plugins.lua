@@ -319,11 +319,12 @@ return require("lazy").setup {
   -- DEBUGGING  -------------------------------------------------------------------------------------------------------
   {
     "mfussenegger/nvim-dap", --too simple
+    lazy = true,
     config = function()
       require "dap"
       require "nv-dap"
     end,
-  }, -- preview line whe using goto :xyz
+  }, -- preview linecmp_nvim_ultisnips whe using goto :xyz
   {
     "mfussenegger/nvim-dap-python",
     config = function()
@@ -512,6 +513,7 @@ return require("lazy").setup {
   -- },
   {
     "SirVer/ultisnips",
+    -- lazy = true,
     config = function()
       vim.g.UltiSnipsRemoveSelectModeMappings = 0
       vim.cmd [[autocmd BufWritePost *.snippets :CmpUltisnipsReloadSnippets]]
@@ -618,7 +620,8 @@ return require("lazy").setup {
   -- {'tzachar/cmp-ai', dependencies = 'nvim-lua/plenary.nvim'},
   { "JoseConseco/cmp-ai", dependencies = "nvim-lua/plenary.nvim" },
   {
-    "hrsh7th/nvim-cmp",
+    "iguanacucumber/magazine.nvim", -- faster versioon of "hrsh7th/nvim-cmp"
+    name = "nvim-cmp",    -- Otherwise highlighting gets messed up
     cond = true,
     event = "InsertEnter",
     dependencies = {
@@ -642,15 +645,15 @@ return require("lazy").setup {
       require "nv-cmp"
     end,
   },
-  { "quangnguyen30192/cmp-nvim-ultisnips", dependencies = { "hrsh7th/nvim-cmp" } },
+  { "quangnguyen30192/cmp-nvim-ultisnips", dependencies = { "iguanacucumber/magazine.nvim" } },
   { "dmitmel/cmp-cmdline-history", dependencies = "hrsh7th/cmp-cmdline" },
-  -- { "tzachar/cmp-fuzzy-path", dependencies = { "hrsh7th/nvim-cmp", "hrsh7th/cmp-path", "tzachar/fuzzy.nvim" } }
-  -- use { "tzachar/cmp-fuzzy-buffer", dependencies = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" } }
+  -- { "tzachar/cmp-fuzzy-path", dependencies = { "iguanacucumber/magazine.nvim", "hrsh7th/cmp-path", "tzachar/fuzzy.nvim" } }
+  -- use { "tzachar/cmp-fuzzy-buffer", dependencies = { "iguanacucumber/magazine.nvim", "tzachar/fuzzy.nvim" } }
   -- {
   --   "tzachar/cmp-tabnine",
   --   cond = false,
   --   event = "InsertEnter",
-  --   dependencies = "hrsh7th/nvim-cmp",
+  --   dependencies = "iguanacucumber/magazine.nvim",
   --   build = "./install.sh",
   --   config = function()
   --     require("cmp_tabnine.config"):setup {
@@ -662,6 +665,7 @@ return require("lazy").setup {
   -- },
   {
     "tzachar/highlight-undo.nvim",
+    -- commit="1ea1c79372d7d93c88fd97543880927b7635e3d2",
     config = function()
       require("highlight-undo").setup {
         undo = {
@@ -806,6 +810,18 @@ return require("lazy").setup {
     dependencies = "nvim-lua/plenary.nvim",
     config = function()
       require("neogit").setup()
+      local hl_manager = require "hl_manager"
+      hl_manager.highlight_from_src("NeogitDiffContext", "Normal", { bg = -5 })
+      hl_manager.highlight_link("NeogitDiffContextHighlight", "Normal", { bg = 5 })
+      -- hl_manager.highlight_link("NeogitDiffAdd", "NeogitDiffAdd")
+      -- hl_manager.highlight_link("NeogitDiffDelete", "NeogitDiffDelete")
+
+      hl_manager.highlight_link("NeogitDiffAddHighlight", "NeogitDiffAdd")
+      hl_manager.highlight_from_src("NeogitDiffAddCursor", "NeogitDiffAddHighlight", { fg = 25 })
+
+      hl_manager.highlight_link("NeogitDiffDeleteHighlight", "NeogitDiffDelete")
+      hl_manager.highlight_from_src("NeogitDiffDeleteCursor", "NeogitDiffDeleteHighlight", { fg = 25  })
+      -- hl_manager.highlight_link("NeogitDiffAddHighlight", "NeogitDiffAdd")
     end,
   },
   { "akinsho/git-conflict.nvim", version = "*", config = true }, -- for solving git
@@ -1307,7 +1323,7 @@ return require("lazy").setup {
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
-      "hrsh7th/nvim-cmp", -- Optional: For using slash commands and variables in the chat buffer
+      "iguanacucumber/magazine.nvim", -- Optional: For using slash commands and variables in the chat buffer
       "nvim-telescope/telescope.nvim", -- Optional: For using slash commands
       { "stevearc/dressing.nvim", opts = {} }, -- Optional: Improves the default Neovim UI
     },

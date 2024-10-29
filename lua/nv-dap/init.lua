@@ -64,6 +64,14 @@ local function cond_breakpoint()
   dap.set_breakpoint(vim.fn.input "Breakpoint condition: ")
 end
 
+local function exception_breakpoint()
+  dap.set_exception_breakpoints({"raised", "uncaught"})
+end
+
+local function hit_count_breakpoint()
+  dap.set_breakpoint(nil, vim.fn.input "Breakpoint hit_count: ")
+end
+
 local function log_breakpoint()
   dap.set_breakpoint(nil, nil, vim.fn.input "Log point message: ")
 end
@@ -141,10 +149,10 @@ local function eval_with_visual_selection()
 end
 
 local hint = [[
- _s_: Continue/Start  _X_: Dap Close   _b_: Breakpoint   _B_: Cond Breakpoint   _L_: Log Breakpoint
- _n_: Step            _<_: Step out    _>_: Step in      _c_: to cursor
- _x_: Quit DAP        _C_: Close UI    _K_: Eval         ^ ^
- ^
+ _s_: Continue/Start  _X_: Dap Close
+ _b_: Breakpoint      _B_: Conditional   _L_: Logbreak    _H_:Hit Count Break  _e_: Exception Break
+ _n_: Step            _<_: Step out      _>_: Step in     _c_: to cursor
+ _x_: Quit DAP        _C_: Close UI      _K_: Eval         ^ ^
  ^ ^              _q_: Exit Hydra
 ]]
 
@@ -176,6 +184,8 @@ local function show_dap_hydra()
       { "b", dap.toggle_breakpoint, { silent = true } },
       { "B", cond_breakpoint, { silent = true } },
       { "L", log_breakpoint, { silent = true } },
+      { "H", hit_count_breakpoint, { silent = true } },
+      { "e", exception_breakpoint, { silent = true } },
       -- { "R", dap.repl.open, { silent = true } },
       -- { "K", ":lua require('dap.ui.widgets').hover()<CR>", { silent = true } },
       { "K", eval_with_visual_selection, { silent = true } },
@@ -191,7 +201,6 @@ local function show_dap_hydra()
       { "q", nil, { exit = true, nowait = true } },
     },
   }
-
   dap_ft = vim.bo.filetype
   dap_hydra:activate()
 end

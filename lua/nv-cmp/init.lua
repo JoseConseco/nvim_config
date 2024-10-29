@@ -254,7 +254,7 @@ cmp.setup.cmdline(":", {
   },
   sources = {
     { name = "cmdline", priority = 2, group_index = 1 },
-    { name = "cmdline_history", priority = 1, group_index = 1, max_item_count = 3 },
+    { name = "cmdline_history", priority = 2, group_index = 1, max_item_count = 3 },
     { name = "path", priority = 1, group_index = 2 }, -- from tzacher
     -- { name = "buffer",          priority = 1, group_index = 1 },
   },

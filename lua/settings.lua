@@ -26,7 +26,7 @@ vim.opt.whichwrap:append "<,>,[,],h,l" -- move to next line with theses keys
 vim.cmd.set "noswapfile" -- move to next line with theses keys
 -- vim.cmd("set diffopt+=iwhite") --avoid comparing whitespaces  - but breaks diff obtain?
 -- use new linematch in neovim
-vim.cmd("set diffopt+=internal,algorithm:patience,linematch:60") --new diff mode in nvim 9.0
+vim.cmd("set diffopt+=internal,filler,linematch:120,algorithm:myers") --
 vim.opt.pumheight = 10 -- Makes popup menu smaller
 vim.opt.fileencoding = "utf-8" -- The encoding written to file
 vim.g.mapleader = " " -- The key used to prefix mappings
