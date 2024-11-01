@@ -218,7 +218,7 @@ local mini_diff_config = {
       indent_heuristic = true,
 
       -- The amount of second-stage diff to align lines (in Neovim>=0.9)
-      linematch = 60,
+      linematch = 120,
 
       -- Whether to wrap around edges during hunk navigation
       wrap_goto = false,

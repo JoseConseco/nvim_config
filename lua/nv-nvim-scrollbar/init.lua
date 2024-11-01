@@ -106,8 +106,8 @@ require("scrollbar").setup({
     },
     handlers = {
         diagnostic = false,
-        search = false, -- Requires hlslens to be loaded
-        gitsigns = true, -- Requires gitsigns.nvim
+        search = true, -- Requires hlslens to be loaded
+        gitsigns = false, -- Requires gitsigns.nvim
     },
 })
 

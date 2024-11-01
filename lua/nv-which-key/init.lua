@@ -275,7 +275,18 @@ wk.add {
   { "<leader>f", group = "File" },
   { "<leader>fS", ':call v:lua.CmdInput("w %s")<CR>', desc = "Save as" },
   { "<leader>fc", ":cd %:p:h<CR>", desc = "cd %" },
-  { "<leader>fd", ':call delete(expand("%")) | bdelete!<CR>', desc = "Delete!" },
+  -- { "<leader>fd", ':call delete(expand("%")) | bdelete!<CR>', desc = "Delete!" },
+  { "<leader>fd", function()
+      -- Prompt for confirmation before deleting the file
+      local filename = vim.fn.expand("%:t")
+      local response = vim.fn.confirm("Are you sure you want to delete '" .. filename .. "'?", "&Yes\n&No", 2)
+
+      if response == 1 then
+          -- User confirmed deletion
+          vim.fn.delete(vim.fn.expand("%"))
+          vim.cmd('bdelete!')
+      end
+  end, desc = "Delete file" },
   { "<leader>fe", ":luafile%<CR>", desc = "Source %" },
   { "<leader>fo", ':!xdg-open "%:p:h"<CR>', desc = "Open containing folder" },
   { "<leader>fr", ":confirm e<CR>", desc = "Reload File(e!)" },
@@ -347,8 +358,10 @@ local function toggle_diff_algorithm()
 
   if diffopt:find('algorithm:myers') then
     diffopt = diffopt:gsub('algorithm:myers', 'algorithm:patience')
+    print("Switched to patience algorithm")
   elseif diffopt:find('algorithm:patience') then
     diffopt = diffopt:gsub('algorithm:patience', 'algorithm:myers')
+    print("Switched to myers algorithm")
   else
     diffopt = (#diffopt > 0 and diffopt .. ',algorithm:myers' or 'algorithm:myers')
   end
