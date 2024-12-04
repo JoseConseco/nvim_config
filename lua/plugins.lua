@@ -568,7 +568,7 @@ return require("lazy").setup {
   },
   {
     "CopilotC-Nvim/CopilotChat.nvim",
-    branch = "canary",
+    branch = "main",
     dependencies = {
       { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
       { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
@@ -607,10 +607,10 @@ return require("lazy").setup {
         show_diff = {
           normal = "gd",
         },
-        show_system_prompt = {
+        show_info = {
           normal = "gp",
         },
-        show_user_selection = {
+        show_context = {
           normal = "gs",
         },
       },
@@ -1453,6 +1453,16 @@ return require("lazy").setup {
         hints = { enabled = false },
       }
     end,
+  },
+  {
+    "sphamba/smear-cursor.nvim",
+    opts = {
+      cursor_color = "#ff8800",
+      stiffness = 0.6,
+      trailing_stiffness = 0.2,
+      trailing_exponent = 4,
+      -- gamma = 1,
+    },
   },
   {
     "rasulomaroff/reactive.nvim", -- detect eg. operator pending mode

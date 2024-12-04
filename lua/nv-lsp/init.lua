@@ -227,10 +227,10 @@ nvim_lsp.basedpyright.setup {
 -- get abs file path to ./py_format.toml in current dir
 local py_format_toml = '/home/bartosz/.config/nvim/lua/nv-lsp/ruff_py_format.toml'
 local py_lint_toml = '/home/bartosz/.config/nvim/lua/nv-lsp/ruff_py_lint.toml'
-require'lspconfig'.ruff_lsp.setup{ -- rust fast, but: no hover highlight, no go definition etc
+require'lspconfig'.ruff.setup{ -- rust fast, but: no hover highlight, no go definition etc
   capabilities = capabilities,
   on_attach = on_attach,
-  cmd = {"ruff-lsp"},
+  cmd = {"ruff", "server"},
   filetypes = { "python" },
   init_options = {
     -- Any extra CLI arguments for `ruff` go here.
