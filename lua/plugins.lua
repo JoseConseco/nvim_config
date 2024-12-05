@@ -1456,6 +1456,7 @@ return require("lazy").setup {
   },
   {
     "sphamba/smear-cursor.nvim",
+    cond = vim.g.neovide == nil,
     opts = {
       cursor_color = "#ff8800",
       stiffness = 0.6,
