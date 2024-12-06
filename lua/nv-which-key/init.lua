@@ -288,7 +288,7 @@ wk.add {
       end
   end, desc = "Delete file" },
   { "<leader>fe", ":luafile%<CR>", desc = "Source %" },
-  { "<leader>fo", ':!xdg-open "%:p:h"<CR>', desc = "Open containing folder" },
+  { "<leader>fo", ':!xdg-open "%:p:h" &<CR>', desc = "Open containing folder" }, -- & - prevents blocking nvim ui
   { "<leader>fr", ":confirm e<CR>", desc = "Reload File(e!)" },
   { "<leader>fs", ":update<CR>", desc = "Save" },
   { "<leader>ft", ":Telescope filetypes<CR>", desc = "filetypes" },
