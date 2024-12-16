@@ -329,7 +329,7 @@ cmp_ai:setup {
     options = {
       temperature = 0.1,
       n_predict = 35,  -- number of generated predictions
-      min_p = 0.1, -- default 0.05,  Cut off predictions with probability below  Max_prob * min_p
+      ['min-p'] = 0.1, -- default 0.05,  Cut off predictions with probability below  Max_prob * min_p
       -- repeat_last_n = 64, -- default 64
       -- repeat_penalty = 1.100, -- default 1.1
 
@@ -339,8 +339,10 @@ cmp_ai:setup {
       -- model = "Qwen2.5-Coder-7B-Instruct-Q5_K_S", -- last's best with FIM and instruct at same time
       model = "Qwen2.5.1-Coder-7B-Instruct-Q5_K_M", -- is at as good as 2.5?
       -- cache_prompt= true, -- is necessary for llama.cpp to use the draft model -not..
-      md = "Qwen2.5.1-Coder-1.5B-Instruct-Q6_K.gguf", --
+      -- md = "Qwen2.5.1-Coder-1.5B-Instruct-Q6_K.gguf", -- draft model: at 1.5 size and bigger - questionabel speedup
+      md = "Qwen2.5-Coder-0.5B-Instruct-Q6_K.gguf", -- draft model: at 0.5 size and bigger - nicer speedup
       ngl = 50,
+      -- draft_min_p = 0.1,
     },
     prompt = function(lines_before, lines_after)
       return '<|fim_prefix|>' .. lines_before .. '<|fim_suffix|>' .. lines_after .. '<|fim_middle|>' -- CodeQwen1

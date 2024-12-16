@@ -1,113 +1,122 @@
 -- define black highlight with transparent background
-require("scrollbar").setup({
-    show = true,
-    show_in_active_only = true,
-    set_highlights = true,
-    folds = 1000, -- handle folds, set to number to disable folds if no. of lines in buffer exceeds this
-    max_lines = false, -- disables if no. of lines in buffer exceeds this
-    handle = {
-        text = "▌",
-        color = 'NONE',
-        -- color = nil,
-        cterm = nil,
-        highlight = "Normal",
-        hide_if_all_visible = true, -- Hides handle if all lines are visible
+require("scrollbar").setup {
+  show = true,
+  show_in_active_only = true,
+  set_highlights = true,
+  folds = 1000, -- handle folds, set to number to disable folds if no. of lines in buffer exceeds this
+  max_lines = false, -- disables if no. of lines in buffer exceeds this
+  handle = {
+    text = "▌",
+    color = "NONE",
+    -- color = nil,
+    cterm = nil,
+    highlight = "Normal",
+    hide_if_all_visible = true, -- Hides handle if all lines are visible
+  },
+  marks = {
+    Cursor = {
+      text = "•",
+      priority = 0,
+      gui = nil,
+      color = nil,
+      cterm = nil,
+      color_nr = nil, -- cterm
+      highlight = "Normal",
     },
-    marks = {
-        Search = {
-            text = { "━", "⚌" },
-            priority = 0,
-            color = nil,
-            cterm = nil,
-            highlight = "Search",
-        },
-        Error = {
-            text = { "━", "⚌" },
-            priority = 1,
-            color = nil,
-            cterm = nil,
-            highlight = "DiagnosticVirtualTextError",
-        },
-        Warn = {
-            text = { "━", "⚌" },
-            priority = 2,
-            color = nil,
-            cterm = nil,
-            highlight = "DiagnosticVirtualTextWarn",
-        },
-        Info = {
-            text = { "━", "⚌" },
-            priority = 3,
-            color = nil,
-            cterm = nil,
-            highlight = "DiagnosticVirtualTextInfo",
-        },
-        Hint = {
-            text = { "━", "⚌" },
-            priority = 4,
-            color = nil,
-            cterm = nil,
-            highlight = "DiagnosticVirtualTextHint",
-        },
-        Misc = {
-            text = { "━", "⚌" },
-            priority = 5,
-            color = nil,
-            cterm = nil,
-            highlight = "Normal",
-        },
-        GitAdd = {
-            text = "▎",
-            priority = 5,
-            color = nil,
-            cterm = nil,
-            highlight = "CustomSignsAdd",
-        },
-        GitChange = {
-            text = "▎",
-            priority = 5,
-            color = nil,
-            cterm = nil,
-            highlight = "CustomSignsChange",
-        },
-        GitDelete = {
-            text = "▎",
-            priority = 5,
-            color = nil,
-            cterm = nil,
-            highlight = "CustomSignsDelete",
-        },
+    Search = {
+      text = { "━", "⚌" },
+      priority = 0,
+      color = nil,
+      cterm = nil,
+      highlight = "Search",
     },
-    excluded_buftypes = {
-        "terminal",
+    Error = {
+      text = { "━", "⚌" },
+      priority = 1,
+      color = nil,
+      cterm = nil,
+      highlight = "DiagnosticVirtualTextError",
     },
-    excluded_filetypes = {
-        "prompt",
-        "TelescopePrompt",
-        "noice",
+    Warn = {
+      text = { "━", "⚌" },
+      priority = 2,
+      color = nil,
+      cterm = nil,
+      highlight = "DiagnosticVirtualTextWarn",
     },
-    autocmd = {
-        render = {
-            "BufWinEnter",
-            "TabEnter",
-            "TermEnter",
-            "WinEnter",
-            "CmdwinLeave",
-            "TextChanged",
-            "VimResized",
-            "WinScrolled",
-        },
-        clear = {
-            "BufWinLeave",
-            "TabLeave",
-            "TermLeave",
-            "WinLeave",
-        },
+    Info = {
+      text = { "━", "⚌" },
+      priority = 3,
+      color = nil,
+      cterm = nil,
+      highlight = "DiagnosticVirtualTextInfo",
     },
-    handlers = {
-        diagnostic = false,
-        search = false, -- Requires hlslens to be loaded
-        gitsigns = false, -- Requires gitsigns.nvim
+    Hint = {
+      text = { "━", "⚌" },
+      priority = 4,
+      color = nil,
+      cterm = nil,
+      highlight = "DiagnosticVirtualTextHint",
     },
-})
-
+    Misc = {
+      text = { "━", "⚌" },
+      priority = 5,
+      color = nil,
+      cterm = nil,
+      highlight = "Normal",
+    },
+    GitAdd = {
+      text = "▎",
+      priority = 5,
+      color = nil,
+      cterm = nil,
+      highlight = "CustomSignsAdd",
+    },
+    GitChange = {
+      text = "▎",
+      priority = 5,
+      color = nil,
+      cterm = nil,
+      highlight = "CustomSignsChange",
+    },
+    GitDelete = {
+      text = "▎",
+      priority = 5,
+      color = nil,
+      cterm = nil,
+      highlight = "CustomSignsDelete",
+    },
+  },
+  excluded_buftypes = {
+    "terminal",
+  },
+  excluded_filetypes = {
+    "prompt",
+    "TelescopePrompt",
+    "noice",
+  },
+  autocmd = {
+    render = {
+      "BufWinEnter",
+      "TabEnter",
+      "TermEnter",
+      "WinEnter",
+      "CmdwinLeave",
+      "TextChanged",
+      "VimResized",
+      "WinScrolled",
+    },
+    clear = {
+      "BufWinLeave",
+      "TabLeave",
+      "TermLeave",
+      "WinLeave",
+    },
+  },
+  handlers = {
+    cursor = false,
+    diagnostic = false,
+    search = false, -- Requires hlslens to be loaded
+    gitsigns = false, -- Requires gitsigns.nvim
+  },
+}

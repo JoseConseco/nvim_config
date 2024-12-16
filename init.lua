@@ -10,55 +10,34 @@ require "keymappings"
 
 local timeday_theme_au = vim.api.nvim_create_augroup("TimedayThemeAu", { clear = true })
 
--- remove auto_theme_change_ on manual ColorScheme event
-local timeday_theme_change_finish_id = nil
-local time_day_theme_auto = nil
-
-local function timeday_theme_change_quit()
-  timeday_theme_change_finish_id = vim.api.nvim_create_autocmd("ColorScheme", { -- will it work - may fire even on autocmd theme change...
-    pattern = "*",
-    callback = function()
-      print("ColorScheme")
-      vim.api.nvim_del_autocmd(time_day_theme_auto)
-      timeday_theme_change_finish_id = nil
-      return true -- finish this autocmd too
-    end,
-    group = timeday_theme_au,
-  })
-end
-timeday_theme_change_quit()
-
--- why it wont load indentline even odd correctly?
 local function theme_change_timeday(start_hour, end_hour)
   local time = tonumber(vim.fn.strftime "%H")
   local current_theme = vim.g.colors_name
-  vim.api.nvim_del_autocmd(timeday_theme_change_finish_id) -- disable timeday_theme_change_finish_id
+
   if time < start_hour or time > end_hour then
     if current_theme ~= "nightfox" then
-      -- print("Changing theme to nightfox")
       vim.cmd.colorscheme "nightfox"
     end
   else
     if current_theme ~= "dayfox" then
-      -- print("Changing theme to dayfox")
       vim.cmd.colorscheme "dayfox"
     end
   end
-  vim.cmd [[doautoall ColorScheme]]
-  timeday_theme_change_quit()
-
 end
 
-time_day_theme_auto = vim.api.nvim_create_autocmd({"FocusGained" ,"FocusLost" }, {
-  pattern = "*",
-  callback = function()
-    theme_change_timeday(9, 18)
-  end,
+-- Only create one autocmd for theme change
+vim.api.nvim_create_autocmd({"VimEnter", "FocusGained"}, {
   group = timeday_theme_au,
-  -- nested = true, -- dow notwork in this case
+  callback = function()
+    theme_change_timeday(9, 15)
+  end,
+  once = true,  -- Ensures it runs only once
 })
-theme_change_timeday(9, 18)
 
+-- Initial theme setup
+theme_change_timeday(9, 15)
+
+  -- vim.cmd [[doautoall ColorScheme]] - why was here in old setup - very slow..
 
 
 -- hide cursorline in inactive windows
