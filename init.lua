@@ -29,13 +29,13 @@ end
 vim.api.nvim_create_autocmd({"VimEnter", "FocusGained"}, {
   group = timeday_theme_au,
   callback = function()
-    theme_change_timeday(9, 15)
+    theme_change_timeday(9, 13)
   end,
   once = true,  -- Ensures it runs only once
 })
 
 -- Initial theme setup
-theme_change_timeday(9, 15)
+theme_change_timeday(9, 13)
 
   -- vim.cmd [[doautoall ColorScheme]] - why was here in old setup - very slow..
 

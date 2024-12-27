@@ -83,7 +83,7 @@ return require("lazy").setup {
   -- -- UI -------------------------------------------------------------------------------------------------------
   {
     -- "norcalli/nvim-colorizer.lua",  -- original repo - not maintained
-    "NvChad/nvim-colorizer.lua",
+    "NvChad/nvim-colorizer.lua", -- colorize hex, rgb, hsl colors
     config = function()
       require("colorizer").setup {
         filetypes = { "css", "lua", "html" },
@@ -256,7 +256,7 @@ return require("lazy").setup {
     config = function()
       require("focus").setup {
         enabled = true,
-        excluded_filetypes = { "fzf" },
+        excluded_filetypes = { "fzf", "oil" },
       }
     end,
   },
@@ -278,7 +278,7 @@ return require("lazy").setup {
         ignore = {
           --			  |windows.ignore|
           buftype = { "quickfix" },
-          filetype = { "NvimTree", "neo-tree", "undotree", "gundo", "DiffviewFiles" },
+          filetype = { "NvimTree", "neo-tree", "undotree", "gundo", "DiffviewFiles", "oil" },
         },
         animation = {
           duration = 200, -- ms
@@ -577,6 +577,7 @@ return require("lazy").setup {
       debug = false, -- Enable debugging
       auto_follow_cursor = false,
       -- See Configuration section for rest
+      model = 'claude-3.5-sonnet',
 
       -- default mappings
       mappings = {
@@ -739,6 +740,15 @@ return require("lazy").setup {
     "stevearc/oil.nvim",
     config = function()
       require("oil").setup {}
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "OilEnter",
+        callback = vim.schedule_wrap(function(args)
+          local oil = require("oil")
+          if vim.api.nvim_get_current_buf() == args.data.buf and oil.get_cursor_entry() then
+            oil.open_preview()
+          end
+        end),
+      })
     end,
   },
   {
