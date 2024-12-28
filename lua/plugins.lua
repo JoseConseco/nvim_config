@@ -648,6 +648,7 @@ return require("lazy").setup {
   },
   { "quangnguyen30192/cmp-nvim-ultisnips", dependencies = { "iguanacucumber/magazine.nvim" } },
   { "dmitmel/cmp-cmdline-history", dependencies = "hrsh7th/cmp-cmdline" },
+  -- require "nv-blink", -- comp=ai wont work
   -- { "tzachar/cmp-fuzzy-path", dependencies = { "iguanacucumber/magazine.nvim", "hrsh7th/cmp-path", "tzachar/fuzzy.nvim" } }
   -- use { "tzachar/cmp-fuzzy-buffer", dependencies = { "iguanacucumber/magazine.nvim", "tzachar/fuzzy.nvim" } }
   -- {
