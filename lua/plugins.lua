@@ -261,7 +261,8 @@ return require("lazy").setup {
     end,
   },
   {
-    "anuvyklack/windows.nvim", -- auto expand wjindowsk
+    -- "anuvyklack/windows.nvim", -- auto expand windows
+    "JoseConseco/windows.nvim", -- auto expand windows - fork with auto height support
     cond = true,
     dependencies = {
       "anuvyklack/middleclass",
@@ -272,8 +273,22 @@ return require("lazy").setup {
       vim.o.winwidth = 15
       vim.o.equalalways = false
       require("windows").setup {
+        autoboth = {
+          enable = false,  -- takes settings from autowidth and autoheight
+        },
         autowidth = {
+          enable = false,
           winwidth = 0.62,
+          filetype = {			--	      |windows.autowidth.filetype|
+             help = 2,
+          },
+        },
+        autoheight = {
+          enable = true,
+          winheight = 0.62,
+          filetype = {			--	      |windows.autowidth.filetype|
+             help = 2,
+          },
         },
         ignore = {
           --			  |windows.ignore|
