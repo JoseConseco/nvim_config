@@ -274,7 +274,7 @@ return require("lazy").setup {
       vim.o.equalalways = false
       require("windows").setup {
         autoboth = {
-          enable = false,  -- takes settings from autowidth and autoheight
+          enable = true,  -- takes settings from autowidth and autoheight
         },
         autowidth = {
           enable = false,
@@ -284,7 +284,7 @@ return require("lazy").setup {
           },
         },
         autoheight = {
-          enable = true,
+          enable = false,
           winheight = 0.62,
           filetype = {			--	      |windows.autowidth.filetype|
              help = 2,
