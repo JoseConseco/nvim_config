@@ -376,9 +376,17 @@ wk.add {
   { "<leader>gcc", compare_to_clipboard,  desc = "Clipboard" },
   { "<leader>gcs", diffWithSaved, desc = "Diff with saved" },
   { "<leader>gd", group = "DiffView" },
-  { "<leader>gdd", ":DiffviewOpen<CR>", desc = "Diffview Open" },
+  -- { "<leader>gdd", ":DiffviewOpen<CR>", desc = "Diffview Open" },
   { "<leader>gdf", ":DiffviewFileHistory %<CR>", desc = "Diffview File History" },
   { "<leader>gdh", ":DiffviewFileHistory --base=LOCAL %<CR>", desc = "Diffview File History (LOCAL)" },
+  { "<leader>gdd", function()
+      if next(require("diffview.lib").views) == nil then
+        vim.cmd('DiffviewOpen')
+      else
+        vim.cmd('DiffviewClose')
+      end
+    end, desc = "Toggle Diffview"},
+  { "<leader>gdl", "<Cmd>.DiffviewFileHistory --follow<CR>", desc = "File history for the current line" },
   { "<leader>gds", "<Cmd>'<,'>DiffviewFileHistory --follow<CR>",  desc = 'Selection history'},
   { "<leader>gdi", toggle_iwhite, desc = "Toggle iwhite" },
   { "<leader>gda", toggle_diff_algorithm, desc = "Toggle Diff Algorithm" },

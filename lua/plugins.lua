@@ -278,7 +278,7 @@ return require("lazy").setup {
         },
         autowidth = {
           enable = false,
-          winwidth = 0.62,
+          winwidth = 1.5,
           filetype = {			--	      |windows.autowidth.filetype|
              help = 2,
           },
@@ -880,11 +880,42 @@ return require("lazy").setup {
     end,
   }, -- lua + wont close () next to char finally good and simple +++
   {
+      "f-person/git-blame.nvim",
+      -- load the plugin at startup
+      event = "VeryLazy",
+      -- Because of the keys part, you will be lazy loading this plugin.
+      -- The plugin wil only load once one of the keys is used.
+      -- If you want to load the plugin at startup, add something like event = "VeryLazy",
+      -- or lazy = false. One of both options will work.
+      opts = {
+          -- your configuration comes here
+          -- for example
+          enabled = true,  -- if you want to enable the plugin
+          message_template = " <summary> • <date> • <author> • <<sha>>", -- template for the blame message, check the Message template section for more options
+          date_format = "%m-%d-%Y %H:%M:%S", -- template for the date, check Date format section for more options
+          virtual_text_column = 1,  -- virtual text start column, check Start virtual text at column section for more options
+      },
+
+  },
+  {
     "sindrets/diffview.nvim",
     cmd = { "DiffviewOpen", "DiffviewFileHistory" },
     config = function()
       require("diffview").setup {
         enhanced_diff_hl = true,
+
+        file_panel = {
+          listing_style = "tree",             -- One of 'list' or 'tree'
+          tree_options = {                    -- Only applies when listing_style is 'tree'
+            flatten_dirs = true,              -- Flatten dirs that only contain one single dir
+            folder_statuses = "only_folded",  -- One of 'never', 'only_folded' or 'always'.
+          },
+          win_config = {                      -- See |diffview-config-win_config|
+            position = "bottom",
+            height = 15,
+            win_opts = {},
+          },
+        },
       }
     end,
   },
