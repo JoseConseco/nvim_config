@@ -391,6 +391,16 @@ wk.add {
   { "<leader>gdi", toggle_iwhite, desc = "Toggle iwhite" },
   { "<leader>gda", toggle_diff_algorithm, desc = "Toggle Diff Algorithm" },
 
+  { '<leader>ghp', group = 'Pull Request' },
+  { '<leader>ghpc', '<cmd>GHClosePR<cr>', desc = 'Close' },
+  { '<leader>ghpd', '<cmd>GHPRDetails<cr>', desc = 'Details' },
+  { '<leader>ghpe', '<cmd>GHExpandPR<cr>', desc = 'Expand' },
+  { '<leader>ghpo', '<cmd>GHOpenPR<cr>', desc = 'Open' },
+  { '<leader>ghpp', '<cmd>GHPopOutPR<cr>', desc = 'PopOut' },
+  { '<leader>ghpr', '<cmd>GHRefreshPR<cr>', desc = 'Refresh' },
+  { '<leader>ghpt', '<cmd>GHOpenToPR<cr>', desc = 'Open To' },
+  { '<leader>ghpz', '<cmd>GHCollapsePR<cr>', desc = 'Collapse' },
+
   { "<leader>gn", ":Neogit<CR>", desc = "NeoGit" },
   { "<leader>gg", ":FloatermNew lazygit<CR>", desc = "LazyGit" },
   { "<leader>gn", group = "Neogit" },

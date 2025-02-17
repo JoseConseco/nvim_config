@@ -850,6 +850,20 @@ return require("lazy").setup {
       -- hl_manager.highlight_link("NeogitDiffAddHighlight", "NeogitDiffAdd")
     end,
   },
+  {
+      "ldelossa/gh.nvim", -- for merging/reviewing PRs
+      dependencies = {
+          {
+          "ldelossa/litee.nvim",
+          config = function()
+              require("litee.lib").setup()
+          end,
+          },
+      },
+      config = function()
+          require("litee.gh").setup()
+      end,
+  },
   { "akinsho/git-conflict.nvim", version = "*", config = true }, -- for solving git
   {
     "kylechui/nvim-surround",
