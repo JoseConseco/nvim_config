@@ -15,12 +15,11 @@
 require("mini.files").setup {
   windows= {
     preview = true,
-    width_preview = 50,
+    width_preview = 80,
   },
 }
 
 --------------------------------------------
-
 
 
 
@@ -227,7 +226,7 @@ local mini_diff_config = {
 diff.setup(mini_diff_config)
 
 
--- require('mini.ai').setup({}) -- kind of ok, but does not handle spaces in args nice?
+
 -- require('mini.jump').setup({
 -- 	  mappings = {
 -- 		    forward = 'f',

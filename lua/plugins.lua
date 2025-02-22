@@ -957,6 +957,7 @@ return require("lazy").setup {
       require "nv-todo"
     end,
   },
+  -- require"nv-snacks",
   {
     "rainbowhxch/accelerated-jk.nvim", -- increase speed of jk after n jumps
     config = function()
