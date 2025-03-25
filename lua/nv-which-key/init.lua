@@ -270,11 +270,60 @@ wk.add {
 function _G.yankpath()
   vim.cmd [[let @+=expand('%:p')]]
 end
+
+
+
+local set_root = function()
+  -- Array of file names indicating root directory. Modify to your liking.
+  local root_names = { ".git", "Makefile" }
+  local break_on_dirs = {'addons', '.config', 'bartosz'}
+
+  -- Cache to use for speed up (at cost of possibly outdated results)
+  local root_cache = {}
+
+  -- Get directory path to start search from
+  local path = vim.api.nvim_buf_get_name(0)
+  if path == "" then
+    return
+  end
+  path = vim.fs.dirname(path)
+
+  -- Try cache and resort to searching upward for root directory
+  print("Searching for root directory...")
+  print("Starting from: " .. path)
+  local root = root_cache[path]
+  if root == nil then
+    local current = path
+    local root_file = vim.fs.find(root_names, { path = current, upward = true })[1]
+    if root_file ~= nil then
+      print("Root found: " .. root_file)
+      root = vim.fs.dirname(root_file)
+      root_cache[path] = root
+    end
+  end
+
+  -- If root found, ask user for confirmation
+  if root and vim.fn.isdirectory(root) == 1 then
+    local confirm = vim.fn.confirm(
+      "Change directory to: " .. root,
+      "&Yes\n&No",
+      1
+    )
+    if confirm == 1 then
+      vim.cmd.cd(root)
+      print("Changed directory to: " .. root)
+    end
+  else
+    print("No root directory found")
+  end
+end
+
 -- file
 wk.add {
   { "<leader>f", group = "File" },
   { "<leader>fS", ':call v:lua.CmdInput("w %s")<CR>', desc = "Save as" },
   { "<leader>fc", ":cd %:p:h<CR>", desc = "cd %" },
+  { "<leader>ffr", function() set_root() end, desc = 'Search up for root dir'} ,
   -- { "<leader>fd", ':call delete(expand("%")) | bdelete!<CR>', desc = "Delete!" },
   { "<leader>fd", function()
       -- Prompt for confirmation before deleting the file

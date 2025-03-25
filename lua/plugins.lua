@@ -577,6 +577,8 @@ return require("lazy").setup {
     config = function()
       vim.g.copilot_no_tab_map = true
       vim.g.copilot_assume_mapped = true
+
+
       vim.g.copilot_tab_fallback = ""
       vim.g.copilot_filetypes = { ["dap-repl"] = false }
     end,
@@ -697,6 +699,7 @@ return require("lazy").setup {
   },
   {
     "zbirenbaum/copilot.lua", -- alternative in lua
+    -- commit="acb0545ac9c1d85c2e8b01075eb451fdfca3b7b7",
     event = "InsertEnter",
     cmd = "Copilot",
     config = function()
@@ -707,6 +710,9 @@ return require("lazy").setup {
       }
     end,
   },
+  -- {
+  --     'ggml-org/llama.vim', # cool with caching, but cmp seems faster
+  -- },
   {
     "zbirenbaum/copilot-cmp",
     event = "InsertEnter",
@@ -1392,6 +1398,7 @@ return require("lazy").setup {
   },
   {
     "olimorris/codecompanion.nvim",
+    cond=false,
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
@@ -1418,6 +1425,7 @@ return require("lazy").setup {
   {
     "yetone/avante.nvim", -- emulate the behaviour of the Cursor AI IDE: ChatGpt, Copilot, Deepseek etc
     -- commit = "2bab4bf601650eede1a91a53134b406863a8e06b", -- after that  copilot support was removed
+    cond=false,
     event = "VeryLazy",
     lazy = false,
     opts = {
