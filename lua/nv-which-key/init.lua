@@ -213,9 +213,9 @@ wk.add {
   mode = { "v" },
   { "<leader>c", group = "Code" },
   { "<leader>cc", "<cmd>TextCaseOpenTelescope<CR>", desc = "Case Change" },
-  { "<leader>ce", ":lua require('refactoring').refactor('Extract Function')<CR>", desc = "Extract Function" },
-  { "<leader>ci", ":lua require('refactoring').refactor('Inline Variable')<CR>", desc = "Inline Variable" },
-  { "<leader>cv", ":lua require('refactoring').refactor('Extract Variable')<CR>", desc = "Extract Variable" },
+  { "<leader>ce", ":Refactor extract<CR>", desc = "Extract Function" },
+  { "<leader>ci", ":Refactor inline_var<CR>", desc = "Inline Variable" },
+  { "<leader>cv", ":Refactor extract_var<CR>", desc = "Extract Variable" },
 }
 
 -- copilot section using capital C: CopilotChatOpen, CopilotChatClose, CopilotChatExplain, CopilotChatFix,  CopilotChatOptimize, CopilotChatDocs
