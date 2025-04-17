@@ -236,7 +236,7 @@ Hydra.spawn["dap_hydra"] = function()
 end
 
 dap.listeners.before.event_initialized["hydra_integration"] = function(session, body)
-  print("Started", vim.inspect(session), vim.inspect(body))
+  -- print("Started", vim.inspect(session), vim.inspect(body))
   dap.set_breakpoint()
   require "dapui".open() -- has to be first - before hyrra - or errors out
   require("hydra").spawn["dap_hydra"]()

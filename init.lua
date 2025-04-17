@@ -104,7 +104,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   group = init_group,
 })
 
-
 -- -- fix cmd line suppressed messages on echo (cmp fault?)
 -- -- see issue: https://github.com/gelguy/wilder.nvim/issues/41#issuecomment-860025867
 -- vim.cmd [[

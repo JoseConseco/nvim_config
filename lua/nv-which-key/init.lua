@@ -199,9 +199,16 @@ wk.add {
     "<leader>cd",
     function()
       vim.diagnostic.open_float()
+      -- vim.diagnostic.config { virtual_lines = { current_line = true } }
+      -- local show_diag = vim.diagnostic.config().virtual_lines
+      -- if show_diag then
+      --   vim.diagnostic.config { virtual_lines = false }
+      -- else
+      -- end
     end,
     desc = "Diagnostic Float",
   },
+
   { "<leader>cl", ":CreateCompletionLine<CR>", desc = "Create Completion" },
   { "<leader>co", ":AerialNavToggle<cr>", desc = "Open Outliner (Aerial)" },
   { "<leader>cs", group = "Spell" },
@@ -552,25 +559,14 @@ end
 wk.add {
   { "<leader>o", group = "Open" },
   { "<leader>o/", "q/", desc = "Search History (q/)" },
-  { "<leader>oC", ":Codi!<CR>", desc = "Codi Stop" },
   { "<leader>oE", ":Ex<CR>", desc = "Open Explorer(Ex)" },
-  { "<leader>oL", ":lua.require('luapad').detach()<CR>", desc = "Luapad Repl Off" },
   { "<leader>oO", ":SymbolsOutline<CR>", desc = "Outliner (lsp)" },
   { "<leader>oT", ':!alacritty --working-directory "%:p:h"<CR>', desc = "Terminal External" },
   { "<leader>oU", ":UndotreeToggle<CR>", desc = "Undo Tree" },
   { "<leader>oa", ":AerialOpen float<cr>", desc = "Open Outliner (Aerial)" },
-  {
-    "<leader>oc",
-    function()
-      vim.cmd [[Codi]]
-      require("hydra").spawn["codi"]()
-    end,
-    desc = "Codi Start (multi lang REPL)",
-  },
   { "<leader>od", ":Dirbuf<CR>", desc = "Dirbuf" },
   { "<leader>of", ":lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<cr>", desc = "File Browser (fuzzy)" },
   { "<leader>oh", "q:", desc = "Commands History (q:)" },
-  { "<leader>ol", ":Luapad<CR>", desc = "Luapad Repl On" },
   { "<leader>oo", ":lopen<CR>", desc = "Loclist (lopen)" },
   { "<leader>oq", ":copen<CR>", desc = "Quickfix (copen)" },
   { "<leader>ot", ":FloatermNew<CR>", desc = "Term Float" },

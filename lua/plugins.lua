@@ -699,7 +699,7 @@ return require("lazy").setup {
   },
   {
     "zbirenbaum/copilot.lua", -- alternative in lua
-    -- commit="acb0545ac9c1d85c2e8b01075eb451fdfca3b7b7",
+    -- commit="acb0545ac9c1d85c2e8b01075eb451fdfca3b7b7", -- new version just throws lots of errors...  [RPC - something
     event = "InsertEnter",
     cmd = "Copilot",
     config = function()
@@ -709,6 +709,22 @@ return require("lazy").setup {
         filetypes = { markdown = true },
       }
     end,
+  },
+  {
+    'Xuyuanp/nes.nvim',
+    -- event = 'VeryLazy',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+    },
+    config = function()
+      vim.api.nvim_set_hl(0, "NesAdd", { link = "DiffAdd" })
+      vim.api.nvim_set_hl(0, "NesDelete", { link = "DiffDelete" })
+    end,
+    opts = {},
+    keys = {
+      { '<A-i>', function() require('nes').get_suggestion() end, mode = 'i', desc = '[Nes] get suggestion', },
+      { '<A-n>', function() require('nes').apply_suggestion(0, { jump = true, trigger = true }) end, mode = 'i', desc = '[Nes] apply suggestion', },
+    },
   },
   -- {
   --     'ggml-org/llama.vim', # cool with caching, but cmp seems faster
@@ -1244,7 +1260,7 @@ return require("lazy").setup {
         mode = { "n", "x", "o" },
         function()
           require("flash").jump {
-            search = { mode = "search", max_length = 0 }, -- len == 0  so all labels will be used and skips won't be calculated
+            search = { mode = "search", max_length = 2 }, -- len == 0  so all labels will be used and skips won't be calculated
             label = { after = { 0, 0 } },
             highlight = {
               matches = false, -- to hide the whitespace match
@@ -1381,12 +1397,15 @@ return require("lazy").setup {
   },
 
   --REPLS -------------------------------------------------------------------------------------------------------
-  "rafcamlet/nvim-luapad", -- :Luapad - open interactive scratch bufer with realtime eval
   {
-    "metakirby5/codi.vim", -- repls for all other langs ...
-    config = function()
-      require "nv-codi"
-    end,
+    "yarospace/lua-console.nvim",
+    lazy = true,
+    keys = {
+      { "`", desc = "Lua-console - toggle" },
+      { "<Leader>`", desc = "Lua-console - attach to buffer" },
+    },
+    opts = {
+    },
   },
   {
     "David-Kunz/gen.nvim",
