@@ -335,6 +335,7 @@ return require("lazy").setup {
   {
     "mfussenegger/nvim-dap", --too simple
     lazy = true,
+    commit="e771e86a69a8ba60cffb16609773522eafb9f41a", -- newver has issue with daup ui
     config = function()
       require "dap"
       require "nv-dap"
@@ -616,7 +617,7 @@ return require("lazy").setup {
         },
         accept_diff = {
           normal = "A",
-          insert = "A",
+          insert = "",
         },
         yank_diff = {
           normal = "gy",
@@ -928,8 +929,9 @@ return require("lazy").setup {
           -- for example
           enabled = true,  -- if you want to enable the plugin
           message_template = " <summary> • <date> • <author> • <<sha>>", -- template for the blame message, check the Message template section for more options
-          date_format = "%m-%d-%Y %H:%M:%S", -- template for the date, check Date format section for more options
+          date_format = "%d-%m-%Y", -- template for the date, check Date format section for more options
           virtual_text_column = 1,  -- virtual text start column, check Start virtual text at column section for more options
+          delay = 1000,
       },
 
   },
@@ -1398,14 +1400,12 @@ return require("lazy").setup {
 
   --REPLS -------------------------------------------------------------------------------------------------------
   {
-    "yarospace/lua-console.nvim",
-    lazy = true,
-    keys = {
-      { "`", desc = "Lua-console - toggle" },
-      { "<Leader>`", desc = "Lua-console - attach to buffer" },
-    },
-    opts = {
-    },
+    "michaelb/sniprun",
+    branch = "master",
+    build = "sh ./install.sh",
+    config = function()
+      require "nv-sniprun"
+    end,
   },
   {
     "David-Kunz/gen.nvim",
@@ -1442,116 +1442,74 @@ return require("lazy").setup {
     end
   },
   {
-    "yetone/avante.nvim", -- emulate the behaviour of the Cursor AI IDE: ChatGpt, Copilot, Deepseek etc
-    -- commit = "2bab4bf601650eede1a91a53134b406863a8e06b", -- after that  copilot support was removed
-    cond=false,
+    "yetone/avante.nvim",
     event = "VeryLazy",
-    lazy = false,
+    version = false, -- Never set this value to "*"! Never!
     opts = {
       -- add any opts here
-    },
-    keys = {
-      { "<leader>aa", function() require("avante.api").ask() end, desc = "avante: ask", mode = { "n", "v" }, },
-      { "<leader>ar", function() require("avante.api").refresh() end, desc = "avante: refresh", },
-      { "<leader>ae", function() require("avante.api").edit() end, desc = "avante: edit", mode = "v", },
-      { "<leader>as", function() require("avante.api").get_suggestion():suggest() end, desc = "avante: Suggest", mode = "v", },
+      -- for example
+      provider = "copilot",
+      -- providers = {
+      --   openai = {
+      --     endpoint = "https://api.openai.com/v1",
+      --     model = "gpt-4o", -- your desired model (or use gpt-4o, etc.)
+      --     extra_request_body = {
+      --       timeout = 30000, -- Timeout in milliseconds, increase this for reasoning models
+      --       temperature = 0.75,
+      --       max_completion_tokens = 8192, -- Increase this to include reasoning tokens (for reasoning models)
+      --       --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
+      --     },
+      --   },
+      -- },
+      behaviour = {
+          auto_suggestions = false, -- Experimental stage - can cause ban for overuse of copilot
+      },
+      suggestion = {
+        debounce = 9000,
+        throttle = 600,
+      },
     },
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
     build = "make",
     -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
     dependencies = {
+      "nvim-treesitter/nvim-treesitter",
       "stevearc/dressing.nvim",
       "nvim-lua/plenary.nvim",
       "MunifTanjim/nui.nvim",
       --- The below dependencies are optional,
+      "echasnovski/mini.pick", -- for file_selector provider mini.pick
+      "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
+      "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
+      "ibhagwan/fzf-lua", -- for file_selector provider fzf
       "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
       "zbirenbaum/copilot.lua", -- for providers='copilot'
       {
         -- support for image pasting
-        -- "HakonHarnes/img-clip.nvim",
-        -- event = "VeryLazy",
-        -- opts = {
-        --   -- recommended settings
-        --   default = {
-        --     embed_image_as_base64 = false,
-        --     prompt_for_file_name = false,
-        --     drag_and_drop = {
-        --       insert_mode = true,
-        --     },
-        --     -- required for Windows users
-        --     use_absolute_path = true,
-        --   },
-        -- },
-      },
-      mappings = {
-        --- @class AvanteConflictMappings
-        diff = {
-          ours = "co",
-          theirs = "ct",
-          all_theirs = "ca",
-          both = "cb",
-          cursor = "cc",
-          next = "]x",
-          prev = "[x",
-        },
-        suggestion = {
-          accept = "<M-l>",
-          next = "<M-]>",
-          prev = "<M-[>",
-          dismiss = "<C-]>",
-        },
-        jump = {
-          next = "]]",
-          prev = "[[",
-        },
-        submit = {
-          normal = "<CR>",
-          insert = "<C-s>",
+        "HakonHarnes/img-clip.nvim",
+        event = "VeryLazy",
+        opts = {
+          -- recommended settings
+          default = {
+            embed_image_as_base64 = false,
+            prompt_for_file_name = false,
+            drag_and_drop = {
+              insert_mode = true,
+            },
+            -- required for Windows users
+            use_absolute_path = true,
+          },
         },
       },
       {
         -- Make sure to set this up properly if you have lazy=true
-        "MeanderingProgrammer/render-markdown.nvim",
+        'MeanderingProgrammer/render-markdown.nvim',
         opts = {
           file_types = { "markdown", "Avante" },
         },
         ft = { "markdown", "Avante" },
       },
     },
-    config = function()
-      require("avante").setup {
-        provider = "copilot",
-        -- provider = "deepseek", -- noo goooddd
-        -- vendors = {
-        --   ["deepseek"] = {
-        --     endpoint = "https://api.deepseek.com/chat/completions",
-        --     model = "deepseek-coder",
-        --     api_key_name = "DEEPSEEK_API_KEY",
-        --     parse_curl_args = function(opts, code_opts)
-        --       return {
-        --         url = opts.endpoint,
-        --         headers = {
-        --           ["Accept"] = "application/json",
-        --           ["Content-Type"] = "application/json",
-        --           ["Authorization"] = "Bearer " .. os.getenv(opts.api_key_name),
-        --         },
-        --         body = {
-        --           model = opts.model,
-        --           messages = require("avante.providers").azure.parse_message(code_opts), -- you can make your own message, but this is very advanced
-        --           temperature = 0,
-        --           max_tokens = 4096,
-        --           stream = true, -- this will be set by default.
-        --         },
-        --       }
-        --     end,
-        --     parse_response_data = function(data_stream, event_state, opts)
-        --       require("avante.providers").azure.parse_response(data_stream, event_state, opts)
-        --     end,
-        --   },
-        -- },
-        hints = { enabled = false },
-      }
-    end,
   },
   {
     "sphamba/smear-cursor.nvim",

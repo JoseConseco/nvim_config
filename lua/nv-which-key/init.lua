@@ -569,6 +569,16 @@ wk.add {
   { "<leader>oh", "q:", desc = "Commands History (q:)" },
   { "<leader>oo", ":lopen<CR>", desc = "Loclist (lopen)" },
   { "<leader>oq", ":copen<CR>", desc = "Quickfix (copen)" },
+
+  {
+    "<leader>or",
+    function()
+      require("hydra").spawn["snip_hydra"]()
+    end,
+    desc = "REPL Hydra (SnipRun)",
+  },
+  -- { "<leader>ol", ":lua require('lua-console.utils').load_saved_console()<CR>", desc = "LuaConsle" },
+  { "<leader>ol", ":LuaConsole AttachToggle<CR>", desc = "LuaConsle Attach" },
   { "<leader>ot", ":FloatermNew<CR>", desc = "Term Float" },
 }
 
@@ -597,7 +607,7 @@ wk.add {
   { "<leader>sp*", "<Plug>CtrlSFCCwordPath<CR>", desc = "CtrlSF Word" },
   { "<leader>spc", "<Plug>CtrlSFPrompt -R {regex} -G *.py", desc = "CtrlSF" },
   { "<leader>spe", "<plug>(operator-esearch-prefill)<CR>", desc = "Esearch" },
-  { "<leader>spa", ":lua require('grug-far').grug_far({ engine='astgrep', prefills = { search = vim.fn.expand('<cword>') } })<CR>", desc = "GrugFar AST" },
+  { "<leader>spa", ":lua require('grug-far').open({ engine='astgrep', prefills = { search = vim.fn.expand('<cword>') } })<CR>", desc = "GrugFar AST" },
   { "<leader>sps", "<cmd>lua require('spectre').open_visual({select_word=true})<CR>", desc = "Spectre" }, -- select word wont work
   { "<leader>ss", ":lua require('spectre').open_file_search({select_word=true})<CR>", desc = "Spectre Local" },
 }
@@ -700,7 +710,7 @@ wk.add {
 
   -- Global Minimap Controls
   { "<leader>um", group = "Minimap" },
-  { "<leader>umm", "<cmd>Neominimap toggle<cr>", desc = "Toggle global minimap" },
+  { "<leader>umm", "<cmd>Neominimap Toggle<cr>", desc = "Toggle global minimap" },
   -- { "<leader>umr", "<cmd>Neominimap refresh<cr>", "Refresh global minimap" },
 
   -- Buffer-Specific Minimap Controls
@@ -732,7 +742,7 @@ wk.add {
 wk.add {
   { "<leader>q", group = "Quit" },
   { "<leader>qf", ":q!<CR>", desc = "Force Quit (q!)" },
-  { "<leader>qq", "<cmd>TSContextDisable<cr>|:call v:lua.Save_current_session()<CR>|:confirm qa", desc = "Quit Confirm (qa)" },
+  { "<leader>qq", "<cmd>TSContext disable<cr>|:call v:lua.Save_current_session()<CR>|:confirm qa", desc = "Quit Confirm (qa)" },
   { "<leader>qs", ":bufdo update | q!<CR>", desc = "Quit Save all (wqa!)" },
 }
 wk.add { -- second one for visual mode
