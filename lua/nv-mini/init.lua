@@ -41,23 +41,26 @@ vim.api.nvim_set_keymap("o", "A", 'aa', { noremap = false, desc = "Around Argume
 vim.api.nvim_set_keymap("x", "A.", 'aa', { noremap = false, desc = "Around Argument" })
 
 
--- local diff = require('mini.diff') -- eg. show diff with saved file ver
--- diff.setup({
---   source = diff.gen_source.save(),
---
---   -- Options for how hunks are visualized
---     view = {
---       -- Visualization style. Possible values are 'sign' and 'number'.
---       style = vim.o.number and 'number' or 'sign',
---
---       -- Signs used for hunks with 'sign' view
---       signs = { add = '❱', change = '❱', delete = '❱' },
---
---       -- Priority of used visualization extmarks
---       priority = vim.highlight.priorities.user - 1,
---     },
---
--- })
+local diff = require('mini.diff') -- eg. show diff with saved file ver
+diff.setup({
+  -- source = diff.gen_source.save(),
+
+  -- Disabled by default -- for codecompanion
+  source = diff.gen_source.none(),
+
+  -- Options for how hunks are visualized
+    view = {
+      -- Visualization style. Possible values are 'sign' and 'number'.
+      style = vim.o.number and 'number' or 'sign',
+
+      -- Signs used for hunks with 'sign' view
+      signs = { add = '❱', change = '❱', delete = '❱' },
+
+      -- Priority of used visualization extmarks
+      priority = vim.hl.priorities.user - 1,
+    },
+
+})
 
 require("mini.sessions").setup {
   -- Whether to read latest session if Neovim opened without file arguments
