@@ -250,7 +250,7 @@ wk.add {
     "<leader>da",
     function()
       -- require'dap'.set_breakpoint() -- moved to dap start handler
-      require("dap").run { type = "python", request = "attach", host = "127.0.0.1", port = 5678 }
+      require("dap").run { type = "python", request = "attach", host = "127.0.0.1", port = 5678, name="Attach to localhost:5678" }
       -- require'hydra'.spawn['dap_hydra']()
     end,
     desc = "Attach (localhost, 5678)",

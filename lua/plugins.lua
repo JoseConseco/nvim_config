@@ -335,7 +335,7 @@ return require("lazy").setup {
   {
     "mfussenegger/nvim-dap", --too simple
     lazy = true,
-    commit="e771e86a69a8ba60cffb16609773522eafb9f41a", -- newver has issue with daup ui
+    -- commit="e771e86a69a8ba60cffb16609773522eafb9f41a", -- newver has issue with daup ui
     config = function()
       require "dap"
       require "nv-dap"
@@ -344,7 +344,8 @@ return require("lazy").setup {
   {
     "mfussenegger/nvim-dap-python",
     config = function()
-      require("dap-python").setup "/usr/bin/python"
+      -- require("dap-python").setup "/usr/bin/python"
+      require("dap-python").setup "python3"
     end,
   },
   {
@@ -595,7 +596,7 @@ return require("lazy").setup {
       debug = false, -- Enable debugging
       auto_follow_cursor = false,
       -- See Configuration section for rest
-      model = 'claude-3.5-sonnet',
+      model = 'claude-sonnet-4',
 
       -- default mappings
       mappings = {
@@ -698,16 +699,31 @@ return require("lazy").setup {
       }
     end,
   },
+  "copilotlsp-nvim/copilot-lsp",
   {
     "zbirenbaum/copilot.lua", -- alternative in lua
     -- commit="acb0545ac9c1d85c2e8b01075eb451fdfca3b7b7", -- new version just throws lots of errors...  [RPC - something
     event = "InsertEnter",
+    requires = {
+        "copilotlsp-nvim/copilot-lsp", -- (optional) for NES functionality
+        init = function()
+          vim.g.copilot_nes_debounce = 500
+        end,
+    },
     cmd = "Copilot",
     config = function()
       require("copilot").setup {
         suggestion = { enabled = true, auto_trigger = true, debounce = 100 },
         panel = { enabled = false },
         filetypes = { markdown = true },
+        nes = {
+                enabled = true,
+                keymap = {
+                  accept_and_goto = "<leader>p",
+                  accept = false,
+                  dismiss = "<Esc>",
+                },
+              },
       }
     end,
   },
@@ -1044,6 +1060,30 @@ return require("lazy").setup {
     end,
   },
   -- "stefandtw/quickfix-reflector.vim", -- edit quickfix list as text - :w to save to multi files
+  {
+    'r0nsha/qfpreview.nvim',  -- as nice as kevinhwang91/nvim-bqf (not use anymore) (breaks <cr> - opens preview in quickfix...)
+    cond=false,
+    opts = {
+      ui = {
+      -- number | "fill"
+      -- number will set the window to a fixed height
+      -- "fill" will make the window fill the editor's remaining space
+      height = 20,
+      -- whether to show the buffer's name
+      show_name = false,
+      -- additinonal window configuration
+      win = {}
+    },
+    opts = {
+      -- the window's throttle time in milliseconds
+      throttle = 200,
+      -- whether to enable lsp clients
+      lsp = false,
+      -- whether to enable diagnostics
+      diagnostics = false
+    }-- Your custom configuration goes here
+    }
+  },
   {
     "stevearc/quicker.nvim", -- lua version of above list as text - :w to save to multi files
     config = function()
@@ -1417,16 +1457,20 @@ return require("lazy").setup {
   },
   {
     "olimorris/codecompanion.nvim",
-    cond=false,
+    opts = {},
+    lazy = false,
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
-      "iguanacucumber/magazine.nvim", -- Optional: For using slash commands and variables in the chat buffer
-      "nvim-telescope/telescope.nvim", -- Optional: For using slash commands
-      { "stevearc/dressing.nvim", opts = {} }, -- Optional: Improves the default Neovim UI
+      "ravitemer/mcphub.nvim", -- extension (optional)
     },
     config = function ()
       require("codecompanion").setup({
+        -- display = {
+        --     diff = {
+        --       provider = "mini_diff",
+        --     },
+        --   },
         strategies = {
           chat = {
             adapter = "copilot",
@@ -1442,8 +1486,21 @@ return require("lazy").setup {
     end
   },
   {
+    "HakonHarnes/img-clip.nvim",
+    opts = {
+      filetypes = {
+        codecompanion = {
+          prompt_for_file_name = false,
+          template = "[Image]($FILE_PATH)",
+          use_absolute_path = true,
+        },
+      },
+    },
+  },
+  {
     "yetone/avante.nvim",
     event = "VeryLazy",
+    cond=false,
     version = false, -- Never set this value to "*"! Never!
     opts = {
       -- add any opts here
@@ -1507,7 +1564,7 @@ return require("lazy").setup {
         opts = {
           file_types = { "markdown", "Avante" },
         },
-        ft = { "markdown", "Avante" },
+        ft = { "markdown", "Avante", "codecompanion" },
       },
     },
   },
