@@ -596,7 +596,7 @@ return require("lazy").setup {
       debug = false, -- Enable debugging
       auto_follow_cursor = false,
       -- See Configuration section for rest
-      model = 'claude-sonnet-4',
+      model = 'claude-sonnet-4.5',
 
       -- default mappings
       mappings = {
@@ -707,14 +707,14 @@ return require("lazy").setup {
     requires = {
         "copilotlsp-nvim/copilot-lsp", -- (optional) for NES functionality
         init = function()
-          vim.g.copilot_nes_debounce = 500
+          vim.g.copilot_nes_debounce = 400
         end,
     },
     cmd = "Copilot",
     config = function()
       require("copilot").setup {
         suggestion = { enabled = true, auto_trigger = true, debounce = 100 },
-        panel = { enabled = false },
+        panel = { enabled = true },
         filetypes = { markdown = true },
         nes = {
                 enabled = true,
@@ -726,22 +726,6 @@ return require("lazy").setup {
               },
       }
     end,
-  },
-  {
-    'Xuyuanp/nes.nvim',
-    -- event = 'VeryLazy',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-    },
-    config = function()
-      vim.api.nvim_set_hl(0, "NesAdd", { link = "DiffAdd" })
-      vim.api.nvim_set_hl(0, "NesDelete", { link = "DiffDelete" })
-    end,
-    opts = {},
-    keys = {
-      { '<A-i>', function() require('nes').get_suggestion() end, mode = 'i', desc = '[Nes] get suggestion', },
-      { '<A-n>', function() require('nes').apply_suggestion(0, { jump = true, trigger = true }) end, mode = 'i', desc = '[Nes] apply suggestion', },
-    },
   },
   -- {
   --     'ggml-org/llama.vim', # cool with caching, but cmp seems faster
