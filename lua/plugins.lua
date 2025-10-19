@@ -703,7 +703,6 @@ return require("lazy").setup {
   {
     "zbirenbaum/copilot.lua", -- alternative in lua
     -- commit="acb0545ac9c1d85c2e8b01075eb451fdfca3b7b7", -- new version just throws lots of errors...  [RPC - something
-    event = "InsertEnter",
     requires = {
         "copilotlsp-nvim/copilot-lsp", -- (optional) for NES functionality
         init = function()
@@ -711,19 +710,21 @@ return require("lazy").setup {
         end,
     },
     cmd = "Copilot",
+    event = "InsertEnter",
     config = function()
       require("copilot").setup {
         suggestion = { enabled = true, auto_trigger = true, debounce = 100 },
         panel = { enabled = true },
         filetypes = { markdown = true },
         nes = {
-                enabled = true,
-                keymap = {
-                  accept_and_goto = "<leader>p",
-                  accept = false,
-                  dismiss = "<Esc>",
-                },
-              },
+          enabled = true,
+          auto_trigger = false,
+          keymap = {
+            accept_and_goto = "<leader>p",
+            accept = false,
+            dismiss = "<Esc>",
+          },
+        },
       }
     end,
   },
