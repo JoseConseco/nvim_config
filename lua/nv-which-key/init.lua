@@ -211,9 +211,6 @@ wk.add {
 
   { "<leader>cl", ":CreateCompletionLine<CR>", desc = "Create Completion" },
   { "<leader>co", ":AerialNavToggle<cr>", desc = "Open Outliner (Aerial)" },
-  { "<leader>cs", group = "Spell" },
-  { "<leader>csa", "zg<CR>", desc = "Add To Dictionary (zg)" },
-  { "<leader>css", ":setlocal spell! spelllang=en_us<CR>", desc = "Toggle Spellcheck" },
 }
 
 wk.add {
@@ -699,6 +696,9 @@ wk.add {
   { "<leader>uw", ":set wrap!<CR>", desc = "Toggle Wrap" },
   { "<leader>ux", ":NoNeckPain<CR>", desc = "Center (NoNeckPain)" },
   { "<leader>um", ":RenderMarkdown toggle<CR>", desc = "RenderMarkdown" },
+  { "<leader>us", group = "Spell" },
+  { "<leader>usa", "zg<CR>", desc = "Add To Dictionary (zg)" },
+  { "<leader>uss", ":setlocal spell! spelllang=en_us<CR>", desc = "Toggle Spellcheck" },
   -- toggle diffopt = iwhite - toggle ON off - ignore whitespace
   {
     "<leader>ui",

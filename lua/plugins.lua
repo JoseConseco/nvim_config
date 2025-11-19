@@ -699,14 +699,53 @@ return require("lazy").setup {
       }
     end,
   },
-  "copilotlsp-nvim/copilot-lsp",
+  {
+    "copilotlsp-nvim/copilot-lsp",
+    config = function()
+      require('copilot-lsp').setup({
+        nes = {
+          move_count_threshold = 2,   -- Clear after 3 cursor movements
+        }
+      })
+      -- override lsp_on_init = function() >>  https://github.com/copilotlsp-nvim/copilot-lsp/blob/a80e0c17e7366614d39506825f49a25d285fead9/lua/copilot-lsp/nes/init.lua#L161
+      -- same as default without: TextChangedI event - do not show nes while typing
+      ---@param client vim.lsp.Client
+      ---@param au integer
+      local lsp_on_init_mine = function(client, au)
+          --NOTE: NES Completions
+          local debounced_request =
+              require("copilot-lsp.util").debounce(require("copilot-lsp.nes").request_nes, vim.g.copilot_nes_debounce or 500)
+
+          vim.api.nvim_create_autocmd({"TextChanged", 'InsertLeave'}, {
+              callback = function()
+                  debounced_request(client)
+              end,
+              group = au,
+          })
+
+          --NOTE: didFocus
+          vim.api.nvim_create_autocmd("BufEnter", {
+              callback = function()
+                  local td_params = vim.lsp.util.make_text_document_params()
+                  client:notify("textDocument/didFocus", {
+                      textDocument = {
+                          uri = td_params.uri,
+                      },
+                  })
+              end,
+              group = au,
+          })
+      end
+      require("copilot-lsp.nes").lsp_on_init = lsp_on_init_mine
+    end,
+  },
   {
     "zbirenbaum/copilot.lua", -- alternative in lua
     -- commit="acb0545ac9c1d85c2e8b01075eb451fdfca3b7b7", -- new version just throws lots of errors...  [RPC - something
     requires = {
         "copilotlsp-nvim/copilot-lsp", -- (optional) for NES functionality
         init = function()
-          vim.g.copilot_nes_debounce = 400
+          vim.g.copilot_nes_debounce = 300
         end,
     },
     cmd = "Copilot",
@@ -717,7 +756,7 @@ return require("lazy").setup {
         panel = { enabled = true },
         filetypes = { markdown = true },
         nes = {
-          enabled = true,
+          enabled = false,
           auto_trigger = false,
           keymap = {
             accept_and_goto = "<leader>p",
@@ -728,6 +767,47 @@ return require("lazy").setup {
       }
     end,
   },
+ {
+  "folke/sidekick.nvim",
+  opts = {
+    -- add any options here
+    cli = {
+      mux = {
+        backend = "zellij",
+        enabled = false,
+      },
+    },
+  },
+  keys = {
+    {
+      "<tab>",
+      function()
+        Nes = require("sidekick.nes")
+        -- default one
+        -- if not Nes.nes_jump_or_apply() then
+        --   return -- "<Tab>" -- fallback to normal tab
+        -- end
+        if not Nes.have() then
+          return "<Tab>"
+        end
+
+        if Nes.jump() then
+          return ""
+
+        end
+        local cursor_pos = vim.api.nvim_win_get_cursor(0)
+        Nes.apply()
+        vim.defer_fn(function()
+          vim.api.nvim_win_set_cursor(0, cursor_pos)
+        end, 10)
+
+        return ""
+      end,
+      expr = true,
+      desc = "Goto/Apply Next Edit Suggestion",
+    },
+  },
+},
   -- {
   --     'ggml-org/llama.vim', # cool with caching, but cmp seems faster
   -- },
