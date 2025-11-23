@@ -333,19 +333,16 @@ cmp_ai:setup {
       -- repeat_last_n = 64, -- default 64
       -- repeat_penalty = 1.100, -- default 1.1
 
-
-      -- new args for my forwarding my python server  branch.. ---------------
-      -- model = "CodeQwen1.5-7B-Q4_K_S.gguf", -- still best?
-      -- model = "Qwen2.5-Coder-7B-Instruct-Q5_K_S", -- last's best with FIM and instruct at same time
-      model = "Qwen2.5.1-Coder-7B-Instruct-Q5_K_M", -- is at as good as 2.5?
-      -- cache_prompt= true, -- is necessary for llama.cpp to use the draft model -not..
-      -- md = "Qwen2.5.1-Coder-1.5B-Instruct-Q6_K.gguf", -- draft model: at 1.5 size and bigger - questionabel speedup
-      md = "Qwen2.5-Coder-0.5B-Instruct-Q6_K.gguf", -- draft model: at 0.5 size and bigger - nicer speedup
-      ngl = 50,
+      model = "Kwaipilot.KwaiCoder-DS-V2-Lite-Base.Q5_K_M", -- 16gb + 2gb active
+      -- model = "Qwen2.5.1-Coder-7B-Instruct-Q5_K_M", -- is at as good as 2.5?
+      -- md = "Qwen2.5-Coder-0.5B-Instruct-Q6_K.gguf", -- draft model: at 0.5 size and bigger - nicer speedup
+      -- ngl = 50,
+      ngl = 15,
       -- draft_min_p = 0.1,
     },
     prompt = function(lines_before, lines_after)
-      return '<|fim_prefix|>' .. lines_before .. '<|fim_suffix|>' .. lines_after .. '<|fim_middle|>' -- CodeQwen1
+      -- return '<|fim_prefix|>' .. lines_before .. '<|fim_suffix|>' .. lines_after .. '<|fim_middle|>' -- Qwen2.5.1-Coder-7B-Instruct-Q5_K_M
+      return '"<｜fim▁begin｜>' .. lines_before .. '<｜fim▁hole｜>' .. lines_after .. '<｜fim▁end｜>' -- CodeQwen1
 
       -- codegeex4-all-9b-Q4_K_M - not so good
       -- local upper_first_ft = vim.bo.filetype:gsub('^%l', string.upper)
