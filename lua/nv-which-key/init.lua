@@ -428,19 +428,37 @@ wk.add {
   { "<leader>gc", group = "Compare" },
   { "<leader>gcc", compare_to_clipboard,  desc = "Clipboard" },
   { "<leader>gcs", diffWithSaved, desc = "Diff with saved" },
-  { "<leader>gd", group = "DiffView" },
-  -- { "<leader>gdd", ":DiffviewOpen<CR>", desc = "Diffview Open" },
-  { "<leader>gdf", ":DiffviewFileHistory %<CR>", desc = "Diffview File History" },
-  { "<leader>gdh", ":DiffviewFileHistory --base=LOCAL %<CR>", desc = "Diffview File History (LOCAL)" },
-  { "<leader>gdd", function()
+
+  { "<leader>gD", group = "DiffView" },
+  -- { "<leader>gDD", ":DiffviewOpen<CR>", desc = "Diffview Open" },
+  { "<leader>gDf", ":DiffviewFileHistory %<CR>", desc = "Diffview File History" },
+  { "<leader>gDh", ":DiffviewFileHistory --base=LOCAL %<CR>", desc = "Diffview File History (LOCAL)" },
+  { "<leader>gDD", function()
       if next(require("diffview.lib").views) == nil then
         vim.cmd('DiffviewOpen')
       else
         vim.cmd('DiffviewClose')
       end
     end, desc = "Toggle Diffview"},
-  { "<leader>gdl", "<Cmd>.DiffviewFileHistory --follow<CR>", desc = "File history for the current line" },
-  { "<leader>gds", "<Cmd>'<,'>DiffviewFileHistory --follow<CR>",  desc = 'Selection history'},
+  { "<leader>gDl", "<Cmd>.DiffviewFileHistory --follow<CR>", desc = "File history for the current line" },
+  { "<leader>gDs", "<Cmd>'<,'>DiffviewFileHistory --follow<CR>",  desc = 'Selection history'},
+
+
+  { "<leader>gd", group = "CodeDiff" },
+  { "<leader>gdd", ":CodeDiff history<CR>", desc = "CodeDiff Open" },
+  { "<leader>gdf", '<cmd>CodeDiff history %<cr>', desc = "CodeDiff File History" },
+  -- { "<leader>gdh", ":DiffviewFileHistory --base=LOCAL %<CR>", desc = "Diffview File History (LOCAL)" },
+  { "<leader>gdh", '<cmd>CodeDiff file HEAD<cr>', desc = "CodeDiff Local Chanes (LOCAL)" },
+  -- { "<leader>gdd", function()
+  --     if next(require("diffview.lib").views) == nil then
+  --       vim.cmd('DiffviewOpen')
+  --     else
+  --       vim.cmd('DiffviewClose')
+  --     end
+  --   end, desc = "Toggle Diffview"},
+
+
+
   { "<leader>gdi", toggle_iwhite, desc = "Toggle iwhite" },
   { "<leader>gda", toggle_diff_algorithm, desc = "Toggle Diff Algorithm" },
 

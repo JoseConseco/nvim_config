@@ -407,6 +407,10 @@ require("lspconfig").vimls.setup {
     return util.find_git_ancestor(fname) or vim.fn.getcwd()
   end,
 }
+vim.lsp.enable("qmlls")
+vim.lsp.config("qmlls", {
+  cmd = { "qmlls6" },
+})
 
 require("lspconfig").ltex.setup {
   -- cmd = { "ltex-ls" },
