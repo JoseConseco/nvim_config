@@ -82,7 +82,7 @@ vim.opt.winminwidth = 20
 vim.opt.showtabline = 0
 -- vim.g.sessionoptions = "blank,buffers,curdir"
 -- vim.o.sessionoptions = "blank,buffers,curdir"
-vim.o.sessionoptions = "buffers,curdir,folds,tabpages,winsize,"
+vim.o.sessionoptions = "buffers,curdir,tabpages,winsize,"  -- folds
 
 vim.opt.paste = false --? format pasted str - does it work? seems broken right now.. - breaks telescope
 vim.o.splitkeep = "cursor" -- prevent ssplit from jumping lines effect...
@@ -115,7 +115,12 @@ end
 vim.opt.foldtext = "v:lua.custom_fold_text()"
 vim.opt.fillchars = { diff = "/" }
 -- vim.opt.fillchars = { eob = "-", fold = "=" }
-vim.opt.foldminlines = 1 -- fold only if more than 2 lines in code block
+
+vim.opt.foldmethod = "indent"
+vim.opt.foldminlines = 4
+vim.opt.foldenable = false --do notenable fold at start
+-- vim.wo.foldmethod = "expr"
+-- vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 vim.opt.foldnestmax = 4 -- create max 4 folds (avoids too many fold levels)
 vim.opt.foldopen:append { "jump", "insert" } -- default: "block,hor,mark,percent,quickfix, search,tag,undo"
 

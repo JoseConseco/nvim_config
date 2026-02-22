@@ -521,13 +521,6 @@ return require("lazy").setup {
       require "nv-lsptrouble"
     end,
   },
-  -- {
-  --   "carbon-steel/detour.nvim",
-  --   -- branch="dev",
-  --   config = function()
-  --     require "nv-detour"
-  --   end,
-  -- },
   {
     "SirVer/ultisnips",
     -- lazy = true,
@@ -596,7 +589,7 @@ return require("lazy").setup {
       debug = false, -- Enable debugging
       auto_follow_cursor = false,
       -- See Configuration section for rest
-      model = 'claude-sonnet-4.5',
+      model = 'claude-sonnet-4.6',
 
       -- default mappings
       mappings = {
@@ -640,9 +633,7 @@ return require("lazy").setup {
   -- {'tzachar/cmp-ai', dependencies = 'nvim-lua/plenary.nvim'},
   { "JoseConseco/cmp-ai", dependencies = "nvim-lua/plenary.nvim" },
   {
-    "iguanacucumber/magazine.nvim", -- faster versioon of "hrsh7th/nvim-cmp"
-    name = "nvim-cmp",    -- Otherwise highlighting gets messed up
-    cond = true,
+    "hrsh7th/nvim-cmp",
     event = "InsertEnter",
     dependencies = {
       -- 'tzachar/cmp-ai',
@@ -667,23 +658,6 @@ return require("lazy").setup {
   },
   { "quangnguyen30192/cmp-nvim-ultisnips", dependencies = { "iguanacucumber/magazine.nvim" } },
   { "dmitmel/cmp-cmdline-history", dependencies = "hrsh7th/cmp-cmdline" },
-  -- require "nv-blink", -- comp=ai wont work
-  -- { "tzachar/cmp-fuzzy-path", dependencies = { "iguanacucumber/magazine.nvim", "hrsh7th/cmp-path", "tzachar/fuzzy.nvim" } }
-  -- use { "tzachar/cmp-fuzzy-buffer", dependencies = { "iguanacucumber/magazine.nvim", "tzachar/fuzzy.nvim" } }
-  -- {
-  --   "tzachar/cmp-tabnine",
-  --   cond = false,
-  --   event = "InsertEnter",
-  --   dependencies = "iguanacucumber/magazine.nvim",
-  --   build = "./install.sh",
-  --   config = function()
-  --     require("cmp_tabnine.config"):setup {
-  --       max_lines = 100,
-  --       max_num_results = 3,
-  --       sort = true,
-  --     }
-  --   end,
-  -- },
   {
     "tzachar/highlight-undo.nvim",
     -- commit="1ea1c79372d7d93c88fd97543880927b7635e3d2",
@@ -890,15 +864,6 @@ return require("lazy").setup {
     end,
   },
   {
-    "nvim-tree/nvim-tree.lua",
-    cond = false,
-    dependencies = { "nvim-tree/nvim-web-devicons" }, -- optional, for file icons },
-    config = function()
-      require "nvimTree"
-    end,
-    tag = "nightly", -- optional, updated every week. (see issue #1193)
-  },
-  {
     "Isrothy/neominimap.nvim", -- ok but low on big buffer enter..
     version = "v3.*.*",
     enabled = true, -- even when auto_enable false - it will still lagg
@@ -1001,12 +966,36 @@ return require("lazy").setup {
       }
     end,
   },
-  -- { "tpope/vim-repeat" },
   {
     "lewis6991/foldsigns.nvim", -- for git signs in fildes?
     config = function()
       require("foldsigns").setup()
     end,
+  },
+  -- ufo - folds
+  {
+    "kevinhwang91/nvim-ufo",
+    cond=false,
+    dependencies = "kevinhwang91/promise-async",
+    config = function()
+      require("ufo").setup {
+        provider_selector = function(bufnr, filetype, buftype)
+          return { "lsp", "indent" }
+        end,
+      }
+    end,
+    keys = {
+      { "zR", function() require("ufo").openAllFolds() end, desc = "Open all folds" },
+      { "zM", function() require("ufo").closeAllFolds() end, desc = "Close all folds" },
+      { "K", function()
+          local winid = require('ufo').peekFoldedLinesUnderCursor()
+          if not winid then
+              vim.lsp.buf.hover()
+          end
+        end,
+        desc = "Peek fold"
+      },
+    },
   },
   {
     "lewis6991/gitsigns.nvim",
@@ -1059,7 +1048,6 @@ return require("lazy").setup {
   },
   {
     "esmuellert/codediff.nvim", -- maintained
-    dependencies = { "MunifTanjim/nui.nvim" },
     cmd = "CodeDiff",
     opts = {
         explorer = {
@@ -1265,13 +1253,12 @@ return require("lazy").setup {
   },
   {
     "andymass/vim-matchup", -- slow as hell still in 2023 dec
-    enabled = true, -- increase power of % - slow as hell (not any more?) higlights fun, if etc. ranges
+    enabled = false, -- increase power of % - slow as hell
     init = function()
+      vim.g.matchup_treesitter_stopline = 300
       vim.g.matchup_matchparen_deferred = 1
-      vim.g.matchup_matchparen_deferred_show_delay = 180
-    end,
-    config = function()
-      vim.g.matchup_matchparen_deferred = 1
+      vim.g.matchup_matchparen_deferred_show_delay = 400
+      -- vim.g.matchup_matchparen_offscreen = { method = 'popup' }
     end,
   },
 

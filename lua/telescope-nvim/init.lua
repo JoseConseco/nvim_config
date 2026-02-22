@@ -249,3 +249,7 @@ local showDocumentSymbols = function()
 end
 vim.keymap.set("n", "<F3>", showWorkspaceSymbols, { noremap = true, silent = true, desc = "Show Workspace Symbols" })
 -- vim.keymap.set( "n", "<F3>", showDocumentSymbols, { noremap = true, silent = true, desc="Show Workspace Symbols" } )
+vim.api.nvim_create_autocmd("FileType",
+  { pattern = "TelescopeResults",
+    command = [[setlocal nofoldenable]] }
+)

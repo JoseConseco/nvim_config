@@ -86,9 +86,6 @@ ts_config.setup {
 -- print(require("nvim-treesitter").query.get_query('python', 'folds'))
 
 -- require("nvim-treesitter").queries.python.
-vim.wo.foldmethod = "expr"
-vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-vim.wo.foldenable = true --do notenable fold at start
 
 -- vim.api.nvim_set_keymap("n", "+", ":normal v<cr>", { noremap = true, silent = true }) -- + will now switch to normal and  grow selection from treesitter
 if require("nvim-treesitter.parsers").has_parser "python" then

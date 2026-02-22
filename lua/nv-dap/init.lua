@@ -183,11 +183,9 @@ local function eval_with_visual_selection()
 end
 
 local hint = [[
- _s_: Continue/Start  _X_: Dap Close
- _b_: Breakpoint      _B_: Conditional   _L_: Logbreak    _H_:Hit Count Break  _e_: Exception Break
- _n_: Step            _<_: Step out      _>_: Step in     _c_: to cursor
- _x_: Quit DAP        _C_: Close UI      _K_: Eval         ^ ^
- ^ ^              _q_: Exit Hydra
+ _b_: Breakpoint     _B_: Conditional    _L_: Logbreak      _H_:Hit Count Break  _e_: Exception Break
+ _s_: Continue       _n_: Step           _<_: Step out      _>_: Step in         _c_: to cursor
+ ^ ^                 _K_: Eval           _q_: Exit Hydra
 ]]
 
 local Hydra = require "hydra"
@@ -214,7 +212,7 @@ local function show_dap_hydra()
     body = "<leader>dh",
     heads = {
       { "s", dap.continue, { silent = true } },
-      { "X", dap.close, { silent = true } }, -- close current session (This does NOT terminate the debug adapter or debugee. - for that use |dap.terminate()| or |dap.disconnect()|)
+      -- { "X", dap.close, { silent = true } }, -- close current session (This does NOT terminate the debug adapter or debugee. - for that use |dap.terminate()| or |dap.disconnect()|)
       { "b", dap.toggle_breakpoint, { silent = true } },
       { "B", cond_breakpoint, { silent = true } },
       { "L", log_breakpoint, { silent = true } },
@@ -228,8 +226,8 @@ local function show_dap_hydra()
       { ">", dap.step_into, { silent = true } },
       { "<", dap.step_out, { silent = true } },
       { "c", dap.run_to_cursor, { silent = true } },
-      { "x", ":lua require'dap'.disconnect({ terminateDebuggee = false })<CR>", { exit = true, silent = true } },
-      { "C", ":lua require('dapui').close()<cr>:DapVirtualTextForceRefresh<CR>", { silent = true } },
+      -- { "x", ":lua require'dap'.disconnect({ terminateDebuggee = false })<CR>", { exit = true, silent = true } },
+      -- { "C", ":lua require('dapui').close()<cr>:DapVirtualTextForceRefresh<CR>", { silent = true } },
       -- { 'K', ":lua require('dapui').eval(nil, {enter=true})<CR>", { silent = true } },
       -- { 'B', function() gitsigns.blame_line{ full = true } end },
       { "q", nil, { exit = true, nowait = true } },
