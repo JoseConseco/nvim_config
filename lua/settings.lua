@@ -91,7 +91,7 @@ vim.o.splitkeep = "cursor" -- prevent ssplit from jumping lines effect...
 
 if vim.g.neovide then -- does not workk...
   -- vim.o.guifont = "JetBrainsMonoNL Nerd Font Mono, Medium:h8"     -- icons ok, but ugly
-  vim.o.guifont = "Source Code Pro Semibold:h9" -- also ok
+  vim.o.guifont = "Source Code Pro Semibold:h10" -- also ok
   vim.opt.linespace = 0
   vim.g.neovide_scroll_animation_length = 0.5
   vim.g.neovide_scroll_animation_far_lines = 200

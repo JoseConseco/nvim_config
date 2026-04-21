@@ -6,9 +6,7 @@ local replace_keycodes = function(str)
   return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
 
-local press = function(key)
-  vim.api.nvim_feedkeys(replace_keycodes(key), "m", true)
-end
+local press = function(key) vim.api.nvim_feedkeys(replace_keycodes(key), "m", true) end
 
 local bounce_delay = 350 -- ms
 
@@ -333,6 +331,7 @@ cmp_ai:setup {
       -- repeat_last_n = 64, -- default 64
       -- repeat_penalty = 1.100, -- default 1.1
 
+      -- model = "Qwen3.5-9B-Q6_K.gguf", --  latest but bit slow
       model = "Kwaipilot.KwaiCoder-DS-V2-Lite-Base.Q5_K_M", -- 16gb + 2gb active
       -- model = "Qwen2.5.1-Coder-7B-Instruct-Q5_K_M", -- is at as good as 2.5?
       -- md = "Qwen2.5-Coder-0.5B-Instruct-Q6_K.gguf", -- draft model: at 0.5 size and bigger - nicer speedup
@@ -342,7 +341,8 @@ cmp_ai:setup {
     },
     prompt = function(lines_before, lines_after)
       -- return '<|fim_prefix|>' .. lines_before .. '<|fim_suffix|>' .. lines_after .. '<|fim_middle|>' -- Qwen2.5.1-Coder-7B-Instruct-Q5_K_M
-      return '"<｜fim▁begin｜>' .. lines_before .. '<｜fim▁hole｜>' .. lines_after .. '<｜fim▁end｜>' -- CodeQwen1
+      return '<｜fim▁begin｜>' .. lines_before .. '<｜fim▁hole｜>' .. lines_after .. '<｜fim▁end｜>' -- CodeQwen1 Kwaipilot
+      -- return '<|fim_prefix|>' .. lines_before .. '<|fim_suffix|>' .. lines_after .. '<|fim_middle|>' -- Qwen3.5-9B-Q6_K.gguf
 
       -- codegeex4-all-9b-Q4_K_M - not so good
       -- local upper_first_ft = vim.bo.filetype:gsub('^%l', string.upper)

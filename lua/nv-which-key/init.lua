@@ -235,6 +235,15 @@ wk.add({
   { "<leader>Cx", ":CopilotChatClose<CR>", desc = "Close Chat" },
 }, { mode = "v", prefix = "" })
 
+
+local function dapui_open_in_tab(element)
+  local dapui = require("dapui")
+  local buffer = dapui.elements[element].buffer()
+  vim.cmd("botright split")
+  vim.api.nvim_win_set_buf(0, buffer)
+  vim.api.nvim_win_set_height(0, math.floor(vim.o.lines * 0.3))
+end
+
 wk.add {
   { "<leader>d", group = "Debugger" },
   { "<leader>dC", ":lua require('dapui').close()<cr>:DapVirtualTextForceRefresh<CR>", desc = "UI Close" },
@@ -267,7 +276,21 @@ wk.add {
   { "<leader>dl", ":lua require'dap'.run_last()<CR>", desc = "Re-run Last" },
   { "<leader>dn", ":lua require'dap'.step_over()<CR>", desc = "Step Over" },
   { "<leader>dr", ":lua require'dap'.repl.toggle()<CR>", desc = "Repl Toggle" },
-  { "<leader>du", ":lua require('dapui').setup()<CR>", desc = "UI Start" },
+  -- { "<leader>du", ":lua require('dapui').setup()<CR>", desc = "UI Start" },
+
+  { "<leader>du", group = "UI" },
+  -- { "<leader>dUo", ":lua require('dapui').open()<CR>", desc = "Open" },
+  -- { "<leader>dUc", ":lua require('dapui').close()<CR>:DapVirtualTextForceRefresh<CR>", desc = "Close" },
+  { "<leader>duu", ":lua require('dapui').toggle({ reset = true })<CR>", desc = "Toggle" },
+  { "<leader>dus", function() dapui_open_in_tab("scopes") end, desc = "Scopes in Tab" },
+  { "<leader>dub", function() dapui_open_in_tab("breakpoints") end, desc = "Breakpoints in Tab" },
+  { "<leader>duw", function() dapui_open_in_tab("watches") end, desc = "Watches in Tab" },
+  { "<leader>duS", function() dapui_open_in_tab("stacks") end, desc = "Stacks in Tab" },
+  { "<leader>dur", function() dapui_open_in_tab("repl") end, desc = "Repl in Tab" },
+  { "<leader>duC", function() dapui_open_in_tab("console") end, desc = "Console in Tab" },
+
+  { "<leader>dL", ":lua require'osv'.launch({port=5678})<cr>", desc = "Start Lua Dap Server (port 5678)" },
+  { "<leader>dco", ":lua require('dapui').toggle('console')<CR>", desc = "Toggle Console" },
   { "<leader>dx", ":lua require'dap'.disconnect({ terminateDebuggee = false })<CR>", desc = "Disconnect" },
 }
 
@@ -435,7 +458,17 @@ wk.add {
   { "<leader>gDh", ":DiffviewFileHistory --base=LOCAL %<CR>", desc = "Diffview File History (LOCAL)" },
   { "<leader>gDD", function()
       if next(require("diffview.lib").views) == nil then
-        vim.cmd('DiffviewOpen')
+        -- vim.cmd('DiffviewOpen')
+        vim.cmd("DiffviewOpen HEAD")
+        -- vim.cmd("DiffviewFileHistory --base=HEAD " .. vim.fn.expand('%'))
+        -- require("diffview").file_history(nil, { vim.fn.expand('%') }, { base = "LOCAL" })
+        vim.defer_fn(function()
+          vim.cmd("DiffviewToggleFiles")
+        end, 200)
+        vim.defer_fn(function()
+          vim.cmd("normal! zM") -- close all folds
+        end, 200)
+        -- vim.cmd("normal! <leader>b")
       else
         vim.cmd('DiffviewClose')
       end
@@ -712,7 +745,7 @@ wk.add {
   { "<leader>ul", ":set list!<CR>", desc = "Toggle List Chars" },
   { "<leader>ut", ":Twilight<cr>", desc = "Twilight" },
   { "<leader>uw", ":set wrap!<CR>", desc = "Toggle Wrap" },
-  { "<leader>ux", ":NoNeckPain<CR>", desc = "Center (NoNeckPain)" },
+  { "<leader>un", ":NoNeckPain<CR>", desc = "Center (NoNeckPain)" },
   { "<leader>um", ":RenderMarkdown toggle<CR>", desc = "RenderMarkdown" },
   { "<leader>us", group = "Spell" },
   { "<leader>usa", "zg<CR>", desc = "Add To Dictionary (zg)" },

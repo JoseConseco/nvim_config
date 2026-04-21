@@ -186,6 +186,7 @@ return require("lazy").setup {
     "smjonas/live-command.nvim",
     -- live-command supports semantic versioning via tags
     -- version = "1.*",
+    cond = false,
     config = function()
       require("live-command").setup {
         commands = {
@@ -360,11 +361,13 @@ return require("lazy").setup {
         show_stop_reason = true, -- show stop reason when stopped for exceptions
         commented = false, -- prefix virtual text with comment string
         -- experimental features:
-        virt_text_pos = "right_align", -- position of virtual text, see :h nvim_buf_set_extmark() - 'right_align', 'eol', 'overlay'
+        -- virt_text_pos = "right_align", -- position of virtual text, see :h nvim_buf_set_extmark() - 'right_align', 'eol', 'overlay'
+        virt_text_pos = vim.fn.has 'nvim-0.10' == 1 and 'inline' or 'eol',
         all_frames = false, -- show virtual text for all stack frames not only current. Only works for debugpy on my machine.
-        all_references = true, -- show virtual text for all references not only current. Only works for debugpy on my machine.
+        only_first_definition = true,
+        all_references = false, -- show virtual text for all references not only current. Only works for debugpy on my machine.
         virt_lines = false, -- show virtual lines instead of virtual text (will flicker!)
-        virt_text_win_col = 85, -- position the virtual text at a fixed window column (starting from the first text column) ,
+        virt_text_win_col = nil, -- position the virtual text at a fixed window column (starting from the first text column) ,
         -- e.g. 80 to position at column 80 see :h nvim_buf_set_extmark()
       }
       -- vim.api.nvim_exec("highlight! link NvimDapVirtualText DiagnosticVirtualTextInfo", false)
@@ -384,7 +387,6 @@ return require("lazy").setup {
       require "nv-dapui"
     end,
   },
-
   {
     "folke/lazydev.nvim", -- for lua plugs
     ft = "lua", -- only load on lua files
@@ -397,7 +399,7 @@ return require("lazy").setup {
       },
     },
   },
-  { "Bilal2453/luvit-meta", lazy = true }, -- optional `vim.uv` typings for 'folke/lazydev.'
+  -- { "Bilal2453/luvit-meta", lazy = true }, -- optional `vim.uv` typings for 'folke/lazydev.'
   {
     "jbyuki/one-small-step-for-vimkind",
     config = function()
@@ -538,7 +540,7 @@ return require("lazy").setup {
   {
     "ThePrimeagen/refactoring.nvim",
     enabled = true,
-    dependencies = { { "nvim-lua/plenary.nvim" }, { "nvim-treesitter/nvim-treesitter" } },
+    dependencies = { "lewis6991/async.nvim", },
     config = function()
       require "nv-refactoring"
     end,
@@ -656,7 +658,7 @@ return require("lazy").setup {
       require "nv-cmp"
     end,
   },
-  { "quangnguyen30192/cmp-nvim-ultisnips", dependencies = { "iguanacucumber/magazine.nvim" } },
+  { "quangnguyen30192/cmp-nvim-ultisnips" },
   { "dmitmel/cmp-cmdline-history", dependencies = "hrsh7th/cmp-cmdline" },
   {
     "tzachar/highlight-undo.nvim",
@@ -954,17 +956,7 @@ return require("lazy").setup {
   { "akinsho/git-conflict.nvim", version = "*", config = true }, -- for solving git
   {
     "kylechui/nvim-surround",
-    config = function()
-      require("nvim-surround").setup {
-        keymaps = {
-          -- vim-surround style keymaps
-          -- insert = "ys",
-          visual = "s",
-          delete = "ds",
-          change = "cs",
-        },
-      }
-    end,
+    event = "VeryLazy",
   },
   {
     "lewis6991/foldsigns.nvim", -- for git signs in fildes?
@@ -1025,6 +1017,7 @@ return require("lazy").setup {
   },
   {
     "dlyongemallo/diffview.nvim", -- maintained fork
+    -- commit = "1897fb3d2e838e41f57f60e128986d302366e524",
     -- "sindrets/diffview.nvim", -- not maintained?
     cmd = { "DiffviewOpen", "DiffviewFileHistory" },
     dependencies = { "rickhowe/diffchar.vim" },
@@ -1039,7 +1032,7 @@ return require("lazy").setup {
           },
           win_config = {                      -- See |diffview-config-win_config|
             position = "bottom",
-            height = 15,
+            height = 10,
             win_opts = {},
           },
         },

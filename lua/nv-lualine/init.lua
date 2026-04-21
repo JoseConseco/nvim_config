@@ -139,7 +139,7 @@ require("lualine").setup {
     always_divide_middle = true,
     disabled_filetypes = { -- Filetypes to disable lualine for.
       statusline = { "starter" }, -- only ignores the ft for statusline.
-      winbar = { "starter" }, -- only ignores the ft for winbar.
+      winbar = { "starter", "dap-repl", "dapui_scopes", "dapui_stacks", "dapui_watches", "dapui_breakpoints" }, -- only ignores the ft for winbar.
     },
   },
   sections = {
@@ -180,6 +180,7 @@ require("lualine").setup {
       { get_cwd, separator = " ▶ ", color = "WinBar" },
       -- { file_name, separator = " ▶ ", color = "WinBar" },
       {'aerial'},
+      {'nvim-dap-ui'},
     },
   },
   inactive_winbar = {
@@ -187,8 +188,8 @@ require("lualine").setup {
       { modified, color = "WinBarNC" },
       { get_cwd, color = "WinBarNC" },
       -- { file_name, color = "WinBarNC" },
-      {'aerial'},
+      -- {'aerial'},
     },
   },
-  extensions = {},
+  extensions = { 'nvim-dap-ui', 'aerial'},
 }
