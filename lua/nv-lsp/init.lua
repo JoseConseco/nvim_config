@@ -1,7 +1,8 @@
 require("mason").setup()
-require("mason-lspconfig").setup({
-    ensure_installed = { "lua_ls" },
-})
+require("mason-lspconfig").setup {
+  ensure_installed = { "lua_ls", "clangd", "basedpyright", "ruff", "vimls", "ltex" },
+  automatic_enable = false,
+}
 
 
 local opts = { noremap = true, silent = true }
@@ -32,7 +33,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     buf_set_keymap("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
     buf_set_keymap("n", "gr", ":lua require('telescope.builtin').lsp_references({initial_mode = 'normal'})<CR>", opts)
     buf_set_keymap("n", "<space>cf", [[<cmd>lua require('conform').format({lsp_fallback = true})<CR>]], opts)
-    buf_set_keymap("v", "<space>cf", [[<cmd>lua require('conform').format({lsp_fallback = true, range=require('conform').Range})<CR>]], opts)
+    buf_set_keymap("v", "<space>cf", [[<cmd>lua require('conform').format({lsp_fallback = true})<CR>]], opts)
 
     if client.server_capabilities.hoverProvider then
       vim.api.nvim_set_hl(0, "LspReferenceRead", { reverse = true })

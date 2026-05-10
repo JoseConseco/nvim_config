@@ -506,20 +506,22 @@ return require("lazy").setup {
   "onsails/lspkind-nvim", -- icons for completion popup
   -- Mason for managing LSPs, linters, formatters
   {
-    "williamboman/mason.nvim",
-    config = function()
-      require("mason").setup()
-    end,
+      "mason-org/mason-lspconfig.nvim",
+      opts = {},
+      dependencies = {
+          { "mason-org/mason.nvim", opts = {} },
+          "neovim/nvim-lspconfig",
+      },
   },
   -- Bridges Mason and nvim-lspconfig
-  {
-    "williamboman/mason-lspconfig.nvim",
-    dependencies = { "williamboman/mason.nvim" },
-    opts = {
-      ensure_installed = { "lua_ls", "clangd" }, -- Add LSPs here
-      automatic_installation = true,
-    },
-  },
+  -- {
+  --   "williamboman/mason-lspconfig.nvim",
+  --   dependencies = { "williamboman/mason.nvim" },
+  --   -- opts = {
+  --   --   -- ensure_installed = { "lua_ls", "clangd", "basedpyright", "vimls" }, -- Add LSPs here
+  --   --   automatic_installation = true,
+  --   -- },
+  -- },
   -- Native LSP configuration
   {
     "neovim/nvim-lspconfig",
@@ -570,12 +572,12 @@ return require("lazy").setup {
     dependencies = { "nvim-lua/plenary.nvim" },
   },
   {
-    "stevearc/conform.nvim",
+    "stevearc/conform.nvim", -- ranged formatting
     config = function()
       require("conform").setup {
         formatters_by_ft = {
           lua = { "stylua" },
-          python = { "ruff-lsp" }, -- has to be set in lsp - config...
+          python = { "ruff_format " }, -- has to be set in lsp - config...
         },
       }
     end,
