@@ -793,7 +793,7 @@ wk.add {
 wk.add {
   { "<leader>q", group = "Quit" },
   { "<leader>qf", ":q!<CR>", desc = "Force Quit (q!)" },
-  { "<leader>qq", "<cmd>TSContext disable<cr>|:call v:lua.Save_current_session()<CR>|:confirm qa", desc = "Quit Confirm (qa)" },
+  { "<leader>qq", "<cmd>TSContext disable<cr>|:call v:lua.Save_current_session()<CR>:confirm qa", desc = "Quit Confirm (qa)" },
   { "<leader>qs", ":bufdo update | q!<CR>", desc = "Quit Save all (wqa!)" },
 }
 wk.add { -- second one for visual mode

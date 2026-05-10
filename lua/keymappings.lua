@@ -230,6 +230,47 @@ vim.api.nvim_set_keymap("n", "<4-MiddleMouse>", "<nop>", {}) --and disable 2MMB 
 -- vim.api.nvim_set_keymap('n', '<TAB>', ':BufferNext<CR>', { noremap = true, silent = true })
 -- vim.api.nvim_set_keymap('n', '<S-TAB>', ':BufferPrevious<CR>', { noremap = true, silent = true })
 
+vim.keymap.set("i", "<Tab>", function()
+  if require("copilot.suggestion").is_visible() then
+    require("copilot.suggestion").accept()
+  else
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "n", false)
+  end
+end, { desc = "Accept Copilot suggestion or Tab" })
+
+vim.keymap.set("i", "<Esc>", function()
+  if require("copilot.suggestion").is_visible() then
+    require("copilot.suggestion").dismiss()
+  else
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", false)
+  end
+end, { desc = "Dismiss Copilot suggestion or Esc" })
+
+ -- bindkey("n",    "<C-e>",
+vim.keymap.set( "n", "<C-e>",
+    function()
+        local result = vim.treesitter.get_captures_at_cursor(0)
+        print(vim.inspect(result))
+    end,
+    { noremap = true, silent = false }
+)
+
+vim.keymap.set({ 'x', 'o' }, 'v', function()
+  if vim.treesitter.get_parser(nil, nil, { error = false }) then
+    require 'vim.treesitter._select'.select_parent(vim.v.count1)
+  else
+    vim.lsp.buf.selection_range(vim.v.count1)
+  end
+end, { desc = 'Select parent treesitter node or outer incremental lsp selections' })
+
+vim.keymap.set({ 'x', 'o' }, 'V', function()
+  if vim.treesitter.get_parser(nil, nil, { error = false }) then
+    require 'vim.treesitter._select'.select_child(vim.v.count1)
+  else
+    vim.lsp.buf.selection_range(-vim.v.count1)
+  end
+end, { desc = 'Select child treesitter node or inner incremental lsp selections' })
+
 -- next/repve, join - prevent jumping of cursor
 -- vim.api.nvim_set_keymap( "n", "n", "nzzzv", { noremap = true } )
 -- vim.api.nvim_set_keymap( "n", "N", "Nzzzv", { noremap = true } )

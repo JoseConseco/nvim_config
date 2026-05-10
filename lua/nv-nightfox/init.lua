@@ -91,21 +91,20 @@ require("nightfox").setup {
     },
   },
   groups = {
-    all = {
-      ["@keyword.function"] = { link = "@keyword.return" }, -- make them reddish
-      ["@keyword.repeat"] = { link = "@keyword.return" }, -- make them reddish
-      ["@keyword.conditional"] = { link = "@keyword.return" }, -- make them reddish
-      ["@keyword.exception"] = { link = "@keyword.return" }, -- make them reddish
-      -- ["@conditional"] = { link = "@keyword.return" },
-      ["@repeat"] = { link = "@keyword.return" },
-      ["@keyword.operator"] = { link = "@keyword.return" },
-      ["@keyword"] = { link = "@keyword.return" }, -- from blueish, to red
-      ["@function.builtin"] = { link = "@keyword" }, -- blueish - list, enumerate, range...
-      ["MatchParen"] = {fg = "palette.green", style = "reverse" }, -- blueish - list, enumerate, range...
-      -- DiffAdd = {bg = "#a4cf69" }, -- does not seem to work...
-      -- DiffChange = {bg = "#63c1e6" },
-      -- DiffDelete = {bg = "#d74f56" },
-    },
+    -- all = {
+    --   -- ["function"] = { link = "@keyword.return" }, -- make them reddish
+    --   ["repeat"] = { link = "@keyword.return" }, -- make them reddish
+    --   ["Statement"] = { link = "@keyword.return" }, -- make them reddish
+    --   ["Conditional"] = { link = "@keyword.return" }, -- make them reddish
+    --   ["Identifier"] = { link = "@keyword.return" }, -- make them reddish
+    --   ["pythonBoolean"] = { link = "@keyword.return" }, -- make them reddish
+    --   ["pythonBuiltin"] = { link = "@keyword.return" }, -- make them reddish
+    --   ["pythonAttribute"] = { link = "@Function" }, -- make them reddish
+    --   ["MatchParen"] = {fg = "palette.green", style = "reverse" }, -- blueish - list, enumerate, range...
+    --   -- DiffAdd = {bg = "#a4cf69" }, -- does not seem to work...
+    --   -- DiffChange = {bg = "#63c1e6" },
+    --   -- DiffDelete = {bg = "#d74f56" },
+    -- },
   },
 }
 -- vim.cmd [[highlight LineNr guifg=#5081C0]]

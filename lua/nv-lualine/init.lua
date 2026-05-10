@@ -99,20 +99,19 @@ end
 local lsp = {
   -- Lsp server name .
   function()
-    local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
+    -- local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
+    local buf_id = vim.api.nvim_get_current_buf()
     local clients = vim.lsp.get_clients()
     local out_clients = {}
     for _, client in ipairs(clients) do
-      local filetypes = client.config.filetypes
-      if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 and client.config.autostart then
+      if client.attached_buffers and client.attached_buffers[buf_id] then
         table.insert(out_clients, client.name)
-        -- return client.name
       end
     end
     if #out_clients > 0 then
       return table.concat(out_clients, ", ")
     else
-      return "LS Inactive"
+      return "LSP Inactive"
     end
   end,
   icon = "LSP:",

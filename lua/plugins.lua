@@ -52,6 +52,7 @@ return require("lazy").setup {
   {
     "m-demare/hlargs.nvim",
     -- after = "nightfox.nvim",
+    cond = false,
     config = function()
       local palette = require("nightfox.palette").load "nightfox"
       require("hlargs").setup {
@@ -83,12 +84,13 @@ return require("lazy").setup {
   -- -- UI -------------------------------------------------------------------------------------------------------
   {
     -- "norcalli/nvim-colorizer.lua",  -- original repo - not maintained
-    "NvChad/nvim-colorizer.lua", -- colorize hex, rgb, hsl colors
-    config = function()
-      require("colorizer").setup {
-        filetypes = { "css", "lua", "html" },
-      }
-    end,
+    "catgoose/nvim-colorizer.lua", -- colorize hex, rgb, hsl colors
+    event = "BufReadPre",
+    -- config = function()
+    --   require("colorizer").setup {
+    --     filetypes = { "css", "lua", "html" },
+    --   }
+    -- end,
   }, --color highlighter
   { "shortcuts/no-neck-pain.nvim" },
   {
@@ -434,12 +436,13 @@ return require("lazy").setup {
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
+    branch = "main",
     config = function()
       require "treesitter"
     end,
   },
   { -- for incremental selection only...
-    "nvim-treesitter/nvim-treesitter-textobjects",
+    -- "nvim-treesitter/nvim-treesitter-textobjects",
   },
   {
     "nvim-treesitter/nvim-treesitter-context",
@@ -497,20 +500,30 @@ return require("lazy").setup {
       hl_manager.match_color_to_highlight("#88c0d0", "@keyword", "RainbowDelimiterCyan", "foreground")
     end,
   },
-  "nvim-treesitter/playground",
+  -- "nvim-treesitter/playground",
 
   -- lsp -------------------------------------------------------------------------------------------------------
   "onsails/lspkind-nvim", -- icons for completion popup
-  -- {
-  --   "williamboman/mason.nvim",
-  --   config = function()
-  --     require("mason").setup()
-  --     require("mason-lspconfig").setup()
-  --   end,
-  -- },
-  -- "williamboman/mason-lspconfig.nvim",
+  -- Mason for managing LSPs, linters, formatters
+  {
+    "williamboman/mason.nvim",
+    config = function()
+      require("mason").setup()
+    end,
+  },
+  -- Bridges Mason and nvim-lspconfig
+  {
+    "williamboman/mason-lspconfig.nvim",
+    dependencies = { "williamboman/mason.nvim" },
+    opts = {
+      ensure_installed = { "lua_ls", "clangd" }, -- Add LSPs here
+      automatic_installation = true,
+    },
+  },
+  -- Native LSP configuration
   {
     "neovim/nvim-lspconfig",
+    dependencies = { "williamboman/mason-lspconfig.nvim" },
     config = function()
       require "nv-lsp"
     end,
@@ -523,27 +536,29 @@ return require("lazy").setup {
       require "nv-lsptrouble"
     end,
   },
-  {
-    "SirVer/ultisnips",
-    -- lazy = true,
-    config = function()
-      vim.g.UltiSnipsRemoveSelectModeMappings = 0
-      vim.cmd [[autocmd BufWritePost *.snippets :CmpUltisnipsReloadSnippets]]
-    end,
-  },
+  -- {
+  --   "SirVer/ultisnips",
+  --   -- lazy = true,
+  --   config = function()
+  --     vim.g.UltiSnipsRemoveSelectModeMappings = 0
+  --     vim.cmd [[autocmd BufWritePost *.snippets :CmpUltisnipsReloadSnippets]]
+  --   end,
+  -- },
   {
     "stevearc/aerial.nvim", -- basically better outliner with objects type filter
     config = function()
       require "nv-aerial"
     end,
   },
-  {
-    "ThePrimeagen/refactoring.nvim",
-    enabled = true,
-    dependencies = { "lewis6991/async.nvim", },
-    config = function()
-      require "nv-refactoring"
-    end,
+{
+  "ThePrimeagen/refactoring.nvim",
+  dependencies = {
+    "lewis6991/async.nvim",
+  },
+  lazy = false,
+  -- config = function()
+  --   require "nv-refactoring"
+  -- end,
   },
   {
     -- "jose-elias-alvarez/null-ls.nvim", -- abandoned
@@ -633,13 +648,14 @@ return require("lazy").setup {
     -- See Commands section for default commands if you want to lazy load on them
   },
   -- {'tzachar/cmp-ai', dependencies = 'nvim-lua/plenary.nvim'},
-  { "JoseConseco/cmp-ai", dependencies = "nvim-lua/plenary.nvim" },
+  -- { "JoseConseco/cmp-ai", dependencies = "nvim-lua/plenary.nvim" },
   {
     "hrsh7th/nvim-cmp",
+    cond = false,
     event = "InsertEnter",
     dependencies = {
       -- 'tzachar/cmp-ai',
-      "JoseConseco/cmp-ai",
+      -- "JoseConseco/cmp-ai",
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-path",
@@ -658,8 +674,116 @@ return require("lazy").setup {
       require "nv-cmp"
     end,
   },
-  { "quangnguyen30192/cmp-nvim-ultisnips" },
-  { "dmitmel/cmp-cmdline-history", dependencies = "hrsh7th/cmp-cmdline" },
+  {
+    'saghen/blink.cmp',
+    dependencies = {
+        "fang2hou/blink-copilot",  'rafamadriz/friendly-snippets' , 'mayromr/blink-cmp-dap', 'ribru17/blink-cmp-spell', "mikavilpas/blink-ripgrep.nvim",
+        opts = {
+          max_completions = 1,  -- Global default for max completions
+          max_attempts = 2,     -- Global default for max attempts
+        }
+      },
+
+    version = '1.*',
+    opts = {
+      -- 'default' (recommended) for mappings similar to built-in completions (C-y to accept)
+      -- 'super-tab' for mappings similar to vscode (tab to accept)
+      -- 'enter' for enter to accept
+      -- 'none' for no mappings
+      --
+      -- All presets have the following mappings:
+      -- C-space: Open menu or open docs if already open
+      -- C-n/C-p or Up/Down: Select next/previous item
+      -- C-e: Hide menu
+      -- C-k: Toggle signature help (if signature.enabled = true)
+      --
+      -- See :h blink-cmp-config-keymap for defining your own keymap
+      keymap = { preset = 'default' },
+
+      appearance = {
+        -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
+        -- Adjusts spacing to ensure icons are aligned
+        nerd_font_variant = 'mono'
+      },
+
+      -- (Default) Only show the documentation popup when manually triggered
+      completion = {
+        documentation = { auto_show = false },
+        ghost_text = { enabled = false },
+      },
+
+      cmdline = {
+        -- keymap = { preset = 'inherit' },
+        completion = { menu = { auto_show = true } },
+      },
+
+      -- Default list of enabled providers defined so that you can extend it
+      -- elsewhere in your config, without redefining it, due to `opts_extend`
+      sources = {
+        default = { 'lsp', 'path', 'snippets', 'buffer', 'copilot', 'cmdline', 'spell' , 'ripgrep'},
+        providers = {
+          copilot = {
+            name = "copilot",
+            module = "blink-copilot",
+            score_offset = 100,
+            async = true,
+            opts = {
+              -- Local options override global ones
+              max_completions = 2,  -- Override global max_completions
+
+              -- Final settings:
+              -- * max_completions = 3
+              -- * max_attempts = 2
+              -- * all other options are default
+            }
+          },
+          spell = {
+            name = 'Spell',
+            module = 'blink-cmp-spell',
+            opts = {
+              -- EXAMPLE: Only enable source in `@spell` captures, and disable it
+              -- in `@nospell` captures.
+              enable_in_context = function()
+                local curpos = vim.api.nvim_win_get_cursor(0)
+                local captures = vim.treesitter.get_captures_at_pos(
+                  0,
+                  curpos[1] - 1,
+                  curpos[2] - 1
+                )
+                local in_spell_capture = false
+                for _, cap in ipairs(captures) do
+                  if cap.capture == 'spell' then
+                    in_spell_capture = true
+                  elseif cap.capture == 'nospell' then
+                    return false
+                  end
+                end
+                return in_spell_capture
+              end,
+            },
+          },
+          ripgrep = {
+              module = "blink-ripgrep",
+              name = "Ripgrep",
+              -- see the full configuration below for all available options
+              ---@module "blink-ripgrep"
+              ---@type blink-ripgrep.Options
+              opts = {},
+            },
+        },
+      },
+
+      -- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
+      -- You may use a lua implementation instead by using `implementation = "lua"` or fallback to the lua implementation,
+      -- when the Rust fuzzy matcher is not available, by using `implementation = "prefer_rust"`
+      --
+      -- See the fuzzy documentation for more information
+      fuzzy = { implementation = "prefer_rust_with_warning" }
+    },
+    opts_extend = { "sources.default" }
+  },
+  -- { "quangnguyen30192/cmp-nvim-ultisnips" },
+  -- { "dmitmel/cmp-cmdline-history", dependencies = "hrsh7th/cmp-cmdline" },
   {
     "tzachar/highlight-undo.nvim",
     -- commit="1ea1c79372d7d93c88fd97543880927b7635e3d2",
@@ -732,7 +856,7 @@ return require("lazy").setup {
         panel = { enabled = true },
         filetypes = { markdown = true },
         nes = {
-          enabled = false,
+          enabled = true,
           auto_trigger = false,
           keymap = {
             accept_and_goto = "<leader>p",
@@ -805,14 +929,14 @@ return require("lazy").setup {
   -- {
   --     'ggml-org/llama.vim', # cool with caching, but cmp seems faster
   -- },
-  {
-    "zbirenbaum/copilot-cmp",
-    event = "InsertEnter",
-    dependencies = { "copilot.lua", "nvim-cmp" },
-    config = function()
-      require("copilot_cmp").setup { event = "LspAttach" }
-    end,
-  },
+  -- {
+  --   "zbirenbaum/copilot-cmp",
+  --   event = "InsertEnter",
+  --   dependencies = { "copilot.lua", "nvim-cmp" },
+  --   config = function()
+  --     require("copilot_cmp").setup { event = "LspAttach" }
+  --   end,
+  -- },
 
   -- Telescope   -------------------------------------------------------------------------------------------------------
   {
@@ -1599,7 +1723,7 @@ return require("lazy").setup {
       --- The below dependencies are optional,
       "nvim-mini/mini.pick", -- for file_selector provider mini.pick
       "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
-      "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
+      -- "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
       "ibhagwan/fzf-lua", -- for file_selector provider fzf
       "stevearc/dressing.nvim", -- for input provider dressing
       "folke/snacks.nvim", -- for input provider snacks
@@ -1687,6 +1811,19 @@ return require("lazy").setup {
           },
         },
       }
+    end,
+  },
+  {
+    "sheng-tse/jupynvim",
+    build = function(plugin)
+      local install = loadfile(plugin.dir .. "/lua/jupynvim/install.lua")()
+      install.run(plugin)
+    end,
+    config = function()
+      require("jupynvim").setup({
+        log_level = "info",
+        image_renderer = "placeholder",  -- "placeholder", "kitty", or "chafa"
+      })
     end,
   },
   ---  TOOLS -------------------------------------------------------------------------------------------------------

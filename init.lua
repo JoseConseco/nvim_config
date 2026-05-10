@@ -7,6 +7,7 @@ require "plugins"
 require "settings"
 require "keymappings"
 
+vim.opt.runtimepath:prepend("/home/bartosz/.local/share/nvim/site")
 local timeday_theme_au = vim.api.nvim_create_augroup("TimedayThemeAu", { clear = true })
 
 local function theme_change_timeday(start_hour, end_hour)
@@ -89,6 +90,23 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   command = [[if line("'\"") > 1 && line("'\"") <= line("$") | execute "normal! g`\"" | endif]],
   group = init_group,
 })
+
+vim.api.nvim_create_user_command('Messages', function()
+  local messages = vim.fn.execute('messages')
+  local buf = vim.api.nvim_create_buf(false, true)
+  vim.api.nvim_buf_set_lines(buf, 0, -1, false, vim.split(messages, '\n'))
+  vim.api.nvim_open_win(buf, true, {
+    relative = 'editor',
+    width = math.floor(vim.o.columns * 0.9),
+    height = math.floor(vim.o.lines * 0.4),
+    row = math.floor(vim.o.lines * 0.6),
+    col = math.floor(vim.o.columns * 0.05),
+    style = 'minimal',
+    border = 'rounded',
+  })
+  vim.keymap.set('n', 'q', '<cmd>close<cr>', { buffer = buf })
+end, {})
+
 
 -- NOTE: fix nvim not maximized in allacritty
 -- vim.cmd [[

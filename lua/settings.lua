@@ -39,6 +39,7 @@ vim.g.mapleader = " " -- The key used to prefix mappings
 -- })
 -- vim.diagnostic.config({ virtual_lines = { current_line = true }, virtual_text = false })
 vim.diagnostic.config({ virtual_lines = false, virtual_text = false })
+require('vim._core.ui2').enable()
 vim.opt.cmdheight = 1 -- More space for displaying messages
 -- vim.opt.mouse = "a" -- Enable your mouse
 vim.opt.linespace = 0 -- spacing between lines
