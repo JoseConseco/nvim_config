@@ -726,7 +726,7 @@ return require("lazy").setup {
       -- Default list of enabled providers defined so that you can extend it
       -- elsewhere in your config, without redefining it, due to `opts_extend`
       sources = {
-        default = { 'lsp', 'path', 'snippets', 'buffer', 'copilot', 'cmdline', 'spell' , 'ripgrep', 'lazydev'},
+        default = { 'lsp', 'path', 'snippets', 'buffer', 'copilot', 'cmdline', 'spell' , 'ripgrep', 'lazydev', 'dap'},
         providers = {
           copilot = {
             name = "copilot",
@@ -742,6 +742,16 @@ return require("lazy").setup {
               -- * max_attempts = 2
               -- * all other options are default
             }
+          },
+          dap = {
+            name = "dap",
+            module = "blink-cmp-dap",
+            opts = {
+              -- See the full configuration below for all available options
+              ---@module "blink-cmp-dap"
+              ---@type blink-cmp-dap.Options
+              -- opts = {},
+            },
           },
           spell = {
             name = 'Spell',
