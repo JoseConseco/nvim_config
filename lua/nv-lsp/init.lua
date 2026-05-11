@@ -1,13 +1,13 @@
 require("mason").setup()
 require("mason-lspconfig").setup {
-  ensure_installed = { "lua_ls", "clangd", "basedpyright", "ruff", "vimls", "ltex" },
-  automatic_enable = false,
+  ensure_installed = { "lua_ls", "clangd", "basedpyright", "ruff", "vimls", "ltex-ls-plus" },
+  automatic_enable = true,
 }
 
 
 local opts = { noremap = true, silent = true }
-vim.api.nvim_set_keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
-vim.api.nvim_set_keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
+vim.api.nvim_set_keymap("n", "[d", "<cmd>lua vim.diagnostic.jump({count=-1})<CR>", opts)
+vim.api.nvim_set_keymap("n", "]d", "<cmd>lua vim.diagnostic.jump({count=1})<CR>", opts)
 
 local lsp_doc_hl_au_idx = vim.api.nvim_create_augroup("lsp_document_highlight", {})
 
@@ -35,7 +35,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     buf_set_keymap("n", "<space>cf", [[<cmd>lua require('conform').format({lsp_fallback = true})<CR>]], opts)
     buf_set_keymap("v", "<space>cf", [[<cmd>lua require('conform').format({lsp_fallback = true})<CR>]], opts)
 
-    if client.server_capabilities.hoverProvider then
+    if client.server_capabilities.documentHighlightProvider then
       vim.api.nvim_set_hl(0, "LspReferenceRead", { reverse = true })
       vim.api.nvim_set_hl(0, "LspReferenceText", { reverse = true })
       vim.api.nvim_set_hl(0, "LspReferenceWrite", { reverse = true })
@@ -120,9 +120,9 @@ vim.lsp.enable('ruff')
 
 -- lua_ls
 vim.lsp.config('lua_ls', {
-  cmd = { "lua-language-server", "-E", "/usr/share/lua-language-server/main.lua" },
-  capabilities = capabilities,
-  filetypes = { "lua" },
+  -- cmd = { "lua-language-server", "-E", "/usr/share/lua-language-server/main.lua" },
+  -- capabilities = capabilities,
+  -- filetypes = { "lua" },
   settings = {
     Lua = {
       runtime = {
@@ -169,12 +169,12 @@ vim.lsp.config('vimls', {
 })
 vim.lsp.enable('vimls')
 
--- ltex
-vim.lsp.config('ltex', {
-  cmd = { "/home/bartosz/Publiczny/ltex-ls-16.0.0/bin/ltex-ls" },
+-- ltex-ls-plus
+vim.lsp.config('ltex-ls-plus', {
+  -- cmd = { "/home/bartosz/Publiczny/ltex-ls-16.0.0/bin/ltex-ls" },
   capabilities = capabilities,
   filetypes = { "bib", "gitcommit", "markdown", "org", "plaintex", "rst", "rnoweb", "tex" },
   root_markers = { '.git' },
   single_file_support = true,
 })
-vim.lsp.enable('ltex')
+vim.lsp.enable('ltex-ls-plus')

@@ -611,6 +611,7 @@ wk.add {
   { "<leader>oO", ":SymbolsOutline<CR>", desc = "Outliner (lsp)" },
   { "<leader>oT", ':!alacritty --working-directory "%:p:h"<CR>', desc = "Terminal External" },
   { "<leader>oU", ":UndotreeToggle<CR>", desc = "Undo Tree" },
+  { "<leader>oj", ":JupynvimOpen test.ipnb<CR>", desc = "Jupyter Notebook" },
   { "<leader>oa", ":AerialOpen float<cr>", desc = "Open Outliner (Aerial)" },
   { "<leader>od", ":Dirbuf<CR>", desc = "Dirbuf" },
   { "<leader>of", ":lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<cr>", desc = "File Browser (fuzzy)" },

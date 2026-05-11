@@ -394,7 +394,8 @@ return require("lazy").setup {
     ft = "lua", -- only load on lua files
     opts = {
       library = {
-        "luvit-meta/library",
+        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+        -- "~/.config/nvim"
         -- You can also add plugins you always want to have loaded.
         -- Useful if the plugin has globals or types you want to use
         -- vim.env.LAZY .. "/LazyVim", -- see below
@@ -679,7 +680,10 @@ return require("lazy").setup {
   {
     'saghen/blink.cmp',
     dependencies = {
-        "fang2hou/blink-copilot",  'rafamadriz/friendly-snippets' , 'mayromr/blink-cmp-dap', 'ribru17/blink-cmp-spell', "mikavilpas/blink-ripgrep.nvim",
+        "fang2hou/blink-copilot",
+        'rafamadriz/friendly-snippets' ,
+        'mayromr/blink-cmp-dap',
+        'ribru17/blink-cmp-spell', "mikavilpas/blink-ripgrep.nvim",
         opts = {
           max_completions = 1,  -- Global default for max completions
           max_attempts = 2,     -- Global default for max attempts
@@ -722,7 +726,7 @@ return require("lazy").setup {
       -- Default list of enabled providers defined so that you can extend it
       -- elsewhere in your config, without redefining it, due to `opts_extend`
       sources = {
-        default = { 'lsp', 'path', 'snippets', 'buffer', 'copilot', 'cmdline', 'spell' , 'ripgrep'},
+        default = { 'lsp', 'path', 'snippets', 'buffer', 'copilot', 'cmdline', 'spell' , 'ripgrep', 'lazydev'},
         providers = {
           copilot = {
             name = "copilot",
@@ -763,6 +767,12 @@ return require("lazy").setup {
                 return in_spell_capture
               end,
             },
+          },
+          lazydev = {
+            name = "LazyDev",
+            module = "lazydev.integrations.blink",
+            -- make lazydev completions top priority (see `:h blink.cmp`)
+            score_offset = 100,
           },
           ripgrep = {
               module = "blink-ripgrep",
