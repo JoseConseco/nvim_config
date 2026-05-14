@@ -48,7 +48,7 @@ vim.opt.termguicolors = true -- set term giu colors most terminals support this
 vim.opt.splitright = true -- Vertical splits will automatically be to the right
 -- vim.o.t_Co = "256" -- Support 257 colors - broken after nvim udpate
 vim.opt.scrolloff = 6 -- Makes indenting smart
--- vim.o.conceallevel = 0 -- So that I can see `` in markdown files
+vim.o.conceallevel = 0 -- So that I can see `` in markdown files
 -- vim.g.tex_conceal = ''--'dmgs' --a - disables ligatures
 -- vim.g.cole = 0
 

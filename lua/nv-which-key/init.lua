@@ -736,6 +736,18 @@ wk.add {
   { "<leader>ts", showDocumentSymbols, desc = "Buffer Symbols" },
   { "<leader>tt", ":Telescope<CR>", desc = "Telescope" },
 }
+-- toggle treesitter function using vim.treesitter.start/stop - useful for testing if treesitter is causing any issues
+local function toggle_treesitter()
+    local buf = vim.api.nvim_get_current_buf()
+    if vim.treesitter.highlighter.active[buf] then
+        vim.treesitter.stop(buf)
+        print("Treesitter highlighting disabled")
+    else
+        vim.treesitter.start(buf)
+        print("Treesitter highlighting enabled")
+    end
+end
+
 
 
 wk.add {
@@ -744,10 +756,11 @@ wk.add {
   { "<leader>uc", ":Telescope colorscheme<CR>", desc = "Colorscheme" },
   { "<leader>uh", ":set hlsearch!<CR>", desc = "Search highlight" },
   { "<leader>ul", ":set list!<CR>", desc = "Toggle List Chars" },
-  { "<leader>ut", ":Twilight<cr>", desc = "Twilight" },
+  { "<leader>uT", ":Twilight<cr>", desc = "Twilight" },
   { "<leader>uw", ":set wrap!<CR>", desc = "Toggle Wrap" },
   { "<leader>un", ":NoNeckPain<CR>", desc = "Center (NoNeckPain)" },
-  { "<leader>um", ":RenderMarkdown toggle<CR>", desc = "RenderMarkdown" },
+  -- { "<leader>um", ":RenderMarkdown toggle<CR>", desc = "RenderMarkdown" },
+  { "<leader>ut", toggle_treesitter, desc = "Toggle Treesitter" },
   { "<leader>us", group = "Spell" },
   { "<leader>usa", "zg<CR>", desc = "Add To Dictionary (zg)" },
   { "<leader>uss", ":setlocal spell! spelllang=en_us<CR>", desc = "Toggle Spellcheck" },
@@ -761,16 +774,16 @@ wk.add {
   },
 
   -- Global Minimap Controls
-  { "<leader>um", group = "Minimap" },
-  { "<leader>umm", "<cmd>Neominimap Toggle<cr>", desc = "Toggle global minimap" },
-  -- { "<leader>umr", "<cmd>Neominimap refresh<cr>", "Refresh global minimap" },
+  { "<leader>uM", group = "Minimap" },
+  { "<leader>uMm", "<cmd>Neominimap Toggle<cr>", desc = "Toggle global minimap" },
+  -- { "<leader>uMr", "<cmd>Neominimap refresh<cr>", "Refresh global minimap" },
 
   -- Buffer-Specific Minimap Controls
-  { "<leader>umt", "<cmd>Neominimap bufToggle<cr>", desc = "Toggle minimap for current buffer" },
-  { "<leader>umr", "<cmd>Neominimap bufRefresh<cr>", desc = "Refresh minimap for current buffer" },
+  { "<leader>uMt", "<cmd>Neominimap bufToggle<cr>", desc = "Toggle minimap for current buffer" },
+  { "<leader>uMr", "<cmd>Neominimap bufRefresh<cr>", desc = "Refresh minimap for current buffer" },
 
   -- Focus Controls
-  { "<leader>umf", "<cmd>Neominimap toggleFocus<cr>", desc = "Switch focus on minimap" },
+  { "<leader>uMf", "<cmd>Neominimap toggleFocus<cr>", desc = "Switch focus on minimap" },
 }
 
 -- n is for Window

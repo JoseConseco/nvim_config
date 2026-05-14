@@ -170,11 +170,11 @@ vim.lsp.config('vimls', {
 vim.lsp.enable('vimls')
 
 -- ltex-ls-plus
-vim.lsp.config('ltex-ls-plus', {
+vim.lsp.config('ltex', {
   -- cmd = { "/home/bartosz/Publiczny/ltex-ls-16.0.0/bin/ltex-ls" },
   capabilities = capabilities,
-  filetypes = { "bib", "gitcommit", "markdown", "org", "plaintex", "rst", "rnoweb", "tex" },
+  -- filetypes = { "bib", "gitcommit", "markdown", "org", "plaintex", "rst", "rnoweb", "tex" },
   root_markers = { '.git' },
   single_file_support = true,
 })
-vim.lsp.enable('ltex-ls-plus')
+vim.lsp.enable('ltex')

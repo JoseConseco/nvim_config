@@ -531,14 +531,40 @@ return require("lazy").setup {
       require "nv-lsp"
     end,
   }, -- lua + wont close () next to char finally good and simple +++
+  {
+    'sontungexpt/better-diagnostic-virtual-text',
+    config = function(_)
+      require('better-diagnostic-virtual-text').setup()
+    end
+  },
 
   {
     "folke/trouble.nvim",
+    cond = false,
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
       require "nv-lsptrouble"
     end,
   },
+  {
+
+    "chrisgrieser/nvim-spider",
+    lazy = true,
+    config = function()
+      require("spider").setup {
+        skipInsignificantPunctuation = true,
+        subwordMovement = false,
+        consistentOperatorPending = false, -- see the README for details
+        customPatterns = {}, -- see the README for details
+      }
+    end,
+    keys = {
+      { "w", "<cmd>lua require('spider').motion('w')<CR>", mode = { "n", "o", "x" } },
+      { "e", "<cmd>lua require('spider').motion('e')<CR>", mode = { "n", "o", "x" } },
+      { "b", "<cmd>lua require('spider').motion('b')<CR>", mode = { "n", "o", "x" } },
+      { "ge", "<cmd>lua require('spider').motion('ge')<CR>", mode = { "n", "o", "x" } },
+    },
+  }, -- improved workd motions
   -- {
   --   "SirVer/ultisnips",
   --   -- lazy = true,
@@ -704,7 +730,9 @@ return require("lazy").setup {
       -- C-k: Toggle signature help (if signature.enabled = true)
       --
       -- See :h blink-cmp-config-keymap for defining your own keymap
-      keymap = { preset = 'default' },
+      keymap = { preset = 'default',
+         ['<Tab>'] = { 'accept', 'fallback' },
+      },
 
       appearance = {
         -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
@@ -1717,64 +1745,6 @@ return require("lazy").setup {
           template = "[Image]($FILE_PATH)",
           use_absolute_path = true,
         },
-      },
-    },
-  },
-    {
-    "yetone/avante.nvim",
-    enabled = false,
-    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
-    -- ⚠️ must add this setting! ! !
-    build = vim.fn.has("win32") ~= 0
-        and "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false"
-        or "make",
-    event = "VeryLazy",
-    version = false, -- Never set this value to "*"! Never!
-    ---@module 'avante'
-    ---@type avante.Config
-    opts = {
-      -- add any opts here
-      -- this file can contain specific instructions for your project
-      instructions_file = "avante.md",
-      -- for example
-      provider = "copilot",
-    },
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "MunifTanjim/nui.nvim",
-      --- The below dependencies are optional,
-      "nvim-mini/mini.pick", -- for file_selector provider mini.pick
-      "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
-      -- "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
-      "ibhagwan/fzf-lua", -- for file_selector provider fzf
-      "stevearc/dressing.nvim", -- for input provider dressing
-      "folke/snacks.nvim", -- for input provider snacks
-      "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
-      "zbirenbaum/copilot.lua", -- for providers='copilot'
-      {
-        -- support for image pasting
-        "HakonHarnes/img-clip.nvim",
-        event = "VeryLazy",
-        opts = {
-          -- recommended settings
-          default = {
-            embed_image_as_base64 = false,
-            prompt_for_file_name = false,
-            drag_and_drop = {
-              insert_mode = true,
-            },
-            -- required for Windows users
-            use_absolute_path = true,
-          },
-        },
-      },
-      {
-        -- Make sure to set this up properly if you have lazy=true
-        'MeanderingProgrammer/render-markdown.nvim',
-        opts = {
-          file_types = { "markdown", "Avante" },
-        },
-        ft = { "markdown", "Avante" },
       },
     },
   },
