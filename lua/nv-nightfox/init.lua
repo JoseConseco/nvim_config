@@ -70,8 +70,18 @@ require("nightfox").setup {
     },
     dayfox = {
       syntax = {
-        func = "blue.bright", -- was blue.dim
-        ident = "magenta", -- cyan by default
+        func        = "blue.bright",
+        conditional = "red.base",
+        const       = "red.base",
+        dep         = "red.base",
+        -- field       = "red.base",
+        ident       = "red.base",
+        keyword     = "red.base",
+        -- number      = "red.base",
+        operator    = "red.base",
+        -- preproc     = "red.base",
+        -- type     = "red.base",
+        statement   = "red.base",
       },
     },
     dawnfox = {
@@ -87,11 +97,22 @@ require("nightfox").setup {
       },
       syntax = {
         func = "blue.bright", -- was blue.dim
+        conditional = "red.base",
+        const       = "red.base",
+        dep         = "red.base",
+        -- field       = "red.base",
+        ident       = "red.base",
+        keyword     = "red.base",
+        -- number      = "red.base",
+        operator    = "red.base",
+        -- preproc     = "red.base",
+        -- type     = "red.base",
+        statement   = "red.base",
       },
     },
   },
   groups = {
-    -- all = {
+    all = {
     --   -- ["function"] = { link = "@keyword.return" }, -- make them reddish
     --   ["repeat"] = { link = "@keyword.return" }, -- make them reddish
     --   ["Statement"] = { link = "@keyword.return" }, -- make them reddish
@@ -99,12 +120,12 @@ require("nightfox").setup {
     --   ["Identifier"] = { link = "@keyword.return" }, -- make them reddish
     --   ["pythonBoolean"] = { link = "@keyword.return" }, -- make them reddish
     --   ["pythonBuiltin"] = { link = "@keyword.return" }, -- make them reddish
-    --   ["pythonAttribute"] = { link = "@Function" }, -- make them reddish
+      -- ["pythonAttribute"] = { link = "@keyword.return" }, -- make them reddish
     --   ["MatchParen"] = {fg = "palette.green", style = "reverse" }, -- blueish - list, enumerate, range...
     --   -- DiffAdd = {bg = "#a4cf69" }, -- does not seem to work...
     --   -- DiffChange = {bg = "#63c1e6" },
     --   -- DiffDelete = {bg = "#d74f56" },
-    -- },
+    },
   },
 }
 -- vim.cmd [[highlight LineNr guifg=#5081C0]]

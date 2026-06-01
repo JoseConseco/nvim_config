@@ -50,7 +50,7 @@ return require("lazy").setup {
     dependencies = "rktjmp/lush.nvim",
   },
   {
-    "m-demare/hlargs.nvim",
+    "m-demare/hlargs.nvim", -- does not seem to work..
     -- after = "nightfox.nvim",
     cond = false,
     config = function()
@@ -166,24 +166,6 @@ return require("lazy").setup {
       "rcarriga/nvim-notify",
     },
   },
-
-  { -- better vim.ui  - eg. vim.input, vim.select etc.
-    "stevearc/dressing.nvim",
-    lazy = true,
-    -- init = function()
-    --   ---@diagnostic disable-next-line: duplicate-set-field
-    --   vim.ui.select = function(...)
-    --     require("lazy").load { plugins = { "dressing.nvim" } }
-    --     return vim.ui.select(...)
-    --   end
-    --   ---@diagnostic disable-next-line: duplicate-set-field
-    --   vim.ui.input = function(...)
-    --     require("lazy").load { plugins = { "dressing.nvim" } }
-    --     return vim.ui.input(...)
-    --   end
-    -- end,
-  },
-
   {
     "smjonas/live-command.nvim",
     -- live-command supports semantic versioning via tags
@@ -510,20 +492,10 @@ return require("lazy").setup {
       "mason-org/mason-lspconfig.nvim",
       opts = {},
       dependencies = {
-          { "mason-org/mason.nvim", opts = {} },
+          { "mason-org/mason.nvim", opts = {} },  -- Bridges Mason and nvim-lspconfig
           "neovim/nvim-lspconfig",
       },
   },
-  -- Bridges Mason and nvim-lspconfig
-  -- {
-  --   "williamboman/mason-lspconfig.nvim",
-  --   dependencies = { "williamboman/mason.nvim" },
-  --   -- opts = {
-  --   --   -- ensure_installed = { "lua_ls", "clangd", "basedpyright", "vimls" }, -- Add LSPs here
-  --   --   automatic_installation = true,
-  --   -- },
-  -- },
-  -- Native LSP configuration
   {
     "neovim/nvim-lspconfig",
     dependencies = { "williamboman/mason-lspconfig.nvim" },
@@ -535,6 +507,19 @@ return require("lazy").setup {
     'sontungexpt/better-diagnostic-virtual-text',
     config = function(_)
       require('better-diagnostic-virtual-text').setup()
+      vim.api.nvim_create_autocmd("InsertEnter", {
+        callback = function()
+          vim.diagnostic.enable(false, { bufnr = vim.api.nvim_get_current_buf() }) -- Enable the plugin for the current buffer.
+          -- vim.diagnostic.config({ virtual_text = false, signs = false, underline = false })
+        end,
+      })
+
+      vim.api.nvim_create_autocmd("InsertLeave", {
+        callback = function()
+          vim.diagnostic.enable(true, { bufnr = vim.api.nvim_get_current_buf() }) -- Disable the plugin for the current buffer.
+          -- vim.diagnostic.config({ virtual_text = true, signs = true, underline = true })
+        end,
+      })
     end
   },
 
@@ -703,135 +688,7 @@ return require("lazy").setup {
       require "nv-cmp"
     end,
   },
-  {
-    'saghen/blink.cmp',
-    dependencies = {
-        "fang2hou/blink-copilot",
-        'rafamadriz/friendly-snippets' ,
-        'mayromr/blink-cmp-dap',
-        'ribru17/blink-cmp-spell', "mikavilpas/blink-ripgrep.nvim",
-        opts = {
-          max_completions = 1,  -- Global default for max completions
-          max_attempts = 2,     -- Global default for max attempts
-        }
-      },
-
-    version = '1.*',
-    opts = {
-      -- 'default' (recommended) for mappings similar to built-in completions (C-y to accept)
-      -- 'super-tab' for mappings similar to vscode (tab to accept)
-      -- 'enter' for enter to accept
-      -- 'none' for no mappings
-      --
-      -- All presets have the following mappings:
-      -- C-space: Open menu or open docs if already open
-      -- C-n/C-p or Up/Down: Select next/previous item
-      -- C-e: Hide menu
-      -- C-k: Toggle signature help (if signature.enabled = true)
-      --
-      -- See :h blink-cmp-config-keymap for defining your own keymap
-      keymap = { preset = 'default',
-         ['<Tab>'] = { 'accept', 'fallback' },
-      },
-
-      appearance = {
-        -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
-        -- Adjusts spacing to ensure icons are aligned
-        nerd_font_variant = 'mono'
-      },
-
-      -- (Default) Only show the documentation popup when manually triggered
-      completion = {
-        documentation = { auto_show = false },
-        ghost_text = { enabled = false },
-      },
-
-      cmdline = {
-        -- keymap = { preset = 'inherit' },
-        completion = { menu = { auto_show = true } },
-      },
-
-      -- Default list of enabled providers defined so that you can extend it
-      -- elsewhere in your config, without redefining it, due to `opts_extend`
-      sources = {
-        default = { 'lsp', 'path', 'snippets', 'buffer', 'copilot', 'cmdline', 'spell' , 'ripgrep', 'lazydev', 'dap'},
-        providers = {
-          copilot = {
-            name = "copilot",
-            module = "blink-copilot",
-            score_offset = 100,
-            async = true,
-            opts = {
-              -- Local options override global ones
-              max_completions = 2,  -- Override global max_completions
-
-              -- Final settings:
-              -- * max_completions = 3
-              -- * max_attempts = 2
-              -- * all other options are default
-            }
-          },
-          dap = {
-            name = "dap",
-            module = "blink-cmp-dap",
-            opts = {
-              -- See the full configuration below for all available options
-              ---@module "blink-cmp-dap"
-              ---@type blink-cmp-dap.Options
-              -- opts = {},
-            },
-          },
-          spell = {
-            name = 'Spell',
-            module = 'blink-cmp-spell',
-            opts = {
-              -- EXAMPLE: Only enable source in `@spell` captures, and disable it
-              -- in `@nospell` captures.
-              enable_in_context = function()
-                local curpos = vim.api.nvim_win_get_cursor(0)
-                local captures = vim.treesitter.get_captures_at_pos(
-                  0,
-                  curpos[1] - 1,
-                  curpos[2] - 1
-                )
-                local in_spell_capture = false
-                for _, cap in ipairs(captures) do
-                  if cap.capture == 'spell' then
-                    in_spell_capture = true
-                  elseif cap.capture == 'nospell' then
-                    return false
-                  end
-                end
-                return in_spell_capture
-              end,
-            },
-          },
-          lazydev = {
-            name = "LazyDev",
-            module = "lazydev.integrations.blink",
-            -- make lazydev completions top priority (see `:h blink.cmp`)
-            score_offset = 100,
-          },
-          ripgrep = {
-              module = "blink-ripgrep",
-              name = "Ripgrep",
-              -- see the full configuration below for all available options
-              ---@module "blink-ripgrep"
-              ---@type blink-ripgrep.Options
-              opts = {},
-            },
-        },
-      },
-
-      -- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
-      -- You may use a lua implementation instead by using `implementation = "lua"` or fallback to the lua implementation,
-      -- when the Rust fuzzy matcher is not available, by using `implementation = "prefer_rust"`
-      --
-      -- See the fuzzy documentation for more information
-      fuzzy = { implementation = "prefer_rust_with_warning" }
-    },
-    opts_extend = { "sources.default" }
-  },
+  require("nv-blink"),
   -- { "quangnguyen30192/cmp-nvim-ultisnips" },
   -- { "dmitmel/cmp-cmdline-history", dependencies = "hrsh7th/cmp-cmdline" },
   {
@@ -1009,7 +866,6 @@ return require("lazy").setup {
     dependencies = {
       "nvim-telescope/telescope.nvim",
       "kkharji/sqlite.lua",
-      "stevearc/dressing.nvim", -- optional, if using telescope for vim.ui.select
     },
     config = function()
       require "nv-telescope-all-recent"
@@ -1210,6 +1066,9 @@ return require("lazy").setup {
             win_opts = {},
           },
         },
+        keymaps = {
+          disable_defaults = false, -- Disable the default keymaps
+        }
       }
     end,
   },
@@ -1217,13 +1076,13 @@ return require("lazy").setup {
     "esmuellert/codediff.nvim", -- maintained
     cmd = "CodeDiff",
     opts = {
-        explorer = {
-          position = "bottom",
-        },
-        diff = {
-          ignore_trim_whitespace = true, -- does not seem to work,,
-        }
-    }
+      explorer = {
+        position = "bottom",
+      },
+      diff = {
+        ignore_trim_whitespace = true, -- does not seem to work,,
+      },
+    },
   },
 
   -- general  -------------------------------------------------------------------------------------------------------
@@ -1620,14 +1479,43 @@ return require("lazy").setup {
     end,
   },
   {
-    "axlebedev/footprints",
+    -- "axlebedev/nvim-footprints", -- neovim ver,
+    "JoseConseco/nvim-footprints", -- neovim fork - wht line number highlighted
+    branch = "feature/number-line-highlights",
     config = function()
-      -- vim.g.footprintsColor = '#512c4f'
-      vim.g.footprintsColor = "#00c0f0"
-      vim.g.footprintsOnCurrentLine = 0
-      vim.g.footprintsEasingFunction = "easeinout"
-      vim.g.footprintsHistoryDepth = 27
+      local function update_footprints_color()
+        local Color = require('nightfox.lib.color')
+        local base_hex = string.format("#%06x", vim.api.nvim_get_hl(0, { name = "Function", link = false }).fg)
+        -- local base_hex = "#a4cf69"
+        print("base_hex", base_hex)
+        local base_color = Color.from_hex(base_hex)
+        local bg_hex = string.format("%06x", vim.api.nvim_get_hl(0, { name = "Normal" }).bg)
+        local bg_color = Color.from_hex(bg_hex)
+        -- local contrast = base_color:contrast(bg_color)
+        vim.g.footprintsColor = string.format("#%06x", base_color:blend(bg_color, 0.5):to_hex())
+      end
+
+      update_footprints_color()
+      require("nvim-footprints").setup(
+          {
+            -- footprintsColor = "#00c0f0",
+            footprintsOnCurrentLine = 0,
+            footprintsEasingFunction = "easeinout",
+            footprintsHistoryDepth = 20,
+          }
+      )
+
+      vim.api.nvim_create_autocmd("ColorScheme", {
+        callback = update_footprints_color,
+      })
     end,
+    -- opts = {
+    --   -- vim.g.footprintsColor = '#512c4f'
+    --   footprintsColor = "#00c0f0",
+    --   footprintsOnCurrentLine = 0,
+    --   footprintsEasingFunction = "easeinout",
+    --   footprintsHistoryDepth = 20,
+    -- },
   },
   {
     "tomasky/bookmarks.nvim",
@@ -1748,6 +1636,7 @@ return require("lazy").setup {
       },
     },
   },
+  require "nv-opencode",
   {
     "sphamba/smear-cursor.nvim",
     cond = vim.g.neovide == nil,

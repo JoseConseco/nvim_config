@@ -1,6 +1,6 @@
 require("mason").setup()
 require("mason-lspconfig").setup {
-  ensure_installed = { "lua_ls", "clangd", "basedpyright", "ruff", "vimls", "ltex-ls-plus" },
+  ensure_installed = { "lua_ls", "clangd", "basedpyright", "ruff", "vimls", "ltex_plus" },
   automatic_enable = true,
 }
 
@@ -170,11 +170,11 @@ vim.lsp.config('vimls', {
 vim.lsp.enable('vimls')
 
 -- ltex-ls-plus
-vim.lsp.config('ltex', {
+vim.lsp.config('ltex-ls-plus', {
   -- cmd = { "/home/bartosz/Publiczny/ltex-ls-16.0.0/bin/ltex-ls" },
   capabilities = capabilities,
   -- filetypes = { "bib", "gitcommit", "markdown", "org", "plaintex", "rst", "rnoweb", "tex" },
   root_markers = { '.git' },
   single_file_support = true,
 })
-vim.lsp.enable('ltex')
+vim.lsp.enable('ltex-ls-plus')

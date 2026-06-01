@@ -1,233 +1,154 @@
-local function is_dap_buffer()
-  return require("cmp_dap").is_dap_buffer()
-end
+local blink_fuzzy = { "not-manu/filemention.nvim", event = "InsertEnter", opts = {} }
 
 local blink_compact = {
-  "saghen/blink.compat",
-  version = "*",
-  lazy = true,
-  opts = {},
-}
-
-local blink_cmp = {
-  "saghen/blink.cmp",
+  'saghen/blink.cmp',
   dependencies = {
-    -- "rafamadriz/friendly-snippets",
-    -- "onsails/lspkind.nvim",
-    "rcarriga/cmp-dap",
-    "JoseConseco/cmp-ai",
+    "fang2hou/blink-copilot",
+    'rafamadriz/friendly-snippets' ,
+    'mayromr/blink-cmp-dap',
+    'ribru17/blink-cmp-spell', "mikavilpas/blink-ripgrep.nvim",
+    opts = {
+      max_completions = 1,  -- Global default for max completions
+      max_attempts = 2,     -- Global default for max attempts
+    }
   },
-  version = "*",
 
-  ---@module 'blink.cmp'
-  ---@type blink.cmp.Config
+  version = '1.*',
   opts = {
-    appearance = {
-      use_nvim_cmp_as_default = true,
-      -- nerd_font_variant = "mono",
-    },
-
-    completion = {
-      accept = { auto_brackets = { enabled = true } },
-
-      documentation = {
-        auto_show = true,
-        auto_show_delay_ms = 250,
-        treesitter_highlighting = true,
-        window = { border = "rounded" },
-      },
-
-      -- list = {
-      --   selection = function(ctx)
-      --     return ctx.mode == "cmdline" and "auto_insert" or "preselect"
-      --   end,
-      -- },
-      --
-      menu = {
-        border = "rounded",
-
-        cmdline_position = function()
-          if vim.g.ui_cmdline_pos ~= nil then
-            local pos = vim.g.ui_cmdline_pos -- (1, 0)-indexed
-            return { pos[1] - 1, pos[2] }
-          end
-          local height = (vim.o.cmdheight == 0) and 1 or vim.o.cmdheight
-          return { vim.o.lines - height, 0 }
-        end,
-
-        draw = {
-          columns = {
-            { "kind_icon", "label", gap = 1 },
-            { "kind" },
-          },
-          components = {
-            kind_icon = {
-              text = function(item)
-                local kind = require("lspkind").symbol_map[item.kind] or ""
-                return kind .. " "
-              end,
-              highlight = "CmpItemKind",
-            },
-            label = {
-              text = function(item)
-                return item.label
-              end,
-              highlight = "CmpItemAbbr",
-            },
-            kind = {
-              text = function(item)
-                return item.kind
-              end,
-              highlight = "CmpItemKind",
-            },
-          },
-        },
-      },
-    },
-
-    -- My super-TAB configuration
+    -- 'default' (recommended) for mappings similar to built-in completions (C-y to accept)
+    -- 'super-tab' for mappings similar to vscode (tab to accept)
+    -- 'enter' for enter to accept
+    -- 'none' for no mappings
+    --
+    -- All presets have the following mappings:
+    -- C-space: Open menu or open docs if already open
+    -- C-n/C-p or Up/Down: Select next/previous item
+    -- C-e: Hide menu
+    -- C-k: Toggle signature help (if signature.enabled = true)
+    --
+    -- See :h blink-cmp-config-keymap for defining your own keymap
     keymap = {
-      ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
-      ["<C-e>"] = { "hide", "fallback" },
-      ["<CR>"] = { "accept", "fallback" },
-
-      ["<Tab>"] = {
-        function(cmp)
-          return cmp.select_next()
-        end,
-        "snippet_forward",
-        "fallback",
-      },
-      ["<S-Tab>"] = {
-        function(cmp)
-          return cmp.select_prev()
-        end,
-        "snippet_backward",
-        "fallback",
-      },
-
-      ["<Up>"] = { "select_prev", "fallback" },
-      ["<Down>"] = { "select_next", "fallback" },
-      ["<C-p>"] = { "select_prev", "fallback" },
-      ["<C-n>"] = { "select_next", "fallback" },
-      ["<C-up>"] = { "scroll_documentation_up", "fallback" },
-      ["<C-down>"] = { "scroll_documentation_down", "fallback" },
+      preset = 'default',
+      ['<Tab>'] = { 'accept', 'fallback' },
     },
 
-    -- Experimental signature help support
-    signature = {
-      enabled = true,
-      window = { border = "rounded" },
+    appearance = {
+      -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
+      -- Adjusts spacing to ensure icons are aligned
+      nerd_font_variant = 'mono'
     },
-    enabled = function()
-      return vim.bo.buftype ~= "prompt" or is_dap_buffer()
-    end,
 
+    -- (Default) Only show the documentation popup when manually triggered
+    completion = {
+      documentation = { auto_show = false },
+      ghost_text = { enabled = false },
+    },
+
+    cmdline = {
+      -- keymap = { preset = 'inherit' },
+      completion = { menu = { auto_show = true } },
+    },
+
+    -- Default list of enabled providers defined so that you can extend it
+    -- elsewhere in your config, without redefining it, due to `opts_extend`
     sources = {
-      default = { "lsp", "path", "snippets", "buffer" , "dap", "cmp_ai"},
-      -- default = function(_)
-      --   if is_dap_buffer() then
-      --     return { "dap", "buffer" }
-      --   else
-      --     return { "lsp", "path", "snippets", "buffer" }
-      --   end
-      -- end,
-      cmdline = function()
-        local type = vim.fn.getcmdtype()
-        -- Search forward and backward
-        if type == "/" or type == "?" then
-          return { "buffer" }
-        end
-        -- Commands
-        if type == ":" then
-          return { "cmdline" }
-        end
-        return {}
-      end,
+      default = { 'lsp',
+      'path',
+      'filemention',
+      'snippets', 'buffer',
+      'copilot',
+      'cmdline', 'spell' , 'ripgrep', 'lazydev', 'dap'},
       providers = {
-        lsp = {
-          min_keyword_length = 2, -- Number of characters to trigger porvider
-          score_offset = 0, -- Boost/penalize the score of the items
-        },
-        path = {
-          min_keyword_length = 0,
-        },
-        snippets = {
-          min_keyword_length = 2,
+        copilot = {
+          name = "copilot",
+          module = "blink-copilot",
+          score_offset = 100,
+          async = true,
+          opts = {
+            -- Local options override global ones
+            max_completions = 2,  -- Override global max_completions
+
+            -- Final settings:
+            -- * max_completions = 3
+            -- * max_attempts = 2
+            -- * all other options are default
+          }
         },
         dap = {
           name = "dap",
-          module = "blink.compat.source",
-          enabled = function()
-            return require("cmp_dap").is_dap_buffer()
-          end,
-        },
-        cmp_ai = {
-          name = "cmp_ai",
-          module = "blink.compat.source",
+          module = "blink-cmp-dap",
           opts = {
-
-            max_lines = 30,
-            provider = "DocileLlamaCpp", -- my local LlamaCpp forvading server (will auto start different models)
-            provider_options = {
-              -- prompt="<｜fim▁begin｜>"..lines_before.."<｜fim▁hole｜>"..lines_after.."<｜fim▁end｜>"
-              options = {
-                temperature = 0.1,
-                n_predict = 35,  -- number of generated predictions
-                ['min-p'] = 0.1, -- default 0.05,  Cut off predictions with probability below  Max_prob * min_p
-                -- repeat_last_n = 64, -- default 64
-                -- repeat_penalty = 1.100, -- default 1.1
-
-
-                -- new args for my forwarding my python server  branch.. ---------------
-                -- model = "CodeQwen1.5-7B-Q4_K_S.gguf", -- still best?
-                -- model = "Qwen2.5-Coder-7B-Instruct-Q5_K_S", -- last's best with FIM and instruct at same time
-                model = "Qwen2.5.1-Coder-7B-Instruct-Q5_K_M", -- is at as good as 2.5?
-                -- cache_prompt= true, -- is necessary for llama.cpp to use the draft model -not..
-                -- md = "Qwen2.5.1-Coder-1.5B-Instruct-Q6_K.gguf", -- draft model: at 1.5 size and bigger - questionabel speedup
-                md = "Qwen2.5-Coder-0.5B-Instruct-Q6_K.gguf", -- draft model: at 0.5 size and bigger - nicer speedup
-                ngl = 50,
-                -- draft_min_p = 0.1,
-              },
-              prompt = function(lines_before, lines_after)
-                return '<|fim_prefix|>' .. lines_before .. '<|fim_suffix|>' .. lines_after .. '<|fim_middle|>' -- CodeQwen1
-
-                -- codegeex4-all-9b-Q4_K_M - not so good
-                -- local upper_first_ft = vim.bo.filetype:gsub('^%l', string.upper)
-                -- local file_name = vim.fn.expand "%:t"
-                -- return '<|user|>\n###PATH:'..file_name..'\n###LANGUAGE:'.. upper_first_ft ..'\n###MODE:LINE\n<|code_suffix|>' .. lines_after .. '<|code_prefix|>' .. lines_before .. '<|code_middle|><|assistant|>\n' -- codegeex4-all-9b-Q4_K_M
-
-                -- return "<s><｜fim▁begin｜>" .. lines_before .. "<｜fim▁hole｜>" .. lines_after .. "<｜fim▁end｜>" -- for deepseek coder
-                -- return "<fim_prefix>" .. lines_before .. "<fim_suffix>" .. lines_after .. "<fim_middle>" -- for Refact 1.5 coder -- stopped workign after llama update..
-              end,
-            },
-            debounce_delay = 600, -- ms
-            notify = true,
-            notify_callback = function(msg)
-              print(msg)
-              -- vim.notify(msg)
-            end,
-            run_on_every_keystroke = false,
-            ignored_file_types = {
-              -- default is not to ignore
-              -- uncomment to ignore in lua:
-              -- lua = true
-              -- markdown = true,
-            },
-          }
-          -- enabled = function()
-          --   return require("cmp_ai").is_ai_buffer()
-          -- end,
+            -- See the full configuration below for all available options
+            ---@module "blink-cmp-dap"
+            ---@type blink-cmp-dap.Options
+            -- opts = {},
+          },
         },
-        buffer = {
-          min_keyword_length = 3,
-          max_items = 5,
+        filemention = {
+          name = "filemention",
+          module = "filemention.sources.blink",
+        },
+        spell = {
+          name = 'Spell',
+          module = 'blink-cmp-spell',
+          opts = {
+            -- EXAMPLE: Only enable source in `@spell` captures, and disable it
+            -- in `@nospell` captures.
+            enable_in_context = function()
+              local curpos = vim.api.nvim_win_get_cursor(0)
+              local captures = vim.treesitter.get_captures_at_pos(
+                0,
+                curpos[1] - 1,
+                curpos[2] - 1
+              )
+              local in_spell_capture = false
+              for _, cap in ipairs(captures) do
+                if cap.capture == 'spell' then
+                  in_spell_capture = true
+                elseif cap.capture == 'nospell' then
+                  return false
+                end
+              end
+              return in_spell_capture
+            end,
+          },
+        },
+        lazydev = {
+          name = "LazyDev",
+          module = "lazydev.integrations.blink",
+          -- make lazydev completions top priority (see `:h blink.cmp`)
+          score_offset = 100,
+        },
+        path = {
+          opts = {
+            -- start from the current working directory instead of the buffer's directory
+            get_cwd = function(_)
+              return vim.fn.getcwd()
+            end,
+          },
+        },
+        ripgrep = {
+          module = "blink-ripgrep",
+          name = "Ripgrep",
+          -- see the full configuration below for all available options
+          ---@module "blink-ripgrep"
+          ---@type blink-ripgrep.Options
+          opts = {},
         },
       },
     },
+
+    -- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
+    -- You may use a lua implementation instead by using `implementation = "lua"` or fallback to the lua implementation,
+    -- when the Rust fuzzy matcher is not available, by using `implementation = "prefer_rust"`
+    --
+    -- See the fuzzy documentation for more information
+    fuzzy = { implementation = "prefer_rust_with_warning" }
   },
+  opts_extend = { "sources.default" }
 }
+
 local M = {}
 table.insert(M, blink_compact)
-table.insert(M, blink_cmp)
+table.insert(M, blink_fuzzy)
 return M
