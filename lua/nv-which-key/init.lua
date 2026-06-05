@@ -217,7 +217,7 @@ wk.add {
   mode = { "v" },
   { "<leader>c", group = "Code" },
   { "<leader>cc", "<cmd>TextCaseOpenTelescope<CR>", desc = "Case Change" },
-  { "<leader>ce", ":Refactor extract<CR>", desc = "Extract Function" },
+  { "<leader>ce", ":Refactor extract_func<CR>", desc = "Extract Function" },
   { "<leader>ci", ":Refactor inline_var<CR>", desc = "Inline Variable" },
   { "<leader>cv", ":Refactor extract_var<CR>", desc = "Extract Variable" },
 }
@@ -478,10 +478,11 @@ wk.add {
 
 
   { "<leader>gd", group = "CodeDiff" },
-  { "<leader>gdd", ":CodeDiff history<CR>", desc = "CodeDiff Open" },
+  { "<leader>gdd", ":CodeDiff<CR>", desc = "CodeDiff" },
+  { "<leader>gdh", ":CodeDiff history<CR>", desc = "CodeDiff File History" },
   { "<leader>gdf", '<cmd>CodeDiff history %<cr>', desc = "CodeDiff File History" },
   -- { "<leader>gdh", ":DiffviewFileHistory --base=LOCAL %<CR>", desc = "Diffview File History (LOCAL)" },
-  { "<leader>gdh", '<cmd>CodeDiff file HEAD<cr>', desc = "CodeDiff Local Chanes (LOCAL)" },
+  { "<leader>gdl", '<cmd>CodeDiff file HEAD<cr>', desc = "CodeDiff Local Chanes (LOCAL)" },
   -- { "<leader>gdd", function()
   --     if next(require("diffview.lib").views) == nil then
   --       vim.cmd('DiffviewOpen')

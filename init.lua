@@ -7,6 +7,7 @@ require "plugins"
 require "settings"
 require "keymappings"
 
+
 vim.opt.runtimepath:prepend("/home/bartosz/.local/share/nvim/site")
 local timeday_theme_au = vim.api.nvim_create_augroup("TimedayThemeAu", { clear = true })
 

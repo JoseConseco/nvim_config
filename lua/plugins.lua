@@ -620,7 +620,7 @@ return require("lazy").setup {
       debug = false, -- Enable debugging
       auto_follow_cursor = false,
       -- See Configuration section for rest
-      model = 'claude-sonnet-4.6',
+      -- model = 'claude-sonnet-4.6',
 
       -- default mappings
       mappings = {
@@ -1553,7 +1553,7 @@ return require("lazy").setup {
   --   end,
   -- },
 
-  -- ternimal in popup -------------------------------------------------------------------------------------------------------
+  -- termmimal in popup -------------------------------------------------------------------------------------------------------
   {
     "voldikss/vim-floaterm", -- in vimscript - but works with ranger and lazygit and other
     init = function()
@@ -1594,36 +1594,7 @@ return require("lazy").setup {
       require "nv_gen-nvim"
     end,
   },
-  {
-    "olimorris/codecompanion.nvim",
-    opts = {},
-    lazy = false,
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
-      "ravitemer/mcphub.nvim", -- extension (optional)
-    },
-    config = function ()
-      require("codecompanion").setup({
-        -- display = {
-        --     diff = {
-        --       provider = "mini_diff",
-        --     },
-        --   },
-        strategies = {
-          chat = {
-            adapter = "copilot",
-          },
-          inline = {
-            adapter = "copilot",
-          },
-          agent = {
-            adapter = "copilot",
-          },
-        },
-      })
-    end
-  },
+  require "nv-codecompanion",
   {
     "HakonHarnes/img-clip.nvim",
     opts = {
