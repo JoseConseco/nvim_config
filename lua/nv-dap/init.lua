@@ -179,7 +179,9 @@ local function eval_with_visual_selection()
 
     -- line = vim.fn.expand "<cword>"
   end
-  require("dapui").eval(line, { enter = true })
+  -- require("dapui").eval(line, { enter = true })
+  require('dap.ui.widgets').hover(line, {width=100, height=300}) -- built in dap
+
 end
 
 local hint = [[
